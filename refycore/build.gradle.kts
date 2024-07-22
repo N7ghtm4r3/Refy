@@ -25,7 +25,7 @@ afterEvaluate {
         publications {
             create<MavenPublication>("maven") {
                 groupId = "com.tecknobit.refycore"
-                artifactId = "refy-core"
+                artifactId = "refycore"
                 version = "1.0.0"
                 from(components["java"])
             }

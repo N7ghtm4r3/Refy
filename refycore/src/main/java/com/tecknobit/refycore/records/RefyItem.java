@@ -2,7 +2,10 @@ package com.tecknobit.refycore.records;
 
 import com.tecknobit.apimanager.annotations.Structure;
 import com.tecknobit.equinox.environment.records.EquinoxItem;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
+
+import java.util.Objects;
 
 import static com.tecknobit.equinox.environment.records.EquinoxUser.NAME_KEY;
 
@@ -23,6 +26,19 @@ public abstract class RefyItem extends EquinoxItem {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RefyItem refyItem = (RefyItem) o;
+        return Objects.equals(name, refyItem.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(name);
     }
 
 }

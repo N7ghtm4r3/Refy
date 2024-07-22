@@ -1,6 +1,7 @@
 package com.tecknobit.refycore.records;
 
 import com.tecknobit.equinox.environment.records.EquinoxItem;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -35,8 +36,15 @@ public class RefyLink extends EquinoxItem {
         this.title = title;
         this.description = description;
         this.referenceLink = referenceLink;
-        this.teams = List.of();
-        this.collections = List.of();
+        //TODO: TO LOAD CORRECTLY
+        this.teams = List.of(
+                new Team("id", "Ciao")//,
+                //new Team("id2", "Ciao2")
+        );
+        //TODO: TO LOAD CORRECTLY
+        this.collections = List.of(
+                //new LinksCollection("id", "Ciao")
+        );
     }
 
     public RefyLink(String id, String title, String description, String referenceLink,

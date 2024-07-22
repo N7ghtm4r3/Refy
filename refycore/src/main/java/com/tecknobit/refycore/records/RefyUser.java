@@ -16,13 +16,7 @@ public class RefyUser extends EquinoxUser {
         //TODO: TO LOAD CORRECTLY
         this.teams = List.of(
                 new Team("id", "Ciao"),
-                new Team("id2", "Ciao2"),
-                new Team("id321", "Ciao"),
-                new Team("id213213", "Ciao2"),
-                new Team("id1123131232", "Ciao"),
-                new Team("id21312313", "Ciao2"),
-                new Team("id123132112", "Ciao"),
-                new Team("id2123123g", "Ciao2")
+                new Team("id2", "Ciao2")
         );
         //TODO: TO LOAD CORRECTLY
         this.collections = List.of(

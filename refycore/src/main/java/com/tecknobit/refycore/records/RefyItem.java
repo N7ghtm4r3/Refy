@@ -2,7 +2,6 @@ package com.tecknobit.refycore.records;
 
 import com.tecknobit.apimanager.annotations.Structure;
 import com.tecknobit.equinox.environment.records.EquinoxItem;
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.util.Objects;
@@ -11,6 +10,8 @@ import static com.tecknobit.equinox.environment.records.EquinoxUser.NAME_KEY;
 
 @Structure
 public abstract class RefyItem extends EquinoxItem {
+
+    public static final String DESCRIPTION_KEY = "description_key";
 
     protected final String name;
 

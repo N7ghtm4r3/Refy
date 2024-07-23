@@ -20,7 +20,7 @@ public class RefyUser extends EquinoxUser {
         );
         //TODO: TO LOAD CORRECTLY
         this.collections = List.of(
-                new LinksCollection("id", "Ciao")
+                new LinksCollection("#FFFFFF","id", "Ciao", "ga")
         );
     }
 

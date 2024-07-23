@@ -1,16 +1,15 @@
 package com.tecknobit.refycore.records;
 
 import com.tecknobit.equinox.environment.records.EquinoxItem;
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.util.List;
 
+import static com.tecknobit.refycore.records.RefyItem.DESCRIPTION_KEY;
+
 public class RefyLink extends EquinoxItem {
 
     public static final String TITLE_KEY = "title_key";
-
-    public static final String DESCRIPTION_KEY = "description_key";
 
     public static final String THUMBNAIL_KEY = "thumbnail_key";
 

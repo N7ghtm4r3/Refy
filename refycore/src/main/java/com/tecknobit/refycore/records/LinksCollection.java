@@ -23,10 +23,8 @@ public class LinksCollection extends RefyItem {
         super(id, name);
         this.color = color;
         this.description = description;
-        this.teams = List.of(
-                new Team("id", "Ciao"),
-                new Team("id2", "Ciao2")
-        );
+        //TODO: TO LOAD CORRECTLY
+        this.teams = List.of();
     }
 
     public LinksCollection(String id, String name, String color, String description, List<Team> teams) {

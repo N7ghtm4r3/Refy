@@ -10,7 +10,7 @@ public class RefyInputValidator extends InputValidator {
         return isInputValid(linkResource) && urlValidator.isValid(linkResource);
     }
 
-    public static boolean isLinkDescriptionValid(String description) {
+    public static boolean isDescriptionValid(String description) {
         return description != null && description.length() <= MAX_DESCRIPTION_LENGTH;
     }
 

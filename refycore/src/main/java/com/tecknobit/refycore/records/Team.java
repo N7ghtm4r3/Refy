@@ -6,6 +6,8 @@ import java.util.List;
 
 public class Team extends RefyItem {
 
+    public static final int MAX_MEMBERS_DISPLAYED = 5;
+
     private final List<RefyUser> members;
 
     public Team() {
@@ -34,6 +36,30 @@ public class Team extends RefyItem {
                 ),
                 new RefyUser(
                         "id2",
+                        "User",
+                        "One",
+                        "p@gmail.com",
+                        "https://images.photowall.com/products/56987/outer-space-4.jpg?h=699&q=85",
+                        "@id2"
+                ),
+                new RefyUser(
+                        "idwgewgw2",
+                        "User",
+                        "One",
+                        "p@gmail.com",
+                        "https://images.photowall.com/products/56987/outer-space-4.jpg?h=699&q=85",
+                        "@id2"
+                ),
+                new RefyUser(
+                        "igwegwgwegwegwegewgd2",
+                        "User",
+                        "LAST",
+                        "p@gmail.com",
+                        "https://images.photowall.com/products/56987/outer-space-4.jpg?h=699&q=85",
+                        "@id2"
+                ),
+                new RefyUser(
+                        "iegwgwed2",
                         "User",
                         "One",
                         "p@gmail.com",

@@ -74,4 +74,8 @@ public class LinksCollection extends RefyItem {
         return teams;
     }
 
+    public boolean hasTeams() {
+        return !teams.isEmpty();
+    }
+
 }

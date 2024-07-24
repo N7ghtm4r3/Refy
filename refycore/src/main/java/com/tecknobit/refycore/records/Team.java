@@ -6,17 +6,22 @@ import java.util.List;
 
 public class Team extends RefyItem {
 
-    public static final int MAX_MEMBERS_DISPLAYED = 5;
+    public static final int MAX_TEAMS_DISPLAYED = 5;
+
+    public static final String LOGO_PIC_KEY = "logo_pic";
+
+    private final String logoPic;
 
     private final List<RefyUser> members;
 
     public Team() {
-        this(null, null, List.of());
+        this(null, null, null, List.of());
     }
 
     //TODO: TO REMOVE
-    public Team(String id, String name) {
+    public Team(String id, String name, String logoPic) {
         super(id, name);
+        this.logoPic = logoPic;
         this.members = List.of(
                 new RefyUser(
                         "id",
@@ -69,15 +74,21 @@ public class Team extends RefyItem {
         );
     }
 
-    public Team(String id, String name, List<RefyUser> members) {
+    public Team(String id, String name, String logoPic, List<RefyUser> members) {
         super(id, name);
+        this.logoPic = logoPic;
         this.members = members;
     }
 
     public Team(JSONObject jTeam) {
         super(jTeam);
+        logoPic = hItem.getString(LOGO_PIC_KEY);
         //TODO: TO LOAD CORRECTLY
         members = List.of();
+    }
+
+    public String getLogoPic() {
+        return logoPic;
     }
 
     public List<RefyUser> getMembers() {

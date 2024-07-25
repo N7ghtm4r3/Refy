@@ -1,13 +1,10 @@
 package com.tecknobit.refycore.records;
 
-import com.tecknobit.equinox.environment.records.EquinoxItem;
 import org.json.JSONObject;
 
 import java.util.List;
 
-import static com.tecknobit.refycore.records.RefyItem.DESCRIPTION_KEY;
-
-public class RefyLink extends EquinoxItem {
+public class RefyLink extends RefyItem {
 
     public static final String TITLE_KEY = "title_key";
 
@@ -33,7 +30,7 @@ public class RefyLink extends EquinoxItem {
 
     //TODO: TO REMOVE
     public RefyLink(String id, String title, String description, String referenceLink) {
-        super(id);
+        super(id, title);
         this.owner = new RefyUser(
                 "GEGWEGWHWHG",
                 "Greg",
@@ -58,7 +55,7 @@ public class RefyLink extends EquinoxItem {
 
     public RefyLink(String id, RefyUser owner, String title, String description, String referenceLink,
                     List<Team> teams, List<LinksCollection> collections) {
-        super(id);
+        super(id, title);
         this.owner = owner;
         this.title = title;
         this.description = description;
@@ -82,10 +79,6 @@ public class RefyLink extends EquinoxItem {
 
     public RefyUser getOwner() {
         return owner;
-    }
-
-    public String getTitle() {
-        return title;
     }
 
     public String getDescription() {

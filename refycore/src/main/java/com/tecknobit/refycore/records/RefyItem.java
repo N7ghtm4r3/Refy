@@ -13,20 +13,20 @@ public abstract class RefyItem extends EquinoxItem {
 
     public static final String DESCRIPTION_KEY = "description_key";
 
-    protected final String name;
+    protected final String title;
 
-    public RefyItem(String id, String name) {
+    public RefyItem(String id, String title) {
         super(id);
-        this.name = name;
+        this.title = title;
     }
 
     public RefyItem(JSONObject jRefyItem) {
         super(jRefyItem);
-        name = hItem.getString(NAME_KEY);
+        title = hItem.getString(NAME_KEY);
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
     @Override
@@ -34,12 +34,12 @@ public abstract class RefyItem extends EquinoxItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RefyItem refyItem = (RefyItem) o;
-        return Objects.equals(name, refyItem.name);
+        return Objects.equals(title, refyItem.title);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(name);
+        return Objects.hashCode(title);
     }
 
 }

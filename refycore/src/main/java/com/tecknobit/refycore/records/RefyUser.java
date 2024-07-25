@@ -13,7 +13,7 @@ public class RefyUser extends EquinoxUser {
 
     private List<RefyLink> links;
 
-    private final List<Team> teams;
+    private List<Team> teams;
 
     private List<LinksCollection> collections;
 
@@ -23,8 +23,8 @@ public class RefyUser extends EquinoxUser {
         this.links = List.of();
         //TODO: TO LOAD CORRECTLY
         this.teams = List.of(
-                new Team("id", "Ciao", "https://res.cloudinary.com/momentum-media-group-pty-ltd/image/upload/v1686795211/Space%20Connect/space-exploration-sc_fm1ysf.jpg"),
-                new Team("id2", "Ciao2", "https://cdn.mos.cms.futurecdn.net/9UmWCbyxpKaEGXjwFG7dXo-1200-80.jpg")
+                new Team("id", "Ciao", this, "https://res.cloudinary.com/momentum-media-group-pty-ltd/image/upload/v1686795211/Space%20Connect/space-exploration-sc_fm1ysf.jpg"),
+                new Team("id2", "Ciao2", this, "https://cdn.mos.cms.futurecdn.net/9UmWCbyxpKaEGXjwFG7dXo-1200-80.jpg")
         );
         //TODO: TO LOAD CORRECTLY
         this.collections = List.of(
@@ -80,6 +80,10 @@ public class RefyUser extends EquinoxUser {
 
     public List<RefyLink> getLinks() {
         return links;
+    }
+
+    public void setTeams(List<Team> teams) {
+        this.teams = teams;
     }
 
     public List<Team> getTeams() {

@@ -44,7 +44,7 @@ public class RefyLink extends RefyItem {
         this.referenceLink = referenceLink;
         //TODO: TO LOAD CORRECTLY
         this.teams = List.of(
-                new Team("id", "Ciao", "https://cdn.mos.cms.futurecdn.net/9UmWCbyxpKaEGXjwFG7dXo-1200-80.jpg")//,
+                new Team("id", "Ciao", new RefyUser(), "https://cdn.mos.cms.futurecdn.net/9UmWCbyxpKaEGXjwFG7dXo-1200-80.jpg")//,
                 //new Team("id2", "Ciao2")
         );
         //TODO: TO LOAD CORRECTLY

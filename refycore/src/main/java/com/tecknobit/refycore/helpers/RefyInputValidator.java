@@ -6,6 +6,8 @@ public class RefyInputValidator extends InputValidator {
 
     public static int MAX_DESCRIPTION_LENGTH = 250;
 
+    public static int MAX_TITLE_LENGTH = 30;
+
     public static boolean isLinkResourceValid(String linkResource) {
         return isInputValid(linkResource) && urlValidator.isValid(linkResource);
     }

@@ -52,4 +52,10 @@ public abstract class RefyItem extends EquinoxItem {
         return refyItem.id.equals(id);
     }
 
+    interface ListScreenItem {
+
+        boolean canBeUpdatedByUser(String loggedUserId);
+
+    }
+
 }

@@ -4,7 +4,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class RefyLink extends RefyItem {
+public class RefyLink extends RefyItem implements RefyItem.ListScreenItem {
 
     public static final String REFERENCE_LINK_KEY = "reference_link";
 
@@ -70,6 +70,11 @@ public class RefyLink extends RefyItem {
 
     public List<LinksCollection> getCollections() {
         return collections;
+    }
+
+    @Override
+    public boolean canBeUpdatedByUser(String loggedUserId) {
+        return loggedUserId.equals(owner.getId()) || teams.isEmpty();
     }
 
 }

@@ -4,7 +4,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class LinksCollection extends RefyItem {
+public class LinksCollection extends RefyItem implements RefyItem.ListScreenItem {
 
     public static final String COLLECTION_COLOR_KEY = "collection_color";
 
@@ -66,6 +66,11 @@ public class LinksCollection extends RefyItem {
 
     public boolean hasTeams() {
         return !teams.isEmpty();
+    }
+
+    @Override
+    public boolean canBeUpdatedByUser(String loggedUserId) {
+        return loggedUserId.equals(owner.getId()) || teams.isEmpty();
     }
 
 }

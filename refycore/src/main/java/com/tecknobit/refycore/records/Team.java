@@ -124,24 +124,24 @@ public class Team extends RefyItem {
         return collections;
     }
 
-    public boolean isTheAuthor(RefyUser user) {
-        return user.getId().equals(owner.getId());
+    public boolean isTheAuthor(String userId) {
+        return userId.equals(owner.getId());
     }
 
-    public boolean isMaintainer(RefyUser user) {
-        if(isTheAuthor(user))
+    public boolean isMaintainer(String userId) {
+        if(isTheAuthor(userId))
             return true;
         for(RefyTeamMember member : members)
-            if(member.getId().equals(user.getId()))
+            if(member.getId().equals(userId))
                 return member.getRole() != VIEWER;
         return false;
     }
 
-    public boolean isAdmin(RefyUser user) {
-        if(isTheAuthor(user))
+    public boolean isAdmin(String userId) {
+        if(isTheAuthor(userId))
             return true;
         for(RefyTeamMember member : members)
-            if(member.getId().equals(user.getId()))
+            if(member.getId().equals(userId))
                 return member.getRole() == ADMIN;
         return false;
     }

@@ -1,6 +1,8 @@
 package com.tecknobit.refycore.records;
 
 import com.tecknobit.equinox.environment.records.EquinoxUser;
+import com.tecknobit.refycore.records.links.CustomRefyLink;
+import com.tecknobit.refycore.records.links.RefyLink;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -16,6 +18,8 @@ public class RefyUser extends EquinoxUser {
     private List<Team> teams;
 
     private List<LinksCollection> collections;
+
+    private List<CustomRefyLink> customLinks;
 
     public RefyUser() {
         super();
@@ -61,12 +65,14 @@ public class RefyUser extends EquinoxUser {
     }
 
     public RefyUser(String id, String token, String name, String surname, String email, String password, String language,
-                    String tagName, List<RefyLink> links, List<Team> teams, List<LinksCollection> collections) {
+                    String tagName, List<RefyLink> links, List<Team> teams, List<LinksCollection> collections,
+                    List<CustomRefyLink> customLinks) {
         super(id, token, name, surname, email, password, language);
         this.tagName = tagName;
         this.links = links;
         this.teams = teams;
         this.collections = collections;
+        this.customLinks = customLinks;
     }
 
     public RefyUser(String id, String name, String surname, String email, String profilePic, String tagName) {
@@ -79,12 +85,13 @@ public class RefyUser extends EquinoxUser {
 
     public RefyUser(String id, String token, String name, String surname, String email, String password, String profilePic,
                     String language, ApplicationTheme theme, String tagName, List<RefyLink> links, List<Team> teams,
-                    List<LinksCollection> collections) {
+                    List<LinksCollection> collections, List<CustomRefyLink> customLinks) {
         super(id, token, name, surname, email, password, profilePic, language, theme);
         this.tagName = tagName;
         this.links = links;
         this.teams = teams;
         this.collections = collections;
+        this.customLinks = customLinks;
     }
 
     public RefyUser(JSONObject jRefyUser) {
@@ -96,6 +103,8 @@ public class RefyUser extends EquinoxUser {
         this.teams = List.of();
         //TODO: TO LOAD CORRECTLY
         this.collections = List.of();
+        //TODO: TO LOAD CORRECTLY
+        this.customLinks = List.of();
     }
 
     public String getTagName() {
@@ -124,6 +133,14 @@ public class RefyUser extends EquinoxUser {
 
     public List<LinksCollection> getCollections() {
         return collections;
+    }
+
+    public List<CustomRefyLink> getCustomLinks() {
+        return customLinks;
+    }
+
+    public void setCustomLinks(List<CustomRefyLink> customLinks) {
+        this.customLinks = customLinks;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.tecknobit.refycore.records;
 
+import com.tecknobit.refycore.records.links.RefyLink;
 import org.json.JSONObject;
 
 import java.util.List;

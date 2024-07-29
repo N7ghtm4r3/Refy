@@ -1,5 +1,9 @@
-package com.tecknobit.refycore.records;
+package com.tecknobit.refycore.records.links;
 
+import com.tecknobit.refycore.records.LinksCollection;
+import com.tecknobit.refycore.records.RefyItem;
+import com.tecknobit.refycore.records.RefyUser;
+import com.tecknobit.refycore.records.Team;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -8,11 +12,11 @@ public class RefyLink extends RefyItem implements RefyItem.ListScreenItem {
 
     public static final String REFERENCE_LINK_KEY = "reference_link";
 
-    private final String referenceLink;
+    protected final String referenceLink;
 
-    private final List<Team> teams;
+    protected final List<Team> teams;
 
-    private final List<LinksCollection> collections;
+    protected final List<LinksCollection> collections;
 
     public RefyLink() {
         this(null, null, null, null, null, List.of(), List.of());

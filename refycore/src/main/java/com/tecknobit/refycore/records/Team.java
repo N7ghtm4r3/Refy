@@ -40,7 +40,7 @@ public class Team extends RefyItem {
                         "p@gmail.com",
                         "https://t4.ftcdn.net/jpg/03/86/82/73/360_F_386827376_uWOOhKGk6A4UVL5imUBt20Bh8cmODqzx.jpg",
                         "@id",
-                        TeamRole.MAINTAINER
+                        VIEWER
                 ),
                 new RefyTeamMember(
                         "id3213",
@@ -67,7 +67,7 @@ public class Team extends RefyItem {
                         "p@gmail.com",
                         "https://images.photowall.com/products/56987/outer-space-4.jpg?h=699&q=85",
                         "@id2",
-                        TeamRole.MAINTAINER
+                        VIEWER
                 ),
                 new RefyTeamMember(
                         "igwegwgwegwegwegewgd2",
@@ -124,19 +124,6 @@ public class Team extends RefyItem {
         return collections;
     }
 
-    public boolean isTheAuthor(String userId) {
-        return userId.equals(owner.getId());
-    }
-
-    public boolean isMaintainer(String userId) {
-        if(isTheAuthor(userId))
-            return true;
-        for(RefyTeamMember member : members)
-            if(member.getId().equals(userId))
-                return member.getRole() != VIEWER;
-        return false;
-    }
-
     public boolean isAdmin(String userId) {
         if(isTheAuthor(userId))
             return true;
@@ -146,6 +133,10 @@ public class Team extends RefyItem {
         return false;
     }
 
+    public boolean isTheAuthor(String userId) {
+        return userId.equals(owner.getId());
+    }
+
     public static class RefyTeamMember extends RefyUser {
 
         public static final String TEAM_ROLE_KEY = "team_role";
@@ -153,8 +144,6 @@ public class Team extends RefyItem {
         public enum TeamRole {
 
             ADMIN,
-
-            MAINTAINER,
 
             VIEWER
 

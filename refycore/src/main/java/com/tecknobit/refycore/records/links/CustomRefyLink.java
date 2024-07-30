@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CustomRefyLink extends RefyLink {
 
@@ -20,17 +21,29 @@ public class CustomRefyLink extends RefyLink {
 
     public enum ExpiredTime {
 
-        NO_EXPIRATION,
+        NO_EXPIRATION(0),
 
-        FIFTEEN_MINUTES,
+        ONE_MINUTE(1),
 
-        THIRTY_MINUTES,
+        FIFTEEN_MINUTES(15),
 
-        ONE_HOUR,
+        THIRTY_MINUTES(30),
 
-        ONE_DAY,
+        ONE_HOUR(1),
 
-        ONE_WEEK
+        ONE_DAY(1),
+
+        ONE_WEEK(1);
+
+        private final int timeValue;
+
+        ExpiredTime(int timeValue) {
+            this.timeValue = timeValue;
+        }
+
+        public int getTimeValue() {
+            return timeValue;
+        }
 
     }
 
@@ -38,9 +51,9 @@ public class CustomRefyLink extends RefyLink {
 
     private final ExpiredTime expiredTime;
 
-    private final HashMap<String, Object> resources;
+    private final Map<String, String> resources;
 
-    private final HashMap<String, Object> fields;
+    private final Map<String, String> fields;
 
     public CustomRefyLink() {
         this(null, null, null, null, null, List.of(), List.of(), false, null, null, null);
@@ -48,7 +61,7 @@ public class CustomRefyLink extends RefyLink {
 
     public CustomRefyLink(String id, RefyUser owner, String title, String description, String referenceLink,
                           List<Team> teams, List<LinksCollection> collections, boolean uniqueAccess,
-                          ExpiredTime expiredTime, HashMap<String, Object> resources, HashMap<String, Object> fields) {
+                          ExpiredTime expiredTime, Map<String, String> resources, Map<String, String> fields) {
         super(id, owner, title, description, referenceLink, teams, collections);
         this.uniqueAccess = uniqueAccess;
         this.expiredTime = expiredTime;
@@ -60,23 +73,28 @@ public class CustomRefyLink extends RefyLink {
         super(jCustomRefyLink);
         uniqueAccess = hItem.getBoolean(UNIQUE_ACCESS_KEY);
         expiredTime = ExpiredTime.valueOf(EXPIRED_TIME_KEY);
-        resources = (HashMap<String, Object>) hItem.getJSONObject(RESOURCES_KEY, new JSONObject()).toMap();
-        fields = (HashMap<String, Object>) hItem.getJSONObject(FIELDS_KEY, new JSONObject()).toMap();
+        //TODO: TO LOAD CORRECTLY
+        resources = new HashMap<>();
+        fields = new HashMap<>();
     }
 
     public boolean hasUniqueAccess() {
         return uniqueAccess;
     }
 
+    public boolean expires() {
+        return expiredTime != null && expiredTime != ExpiredTime.NO_EXPIRATION;
+    }
+
     public ExpiredTime getExpiredTime() {
         return expiredTime;
     }
 
-    public HashMap<String, Object> getResources() {
+    public Map<String, String> getResources() {
         return resources;
     }
 
-    public HashMap<String, Object> getFields() {
+    public Map<String, String> getFields() {
         return fields;
     }
 

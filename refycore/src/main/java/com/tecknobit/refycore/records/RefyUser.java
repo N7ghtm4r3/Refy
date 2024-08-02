@@ -44,7 +44,8 @@ public class RefyUser extends EquinoxUser {
 
     //TODO: TO REMOVE
     public RefyUser(String id) {
-        super(id, null, null, null, null, null, null);
+        super(id, null, "Bello", "Utente", "Prova@gmail.com", "12345678", "https://res.cloudinary.com/momentum-media-group-pty-ltd/image/upload/v1686795211/Space%20Connect/space-exploration-sc_fm1ysf.jpg", "en",
+                ApplicationTheme.Auto);
         tagName = "@tagName";
         this.links = List.of();
         //TODO: TO LOAD CORRECTLY

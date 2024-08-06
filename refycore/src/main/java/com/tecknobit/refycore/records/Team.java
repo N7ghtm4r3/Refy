@@ -1,6 +1,7 @@
 package com.tecknobit.refycore.records;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.tecknobit.equinox.environment.records.EquinoxItem;
 import com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole;
 import com.tecknobit.refycore.records.links.RefyLink;
 import jakarta.persistence.*;
@@ -9,8 +10,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 import static com.tecknobit.refycore.records.LinksCollection.COLLECTION_IDENTIFIER_KEY;
-import static com.tecknobit.refycore.records.RefyUser.IDENTIFIER_KEY;
-import static com.tecknobit.refycore.records.RefyUser.TEAMS_KEY;
+import static com.tecknobit.refycore.records.RefyUser.*;
 import static com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole.ADMIN;
 import static com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole.VIEWER;
 import static com.tecknobit.refycore.records.Team.TEAM_IDENTIFIER_KEY;
@@ -48,7 +48,6 @@ public class Team extends RefyItem {
             fetch = FetchType.LAZY,
             mappedBy = SOURCE_TEAM_KEY
     )
-    @Column(name = MEMBERS_KEY)
     @JsonIgnoreProperties({
             SOURCE_TEAM_KEY,
             "hibernateLazyInitializer",
@@ -203,7 +202,10 @@ public class Team extends RefyItem {
 
     @Entity
     @Table(name = MEMBERS_KEY)
-    public static class RefyTeamMember extends RefyUser {
+    @IdClass(TeamMemberCompositeKey.class)
+    public static class RefyTeamMember extends EquinoxItem {
+
+        public static final String MEMBER_IDENTIFIER_KEY = "member_id";
 
         public static final String TEAM_ROLE_KEY = "team_role";
 
@@ -215,14 +217,59 @@ public class Team extends RefyItem {
 
         }
 
+        @Column(
+                name = TAG_NAME_KEY,
+                columnDefinition = "VARCHAR(15) UNIQUE NOT NULL"
+        )
+        private final String tagName;
+
+        /**
+         * {@code name} the name of the user
+         */
+        @Column(
+                name = NAME_KEY,
+                columnDefinition = "VARCHAR(20) NOT NULL"
+        )
+        private final String name;
+
+        /**
+         * {@code surname} the surname of the user
+         */
+        @Column(
+                name = SURNAME_KEY,
+                columnDefinition = "VARCHAR(30) NOT NULL"
+        )
+        private final String surname;
+
+        /**
+         * {@code email} the email of the user
+         */
+        @Column(
+                name = EMAIL_KEY,
+                columnDefinition = "VARCHAR(75) NOT NULL",
+                unique = true
+        )
+        private final String email;
+
+        /**
+         * {@code profilePic} the profile pic of the user
+         */
+        @Column(
+                name = PROFILE_PIC_KEY,
+                columnDefinition = "TEXT DEFAULT '" + DEFAULT_PROFILE_PIC + "'",
+                insertable = false
+        )
+        protected final String profilePic;
+
         @Enumerated(value = STRING)
         @Column(name = TEAM_ROLE_KEY)
         private final TeamRole role;
 
+        @Id
         @ManyToOne(
                 cascade = CascadeType.ALL
         )
-        @JoinColumn(name = TEAM_KEY)
+        @JoinColumn(name = TEAM_IDENTIFIER_KEY)
         @JsonIgnoreProperties({
                 "hibernateLazyInitializer",
                 "handler"
@@ -230,29 +277,63 @@ public class Team extends RefyItem {
         protected final Team sourceTeam;
 
         public RefyTeamMember() {
-            super();
-            role = null;
-            sourceTeam = null;
+            this(null, null, null, null, null, null, null);
         }
 
         public RefyTeamMember(String id, String name, String surname, String email, String profilePic, String tagName,
                               TeamRole role) {
-            super(id, name, surname, email, profilePic, tagName);
-            this.role = role;
-            sourceTeam = null;
+            this(id, name, surname, email, profilePic, tagName, role, null);
         }
 
         public RefyTeamMember(String id, String name, String surname, String email, String profilePic, String tagName,
                               TeamRole role, Team sourceTeam) {
-            super(id, name, surname, email, profilePic, tagName);
+            super(id);
+            this.name = name;
+            this.surname = surname;
+            this.email = email;
+            this.profilePic = profilePic;
+            this.tagName = tagName;
             this.role = role;
             this.sourceTeam = sourceTeam;
         }
 
         public RefyTeamMember(JSONObject jRefyTeamMember) {
             super(jRefyTeamMember);
+            tagName = hItem.getString(TAG_NAME_KEY);
+            name = hItem.getString(NAME_KEY);
+            surname = hItem.getString(SURNAME_KEY);
+            email = hItem.getString(EMAIL_KEY);
+            profilePic = hItem.getString(PROFILE_PIC_KEY);
             role = TeamRole.valueOf(TEAM_ROLE_KEY);
             sourceTeam = null;
+        }
+
+        public String getTagName() {
+            return tagName;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getSurname() {
+            return surname;
+        }
+
+        public String getCompleteName() {
+            return name + " " + surname;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public String getProfilePic() {
+            return profilePic;
+        }
+
+        public Team getSourceTeam() {
+            return sourceTeam;
         }
 
         public TeamRole getRole() {

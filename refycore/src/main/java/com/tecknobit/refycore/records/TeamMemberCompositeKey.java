@@ -2,20 +2,20 @@ package com.tecknobit.refycore.records;
 
 public class TeamMemberCompositeKey {
 
-    private String id;
+    private String owner;
 
     private String sourceTeam;
 
     public TeamMemberCompositeKey() {
     }
 
-    public TeamMemberCompositeKey(String id, String sourceTeam) {
-        this.id = id;
+    public TeamMemberCompositeKey(String owner, String sourceTeam) {
+        this.owner = owner;
         this.sourceTeam = sourceTeam;
     }
 
     public String getId() {
-        return id;
+        return owner;
     }
 
     public String getSourceTeam() {

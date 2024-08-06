@@ -1,7 +1,9 @@
 package com.tecknobit.refycore.records;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.equinox.environment.records.EquinoxUser;
+import com.tecknobit.refycore.records.Team.RefyTeamMember;
 import com.tecknobit.refycore.records.links.CustomRefyLink;
 import com.tecknobit.refycore.records.links.RefyLink;
 import jakarta.persistence.*;
@@ -79,6 +81,13 @@ public class RefyUser extends EquinoxUser {
             "handler"
     })
     private List<CustomRefyLink> customLinks;
+
+    @JsonIgnore
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            mappedBy = OWNER_KEY
+    )
+    private RefyTeamMember member;
 
     public RefyUser() {
         super();

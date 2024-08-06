@@ -10,8 +10,13 @@ public class RefyInputValidator extends InputValidator {
 
     public static int MAX_TITLE_LENGTH = 30;
 
+    /**
+     * {@code WRONG_TAG_NAME} message to use when the tag name of the user is not valid
+     */
+    public static final String WRONG_TAG_NAME_MESSAGE = "wrong_tag_name_key";
+
     public static boolean isTagNameValid(String tagName) {
-        return isInputValid(tagName) && tagName.length() <= MAX_TAG_NAME_LENGTH;
+        return isInputValid(tagName) && tagName.startsWith("@") && tagName.length() <= MAX_TAG_NAME_LENGTH;
     }
 
     public static boolean isLinkResourceValid(String linkResource) {

@@ -1,20 +1,43 @@
 package com.tecknobit.refycore.records;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.apimanager.annotations.Structure;
 import com.tecknobit.equinox.environment.records.EquinoxItem;
+import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.json.JSONObject;
 
 import static com.tecknobit.equinox.environment.records.EquinoxUser.NAME_KEY;
 
 @Structure
+@MappedSuperclass
 public abstract class RefyItem extends EquinoxItem {
 
-    public static final String DESCRIPTION_KEY = "description_key";
+    public static final String OWNER_KEY = "owner";
 
+    public static final String TITLE_KEY = "title";
+
+    public static final String DESCRIPTION_KEY = "description";
+
+    @ManyToOne(
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(name = OWNER_KEY)
+    @JsonIgnoreProperties({
+            "hibernateLazyInitializer",
+            "handler"
+    })
+    @OnDelete(action = OnDeleteAction.CASCADE)
     protected final RefyUser owner;
 
+    @Column(
+            name = TITLE_KEY,
+            columnDefinition = "VARCHAR(30) NOT NULL"
+    )
     protected final String title;
 
+    @Column(name = DESCRIPTION_KEY)
     protected final String description;
 
     public RefyItem(String id, RefyUser owner, String title, String description) {

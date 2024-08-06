@@ -12,6 +12,7 @@ repositories {
     mavenCentral()
     maven("https://jitpack.io")
     maven("https://repo.clojars.org")
+    mavenLocal()
 }
 
 dependencies {
@@ -23,4 +24,9 @@ dependencies {
     implementation("com.github.N7ghtm4r3:APIManager:2.2.3")
     implementation("com.github.N7ghtm4r3:Equinox:1.0.2")
     implementation("org.json:json:20231013")
+    implementation("com.tecknobit.refycore:refycore:1.0.0")
+}
+
+configurations.all {
+    exclude("commons-logging", "commons-logging")
 }

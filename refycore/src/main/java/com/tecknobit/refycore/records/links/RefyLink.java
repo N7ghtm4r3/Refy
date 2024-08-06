@@ -1,21 +1,53 @@
 package com.tecknobit.refycore.records.links;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.refycore.records.LinksCollection;
 import com.tecknobit.refycore.records.RefyItem;
 import com.tecknobit.refycore.records.RefyUser;
 import com.tecknobit.refycore.records.Team;
+import jakarta.persistence.*;
 import org.json.JSONObject;
 
 import java.util.List;
 
+import static com.tecknobit.equinox.environment.records.EquinoxItem.IDENTIFIER_KEY;
+import static com.tecknobit.refycore.records.RefyUser.LINKS_KEY;
+import static com.tecknobit.refycore.records.links.RefyLink.LINK_IDENTIFIER_KEY;
+
+@Entity
+@Table(name = LINKS_KEY)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@AttributeOverride(
+        name = IDENTIFIER_KEY,
+        column = @Column(name = LINK_IDENTIFIER_KEY)
+)
 public class RefyLink extends RefyItem implements RefyItem.ListScreenItem {
 
     public static final String REFERENCE_LINK_KEY = "reference_link";
 
+    public static final String LINK_IDENTIFIER_KEY = "link_id";
+
+    @Column(name = REFERENCE_LINK_KEY)
     protected final String referenceLink;
 
+    @ManyToMany(
+            fetch = FetchType.EAGER,
+            mappedBy = LINKS_KEY
+    )
+    @JsonIgnoreProperties({
+            "hibernateLazyInitializer",
+            "handler"
+    })
     protected final List<Team> teams;
 
+    @ManyToMany(
+            fetch = FetchType.EAGER,
+            mappedBy = LINKS_KEY
+    )
+    @JsonIgnoreProperties({
+            "hibernateLazyInitializer",
+            "handler"
+    })
     protected final List<LinksCollection> collections;
 
     public RefyLink() {

@@ -1,24 +1,83 @@
 package com.tecknobit.refycore.records;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.equinox.environment.records.EquinoxUser;
 import com.tecknobit.refycore.records.links.CustomRefyLink;
 import com.tecknobit.refycore.records.links.RefyLink;
+import jakarta.persistence.*;
 import org.json.JSONObject;
 
 import java.util.List;
 
+import static com.tecknobit.equinox.environment.records.EquinoxUser.USERS_KEY;
+import static com.tecknobit.refycore.records.RefyItem.OWNER_KEY;
+
+@Entity
+@Table(name = USERS_KEY)
 public class RefyUser extends EquinoxUser {
 
     public static final String TAG_NAME_KEY = "tag_name";
 
+    public static final String LINKS_KEY = "links";
+
+    public static final String TEAMS_KEY = "teams";
+
+    public static final String COLLECTIONS_KEY = "collections";
+
+    public static final String CUSTOM_LINKS_KEY = "custom_links";
+
+    @Column(
+            name = TAG_NAME_KEY,
+            columnDefinition = "VARCHAR(15) UNIQUE NOT NULL"
+    )
     private final String tagName;
 
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            mappedBy = OWNER_KEY
+    )
+    @Column(name = LINKS_KEY)
+    @JsonIgnoreProperties({
+            OWNER_KEY,
+            "hibernateLazyInitializer",
+            "handler"
+    })
     private List<RefyLink> links;
 
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            mappedBy = OWNER_KEY
+    )
+    @Column(name = TEAMS_KEY)
+    @JsonIgnoreProperties({
+            OWNER_KEY,
+            "hibernateLazyInitializer",
+            "handler"
+    })
     private List<Team> teams;
 
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            mappedBy = OWNER_KEY
+    )
+    @Column(name = COLLECTIONS_KEY)
+    @JsonIgnoreProperties({
+            OWNER_KEY,
+            "hibernateLazyInitializer",
+            "handler"
+    })
     private List<LinksCollection> collections;
 
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            mappedBy = OWNER_KEY
+    )
+    @Column(name = CUSTOM_LINKS_KEY)
+    @JsonIgnoreProperties({
+            OWNER_KEY,
+            "hibernateLazyInitializer",
+            "handler"
+    })
     private List<CustomRefyLink> customLinks;
 
     public RefyUser() {

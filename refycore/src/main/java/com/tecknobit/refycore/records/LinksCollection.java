@@ -1,22 +1,57 @@
 package com.tecknobit.refycore.records;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.refycore.records.links.RefyLink;
+import jakarta.persistence.*;
 import org.json.JSONObject;
 
 import java.util.List;
 
+import static com.tecknobit.refycore.records.LinksCollection.COLLECTIONS_KEY;
+import static com.tecknobit.refycore.records.links.RefyLink.LINK_IDENTIFIER_KEY;
+
+@Entity
+@Table(name = COLLECTIONS_KEY)
 public class LinksCollection extends RefyItem implements RefyItem.ListScreenItem {
+
+    public static final String COLLECTIONS_LINKS_TABLE = "collections_links";
+
+    public static final String COLLECTIONS_KEY = "collections";
 
     public static final String COLLECTION_COLOR_KEY = "collection_color";
 
+    public static final String COLLECTION_IDENTIFIER_KEY = "collection_id";
+
+    @Column(name = COLLECTION_COLOR_KEY)
     private final String color;
 
+    @ManyToMany(
+            fetch = FetchType.LAZY
+    )
+    @JoinTable(
+            name = COLLECTIONS_LINKS_TABLE,
+            joinColumns = {@JoinColumn(name = COLLECTION_IDENTIFIER_KEY)},
+            inverseJoinColumns = {@JoinColumn(name = LINK_IDENTIFIER_KEY)}
+    )
+    @JsonIgnoreProperties({
+            OWNER_KEY,
+            "hibernateLazyInitializer",
+            "handler"
+    })
     private final List<RefyLink> links;
 
+    @ManyToMany(
+            fetch = FetchType.EAGER,
+            mappedBy = COLLECTIONS_KEY
+    )
+    @JsonIgnoreProperties({
+            "hibernateLazyInitializer",
+            "handler"
+    })
     private final List<Team> teams;
 
     public LinksCollection() {
-        this(null, null, null, null, null);
+        this(null, null, null, null, null, null, null);
     }
 
     //TODO: TO REMOVE
@@ -37,7 +72,8 @@ public class LinksCollection extends RefyItem implements RefyItem.ListScreenItem
         this.teams = teams;
     }
 
-    public LinksCollection(String id, RefyUser owner, String name, String color, String description, List<Team> teams, List<RefyLink> links) {
+    public LinksCollection(String id, RefyUser owner, String name, String color, String description, List<Team> teams,
+                           List<RefyLink> links) {
         super(id, owner, name, description);
         this.color = color;
         this.teams = teams;

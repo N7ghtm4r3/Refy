@@ -12,8 +12,8 @@ import java.util.List;
 
 import static com.tecknobit.equinox.environment.records.EquinoxItem.IDENTIFIER_KEY;
 import static com.tecknobit.refycore.records.RefyUser.LINKS_KEY;
-import static com.tecknobit.refycore.records.links.RefyLink.*;
 import static com.tecknobit.refycore.records.links.RefyLink.LINK_IDENTIFIER_KEY;
+import static com.tecknobit.refycore.records.links.RefyLink.LINK_KEY;
 
 @Entity
 @Table(name = LINKS_KEY)

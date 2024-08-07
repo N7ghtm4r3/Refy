@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 import static com.tecknobit.equinox.environment.records.EquinoxUser.USERS_KEY;
+import static com.tecknobit.refycore.records.LinksCollection.COLLECTIONS_KEY;
 import static com.tecknobit.refycore.records.RefyItem.OWNER_KEY;
 
 @Entity
@@ -26,8 +27,6 @@ public class RefyUser extends EquinoxUser {
     public static final String LINKS_KEY = "links";
 
     public static final String TEAMS_KEY = "teams";
-
-    public static final String COLLECTIONS_KEY = "collections";
 
     public static final String CUSTOM_LINKS_KEY = "custom_links";
 
@@ -43,7 +42,6 @@ public class RefyUser extends EquinoxUser {
     )
     @Column(name = LINKS_KEY)
     @JsonIgnoreProperties({
-            OWNER_KEY,
             "hibernateLazyInitializer",
             "handler"
     })
@@ -55,7 +53,6 @@ public class RefyUser extends EquinoxUser {
     )
     @Column(name = TEAMS_KEY)
     @JsonIgnoreProperties({
-            OWNER_KEY,
             "hibernateLazyInitializer",
             "handler"
     })
@@ -67,7 +64,6 @@ public class RefyUser extends EquinoxUser {
     )
     @Column(name = COLLECTIONS_KEY)
     @JsonIgnoreProperties({
-            OWNER_KEY,
             "hibernateLazyInitializer",
             "handler"
     })
@@ -79,7 +75,6 @@ public class RefyUser extends EquinoxUser {
     )
     @Column(name = CUSTOM_LINKS_KEY)
     @JsonIgnoreProperties({
-            OWNER_KEY,
             "hibernateLazyInitializer",
             "handler"
     })

@@ -31,4 +31,8 @@ public class LinksHelper {
         linksRepository.updateLink(linkId, title, description, referenceLink, userId);
     }
 
+    public void deleteLink(String linkId) {
+        linksRepository.deleteLink(linkId);
+    }
+
 }

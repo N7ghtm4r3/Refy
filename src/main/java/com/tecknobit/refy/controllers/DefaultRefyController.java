@@ -44,7 +44,7 @@ public abstract class DefaultRefyController extends EquinoxController<RefyUser> 
             String itemId
     );
 
-    public abstract <T> T delete(
+    public abstract String delete(
             String token,
             String userId,
             String itemId

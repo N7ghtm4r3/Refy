@@ -108,4 +108,14 @@ public interface LinksRepository extends JpaRepository<RefyLink, String> {
             @Param(OWNER_KEY) String owner
     );
 
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query(
+            value = "DELETE FROM " + LINKS_KEY + " WHERE " + LINK_IDENTIFIER_KEY + "=:" + LINK_IDENTIFIER_KEY,
+            nativeQuery = true
+    )
+    void deleteLink(
+            @Param(LINK_IDENTIFIER_KEY) String linkId
+    );
+
 }

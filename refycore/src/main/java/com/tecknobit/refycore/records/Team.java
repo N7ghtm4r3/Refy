@@ -67,7 +67,6 @@ public class Team extends RefyItem {
             inverseJoinColumns = {@JoinColumn(name = LINK_IDENTIFIER_KEY)}
     )
     @JsonIgnoreProperties({
-            OWNER_KEY,
             "hibernateLazyInitializer",
             "handler"
     })
@@ -82,7 +81,6 @@ public class Team extends RefyItem {
             inverseJoinColumns = {@JoinColumn(name = COLLECTION_IDENTIFIER_KEY)}
     )
     @JsonIgnoreProperties({
-            OWNER_KEY,
             "hibernateLazyInitializer",
             "handler"
     })

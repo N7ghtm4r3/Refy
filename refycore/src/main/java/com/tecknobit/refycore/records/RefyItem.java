@@ -9,6 +9,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import org.json.JSONObject;
 
 import static com.tecknobit.equinox.environment.records.EquinoxUser.*;
+import static com.tecknobit.refycore.records.LinksCollection.COLLECTIONS_KEY;
 import static com.tecknobit.refycore.records.RefyUser.*;
 
 @Structure

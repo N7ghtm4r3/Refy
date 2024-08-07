@@ -34,7 +34,6 @@ public class LinksCollection extends RefyItem implements RefyItem.ListScreenItem
             inverseJoinColumns = {@JoinColumn(name = LINK_IDENTIFIER_KEY)}
     )
     @JsonIgnoreProperties({
-            OWNER_KEY,
             "hibernateLazyInitializer",
             "handler"
     })

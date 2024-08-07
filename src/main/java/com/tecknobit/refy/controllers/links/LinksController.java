@@ -6,6 +6,8 @@ import org.jsoup.Jsoup;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 import static com.tecknobit.equinox.environment.helpers.EquinoxBaseEndpointsSet.BASE_EQUINOX_ENDPOINT;
@@ -100,18 +102,64 @@ public class LinksController extends DefaultRefyController {
             headers = TOKEN_KEY,
             path = "/{" + LINK_IDENTIFIER_KEY + "}/" + COLLECTIONS_KEY
     )
-    public String addLinkToCollections(
+    public String manageLinkCollections(
             @RequestHeader(TOKEN_KEY) String token,
             @PathVariable(USER_IDENTIFIER_KEY) String userId,
             @PathVariable(LINK_IDENTIFIER_KEY) String linkId,
-            @RequestBody Map<String, String> payload
+            @RequestBody Map<String, Object> payload
     ) {
-        if(isUserNotAuthorized(userId, token, linkId)) {
-            System.out.println(me);
+        if(isUserNotAuthorized(userId, token, linkId))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        }
-        System.out.println(me);
-        return "";
+        return manageItemAttachmentsList(payload, COLLECTIONS_KEY, new PerformAttachmentsManagement() {
+
+            @Override
+            public HashSet<String> getUserAttachments() {
+                return collectionsHelper.getUserCollections(userId);
+            }
+
+            @Override
+            public List<String> getAttachmentsIds() {
+                return userLink.getCollectionsIds();
+            }
+
+            @Override
+            public void execute(List<String> attachments) {
+                linksHelper.manageLinkCollections(linkId, attachments);
+            }
+
+        });
+    }
+
+    @PutMapping(
+            headers = TOKEN_KEY,
+            path = "/{" + LINK_IDENTIFIER_KEY + "}/" + TEAMS_KEY
+    )
+    public String manageLinkTeams(
+            @RequestHeader(TOKEN_KEY) String token,
+            @PathVariable(USER_IDENTIFIER_KEY) String userId,
+            @PathVariable(LINK_IDENTIFIER_KEY) String linkId,
+            @RequestBody Map<String, Object> payload
+    ) {
+        if(isUserNotAuthorized(userId, token, linkId))
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        return manageItemAttachmentsList(payload, TEAMS_KEY, new PerformAttachmentsManagement() {
+
+            @Override
+            public HashSet<String> getUserAttachments() {
+                return teamsHelper.getUserTeams(userId);
+            }
+
+            @Override
+            public List<String> getAttachmentsIds() {
+                return userLink.getTeamIds();
+            }
+
+            @Override
+            public void execute(List<String> attachments) {
+                linksHelper.manageLinkTeams(linkId, attachments);
+            }
+
+        });
     }
 
     @Override

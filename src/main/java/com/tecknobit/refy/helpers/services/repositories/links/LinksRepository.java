@@ -6,11 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 
-import static com.tecknobit.refycore.records.LinksCollection.COLLECTIONS_LINKS_TABLE;
-import static com.tecknobit.refycore.records.LinksCollection.COLLECTION_IDENTIFIER_KEY;
+import static com.tecknobit.refycore.records.LinksCollection.*;
 import static com.tecknobit.refycore.records.RefyItem.OWNER_KEY;
 import static com.tecknobit.refycore.records.RefyUser.DISCRIMINATOR_VALUE_KEY;
 import static com.tecknobit.refycore.records.RefyUser.*;
@@ -19,7 +21,18 @@ import static com.tecknobit.refycore.records.Team.TITLE_KEY;
 import static com.tecknobit.refycore.records.Team.*;
 import static com.tecknobit.refycore.records.links.RefyLink.*;
 
+@Service
+@Repository
 public interface LinksRepository extends JpaRepository<RefyLink, String> {
+
+    @Query(
+            value = "SELECT " + LINK_IDENTIFIER_KEY + "  FROM " + LINKS_KEY + " WHERE "
+                    + OWNER_KEY + "=:" + OWNER_KEY,
+            nativeQuery = true
+    )
+    HashSet<String> getUserLinks(
+            @Param(OWNER_KEY) String owner
+    );
 
     @Query(
             value = "SELECT * FROM " + LINKS_KEY
@@ -115,6 +128,66 @@ public interface LinksRepository extends JpaRepository<RefyLink, String> {
             nativeQuery = true
     )
     void deleteLink(
+            @Param(LINK_IDENTIFIER_KEY) String linkId
+    );
+
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query(
+            value = "INSERT INTO " + COLLECTIONS_LINKS_TABLE + "(" +
+                    COLLECTION_IDENTIFIER_KEY + "," +
+                    LINK_IDENTIFIER_KEY +
+                    ") VALUES (" +
+                    ":" + COLLECTION_IDENTIFIER_KEY + "," +
+                    ":" + LINK_IDENTIFIER_KEY +
+                    ")",
+            nativeQuery = true
+    )
+    void addCollection(
+            @Param(COLLECTION_IDENTIFIER_KEY) String collectionId,
+            @Param(LINK_IDENTIFIER_KEY) String linkId
+    );
+
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query(
+            value = "DELETE FROM " + COLLECTIONS_LINKS_TABLE + " WHERE "
+                    + COLLECTION_IDENTIFIER_KEY + "=:" + COLLECTION_IDENTIFIER_KEY + " AND "
+                    + LINK_IDENTIFIER_KEY + "=:" + LINK_IDENTIFIER_KEY,
+            nativeQuery = true
+    )
+    void removeCollection(
+            @Param(COLLECTION_IDENTIFIER_KEY) String collectionId,
+            @Param(LINK_IDENTIFIER_KEY) String linkId
+    );
+
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query(
+            value = "INSERT INTO " + TEAMS_LINKS_TABLE + "(" +
+                    TEAM_IDENTIFIER_KEY + "," +
+                    LINK_IDENTIFIER_KEY +
+                    ") VALUES (" +
+                    ":" + TEAM_IDENTIFIER_KEY + "," +
+                    ":" + LINK_IDENTIFIER_KEY +
+                    ")",
+            nativeQuery = true
+    )
+    void addTeam(
+            @Param(TEAM_IDENTIFIER_KEY) String teamId,
+            @Param(LINK_IDENTIFIER_KEY) String linkId
+    );
+
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query(
+            value = "DELETE FROM " + TEAMS_LINKS_TABLE + " WHERE "
+                    + TEAM_IDENTIFIER_KEY + "=:" + TEAM_IDENTIFIER_KEY + " AND "
+                    + LINK_IDENTIFIER_KEY + "=:" + LINK_IDENTIFIER_KEY,
+            nativeQuery = true
+    )
+    void removeTeam(
+            @Param(TEAM_IDENTIFIER_KEY) String teamId,
             @Param(LINK_IDENTIFIER_KEY) String linkId
     );
 

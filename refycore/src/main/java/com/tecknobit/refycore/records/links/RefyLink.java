@@ -8,6 +8,7 @@ import com.tecknobit.refycore.records.Team;
 import jakarta.persistence.*;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.tecknobit.equinox.environment.records.EquinoxItem.IDENTIFIER_KEY;
@@ -107,8 +108,22 @@ public class RefyLink extends RefyItem implements RefyItem.ListScreenItem {
         return teams;
     }
 
+    public List<String> getTeamIds() {
+        ArrayList<String> ids = new ArrayList<>();
+        for (Team team : teams)
+            ids.add(team.getId());
+        return ids;
+    }
+
     public List<LinksCollection> getCollections() {
         return collections;
+    }
+
+    public List<String> getCollectionsIds() {
+        ArrayList<String> ids = new ArrayList<>();
+        for (LinksCollection collection : collections)
+            ids.add(collection.getId());
+        return ids;
     }
 
     @Override

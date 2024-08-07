@@ -1,19 +1,25 @@
 package com.tecknobit.refy.helpers.services.links;
 
+import com.tecknobit.refy.helpers.services.RefyItemsHelper;
 import com.tecknobit.refy.helpers.services.repositories.links.LinksRepository;
 import com.tecknobit.refycore.records.links.RefyLink;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 
 import static com.tecknobit.refycore.records.links.RefyLink.LINK_KEY;
 
 @Service
-public class LinksHelper {
+public class LinksHelper extends RefyItemsHelper {
 
     @Autowired
     private LinksRepository linksRepository;
+
+    public HashSet<String> getUserLinks(String userId) {
+        return linksRepository.getUserLinks(userId);
+    }
 
     public List<RefyLink> getAllUserLinks(String userId) {
         return linksRepository.getAllUserLinks(userId);
@@ -29,6 +35,58 @@ public class LinksHelper {
 
     public void editLink(String userId, String linkId, String title, String description, String referenceLink) {
         linksRepository.updateLink(linkId, title, description, referenceLink, userId);
+    }
+
+    public void manageLinkCollections(String linkId, List<String> collections) {
+        RefyLink link = linksRepository.findById(linkId).orElseThrow();
+        manageItemAttachments(
+                new ManageItemAttachmentsWorkflow() {
+
+                    @Override
+                    public List<String> getIds() {
+                        return link.getCollectionsIds();
+                    }
+
+                    @Override
+                    public void add(String attachmentId) {
+                        linksRepository.addCollection(attachmentId, linkId);
+                    }
+
+                    @Override
+                    public void remove(String attachmentId) {
+                        linksRepository.removeCollection(attachmentId, linkId);
+                    }
+
+                },
+                linkId,
+                collections
+        );
+    }
+
+    public void manageLinkTeams(String linkId, List<String> teams) {
+        RefyLink link = linksRepository.findById(linkId).orElseThrow();
+        manageItemAttachments(
+                new ManageItemAttachmentsWorkflow() {
+
+                    @Override
+                    public List<String> getIds() {
+                        return link.getTeamIds();
+                    }
+
+                    @Override
+                    public void add(String attachmentId) {
+                        linksRepository.addTeam(attachmentId, linkId);
+                    }
+
+                    @Override
+                    public void remove(String attachmentId) {
+                        linksRepository.removeTeam(attachmentId, linkId);
+                    }
+
+                },
+                linkId,
+                teams
+        );
     }
 
     public void deleteLink(String linkId) {

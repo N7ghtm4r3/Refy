@@ -8,7 +8,8 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.json.JSONObject;
 
-import static com.tecknobit.equinox.environment.records.EquinoxUser.NAME_KEY;
+import static com.tecknobit.equinox.environment.records.EquinoxUser.*;
+import static com.tecknobit.refycore.records.RefyUser.*;
 
 @Structure
 @MappedSuperclass
@@ -25,6 +26,12 @@ public abstract class RefyItem extends EquinoxItem {
     )
     @JoinColumn(name = OWNER_KEY)
     @JsonIgnoreProperties({
+            TOKEN_KEY,
+            LANGUAGE_KEY,
+            LINKS_KEY,
+            COLLECTIONS_KEY,
+            TEAMS_KEY,
+            CUSTOM_LINKS_KEY,
             "hibernateLazyInitializer",
             "handler"
     })

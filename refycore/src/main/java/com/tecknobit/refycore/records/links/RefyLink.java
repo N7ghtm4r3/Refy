@@ -12,18 +12,21 @@ import java.util.List;
 
 import static com.tecknobit.equinox.environment.records.EquinoxItem.IDENTIFIER_KEY;
 import static com.tecknobit.refycore.records.RefyUser.LINKS_KEY;
+import static com.tecknobit.refycore.records.links.RefyLink.*;
 import static com.tecknobit.refycore.records.links.RefyLink.LINK_IDENTIFIER_KEY;
 
 @Entity
 @Table(name = LINKS_KEY)
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @AttributeOverride(
         name = IDENTIFIER_KEY,
         column = @Column(name = LINK_IDENTIFIER_KEY)
 )
+@DiscriminatorValue(LINK_KEY)
 public class RefyLink extends RefyItem implements RefyItem.ListScreenItem {
 
     public static final String REFERENCE_LINK_KEY = "reference_link";
+
+    public static final String LINK_KEY = "link";
 
     public static final String LINK_IDENTIFIER_KEY = "link_id";
 

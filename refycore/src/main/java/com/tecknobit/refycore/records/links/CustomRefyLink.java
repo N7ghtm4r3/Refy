@@ -11,12 +11,16 @@ import java.util.List;
 import java.util.Map;
 
 import static com.tecknobit.refycore.records.RefyUser.CUSTOM_LINKS_KEY;
+import static com.tecknobit.refycore.records.links.CustomRefyLink.CUSTOM_LINK_KEY;
 import static jakarta.persistence.EnumType.STRING;
 import static java.util.concurrent.TimeUnit.*;
 
 @Entity
 @Table(name = CUSTOM_LINKS_KEY)
+@DiscriminatorValue(CUSTOM_LINK_KEY)
 public class CustomRefyLink extends RefyLink {
+
+    public static final String CUSTOM_LINK_KEY = "custom_link";
 
     public static final String CREATION_DATE_KEY = "creation_date";
 

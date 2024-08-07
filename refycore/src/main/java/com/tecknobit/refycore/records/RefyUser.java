@@ -1,5 +1,6 @@
 package com.tecknobit.refycore.records;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.equinox.environment.records.EquinoxUser;
@@ -17,6 +18,8 @@ import static com.tecknobit.refycore.records.RefyItem.OWNER_KEY;
 @Entity
 @Table(name = USERS_KEY)
 public class RefyUser extends EquinoxUser {
+
+    public static final String USER_IDENTIFIER_KEY = "user_id";
 
     public static final String TAG_NAME_KEY = "tag_name";
 
@@ -204,6 +207,7 @@ public class RefyUser extends EquinoxUser {
         return collections;
     }
 
+    @JsonGetter(CUSTOM_LINKS_KEY)
     public List<CustomRefyLink> getCustomLinks() {
         return customLinks;
     }

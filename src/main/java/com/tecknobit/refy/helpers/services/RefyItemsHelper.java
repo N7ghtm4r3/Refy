@@ -4,17 +4,17 @@ import java.util.List;
 
 public abstract class RefyItemsHelper {
 
-    protected void manageItemAttachments(ManageItemAttachmentsWorkflow workflow, String itemId, List<String> ids) {
-        List<String> currentContainers = workflow.getIds();
+    protected void manageAttachments(AttachmentsManagementWorkflow workflow, List<String> ids) {
+        List<String> currentAttachmentsIds = workflow.getIds();
         for (String attachmentId : ids)
-            if(!currentContainers.contains(attachmentId))
+            if(!currentAttachmentsIds.contains(attachmentId))
                 workflow.add(attachmentId);
-        currentContainers.removeAll(ids);
-        for (String attachmentId : currentContainers)
+        currentAttachmentsIds.removeAll(ids);
+        for (String attachmentId : currentAttachmentsIds)
             workflow.remove(attachmentId);
     }
 
-    public interface ManageItemAttachmentsWorkflow {
+    public interface AttachmentsManagementWorkflow {
 
         List<String> getIds();
 

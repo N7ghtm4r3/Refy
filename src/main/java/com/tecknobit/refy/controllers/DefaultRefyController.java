@@ -61,8 +61,8 @@ public abstract class DefaultRefyController extends EquinoxController<RefyUser> 
             String itemId
     );
 
-    public String manageItemAttachmentsList(Map<String, Object> payload, String attachmentsKey,
-                                            PerformAttachmentsManagement management) {
+    public String editAttachmentsList(Map<String, Object> payload, String attachmentsKey,
+                                      AttachmentsManagement management) {
         loadJsonHelper(payload);
         ArrayList<String> attachments = jsonHelper.fetchList(attachmentsKey, new ArrayList<>());
         HashSet<String> userAttachments = management.getUserAttachments();
@@ -80,7 +80,7 @@ public abstract class DefaultRefyController extends EquinoxController<RefyUser> 
 
     }
 
-    public interface PerformAttachmentsManagement {
+    public interface AttachmentsManagement {
 
         HashSet<String> getUserAttachments();
 

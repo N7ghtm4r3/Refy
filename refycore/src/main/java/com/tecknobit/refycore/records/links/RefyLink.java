@@ -1,5 +1,6 @@
 package com.tecknobit.refycore.records.links;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.refycore.records.LinksCollection;
 import com.tecknobit.refycore.records.RefyItem;
@@ -39,6 +40,7 @@ public class RefyLink extends RefyItem implements RefyItem.ListScreenItem {
             mappedBy = LINKS_KEY
     )
     @JsonIgnoreProperties({
+            LINKS_KEY,
             "hibernateLazyInitializer",
             "handler"
     })
@@ -49,6 +51,7 @@ public class RefyLink extends RefyItem implements RefyItem.ListScreenItem {
             mappedBy = LINKS_KEY
     )
     @JsonIgnoreProperties({
+            LINKS_KEY,
             "hibernateLazyInitializer",
             "handler"
     })
@@ -108,6 +111,7 @@ public class RefyLink extends RefyItem implements RefyItem.ListScreenItem {
         return teams;
     }
 
+    @JsonIgnore
     public List<String> getTeamIds() {
         ArrayList<String> ids = new ArrayList<>();
         for (Team team : teams)
@@ -119,6 +123,7 @@ public class RefyLink extends RefyItem implements RefyItem.ListScreenItem {
         return collections;
     }
 
+    @JsonIgnore
     public List<String> getCollectionsIds() {
         ArrayList<String> ids = new ArrayList<>();
         for (LinksCollection collection : collections)

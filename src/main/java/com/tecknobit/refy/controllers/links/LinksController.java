@@ -110,7 +110,7 @@ public class LinksController extends DefaultRefyController {
     ) {
         if(isUserNotAuthorized(userId, token, linkId))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        return manageItemAttachmentsList(payload, COLLECTIONS_KEY, new PerformAttachmentsManagement() {
+        return editAttachmentsList(payload, COLLECTIONS_KEY, new AttachmentsManagement() {
 
             @Override
             public HashSet<String> getUserAttachments() {
@@ -142,7 +142,7 @@ public class LinksController extends DefaultRefyController {
     ) {
         if(isUserNotAuthorized(userId, token, linkId))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        return manageItemAttachmentsList(payload, TEAMS_KEY, new PerformAttachmentsManagement() {
+        return editAttachmentsList(payload, TEAMS_KEY, new AttachmentsManagement() {
 
             @Override
             public HashSet<String> getUserAttachments() {

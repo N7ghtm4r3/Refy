@@ -39,8 +39,8 @@ public class LinksHelper extends RefyItemsHelper {
 
     public void manageLinkCollections(String linkId, List<String> collections) {
         RefyLink link = linksRepository.findById(linkId).orElseThrow();
-        manageItemAttachments(
-                new ManageItemAttachmentsWorkflow() {
+        manageAttachments(
+                new AttachmentsManagementWorkflow() {
 
                     @Override
                     public List<String> getIds() {
@@ -58,15 +58,14 @@ public class LinksHelper extends RefyItemsHelper {
                     }
 
                 },
-                linkId,
                 collections
         );
     }
 
     public void manageLinkTeams(String linkId, List<String> teams) {
         RefyLink link = linksRepository.findById(linkId).orElseThrow();
-        manageItemAttachments(
-                new ManageItemAttachmentsWorkflow() {
+        manageAttachments(
+                new AttachmentsManagementWorkflow() {
 
                     @Override
                     public List<String> getIds() {
@@ -84,7 +83,6 @@ public class LinksHelper extends RefyItemsHelper {
                     }
 
                 },
-                linkId,
                 teams
         );
     }

@@ -26,6 +26,7 @@ dependencies {
     implementation("com.github.N7ghtm4r3:Mantis:1.0.0")
     implementation("org.json:json:20231013")
     implementation("com.tecknobit.refycore:refycore:1.0.0")
+    implementation("org.jsoup:jsoup:1.18.1")
 }
 
 configurations.all {

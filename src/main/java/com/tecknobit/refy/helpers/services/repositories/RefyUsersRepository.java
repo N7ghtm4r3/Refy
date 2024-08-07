@@ -20,7 +20,6 @@ import static com.tecknobit.refycore.records.RefyUser.TAG_NAME_KEY;
 @Primary
 public interface RefyUsersRepository extends EquinoxUsersRepository<RefyUser> {
 
-
     /**
      * Method to execute the query to save a new user in the system
      *

@@ -38,10 +38,7 @@ public abstract class RefyItem extends EquinoxItem {
     @OnDelete(action = OnDeleteAction.CASCADE)
     protected final RefyUser owner;
 
-    @Column(
-            name = TITLE_KEY,
-            columnDefinition = "VARCHAR(30) NOT NULL"
-    )
+    @Column(name = TITLE_KEY)
     protected final String title;
 
     @Column(name = DESCRIPTION_KEY)

@@ -70,4 +70,6 @@ public interface RefyUsersRepository extends EquinoxUsersRepository<RefyUser> {
             @Param(LANGUAGE_KEY) String language
     );
 
+
+
 }

@@ -1,5 +1,6 @@
 package com.tecknobit.refycore.records.links;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.refycore.records.LinksCollection;
@@ -103,6 +104,7 @@ public class RefyLink extends RefyItem implements RefyItem.ListScreenItem {
         this.collections = List.of();
     }
 
+    @JsonGetter(REFERENCE_LINK_KEY)
     public String getReferenceLink() {
         return referenceLink;
     }

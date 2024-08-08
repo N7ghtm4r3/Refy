@@ -14,8 +14,7 @@ import static com.tecknobit.equinox.environment.helpers.EquinoxBaseEndpointsSet.
 import static com.tecknobit.equinox.environment.records.EquinoxItem.IDENTIFIER_KEY;
 import static com.tecknobit.equinox.environment.records.EquinoxUser.TOKEN_KEY;
 import static com.tecknobit.equinox.environment.records.EquinoxUser.USERS_KEY;
-import static com.tecknobit.refycore.helpers.RefyInputValidator.isDescriptionValid;
-import static com.tecknobit.refycore.helpers.RefyInputValidator.isLinkResourceValid;
+import static com.tecknobit.refycore.helpers.RefyInputValidator.*;
 import static com.tecknobit.refycore.records.LinksCollection.COLLECTIONS_KEY;
 import static com.tecknobit.refycore.records.RefyItem.DESCRIPTION_KEY;
 import static com.tecknobit.refycore.records.RefyUser.*;
@@ -24,9 +23,8 @@ import static com.tecknobit.refycore.records.links.RefyLink.REFERENCE_LINK_KEY;
 
 @RestController
 @RequestMapping(BASE_EQUINOX_ENDPOINT + USERS_KEY + "/{" + USER_IDENTIFIER_KEY + "}/" + LINKS_KEY)
-public class LinksController extends DefaultRefyController {
+public class LinksController extends DefaultRefyController<RefyLink> {
 
-    private RefyLink userLink;
 
     @GetMapping(
             headers = TOKEN_KEY
@@ -48,14 +46,14 @@ public class LinksController extends DefaultRefyController {
     public String create(
             @RequestHeader(TOKEN_KEY) String token,
             @PathVariable(USER_IDENTIFIER_KEY) String userId,
-            @RequestBody Map<String, String> payload
+            @RequestBody Map<String, Object> payload
     ) {
         if(!isMe(userId, token))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         loadJsonHelper(payload);
         String description = jsonHelper.getString(DESCRIPTION_KEY);
         String referenceLink = jsonHelper.getString(REFERENCE_LINK_KEY);
-        if(!isDescriptionValid(description) || !isLinkResourceValid(referenceLink))
+        if(!isLinkPayloadValid(description, referenceLink))
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         try {
             linksHelper.createLink(userId, generateIdentifier(), getLinkTitle(referenceLink), description, referenceLink);
@@ -78,18 +76,18 @@ public class LinksController extends DefaultRefyController {
             @RequestHeader(TOKEN_KEY) String token,
             @PathVariable(USER_IDENTIFIER_KEY) String userId,
             @PathVariable(LINK_IDENTIFIER_KEY) String linkId,
-            @RequestBody Map<String, String> payload
+            @RequestBody Map<String, Object> payload
     ) {
         if(isUserNotAuthorized(userId, token, linkId))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         loadJsonHelper(payload);
         String description = jsonHelper.getString(DESCRIPTION_KEY);
         String referenceLink = jsonHelper.getString(REFERENCE_LINK_KEY);
-        if(!isDescriptionValid(description) || !isLinkResourceValid(referenceLink))
+        if(!isLinkPayloadValid(description, referenceLink))
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         try {
-            String title = userLink.getTitle();
-            if(!userLink.getReferenceLink().equals(referenceLink))
+            String title = userItem.getTitle();
+            if(!userItem.getReferenceLink().equals(referenceLink))
                 title = getLinkTitle(referenceLink);
             linksHelper.editLink(userId, linkId, title, description, referenceLink);
             return successResponse();
@@ -108,9 +106,7 @@ public class LinksController extends DefaultRefyController {
             @PathVariable(LINK_IDENTIFIER_KEY) String linkId,
             @RequestBody Map<String, Object> payload
     ) {
-        if(isUserNotAuthorized(userId, token, linkId))
-            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        return editAttachmentsList(payload, COLLECTIONS_KEY, new AttachmentsManagement() {
+        return editAttachmentsList(userId, token, linkId, payload, COLLECTIONS_KEY, new AttachmentsManagement() {
 
             @Override
             public HashSet<String> getUserAttachments() {
@@ -119,7 +115,7 @@ public class LinksController extends DefaultRefyController {
 
             @Override
             public List<String> getAttachmentsIds() {
-                return userLink.getCollectionsIds();
+                return userItem.getCollectionsIds();
             }
 
             @Override
@@ -140,9 +136,7 @@ public class LinksController extends DefaultRefyController {
             @PathVariable(LINK_IDENTIFIER_KEY) String linkId,
             @RequestBody Map<String, Object> payload
     ) {
-        if(isUserNotAuthorized(userId, token, linkId))
-            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        return editAttachmentsList(payload, TEAMS_KEY, new AttachmentsManagement() {
+        return editAttachmentsList(userId, token, linkId, payload, TEAMS_KEY, new AttachmentsManagement() {
 
             @Override
             public HashSet<String> getUserAttachments() {
@@ -151,7 +145,7 @@ public class LinksController extends DefaultRefyController {
 
             @Override
             public List<String> getAttachmentsIds() {
-                return userLink.getTeamIds();
+                return userItem.getTeamIds();
             }
 
             @Override
@@ -187,9 +181,9 @@ public class LinksController extends DefaultRefyController {
         return successResponse();
     }
 
-    private boolean isUserNotAuthorized(String userId, String token, String linkId) {
-        userLink = linksHelper.getUserLinkIfOwner(userId, linkId);
-        return !isMe(userId, token) || userLink == null;
+    protected boolean isUserNotAuthorized(String userId, String token, String linkId) {
+        userItem = linksHelper.getUserItemIfOwner(userId, linkId);
+        return !isMe(userId, token) || userItem == null;
     }
 
 }

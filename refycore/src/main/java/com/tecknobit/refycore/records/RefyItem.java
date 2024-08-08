@@ -22,9 +22,7 @@ public abstract class RefyItem extends EquinoxItem {
 
     public static final String DESCRIPTION_KEY = "description";
 
-    @ManyToOne(
-            cascade = CascadeType.ALL
-    )
+    @ManyToOne
     @JoinColumn(name = OWNER_KEY)
     @JsonIgnoreProperties({
             TOKEN_KEY,

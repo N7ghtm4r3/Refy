@@ -4,6 +4,7 @@ import com.tecknobit.equinox.environment.controllers.EquinoxController;
 import com.tecknobit.refy.helpers.services.LinksCollectionsHelper;
 import com.tecknobit.refy.helpers.services.TeamsHelper;
 import com.tecknobit.refy.helpers.services.links.LinksHelper;
+import com.tecknobit.refycore.records.RefyItem;
 import com.tecknobit.refycore.records.RefyUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,19 @@ import static com.tecknobit.refycore.records.RefyUser.USER_IDENTIFIER_KEY;
 
 @RestController
 @RequestMapping(BASE_EQUINOX_ENDPOINT + USERS_KEY + "/{" + USER_IDENTIFIER_KEY + "}")
-public abstract class DefaultRefyController extends EquinoxController<RefyUser> {
+public abstract class DefaultRefyController<I extends RefyItem> extends EquinoxController<RefyUser> {
+
+    public interface AttachmentsManagement {
+
+        HashSet<String> getUserAttachments();
+
+        List<String> getAttachmentsIds();
+
+        void execute(List<String> attachments);
+
+    }
+
+    protected I userItem;
 
     @Autowired
     protected LinksHelper linksHelper;
@@ -39,14 +52,14 @@ public abstract class DefaultRefyController extends EquinoxController<RefyUser> 
     public abstract String create(
             String token,
             String userId,
-            Map<String, String> payload
+            Map<String, Object> payload
     );
 
     public abstract String edit(
             String token,
             String userId,
             String itemId,
-            Map<String, String> payload
+            Map<String, Object> payload
     );
 
     public abstract <T> T getItem(
@@ -61,34 +74,34 @@ public abstract class DefaultRefyController extends EquinoxController<RefyUser> 
             String itemId
     );
 
-    public String editAttachmentsList(Map<String, Object> payload, String attachmentsKey,
+    public String editAttachmentsList(String userId, String token, String itemId, Map<String, Object> payload,
+                                      String attachmentsKey, AttachmentsManagement management) {
+        return editAttachmentsList(userId, token, itemId, payload, true, attachmentsKey, management);
+    }
+
+    public String editAttachmentsList(String userId, String token, String itemId, Map<String, Object> payload,
+                                      boolean itemsListCanBeEmpty, String attachmentsKey,
                                       AttachmentsManagement management) {
+        if(isUserNotAuthorized(userId, token, itemId))
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         loadJsonHelper(payload);
         ArrayList<String> attachments = jsonHelper.fetchList(attachmentsKey, new ArrayList<>());
+        if(!itemsListCanBeEmpty && attachments.isEmpty())
+            return failedResponse(WRONG_PROCEDURE_MESSAGE);
         HashSet<String> userAttachments = management.getUserAttachments();
         if(!userAttachments.containsAll(attachments))
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         List<String> itemAttachments = management.getAttachmentsIds();
-        if(itemAttachments.isEmpty())
-            itemAttachments.addAll(attachments);
-        else {
+        if(!itemAttachments.isEmpty()) {
             attachments.forEach(userAttachments::remove);
             itemAttachments.removeAll(userAttachments);
         }
+        itemAttachments.addAll(attachments);
         management.execute(itemAttachments);
         return successResponse();
-
     }
 
-    public interface AttachmentsManagement {
-
-        HashSet<String> getUserAttachments();
-
-        List<String> getAttachmentsIds();
-
-        void execute(List<String> attachments);
-
-    }
+    protected abstract boolean isUserNotAuthorized(String userId, String token, String itemId);
 
     /*
     @Override
@@ -128,7 +141,7 @@ public abstract class DefaultRefyController extends EquinoxController<RefyUser> 
     }
 
     @Override
-    public <T> T delete(
+    public String delete(
             @RequestHeader(TOKEN_KEY) String token,
             @PathVariable(USER_IDENTIFIER_KEY) String userId,
             @PathVariable(IDENTIFIER_KEY) String itemId

@@ -1,5 +1,6 @@
 package com.tecknobit.refycore.records;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.apimanager.formatters.JsonHelper;
 import com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole;
@@ -73,7 +74,8 @@ public class Team extends RefyItem {
     private final List<RefyLink> links;
 
     @ManyToMany(
-            fetch = FetchType.LAZY
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
     )
     @JoinTable(
             name = COLLECTIONS_TEAMS_TABLE,
@@ -172,6 +174,7 @@ public class Team extends RefyItem {
         collections = List.of();
     }
 
+    @JsonGetter(LOGO_PIC_KEY)
     public String getLogoPic() {
         return logoPic;
     }

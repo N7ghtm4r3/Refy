@@ -1,10 +1,12 @@
 package com.tecknobit.refycore.records;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.refycore.records.links.RefyLink;
 import jakarta.persistence.*;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.tecknobit.refycore.records.LinksCollection.COLLECTIONS_KEY;
@@ -26,7 +28,7 @@ public class LinksCollection extends RefyItem implements RefyItem.ListScreenItem
     private final String color;
 
     @ManyToMany(
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
     @JoinTable(
             name = COLLECTIONS_LINKS_TABLE,
@@ -34,6 +36,7 @@ public class LinksCollection extends RefyItem implements RefyItem.ListScreenItem
             inverseJoinColumns = {@JoinColumn(name = LINK_IDENTIFIER_KEY)}
     )
     @JsonIgnoreProperties({
+            COLLECTIONS_KEY,
             "hibernateLazyInitializer",
             "handler"
     })
@@ -44,6 +47,7 @@ public class LinksCollection extends RefyItem implements RefyItem.ListScreenItem
             mappedBy = COLLECTIONS_KEY
     )
     @JsonIgnoreProperties({
+            COLLECTIONS_KEY,
             "hibernateLazyInitializer",
             "handler"
     })
@@ -96,8 +100,24 @@ public class LinksCollection extends RefyItem implements RefyItem.ListScreenItem
         return links;
     }
 
+    @JsonIgnore
+    public List<String> getLinkIds() {
+        ArrayList<String> ids = new ArrayList<>();
+        for (RefyLink link : links)
+            ids.add(link.getId());
+        return ids;
+    }
+
     public List<Team> getTeams() {
         return teams;
+    }
+
+    @JsonIgnore
+    public List<String> getTeamIds() {
+        ArrayList<String> ids = new ArrayList<>();
+        for (Team team : teams)
+            ids.add(team.getId());
+        return ids;
     }
 
     public boolean hasTeams() {

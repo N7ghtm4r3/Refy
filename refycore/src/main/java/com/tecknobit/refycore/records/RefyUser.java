@@ -37,7 +37,7 @@ public class RefyUser extends EquinoxUser {
     private final String tagName;
 
     @OneToMany(
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             mappedBy = OWNER_KEY
     )
     @Column(name = LINKS_KEY)
@@ -48,7 +48,7 @@ public class RefyUser extends EquinoxUser {
     private List<RefyLink> links;
 
     @OneToMany(
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             mappedBy = OWNER_KEY
     )
     @Column(name = TEAMS_KEY)
@@ -59,7 +59,7 @@ public class RefyUser extends EquinoxUser {
     private List<Team> teams;
 
     @OneToMany(
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             mappedBy = OWNER_KEY
     )
     @Column(name = COLLECTIONS_KEY)
@@ -70,7 +70,7 @@ public class RefyUser extends EquinoxUser {
     private List<LinksCollection> collections;
 
     @OneToMany(
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             mappedBy = OWNER_KEY
     )
     @Column(name = CUSTOM_LINKS_KEY)
@@ -174,6 +174,7 @@ public class RefyUser extends EquinoxUser {
         this.customLinks = List.of();
     }
 
+    @JsonGetter(TAG_NAME_KEY)
     public String getTagName() {
         return tagName;
     }

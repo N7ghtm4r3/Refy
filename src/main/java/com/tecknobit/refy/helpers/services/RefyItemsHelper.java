@@ -1,8 +1,13 @@
 package com.tecknobit.refy.helpers.services;
 
+import com.tecknobit.refycore.records.RefyItem;
+
 import java.util.List;
 
-public abstract class RefyItemsHelper {
+
+public abstract class RefyItemsHelper<T extends RefyItem> {
+
+    public abstract T getUserItemIfOwner(String userId, String itemId);
 
     protected void manageAttachments(AttachmentsManagementWorkflow workflow, List<String> ids) {
         List<String> currentAttachmentsIds = workflow.getIds();

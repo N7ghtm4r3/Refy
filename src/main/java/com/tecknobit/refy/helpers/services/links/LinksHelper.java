@@ -12,7 +12,7 @@ import java.util.List;
 import static com.tecknobit.refycore.records.links.RefyLink.LINK_KEY;
 
 @Service
-public class LinksHelper extends RefyItemsHelper {
+public class LinksHelper extends RefyItemsHelper<RefyLink> {
 
     @Autowired
     private LinksRepository linksRepository;
@@ -29,7 +29,8 @@ public class LinksHelper extends RefyItemsHelper {
         linksRepository.saveLink(LINK_KEY, linkId, title, description, referenceLink, userId);
     }
 
-    public RefyLink getUserLinkIfOwner(String userId, String linkId) {
+    @Override
+    public RefyLink getUserItemIfOwner(String userId, String linkId) {
         return linksRepository.getUserLinkIfOwner(userId, linkId);
     }
 
@@ -48,13 +49,13 @@ public class LinksHelper extends RefyItemsHelper {
                     }
 
                     @Override
-                    public void add(String attachmentId) {
-                        linksRepository.addCollection(attachmentId, linkId);
+                    public void add(String collectionId) {
+                        linksRepository.addLinkToCollection(collectionId, linkId);
                     }
 
                     @Override
-                    public void remove(String attachmentId) {
-                        linksRepository.removeCollection(attachmentId, linkId);
+                    public void remove(String collectionId) {
+                        linksRepository.removeLinkFromCollection(collectionId, linkId);
                     }
 
                 },
@@ -73,13 +74,13 @@ public class LinksHelper extends RefyItemsHelper {
                     }
 
                     @Override
-                    public void add(String attachmentId) {
-                        linksRepository.addTeam(attachmentId, linkId);
+                    public void add(String teamId) {
+                        linksRepository.addLinkToTeam(teamId, linkId);
                     }
 
                     @Override
-                    public void remove(String attachmentId) {
-                        linksRepository.removeTeam(attachmentId, linkId);
+                    public void remove(String teamId) {
+                        linksRepository.removeLinkFromTeam(teamId, linkId);
                     }
 
                 },
@@ -88,6 +89,8 @@ public class LinksHelper extends RefyItemsHelper {
     }
 
     public void deleteLink(String linkId) {
+        linksRepository.detachLinkFromCollections(linkId);
+        linksRepository.detachLinkFromTeams(linkId);
         linksRepository.deleteLink(linkId);
     }
 

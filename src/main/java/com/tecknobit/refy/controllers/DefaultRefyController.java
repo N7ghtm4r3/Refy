@@ -62,11 +62,15 @@ public abstract class DefaultRefyController<I extends RefyItem> extends EquinoxC
             Map<String, Object> payload
     );
 
-    public abstract <T> T getItem(
+    public <T> T getItem(
             String token,
             String userId,
             String itemId
-    );
+    ) {
+        if(isUserNotAuthorized(userId, token, itemId))
+            return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        return (T) userItem;
+    }
 
     public abstract String delete(
             String token,
@@ -102,52 +106,5 @@ public abstract class DefaultRefyController<I extends RefyItem> extends EquinoxC
     }
 
     protected abstract boolean isUserNotAuthorized(String userId, String token, String itemId);
-
-    /*
-    @Override
-    public <T> T list(
-            @RequestHeader(TOKEN_KEY) String token,
-            @PathVariable(USER_IDENTIFIER_KEY) String userId
-    ) {
-
-    }
-
-    @Override
-    public String create(
-            @RequestHeader(TOKEN_KEY) String token,
-            @PathVariable(USER_IDENTIFIER_KEY) String userId,
-            @RequestBody Map<String, String> payload
-    ) {
-
-    }
-
-    @Override
-    public String edit(
-            @RequestHeader(TOKEN_KEY) String token,
-            @PathVariable(USER_IDENTIFIER_KEY) String userId,
-            @PathVariable(IDENTIFIER_KEY) String itemId,
-            @RequestBody Map<String, String> payload
-    ) {
-
-    }
-
-    @Override
-    public <T> T getItem(
-            @RequestHeader(TOKEN_KEY) String token,
-            @PathVariable(USER_IDENTIFIER_KEY) String userId,
-            @PathVariable(IDENTIFIER_KEY) String itemId
-    ) {
-
-    }
-
-    @Override
-    public String delete(
-            @RequestHeader(TOKEN_KEY) String token,
-            @PathVariable(USER_IDENTIFIER_KEY) String userId,
-            @PathVariable(IDENTIFIER_KEY) String itemId
-    ) {
-
-    }
-     */
 
 }

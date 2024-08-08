@@ -1,6 +1,7 @@
 package com.tecknobit.refycore.records;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.apimanager.formatters.JsonHelper;
 import com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole;
@@ -12,9 +13,9 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import static com.tecknobit.equinox.environment.records.EquinoxUser.PROFILE_PIC_KEY;
 import static com.tecknobit.refycore.records.LinksCollection.COLLECTION_IDENTIFIER_KEY;
-import static com.tecknobit.refycore.records.RefyUser.IDENTIFIER_KEY;
-import static com.tecknobit.refycore.records.RefyUser.TEAMS_KEY;
+import static com.tecknobit.refycore.records.RefyUser.*;
 import static com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole.ADMIN;
 import static com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole.VIEWER;
 import static com.tecknobit.refycore.records.Team.TEAM_IDENTIFIER_KEY;
@@ -225,7 +226,8 @@ public class Team extends RefyItem {
         }
 
         @Id
-        @OneToOne(
+        @ManyToOne(
+                fetch = FetchType.LAZY,
                 cascade = CascadeType.ALL
         )
         @JoinColumn(name = OWNER_KEY)
@@ -289,6 +291,7 @@ public class Team extends RefyItem {
             return owner.getId();
         }
 
+        @JsonGetter(TAG_NAME_KEY)
         public String getTagName() {
             return owner.getTagName();
         }
@@ -301,6 +304,7 @@ public class Team extends RefyItem {
             return owner.getSurname();
         }
 
+        @JsonIgnore
         public String getCompleteName() {
             return owner.getCompleteName();
         }
@@ -309,6 +313,7 @@ public class Team extends RefyItem {
             return owner.getEmail();
         }
 
+        @JsonGetter(PROFILE_PIC_KEY)
         public String getProfilePic() {
             return owner.getProfilePic();
         }

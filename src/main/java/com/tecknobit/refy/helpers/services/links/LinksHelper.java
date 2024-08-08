@@ -30,8 +30,8 @@ public class LinksHelper extends RefyItemsHelper<RefyLink> {
     }
 
     @Override
-    public RefyLink getUserItemIfOwner(String userId, String linkId) {
-        return linksRepository.getUserLinkIfOwner(userId, linkId);
+    public RefyLink getItemIfAllowed(String userId, String linkId) {
+        return linksRepository.getLinkIfAllowed(userId, linkId);
     }
 
     public void editLink(String userId, String linkId, String title, String description, String referenceLink) {

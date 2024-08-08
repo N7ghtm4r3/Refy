@@ -36,18 +36,15 @@ public interface LinksRepository extends RefyItemsRepository<RefyLink> {
     );
 
     @Query(
-            value = "SELECT * FROM " + LINKS_KEY
-                    + " WHERE " + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY + " AND dtype='" + LINK_KEY + "'"
-                    + " UNION "
-                    + " SELECT l.* FROM " + LINKS_KEY + " as l INNER JOIN " + MEMBERS_KEY + " ON l." + OWNER_KEY + "=:"
-                    + USER_IDENTIFIER_KEY + " INNER JOIN " + TEAMS_LINKS_TABLE + " ON " + MEMBERS_KEY + "."
-                    + TEAM_IDENTIFIER_KEY + "=" + TEAMS_LINKS_TABLE + "." + TEAM_IDENTIFIER_KEY
-                    + " UNION "
-                    + " SELECT l.* FROM " + LINKS_KEY + " as l INNER JOIN " + MEMBERS_KEY + " ON l." + OWNER_KEY + "=:"
-                    + USER_IDENTIFIER_KEY + " INNER JOIN " + COLLECTIONS_TEAMS_TABLE + " ON " + MEMBERS_KEY + "."
-                    + TEAM_IDENTIFIER_KEY + "=" + COLLECTIONS_TEAMS_TABLE + "." + TEAM_IDENTIFIER_KEY
-                    + " INNER JOIN " + COLLECTIONS_LINKS_TABLE + " ON " + COLLECTIONS_TEAMS_TABLE + "."
-                    + COLLECTION_IDENTIFIER_KEY + "=" + COLLECTIONS_LINKS_TABLE + "." + COLLECTION_IDENTIFIER_KEY,
+            value = "SELECT l.* FROM " + LINKS_KEY + " AS l WHERE l." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
+                    " UNION" +
+                    " SELECT l.* FROM " + LINKS_KEY + " AS l INNER JOIN " + MEMBERS_KEY + " ON l." + OWNER_KEY + "=" +
+                    MEMBERS_KEY + "." + OWNER_KEY + " INNER JOIN " + COLLECTIONS_TEAMS_TABLE + " ON " + MEMBERS_KEY +
+                    "." + TEAM_IDENTIFIER_KEY + "=" + COLLECTIONS_TEAMS_TABLE + "." + TEAM_IDENTIFIER_KEY +
+                    " INNER JOIN " + COLLECTIONS_LINKS_TABLE + " ON " + COLLECTIONS_TEAMS_TABLE + "." + COLLECTION_IDENTIFIER_KEY +
+                    "=" + COLLECTIONS_LINKS_TABLE + "." + COLLECTION_IDENTIFIER_KEY + " WHERE l." + OWNER_KEY + "=:" +
+                    USER_IDENTIFIER_KEY + " OR " + COLLECTIONS_TEAMS_TABLE + "." + COLLECTION_IDENTIFIER_KEY + "=" +
+                    MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY,
             nativeQuery = true
     )
     List<RefyLink> getAllUserLinks(
@@ -84,11 +81,19 @@ public interface LinksRepository extends RefyItemsRepository<RefyLink> {
     );
 
     @Query(
-            value = "SELECT * FROM " + LINKS_KEY + " WHERE " + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY  + " AND "
-                    + LINK_IDENTIFIER_KEY + "=:" + LINK_IDENTIFIER_KEY + " AND dtype='" + LINK_KEY + "'",
+            value = "SELECT l.* FROM " + LINKS_KEY + " AS l WHERE l." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY + " AND l." +
+                    LINK_IDENTIFIER_KEY + "=:" + LINK_IDENTIFIER_KEY +
+                    " UNION" +
+                    " SELECT l.* FROM " + LINKS_KEY + " AS l INNER JOIN " + MEMBERS_KEY + " ON l." + OWNER_KEY + "=" +
+                    MEMBERS_KEY + "." + OWNER_KEY + " INNER JOIN " + COLLECTIONS_TEAMS_TABLE + " ON " + MEMBERS_KEY +
+                    "." + TEAM_IDENTIFIER_KEY + "=" + COLLECTIONS_TEAMS_TABLE + "." + TEAM_IDENTIFIER_KEY +
+                    " INNER JOIN " + COLLECTIONS_LINKS_TABLE + " ON " + COLLECTIONS_TEAMS_TABLE + "." + COLLECTION_IDENTIFIER_KEY +
+                    "=" + COLLECTIONS_LINKS_TABLE + "." + COLLECTION_IDENTIFIER_KEY + " WHERE l." + OWNER_KEY + "=:" +
+                    USER_IDENTIFIER_KEY + " OR " + COLLECTIONS_TEAMS_TABLE + "." + COLLECTION_IDENTIFIER_KEY + "=" +
+                    MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY + " AND l." + LINK_IDENTIFIER_KEY + "=:" + LINK_IDENTIFIER_KEY,
             nativeQuery = true
     )
-    RefyLink getUserLinkIfOwner(
+    RefyLink getLinkIfAllowed(
             @Param(USER_IDENTIFIER_KEY) String userId,
             @Param(LINK_IDENTIFIER_KEY) String linkId
     );

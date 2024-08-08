@@ -81,11 +81,11 @@ public class RefyUser extends EquinoxUser {
     private List<CustomRefyLink> customLinks;
 
     @JsonIgnore
-    @OneToOne(
+    @OneToMany(
             fetch = FetchType.LAZY,
             mappedBy = OWNER_KEY
     )
-    private RefyTeamMember member;
+    private List<RefyTeamMember> member;
 
     public RefyUser() {
         super();

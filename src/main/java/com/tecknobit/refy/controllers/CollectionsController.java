@@ -16,6 +16,7 @@ import static com.tecknobit.refycore.records.LinksCollection.*;
 import static com.tecknobit.refycore.records.RefyItem.DESCRIPTION_KEY;
 import static com.tecknobit.refycore.records.RefyItem.TITLE_KEY;
 import static com.tecknobit.refycore.records.RefyUser.*;
+import static com.tecknobit.refycore.records.Team.*;
 
 @RestController
 @RequestMapping(BASE_EQUINOX_ENDPOINT + USERS_KEY + "/{" + USER_IDENTIFIER_KEY + "}/" + COLLECTIONS_KEY)
@@ -169,9 +170,7 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
             @PathVariable(USER_IDENTIFIER_KEY) String userId,
             @PathVariable(COLLECTION_IDENTIFIER_KEY) String collectionId
     ) {
-        if(isUserNotAuthorized(userId, token, collectionId))
-            return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        return (T) userItem;
+        return super.getItem(token, userId, collectionId);
     }
 
     @DeleteMapping(
@@ -192,7 +191,7 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
 
     @Override
     protected boolean isUserNotAuthorized(String userId, String token, String collectionId) {
-        userItem = collectionsHelper.getUserItemIfOwner(userId, collectionId);
+        userItem = collectionsHelper.getItemIfAllowed(userId, collectionId);
         return !isMe(userId, token) || userItem == null;
     }
 

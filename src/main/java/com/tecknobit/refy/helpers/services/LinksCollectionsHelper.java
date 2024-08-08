@@ -31,8 +31,8 @@ public class LinksCollectionsHelper extends RefyItemsHelper<LinksCollection> {
     }
 
     @Override
-    public LinksCollection getUserItemIfOwner(String userId, String collectionId) {
-        return collectionsRepository.getUserCollectionIfOwner(userId, collectionId);
+    public LinksCollection getItemIfAllowed(String userId, String collectionId) {
+        return collectionsRepository.getCollectionIfAllowed(userId, collectionId);
     }
 
     public void editCollection(String userId, String collectionId, String color, String title, String description,

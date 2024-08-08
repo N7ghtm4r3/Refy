@@ -7,7 +7,7 @@ import java.util.List;
 
 public abstract class RefyItemsHelper<T extends RefyItem> {
 
-    public abstract T getUserItemIfOwner(String userId, String itemId);
+    public abstract T getItemIfAllowed(String userId, String itemId);
 
     protected void manageAttachments(AttachmentsManagementWorkflow workflow, List<String> ids) {
         List<String> currentAttachmentsIds = workflow.getIds();

@@ -8,35 +8,18 @@ import jakarta.transaction.Transactional;
 
 import java.util.List;
 
-import static com.tecknobit.refycore.records.LinksCollection.COLLECTIONS_LINKS_TABLE;
-import static com.tecknobit.refycore.records.LinksCollection.COLLECTION_IDENTIFIER_KEY;
-import static com.tecknobit.refycore.records.Team.*;
+import static com.tecknobit.refycore.records.Team.TEAMS_LINKS_TABLE;
+import static com.tecknobit.refycore.records.Team.TEAM_IDENTIFIER_KEY;
 import static com.tecknobit.refycore.records.links.RefyLink.LINK_IDENTIFIER_KEY;
 
 @Transactional
 public abstract class RefyItemsHelper<T extends RefyItem> {
 
-    protected static final String MANAGE_LINK_COLLECTION_RELATIONSHIP_QUERY =
-            "REPLACE INTO " + COLLECTIONS_LINKS_TABLE +
-                    "(" +
-                    COLLECTION_IDENTIFIER_KEY + "," +
-                    LINK_IDENTIFIER_KEY +
-                    ")" +
-                    " VALUES ";
-
-    protected static final String MANAGE_LINK_TEAM_RELATIONSHIP_QUERY =
+    protected static final String ATTACH_LINK_TO_TEAM_QUERY =
             "REPLACE INTO " + TEAMS_LINKS_TABLE +
                     "(" +
                     TEAM_IDENTIFIER_KEY + "," +
                     LINK_IDENTIFIER_KEY +
-                    ")" +
-                    " VALUES ";
-
-    protected static final String MANAGE_COLLECTION_TEAM_RELATIONSHIP_QUERY =
-            "REPLACE INTO " + COLLECTIONS_TEAMS_TABLE +
-                    "(" +
-                    COLLECTION_IDENTIFIER_KEY + "," +
-                    TEAM_IDENTIFIER_KEY +
                     ")" +
                     " VALUES ";
 
@@ -70,8 +53,7 @@ public abstract class RefyItemsHelper<T extends RefyItem> {
     public abstract T getItemIfAllowed(String userId, String itemId);
 
     protected void manageAttachments(AttachmentsManagementWorkflow workflow, String itemId, List<String> ids) {
-        List<String> currentAttachmentsIds = workflow.getIds();
-        executeInsertBatch(workflow.insertQuery(), RELATIONSHIP_VALUES_SLICE, ids,
+        manageAttachments(workflow, RELATIONSHIP_VALUES_SLICE, itemId, ids,
                 query -> {
                     int index = 1;
                     for (String id : ids) {
@@ -80,6 +62,12 @@ public abstract class RefyItemsHelper<T extends RefyItem> {
                     }
                 }
         );
+    }
+
+    protected void manageAttachments(AttachmentsManagementWorkflow workflow, String valuesSlice, String itemId,
+                                     List<String> ids, BatchQuery batchQuery) {
+        List<String> currentAttachmentsIds = workflow.getIds();
+        executeInsertBatch(workflow.insertQuery(), valuesSlice, ids, batchQuery);
         currentAttachmentsIds.removeAll(ids);
         executeDeleteBatch(workflow.deleteQuery(), itemId, currentAttachmentsIds);
     }
@@ -94,7 +82,6 @@ public abstract class RefyItemsHelper<T extends RefyItem> {
 
     private <I> Query assembleInsertBatchQuery(String insertQuery, String valuesSlice, List<I> values) {
         StringBuilder queryAssembler = new StringBuilder(insertQuery);
-        System.out.println(values);
         int size = values.size();
         for (int j = 0; j < size; j++) {
             queryAssembler.append(valuesSlice);
@@ -121,7 +108,6 @@ public abstract class RefyItemsHelper<T extends RefyItem> {
                 queryAssembler.append(COMMA);
         }
         queryAssembler.append(ROUND_BRACKET);
-        System.out.println(queryAssembler);
         return entityManager.createNativeQuery(queryAssembler.toString());
     }
 

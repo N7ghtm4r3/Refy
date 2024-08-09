@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.tecknobit.refycore.records.LinksCollection.COLLECTIONS_KEY;
+import static com.tecknobit.refycore.records.RefyUser.LINKS_KEY;
+import static com.tecknobit.refycore.records.RefyUser.TEAMS_KEY;
 import static com.tecknobit.refycore.records.links.RefyLink.LINK_IDENTIFIER_KEY;
 
 @Entity
@@ -40,6 +42,7 @@ public class LinksCollection extends RefyItem implements RefyItem.ListScreenItem
     )
     @JsonIgnoreProperties({
             COLLECTIONS_KEY,
+            TEAMS_KEY,
             "hibernateLazyInitializer",
             "handler"
     })
@@ -51,6 +54,7 @@ public class LinksCollection extends RefyItem implements RefyItem.ListScreenItem
     )
     @JsonIgnoreProperties({
             COLLECTIONS_KEY,
+            LINKS_KEY,
             "hibernateLazyInitializer",
             "handler"
     })

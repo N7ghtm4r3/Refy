@@ -81,7 +81,7 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
                     MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY + "=" + COLLECTIONS_TEAMS_TABLE + "." + TEAM_IDENTIFIER_KEY +
                     " WHERE c." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY + " OR " +
                     COLLECTIONS_TEAMS_TABLE + "." + COLLECTION_IDENTIFIER_KEY + "=" + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY +
-                    " AND " + IDENTIFIER_KEY + "=:" + IDENTIFIER_KEY,
+                    " AND " + IDENTIFIER_KEY + "=:" + IDENTIFIER_KEY + " LIMIT 1",
             nativeQuery = true
     )
     LinksCollection getCollectionIfAllowed(

@@ -55,13 +55,28 @@ public class TeamsController extends DefaultRefyController<Team> {
     }
 
     @Override
+    public String edit(String token, String userId, String itemId, Map<String, Object> payload) {
+        return null;
+    }
+
+    @PatchMapping(
+            headers = TOKEN_KEY,
+            path = "/{" + TEAM_IDENTIFIER_KEY + "}"
+    )
     public String edit(
             @RequestHeader(TOKEN_KEY) String token,
             @PathVariable(USER_IDENTIFIER_KEY) String userId,
             @PathVariable(TEAM_IDENTIFIER_KEY) String teamId,
-            @RequestBody Map<String, Object> payload
+            @ModelAttribute TeamPayload payload
     ) {
-        return "";
+        if(isUserNotAuthorized(userId, token, teamId))
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        try {
+            teamsHelper.editTeam(userId, userItem, payload);
+        } catch (IOException e) {
+            return failedResponse(WRONG_PROCEDURE_MESSAGE);
+        }
+        return successResponse();
     }
 
     @GetMapping(

@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.tecknobit.equinox.environment.records.EquinoxItem.IDENTIFIER_KEY;
+import static com.tecknobit.refycore.records.LinksCollection.COLLECTIONS_KEY;
 import static com.tecknobit.refycore.records.RefyUser.LINKS_KEY;
+import static com.tecknobit.refycore.records.RefyUser.TEAMS_KEY;
 import static com.tecknobit.refycore.records.links.RefyLink.LINK_IDENTIFIER_KEY;
 import static com.tecknobit.refycore.records.links.RefyLink.LINK_KEY;
 
@@ -42,6 +44,7 @@ public class RefyLink extends RefyItem implements RefyItem.ListScreenItem {
     )
     @JsonIgnoreProperties({
             LINKS_KEY,
+            COLLECTIONS_KEY,
             "hibernateLazyInitializer",
             "handler"
     })
@@ -53,6 +56,7 @@ public class RefyLink extends RefyItem implements RefyItem.ListScreenItem {
     )
     @JsonIgnoreProperties({
             LINKS_KEY,
+            TEAMS_KEY,
             "hibernateLazyInitializer",
             "handler"
     })

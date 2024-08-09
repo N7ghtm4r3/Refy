@@ -11,9 +11,12 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static com.tecknobit.equinox.environment.records.EquinoxUser.PROFILE_PIC_KEY;
+import static com.tecknobit.refycore.records.LinksCollection.COLLECTIONS_KEY;
 import static com.tecknobit.refycore.records.LinksCollection.COLLECTION_IDENTIFIER_KEY;
 import static com.tecknobit.refycore.records.RefyUser.*;
 import static com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole.ADMIN;
@@ -50,7 +53,7 @@ public class Team extends RefyItem {
     private final String logoPic;
 
     @OneToMany(
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             mappedBy = SOURCE_TEAM_KEY
     )
     @JsonIgnoreProperties({
@@ -60,6 +63,9 @@ public class Team extends RefyItem {
     })
     private final List<RefyTeamMember> members;
 
+    @Transient
+    private HashSet<String> membersMapping;
+
     @ManyToMany(
             fetch = FetchType.LAZY
     )
@@ -68,10 +74,12 @@ public class Team extends RefyItem {
             joinColumns = {@JoinColumn(name = TEAM_IDENTIFIER_KEY)},
             inverseJoinColumns = {@JoinColumn(name = LINK_IDENTIFIER_KEY)},
             uniqueConstraints = @UniqueConstraint(
-                    columnNames = {TEAM_IDENTIFIER_KEY, LINK_IDENTIFIER_KEY}
+                    columnNames =  {TEAM_IDENTIFIER_KEY, LINK_IDENTIFIER_KEY }
             )
     )
     @JsonIgnoreProperties({
+            TEAMS_KEY,
+            COLLECTIONS_KEY,
             "hibernateLazyInitializer",
             "handler"
     })
@@ -86,10 +94,12 @@ public class Team extends RefyItem {
             joinColumns = {@JoinColumn(name = TEAM_IDENTIFIER_KEY)},
             inverseJoinColumns = {@JoinColumn(name = COLLECTION_IDENTIFIER_KEY)},
             uniqueConstraints = @UniqueConstraint(
-                    columnNames = {TEAM_IDENTIFIER_KEY, COLLECTION_IDENTIFIER_KEY}
+                    columnNames = { TEAM_IDENTIFIER_KEY, COLLECTION_IDENTIFIER_KEY }
             )
     )
     @JsonIgnoreProperties({
+            TEAMS_KEY,
+            LINKS_KEY,
             "hibernateLazyInitializer",
             "handler"
     })
@@ -188,6 +198,21 @@ public class Team extends RefyItem {
 
     public List<RefyTeamMember> getMembers() {
         return members;
+    }
+
+    @JsonIgnore
+    public List<String> getMembersIds() {
+        ArrayList<String> ids = new ArrayList<>();
+        for (RefyTeamMember team : members)
+            ids.add(team.getId());
+        membersMapping = new HashSet<>(ids);
+        return ids;
+    }
+
+    public boolean hasMember(String memberId) {
+        if(membersMapping == null)
+            return false;
+        return membersMapping.contains(memberId);
     }
 
     public List<RefyLink> getLinks() {

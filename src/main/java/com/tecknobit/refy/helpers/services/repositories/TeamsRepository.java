@@ -43,7 +43,7 @@ public interface TeamsRepository extends RefyItemsRepository<Team> {
             value = "SELECT t.* " + "FROM " + TEAMS_KEY + " as t INNER JOIN " + MEMBERS_KEY
                     + " ON t." + TEAM_IDENTIFIER_KEY + "=" + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY
                     + " WHERE " + MEMBERS_KEY + "." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY
-                    + " AND t." + TEAM_IDENTIFIER_KEY + "=:" + TEAM_IDENTIFIER_KEY,
+                    + " AND t." + TEAM_IDENTIFIER_KEY + "=:" + TEAM_IDENTIFIER_KEY + " LIMIT 1",
             nativeQuery = true
     )
     Team getTeamIfAllowed(
@@ -70,6 +70,24 @@ public interface TeamsRepository extends RefyItemsRepository<Team> {
             nativeQuery = true
     )
     void saveTeam(
+            @Param(TEAM_IDENTIFIER_KEY) String teamId,
+            @Param(TITLE_KEY) String title,
+            @Param(LOGO_PIC_KEY) String logoPic,
+            @Param(DESCRIPTION_KEY) String description,
+            @Param(OWNER_KEY) String owner
+    );
+
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query(
+            value = "UPDATE " + TEAMS_KEY + " SET " +
+                    TITLE_KEY + "=:" + TITLE_KEY + "," +
+                    LOGO_PIC_KEY + "=:" + LOGO_PIC_KEY + "," +
+                    DESCRIPTION_KEY + "=:" + DESCRIPTION_KEY +
+                    " WHERE " + TEAM_IDENTIFIER_KEY + "=:" + TEAM_IDENTIFIER_KEY + " AND " + OWNER_KEY + "=:" + OWNER_KEY,
+            nativeQuery = true
+    )
+    void editTeam(
             @Param(TEAM_IDENTIFIER_KEY) String teamId,
             @Param(TITLE_KEY) String title,
             @Param(LOGO_PIC_KEY) String logoPic,

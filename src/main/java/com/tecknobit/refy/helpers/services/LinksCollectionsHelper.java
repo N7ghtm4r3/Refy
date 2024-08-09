@@ -13,13 +13,30 @@ import static com.tecknobit.refycore.records.LinksCollection.COLLECTIONS_LINKS_T
 import static com.tecknobit.refycore.records.LinksCollection.COLLECTION_IDENTIFIER_KEY;
 import static com.tecknobit.refycore.records.Team.COLLECTIONS_TEAMS_TABLE;
 import static com.tecknobit.refycore.records.Team.TEAM_IDENTIFIER_KEY;
+import static com.tecknobit.refycore.records.links.RefyLink.LINK_IDENTIFIER_KEY;
 
 @Service
 public class LinksCollectionsHelper extends RefyItemsHelper<LinksCollection> {
 
+    protected static final String ATTACH_COLLECTION_TO_LINKS_QUERY =
+            "REPLACE INTO " + COLLECTIONS_LINKS_TABLE +
+                    "(" +
+                    LINK_IDENTIFIER_KEY + "," +
+                    COLLECTION_IDENTIFIER_KEY +
+                    ")" +
+                    " VALUES ";
+
     private static final String DETACH_COLLECTION_FROM_LINKS_QUERY =
             "DELETE FROM " + COLLECTIONS_LINKS_TABLE + " WHERE "
-                    + COLLECTION_IDENTIFIER_KEY + "='%s' " + "AND " + TEAM_IDENTIFIER_KEY + " IN (";
+                    + COLLECTION_IDENTIFIER_KEY + "='%s' " + "AND " + LINK_IDENTIFIER_KEY + " IN (";
+
+    private static final String ATTACH_COLLECTION_TO_TEAM_QUERY =
+            "REPLACE INTO " + COLLECTIONS_TEAMS_TABLE +
+                    "(" +
+                    TEAM_IDENTIFIER_KEY + "," +
+                    COLLECTION_IDENTIFIER_KEY +
+                    ")" +
+                    " VALUES ";
 
     private static final String DETACH_COLLECTION_FROM_TEAMS_QUERY =
             "DELETE FROM " + COLLECTIONS_TEAMS_TABLE + " WHERE "
@@ -39,11 +56,11 @@ public class LinksCollectionsHelper extends RefyItemsHelper<LinksCollection> {
     public void createCollection(String userId, String collectionId, String color, String title, String description,
                                  List<String> links) {
         collectionsRepository.saveCollection(collectionId, color, title, description, userId);
-        executeInsertBatch(MANAGE_LINK_COLLECTION_RELATIONSHIP_QUERY, RELATIONSHIP_VALUES_SLICE, links, query -> {
+        executeInsertBatch(ATTACH_COLLECTION_TO_LINKS_QUERY, RELATIONSHIP_VALUES_SLICE, links, query -> {
             int index = 1;
             for (String link : links) {
-                query.setParameter(index++, collectionId);
                 query.setParameter(index++, link);
+                query.setParameter(index++, collectionId);
             }
         });
     }
@@ -77,7 +94,7 @@ public class LinksCollectionsHelper extends RefyItemsHelper<LinksCollection> {
 
                     @Override
                     public String insertQuery() {
-                        return MANAGE_LINK_COLLECTION_RELATIONSHIP_QUERY;
+                        return ATTACH_COLLECTION_TO_LINKS_QUERY;
                     }
 
                     @Override
@@ -102,7 +119,7 @@ public class LinksCollectionsHelper extends RefyItemsHelper<LinksCollection> {
 
                     @Override
                     public String insertQuery() {
-                        return MANAGE_COLLECTION_TEAM_RELATIONSHIP_QUERY;
+                        return ATTACH_COLLECTION_TO_TEAM_QUERY;
                     }
 
                     @Override

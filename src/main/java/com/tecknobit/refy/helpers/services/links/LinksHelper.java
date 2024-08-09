@@ -19,6 +19,14 @@ import static com.tecknobit.refycore.records.links.RefyLink.LINK_KEY;
 @Service
 public class LinksHelper extends RefyItemsHelper<RefyLink> {
 
+    protected static final String ATTACH_LINK_TO_COLLECTIONS_QUERY =
+            "REPLACE INTO " + COLLECTIONS_LINKS_TABLE +
+                    "(" +
+                    COLLECTION_IDENTIFIER_KEY + "," +
+                    LINK_IDENTIFIER_KEY +
+                    ")" +
+                    " VALUES ";
+
     private static final String DETACH_LINK_FROM_COLLECTIONS_QUERY =
             "DELETE FROM " + COLLECTIONS_LINKS_TABLE + " WHERE "
                     + LINK_IDENTIFIER_KEY + "='%s' " + "AND " + COLLECTION_IDENTIFIER_KEY + " IN (";
@@ -63,7 +71,7 @@ public class LinksHelper extends RefyItemsHelper<RefyLink> {
 
                     @Override
                     public String insertQuery() {
-                        return MANAGE_LINK_COLLECTION_RELATIONSHIP_QUERY;
+                        return ATTACH_LINK_TO_COLLECTIONS_QUERY;
                     }
 
                     @Override
@@ -89,7 +97,7 @@ public class LinksHelper extends RefyItemsHelper<RefyLink> {
 
                     @Override
                     public String insertQuery() {
-                        return MANAGE_LINK_TEAM_RELATIONSHIP_QUERY;
+                        return ATTACH_LINK_TO_TEAM_QUERY;
                     }
 
                     @Override

@@ -90,7 +90,8 @@ public interface LinksRepository extends RefyItemsRepository<RefyLink> {
                     " INNER JOIN " + COLLECTIONS_LINKS_TABLE + " ON " + COLLECTIONS_TEAMS_TABLE + "." + COLLECTION_IDENTIFIER_KEY +
                     "=" + COLLECTIONS_LINKS_TABLE + "." + COLLECTION_IDENTIFIER_KEY + " WHERE l." + OWNER_KEY + "=:" +
                     USER_IDENTIFIER_KEY + " OR " + COLLECTIONS_TEAMS_TABLE + "." + COLLECTION_IDENTIFIER_KEY + "=" +
-                    MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY + " AND l." + LINK_IDENTIFIER_KEY + "=:" + LINK_IDENTIFIER_KEY,
+                    MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY + " AND l." + LINK_IDENTIFIER_KEY + "=:" + LINK_IDENTIFIER_KEY
+                    + " LIMIT 1",
             nativeQuery = true
     )
     RefyLink getLinkIfAllowed(

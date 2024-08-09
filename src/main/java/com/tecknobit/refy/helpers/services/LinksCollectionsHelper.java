@@ -9,8 +9,21 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 
+import static com.tecknobit.refycore.records.LinksCollection.COLLECTIONS_LINKS_TABLE;
+import static com.tecknobit.refycore.records.LinksCollection.COLLECTION_IDENTIFIER_KEY;
+import static com.tecknobit.refycore.records.Team.COLLECTIONS_TEAMS_TABLE;
+import static com.tecknobit.refycore.records.Team.TEAM_IDENTIFIER_KEY;
+
 @Service
 public class LinksCollectionsHelper extends RefyItemsHelper<LinksCollection> {
+
+    private static final String DETACH_COLLECTION_FROM_LINKS_QUERY =
+            "DELETE FROM " + COLLECTIONS_LINKS_TABLE + " WHERE "
+                    + COLLECTION_IDENTIFIER_KEY + "='%s' " + "AND " + TEAM_IDENTIFIER_KEY + " IN (";
+
+    private static final String DETACH_COLLECTION_FROM_TEAMS_QUERY =
+            "DELETE FROM " + COLLECTIONS_TEAMS_TABLE + " WHERE "
+                    + COLLECTION_IDENTIFIER_KEY + "='%s' " + "AND " + TEAM_IDENTIFIER_KEY + " IN (";
 
     @Autowired
     private CollectionsRepository collectionsRepository;
@@ -26,8 +39,13 @@ public class LinksCollectionsHelper extends RefyItemsHelper<LinksCollection> {
     public void createCollection(String userId, String collectionId, String color, String title, String description,
                                  List<String> links) {
         collectionsRepository.saveCollection(collectionId, color, title, description, userId);
-        for (String link : links)
-            collectionsRepository.addLinkToCollection(collectionId, link);
+        executeInsertBatch(MANAGE_LINK_COLLECTION_RELATIONSHIP_QUERY, RELATIONSHIP_VALUES_SLICE, links, query -> {
+            int index = 1;
+            for (String link : links) {
+                query.setParameter(index++, collectionId);
+                query.setParameter(index++, link);
+            }
+        });
     }
 
     @Override
@@ -58,16 +76,16 @@ public class LinksCollectionsHelper extends RefyItemsHelper<LinksCollection> {
                     }
 
                     @Override
-                    public void add(String linkId) {
-                        collectionsRepository.addLinkToCollection(collectionId, linkId);
+                    public String insertQuery() {
+                        return MANAGE_LINK_COLLECTION_RELATIONSHIP_QUERY;
                     }
 
                     @Override
-                    public void remove(String linkId) {
-                        collectionsRepository.removeLinkFromCollection(collectionId, linkId);
+                    public String deleteQuery() {
+                        return DETACH_COLLECTION_FROM_LINKS_QUERY;
                     }
-
                 },
+                collectionId,
                 links
         );
     }
@@ -83,16 +101,16 @@ public class LinksCollectionsHelper extends RefyItemsHelper<LinksCollection> {
                     }
 
                     @Override
-                    public void add(String teamId) {
-                        collectionsRepository.addCollectionToTeam(teamId, collectionId);
+                    public String insertQuery() {
+                        return MANAGE_COLLECTION_TEAM_RELATIONSHIP_QUERY;
                     }
 
                     @Override
-                    public void remove(String teamId) {
-                        collectionsRepository.removeCollectionFromTeam(teamId, collectionId);
+                    public String deleteQuery() {
+                        return DETACH_COLLECTION_FROM_TEAMS_QUERY;
                     }
-
                 },
+                collectionId,
                 teams
         );
     }

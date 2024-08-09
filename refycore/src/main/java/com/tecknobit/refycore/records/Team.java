@@ -66,7 +66,10 @@ public class Team extends RefyItem {
     @JoinTable(
             name = TEAMS_LINKS_TABLE,
             joinColumns = {@JoinColumn(name = TEAM_IDENTIFIER_KEY)},
-            inverseJoinColumns = {@JoinColumn(name = LINK_IDENTIFIER_KEY)}
+            inverseJoinColumns = {@JoinColumn(name = LINK_IDENTIFIER_KEY)},
+            uniqueConstraints = @UniqueConstraint(
+                    columnNames = {TEAM_IDENTIFIER_KEY, LINK_IDENTIFIER_KEY}
+            )
     )
     @JsonIgnoreProperties({
             "hibernateLazyInitializer",
@@ -81,7 +84,10 @@ public class Team extends RefyItem {
     @JoinTable(
             name = COLLECTIONS_TEAMS_TABLE,
             joinColumns = {@JoinColumn(name = TEAM_IDENTIFIER_KEY)},
-            inverseJoinColumns = {@JoinColumn(name = COLLECTION_IDENTIFIER_KEY)}
+            inverseJoinColumns = {@JoinColumn(name = COLLECTION_IDENTIFIER_KEY)},
+            uniqueConstraints = @UniqueConstraint(
+                    columnNames = {TEAM_IDENTIFIER_KEY, COLLECTION_IDENTIFIER_KEY}
+            )
     )
     @JsonIgnoreProperties({
             "hibernateLazyInitializer",

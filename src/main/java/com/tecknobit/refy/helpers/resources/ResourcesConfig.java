@@ -15,8 +15,6 @@ import org.springframework.web.servlet.resource.PathResourceResolver;
 @Configuration
 public class ResourcesConfig implements WebMvcConfigurer {
 
-    public static final String LOGOS_DIRECTORY = "logos";
-
     /**
      * Add handlers to serve static resources such as images, js, and, css
      * files from specific locations under web application root, the classpath,

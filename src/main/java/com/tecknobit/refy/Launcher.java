@@ -15,7 +15,7 @@ import java.util.List;
 import static com.tecknobit.equinox.resourcesutils.ResourcesManager.RESOURCES_KEY;
 import static com.tecknobit.equinox.resourcesutils.ResourcesProvider.CUSTOM_CONFIGURATION_FILE_PATH;
 import static com.tecknobit.equinox.resourcesutils.ResourcesProvider.DEFAULT_CONFIGURATION_FILE_PATH;
-import static com.tecknobit.refy.helpers.resources.ResourcesConfig.LOGOS_DIRECTORY;
+import static com.tecknobit.refy.helpers.resources.RefyResourcesManager.LOGOS_DIRECTORY;
 
 @EnableAutoConfiguration
 @PropertySources({

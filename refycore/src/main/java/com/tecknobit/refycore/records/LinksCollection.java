@@ -33,7 +33,10 @@ public class LinksCollection extends RefyItem implements RefyItem.ListScreenItem
     @JoinTable(
             name = COLLECTIONS_LINKS_TABLE,
             joinColumns = {@JoinColumn(name = COLLECTION_IDENTIFIER_KEY)},
-            inverseJoinColumns = {@JoinColumn(name = LINK_IDENTIFIER_KEY)}
+            inverseJoinColumns = {@JoinColumn(name = LINK_IDENTIFIER_KEY)},
+            uniqueConstraints = @UniqueConstraint(
+                    columnNames = { COLLECTION_IDENTIFIER_KEY, LINK_IDENTIFIER_KEY}
+            )
     )
     @JsonIgnoreProperties({
             COLLECTIONS_KEY,

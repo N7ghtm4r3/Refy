@@ -9,10 +9,23 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 
+import static com.tecknobit.refycore.records.LinksCollection.COLLECTIONS_LINKS_TABLE;
+import static com.tecknobit.refycore.records.LinksCollection.COLLECTION_IDENTIFIER_KEY;
+import static com.tecknobit.refycore.records.Team.TEAMS_LINKS_TABLE;
+import static com.tecknobit.refycore.records.Team.TEAM_IDENTIFIER_KEY;
+import static com.tecknobit.refycore.records.links.RefyLink.LINK_IDENTIFIER_KEY;
 import static com.tecknobit.refycore.records.links.RefyLink.LINK_KEY;
 
 @Service
 public class LinksHelper extends RefyItemsHelper<RefyLink> {
+
+    private static final String DETACH_LINK_FROM_COLLECTIONS_QUERY =
+            "DELETE FROM " + COLLECTIONS_LINKS_TABLE + " WHERE "
+                    + LINK_IDENTIFIER_KEY + "='%s' " + "AND " + COLLECTION_IDENTIFIER_KEY + " IN (";
+
+    private static final String DETACH_LINK_FROM_TEAMS_QUERY =
+            "DELETE FROM " + TEAMS_LINKS_TABLE + " WHERE "
+                    + LINK_IDENTIFIER_KEY + "='%s' " + "AND " + TEAM_IDENTIFIER_KEY + " IN (";
 
     @Autowired
     private LinksRepository linksRepository;
@@ -49,16 +62,17 @@ public class LinksHelper extends RefyItemsHelper<RefyLink> {
                     }
 
                     @Override
-                    public void add(String collectionId) {
-                        linksRepository.addLinkToCollection(collectionId, linkId);
+                    public String insertQuery() {
+                        return MANAGE_LINK_COLLECTION_RELATIONSHIP_QUERY;
                     }
 
                     @Override
-                    public void remove(String collectionId) {
-                        linksRepository.removeLinkFromCollection(collectionId, linkId);
+                    public String deleteQuery() {
+                        return DETACH_LINK_FROM_COLLECTIONS_QUERY;
                     }
 
                 },
+                linkId,
                 collections
         );
     }
@@ -74,16 +88,17 @@ public class LinksHelper extends RefyItemsHelper<RefyLink> {
                     }
 
                     @Override
-                    public void add(String teamId) {
-                        linksRepository.addLinkToTeam(teamId, linkId);
+                    public String insertQuery() {
+                        return MANAGE_LINK_TEAM_RELATIONSHIP_QUERY;
                     }
 
                     @Override
-                    public void remove(String teamId) {
-                        linksRepository.removeLinkFromTeam(teamId, linkId);
+                    public String deleteQuery() {
+                        return DETACH_LINK_FROM_TEAMS_QUERY;
                     }
 
                 },
+                linkId,
                 teams
         );
     }

@@ -117,8 +117,8 @@ public class LinksController extends DefaultRefyController<RefyLink> {
             }
 
             @Override
-            public void execute(List<String> attachments) {
-                linksHelper.manageLinkCollections(linkId, attachments);
+            public void execute(List<String> collections) {
+                linksHelper.manageLinkCollections(linkId, collections);
             }
 
         });
@@ -147,8 +147,8 @@ public class LinksController extends DefaultRefyController<RefyLink> {
             }
 
             @Override
-            public void execute(List<String> attachments) {
-                linksHelper.manageLinkTeams(linkId, attachments);
+            public void execute(List<String> teams) {
+                linksHelper.manageLinkTeams(linkId, teams);
             }
 
         });

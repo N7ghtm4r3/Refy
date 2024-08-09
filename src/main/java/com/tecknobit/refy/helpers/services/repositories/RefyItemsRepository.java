@@ -51,6 +51,16 @@ public interface RefyItemsRepository<T extends RefyItem> extends JpaRepository<T
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(
+            value = "DELETE FROM " + COLLECTIONS_TEAMS_TABLE + " WHERE " + TEAM_IDENTIFIER_KEY + "=:" + TEAM_IDENTIFIER_KEY,
+            nativeQuery = true
+    )
+    void detachTeamFromCollections(
+            @Param(TEAM_IDENTIFIER_KEY) String teamId
+    );
+
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query(
             value = "DELETE FROM " + COLLECTIONS_LINKS_TABLE
                     + " WHERE " + COLLECTION_IDENTIFIER_KEY + "=:" + COLLECTION_IDENTIFIER_KEY,
             nativeQuery = true

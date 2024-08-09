@@ -31,6 +31,14 @@ public class LinksHelper extends RefyItemsHelper<RefyLink> {
             "DELETE FROM " + COLLECTIONS_LINKS_TABLE + " WHERE "
                     + LINK_IDENTIFIER_KEY + "='%s' " + "AND " + COLLECTION_IDENTIFIER_KEY + " IN (";
 
+    private static final String ATTACH_LINK_TO_TEAM_QUERY =
+            "REPLACE INTO " + TEAMS_LINKS_TABLE +
+                    "(" +
+                    TEAM_IDENTIFIER_KEY + "," +
+                    LINK_IDENTIFIER_KEY +
+                    ")" +
+                    " VALUES ";
+
     private static final String DETACH_LINK_FROM_TEAMS_QUERY =
             "DELETE FROM " + TEAMS_LINKS_TABLE + " WHERE "
                     + LINK_IDENTIFIER_KEY + "='%s' " + "AND " + TEAM_IDENTIFIER_KEY + " IN (";

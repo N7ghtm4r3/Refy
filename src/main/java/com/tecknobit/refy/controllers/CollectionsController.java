@@ -16,7 +16,6 @@ import static com.tecknobit.refycore.records.LinksCollection.*;
 import static com.tecknobit.refycore.records.RefyItem.DESCRIPTION_KEY;
 import static com.tecknobit.refycore.records.RefyItem.TITLE_KEY;
 import static com.tecknobit.refycore.records.RefyUser.*;
-import static com.tecknobit.refycore.records.Team.*;
 
 @RestController
 @RequestMapping(BASE_EQUINOX_ENDPOINT + USERS_KEY + "/{" + USER_IDENTIFIER_KEY + "}/" + COLLECTIONS_KEY)
@@ -122,8 +121,8 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
                     }
 
                     @Override
-                    public void execute(List<String> attachments) {
-                        collectionsHelper.manageCollectionLinks(collectionId, attachments);
+                    public void execute(List<String> links) {
+                        collectionsHelper.manageCollectionLinks(collectionId, links);
                     }
 
                 }
@@ -153,8 +152,8 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
             }
 
             @Override
-            public void execute(List<String> attachments) {
-                collectionsHelper.manageCollectionTeams(collectionId, attachments);
+            public void execute(List<String> teams) {
+                collectionsHelper.manageCollectionTeams(collectionId, teams);
             }
 
         });

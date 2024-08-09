@@ -107,4 +107,15 @@ public interface TeamsRepository extends RefyItemsRepository<Team> {
             @Param(OWNER_KEY) String owner,
             @Param(TEAM_IDENTIFIER_KEY) String teamId
     );
+
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query(
+            value = "DELETE FROM " + TEAMS_KEY + " WHERE " + TEAM_IDENTIFIER_KEY + "=:" + TEAM_IDENTIFIER_KEY,
+            nativeQuery = true
+    )
+    void deleteTeam(
+            @Param(TEAM_IDENTIFIER_KEY) String teamId
+    );
+
 }

@@ -4,7 +4,6 @@ import com.tecknobit.apimanager.formatters.JsonHelper;
 import com.tecknobit.refy.helpers.resources.RefyResourcesManager;
 import com.tecknobit.refy.helpers.services.repositories.TeamsRepository;
 import com.tecknobit.refycore.records.Team;
-import com.tecknobit.refycore.records.Team.RefyTeamMember;
 import com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +16,13 @@ import java.util.List;
 
 import static com.tecknobit.refycore.helpers.RefyInputValidator.isDescriptionValid;
 import static com.tecknobit.refycore.helpers.RefyInputValidator.isTitleValid;
+import static com.tecknobit.refycore.records.LinksCollection.COLLECTION_IDENTIFIER_KEY;
 import static com.tecknobit.refycore.records.RefyItem.OWNER_KEY;
-import static com.tecknobit.refycore.records.Team.MEMBERS_KEY;
+import static com.tecknobit.refycore.records.Team.*;
 import static com.tecknobit.refycore.records.Team.RefyTeamMember.TEAM_ROLE_KEY;
 import static com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole.ADMIN;
 import static com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole.VIEWER;
-import static com.tecknobit.refycore.records.Team.TEAM_IDENTIFIER_KEY;
+import static com.tecknobit.refycore.records.links.RefyLink.LINK_IDENTIFIER_KEY;
 
 @Service
 public class TeamsHelper extends RefyItemsHelper<Team> implements RefyResourcesManager {
@@ -50,6 +50,30 @@ public class TeamsHelper extends RefyItemsHelper<Team> implements RefyResourcesM
                     TEAM_ROLE_KEY +
                     ")" +
                     " VALUES ";
+
+    protected static final String ATTACH_TEAM_TO_LINKS_QUERY =
+            "REPLACE INTO " + TEAMS_LINKS_TABLE +
+                    "(" +
+                    LINK_IDENTIFIER_KEY + "," +
+                    TEAM_IDENTIFIER_KEY +
+                    ")" +
+                    " VALUES ";
+
+    private static final String DETACH_TEAM_FROM_LINKS_QUERY =
+            "DELETE FROM " + TEAMS_LINKS_TABLE + " WHERE "
+                    + TEAM_IDENTIFIER_KEY + "='%s' " + "AND " + LINK_IDENTIFIER_KEY + " IN (";
+
+    protected static final String ATTACH_TEAM_TO_COLLECTIONS_QUERY =
+            "REPLACE INTO " + COLLECTIONS_TEAMS_TABLE +
+                    "(" +
+                    COLLECTION_IDENTIFIER_KEY + "," +
+                    TEAM_IDENTIFIER_KEY +
+                    ")" +
+                    " VALUES ";
+
+    private static final String DETACH_TEAM_FROM_COLLECTIONS_QUERY =
+            "DELETE FROM " + COLLECTIONS_TEAMS_TABLE + " WHERE "
+                    + TEAM_IDENTIFIER_KEY + "='%s' " + "AND " + COLLECTION_IDENTIFIER_KEY + " IN (";
 
     @Autowired
     private TeamsRepository teamsRepository;
@@ -139,6 +163,65 @@ public class TeamsHelper extends RefyItemsHelper<Team> implements RefyResourcesM
                 }
             }
         };
+    }
+
+    public void manageTeamLinks(String teamId, List<String> links) {
+        Team team = teamsRepository.findById(teamId).orElseThrow();
+        manageAttachments(
+                new AttachmentsManagementWorkflow() {
+
+                    @Override
+                    public List<String> getIds() {
+                        return team.getLinkIds();
+                    }
+
+                    @Override
+                    public String insertQuery() {
+                        return ATTACH_TEAM_TO_LINKS_QUERY;
+                    }
+
+                    @Override
+                    public String deleteQuery() {
+                        return DETACH_TEAM_FROM_LINKS_QUERY;
+                    }
+
+                },
+                teamId,
+                links
+        );
+    }
+
+    public void manageTeamCollections(String teamId, List<String> collections) {
+        Team team = teamsRepository.findById(teamId).orElseThrow();
+        manageAttachments(
+                new AttachmentsManagementWorkflow() {
+
+                    @Override
+                    public List<String> getIds() {
+                        return team.getCollectionsIds();
+                    }
+
+                    @Override
+                    public String insertQuery() {
+                        return ATTACH_TEAM_TO_COLLECTIONS_QUERY;
+                    }
+
+                    @Override
+                    public String deleteQuery() {
+                        return DETACH_TEAM_FROM_COLLECTIONS_QUERY;
+                    }
+
+                },
+                teamId,
+                collections
+        );
+    }
+
+    public void deleteTeam(String teamId) {
+        teamsRepository.detachTeamFromLinks(teamId);
+        teamsRepository.detachTeamFromCollections(teamId);
+        teamsRepository.deleteTeam(teamId);
+        deleteLogoResource(teamId);
     }
 
     public record TeamPayload(String title, MultipartFile logo_pic, String description, JSONArray members) {

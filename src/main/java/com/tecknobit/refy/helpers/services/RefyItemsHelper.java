@@ -8,20 +8,8 @@ import jakarta.transaction.Transactional;
 
 import java.util.List;
 
-import static com.tecknobit.refycore.records.Team.TEAMS_LINKS_TABLE;
-import static com.tecknobit.refycore.records.Team.TEAM_IDENTIFIER_KEY;
-import static com.tecknobit.refycore.records.links.RefyLink.LINK_IDENTIFIER_KEY;
-
 @Transactional
 public abstract class RefyItemsHelper<T extends RefyItem> {
-
-    protected static final String ATTACH_LINK_TO_TEAM_QUERY =
-            "REPLACE INTO " + TEAMS_LINKS_TABLE +
-                    "(" +
-                    TEAM_IDENTIFIER_KEY + "," +
-                    LINK_IDENTIFIER_KEY +
-                    ")" +
-                    " VALUES ";
 
     protected static final String RELATIONSHIP_VALUES_SLICE = "(?, ?)";
 

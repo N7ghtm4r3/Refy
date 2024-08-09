@@ -219,8 +219,24 @@ public class Team extends RefyItem {
         return links;
     }
 
+    @JsonIgnore
+    public List<String> getLinkIds() {
+        ArrayList<String> ids = new ArrayList<>();
+        for (RefyLink link : links)
+            ids.add(link.getId());
+        return ids;
+    }
+
     public List<LinksCollection> getCollections() {
         return collections;
+    }
+
+    @JsonIgnore
+    public List<String> getCollectionsIds() {
+        ArrayList<String> ids = new ArrayList<>();
+        for (LinksCollection collection : collections)
+            ids.add(collection.getId());
+        return ids;
     }
 
     public boolean isAdmin(String userId) {
@@ -282,6 +298,7 @@ public class Team extends RefyItem {
                 "hibernateLazyInitializer",
                 "handler"
         })
+        @OnDelete(action = OnDeleteAction.CASCADE)
         protected final Team sourceTeam;
 
         public RefyTeamMember() {

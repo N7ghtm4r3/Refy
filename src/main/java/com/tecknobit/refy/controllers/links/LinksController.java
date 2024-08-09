@@ -104,7 +104,9 @@ public class LinksController extends DefaultRefyController<RefyLink> {
             @PathVariable(LINK_IDENTIFIER_KEY) String linkId,
             @RequestBody Map<String, Object> payload
     ) {
-        return editAttachmentsList(userId, token, linkId, payload, COLLECTIONS_KEY, new AttachmentsManagement() {
+        if(isUserNotAuthorized(userId, token, linkId))
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        return editAttachmentsList(payload, COLLECTIONS_KEY, new AttachmentsManagement() {
 
             @Override
             public HashSet<String> getUserAttachments() {
@@ -134,7 +136,9 @@ public class LinksController extends DefaultRefyController<RefyLink> {
             @PathVariable(LINK_IDENTIFIER_KEY) String linkId,
             @RequestBody Map<String, Object> payload
     ) {
-        return editAttachmentsList(userId, token, linkId, payload, TEAMS_KEY, new AttachmentsManagement() {
+        if(isUserNotAuthorized(userId, token, linkId))
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        return editAttachmentsList(payload, TEAMS_KEY, new AttachmentsManagement() {
 
             @Override
             public HashSet<String> getUserAttachments() {

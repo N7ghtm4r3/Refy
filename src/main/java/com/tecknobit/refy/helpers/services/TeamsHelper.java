@@ -217,6 +217,14 @@ public class TeamsHelper extends RefyItemsHelper<Team> implements RefyResourcesM
         );
     }
 
+    public void updateMemberRole(String teamId, String memberId, TeamRole role) {
+        teamsRepository.updateMemberRole(memberId, teamId, role);
+    }
+
+    public void removeMember(String teamId, String memberId) {
+        teamsRepository.removeMember(memberId, teamId);
+    }
+
     public void deleteTeam(String teamId) {
         teamsRepository.detachTeamFromLinks(teamId);
         teamsRepository.detachTeamFromCollections(teamId);

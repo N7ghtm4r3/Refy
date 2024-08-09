@@ -77,7 +77,7 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
         ArrayList<String> links = jsonHelper.fetchList(LINKS_KEY, new ArrayList<>());
         if(!isCollectionPayloadValid(color, title, description, links))
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
-        return editAttachmentsList(userId, token, collectionId, payload, LINKS_KEY, new AttachmentsManagement() {
+        return editAttachmentsList(payload, LINKS_KEY, new AttachmentsManagement() {
 
             @Override
             public HashSet<String> getUserAttachments() {
@@ -107,7 +107,9 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
             @PathVariable(COLLECTION_IDENTIFIER_KEY) String collectionId,
             @RequestBody Map<String, Object> payload
     ) {
-        return editAttachmentsList(userId, token, collectionId, payload, false, LINKS_KEY,
+        if(isUserNotAuthorized(userId, token, collectionId))
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        return editAttachmentsList(payload, false, LINKS_KEY,
                 new AttachmentsManagement() {
 
                     @Override
@@ -139,7 +141,9 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
             @PathVariable(COLLECTION_IDENTIFIER_KEY) String collectionId,
             @RequestBody Map<String, Object> payload
     ) {
-        return editAttachmentsList(userId, token, collectionId, payload, TEAMS_KEY, new AttachmentsManagement() {
+        if(isUserNotAuthorized(userId, token, collectionId))
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        return editAttachmentsList(payload, TEAMS_KEY, new AttachmentsManagement() {
 
             @Override
             public HashSet<String> getUserAttachments() {

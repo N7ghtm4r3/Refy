@@ -1,6 +1,7 @@
 package com.tecknobit.refy.helpers.services.repositories;
 
 import com.tecknobit.refycore.records.Team;
+import com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,6 +16,7 @@ import static com.tecknobit.refycore.records.RefyItem.*;
 import static com.tecknobit.refycore.records.RefyUser.TEAMS_KEY;
 import static com.tecknobit.refycore.records.RefyUser.USER_IDENTIFIER_KEY;
 import static com.tecknobit.refycore.records.Team.*;
+import static com.tecknobit.refycore.records.Team.RefyTeamMember.TEAM_ROLE_KEY;
 
 @Service
 @Repository
@@ -93,6 +95,21 @@ public interface TeamsRepository extends RefyItemsRepository<Team> {
             @Param(LOGO_PIC_KEY) String logoPic,
             @Param(DESCRIPTION_KEY) String description,
             @Param(OWNER_KEY) String owner
+    );
+
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query(
+            value = "UPDATE " + MEMBERS_KEY + " SET " +
+                    TEAM_ROLE_KEY + "=" + ":#{#" + TEAM_ROLE_KEY + ".name()}" +
+                    " WHERE " + OWNER_KEY + "=:" + OWNER_KEY
+                    + " AND " + TEAM_IDENTIFIER_KEY + "=:" + TEAM_IDENTIFIER_KEY,
+            nativeQuery = true
+    )
+    void updateMemberRole(
+            @Param(OWNER_KEY) String owner,
+            @Param(TEAM_IDENTIFIER_KEY) String teamId,
+            @Param(TEAM_ROLE_KEY) TeamRole role
     );
 
     @Modifying(clearAutomatically = true)

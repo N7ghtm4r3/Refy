@@ -1,6 +1,7 @@
 package com.tecknobit.refy.controllers;
 
 import com.tecknobit.refycore.records.Team;
+import com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -12,8 +13,14 @@ import static com.tecknobit.equinox.environment.helpers.EquinoxBaseEndpointsSet.
 import static com.tecknobit.equinox.environment.records.EquinoxUser.TOKEN_KEY;
 import static com.tecknobit.equinox.environment.records.EquinoxUser.USERS_KEY;
 import static com.tecknobit.refy.helpers.services.TeamsHelper.TeamPayload;
+import static com.tecknobit.refycore.helpers.RefyEndpointsSet.LEAVE_ENDPOINT;
+import static com.tecknobit.refycore.helpers.RefyEndpointsSet.UPDATE_MEMBER_ROLE_ENDPOINT;
 import static com.tecknobit.refycore.records.LinksCollection.COLLECTIONS_KEY;
 import static com.tecknobit.refycore.records.RefyUser.*;
+import static com.tecknobit.refycore.records.Team.MEMBERS_KEY;
+import static com.tecknobit.refycore.records.Team.RefyTeamMember.MEMBER_IDENTIFIER_KEY;
+import static com.tecknobit.refycore.records.Team.RefyTeamMember.TEAM_ROLE_KEY;
+import static com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole.ADMIN;
 import static com.tecknobit.refycore.records.Team.TEAM_IDENTIFIER_KEY;
 
 @RestController
@@ -71,7 +78,7 @@ public class TeamsController extends DefaultRefyController<Team> {
             @PathVariable(TEAM_IDENTIFIER_KEY) String teamId,
             @ModelAttribute TeamPayload payload
     ) {
-        if(isUserNotAuthorized(userId, token, teamId))
+        if(isUserNotAuthorized(userId, token, teamId) || !userItem.isAdmin(userId) || !payload.isValidTeamPayload())
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         try {
             teamsHelper.editTeam(userId, userItem, payload);
@@ -91,7 +98,9 @@ public class TeamsController extends DefaultRefyController<Team> {
             @PathVariable(TEAM_IDENTIFIER_KEY) String teamId,
             @RequestBody Map<String, Object> payload
     ) {
-        return editAttachmentsList(userId, token, teamId, payload, LINKS_KEY, new AttachmentsManagement() {
+        if(isUserNotAuthorized(userId, token, teamId) || !userItem.isAdmin(teamId))
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        return editAttachmentsList(payload, LINKS_KEY, new AttachmentsManagement() {
 
             @Override
             public HashSet<String> getUserAttachments() {
@@ -121,7 +130,9 @@ public class TeamsController extends DefaultRefyController<Team> {
             @PathVariable(TEAM_IDENTIFIER_KEY) String teamId,
             @RequestBody Map<String, Object> payload
     ) {
-        return editAttachmentsList(userId, token, teamId, payload, COLLECTIONS_KEY, new AttachmentsManagement() {
+        if(isUserNotAuthorized(userId, token, teamId) || !userItem.isAdmin(teamId))
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        return editAttachmentsList(payload, COLLECTIONS_KEY, new AttachmentsManagement() {
 
             @Override
             public HashSet<String> getUserAttachments() {
@@ -152,6 +163,80 @@ public class TeamsController extends DefaultRefyController<Team> {
             @PathVariable(TEAM_IDENTIFIER_KEY) String teamId
     ) {
         return super.getItem(token, userId, teamId);
+    }
+
+    @PatchMapping(
+            headers = TOKEN_KEY,
+            path = "/{" + TEAM_IDENTIFIER_KEY + "}/" + MEMBERS_KEY + "/{" + MEMBER_IDENTIFIER_KEY + "}" + UPDATE_MEMBER_ROLE_ENDPOINT
+    )
+    public String updateMemberRole(
+            @RequestHeader(TOKEN_KEY) String token,
+            @PathVariable(USER_IDENTIFIER_KEY) String userId,
+            @PathVariable(TEAM_IDENTIFIER_KEY) String teamId,
+            @PathVariable(MEMBER_IDENTIFIER_KEY) String memberId,
+            @RequestBody Map<String, Object> payload
+    ) {
+        if(isUserNotAuthorized(userId, token, teamId) || !userItem.isAdmin(userId) || !userItem.hasMember(memberId))
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        if(hierarchyIsNotRespected(userId, memberId))
+            return failedResponse(WRONG_PROCEDURE_MESSAGE);
+        loadJsonHelper(payload);
+        try {
+            TeamRole role = TeamRole.valueOf(jsonHelper.getString(TEAM_ROLE_KEY));
+            teamsHelper.updateMemberRole(teamId, memberId, role);
+            return successResponse();
+        } catch (IllegalArgumentException e) {
+            return failedResponse(WRONG_PROCEDURE_MESSAGE);
+        }
+    }
+
+    @DeleteMapping(
+            headers = TOKEN_KEY,
+            path = "/{" + TEAM_IDENTIFIER_KEY + "}/" + MEMBERS_KEY + "/{" + MEMBER_IDENTIFIER_KEY + "}"
+    )
+    public String removeMember(
+            @RequestHeader(TOKEN_KEY) String token,
+            @PathVariable(USER_IDENTIFIER_KEY) String userId,
+            @PathVariable(TEAM_IDENTIFIER_KEY) String teamId,
+            @PathVariable(MEMBER_IDENTIFIER_KEY) String memberId
+    ) {
+        if(isUserNotAuthorized(userId, token, teamId) || !userItem.isAdmin(userId) || !userItem.hasMember(memberId))
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        if(hierarchyIsNotRespected(userId, memberId))
+            return failedResponse(WRONG_PROCEDURE_MESSAGE);
+        teamsHelper.removeMember(teamId, memberId);
+        return successResponse();
+    }
+
+    private boolean hierarchyIsNotRespected(String userId, String memberId) {
+        return userId.equals(memberId) || userItem.isTheAuthor(memberId);
+    }
+
+    @DeleteMapping(
+            headers = TOKEN_KEY,
+            path = "/{" + TEAM_IDENTIFIER_KEY + "}" + LEAVE_ENDPOINT
+    )
+    public String leave(
+            @RequestHeader(TOKEN_KEY) String token,
+            @PathVariable(USER_IDENTIFIER_KEY) String userId,
+            @PathVariable(TEAM_IDENTIFIER_KEY) String teamId
+    ) {
+        if(isUserNotAuthorized(userId, token, teamId))
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        if(userItem.isAdmin(userId)) {
+            if(userItem.hasMembers()) {
+                if(userItem.hasAdmins(userId))
+                    teamsHelper.removeMember(teamId, userId);
+                else {
+                    String viewerId = userItem.getViewer().getId();
+                    teamsHelper.updateMemberRole(teamId, viewerId, ADMIN);
+                    teamsHelper.removeMember(teamId, userId);
+                }
+            } else
+                teamsHelper.deleteTeam(teamId);
+        } else
+            teamsHelper.removeMember(teamId, userId);
+        return successResponse();
     }
 
     @DeleteMapping(

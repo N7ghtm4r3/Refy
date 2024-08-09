@@ -78,16 +78,12 @@ public abstract class DefaultRefyController<I extends RefyItem> extends EquinoxC
             String itemId
     );
 
-    public String editAttachmentsList(String userId, String token, String itemId, Map<String, Object> payload,
-                                      String attachmentsKey, AttachmentsManagement management) {
-        return editAttachmentsList(userId, token, itemId, payload, true, attachmentsKey, management);
+    public String editAttachmentsList(Map<String, Object> payload, String attachmentsKey, AttachmentsManagement management) {
+        return editAttachmentsList(payload, true, attachmentsKey, management);
     }
 
-    public String editAttachmentsList(String userId, String token, String itemId, Map<String, Object> payload,
-                                      boolean itemsListCanBeEmpty, String attachmentsKey,
+    public String editAttachmentsList(Map<String, Object> payload, boolean itemsListCanBeEmpty, String attachmentsKey,
                                       AttachmentsManagement management) {
-        if(isUserNotAuthorized(userId, token, itemId))
-            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         loadJsonHelper(payload);
         ArrayList<String> attachments = jsonHelper.fetchList(attachmentsKey, new ArrayList<>());
         if(!itemsListCanBeEmpty && attachments.isEmpty())

@@ -200,6 +200,26 @@ public class Team extends RefyItem {
         return members;
     }
 
+    public boolean hasMembers() {
+        return members.size() > 1;
+    }
+
+    public boolean hasAdmins(String exceptId) {
+        for (RefyTeamMember member : members) {
+            String memberId = member.getId();
+            if(!exceptId.equals(memberId) && isAdmin(memberId))
+                return true;
+        }
+        return false;
+    }
+
+    public RefyTeamMember getViewer() {
+        for (RefyTeamMember member : members)
+            if(!isAdmin(member.getId()))
+                return member;
+        return null;
+    }
+
     @JsonIgnore
     public List<String> getMembersIds() {
         ArrayList<String> ids = new ArrayList<>();
@@ -211,7 +231,7 @@ public class Team extends RefyItem {
 
     public boolean hasMember(String memberId) {
         if(membersMapping == null)
-            return false;
+            getMembersIds();
         return membersMapping.contains(memberId);
     }
 

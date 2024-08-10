@@ -213,6 +213,7 @@ public class Team extends RefyItem {
         return false;
     }
 
+    @JsonIgnore
     public RefyTeamMember getViewer() {
         for (RefyTeamMember member : members)
             if(!isAdmin(member.getId()))

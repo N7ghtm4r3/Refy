@@ -34,7 +34,7 @@ public class LinksController extends DefaultRefyController<RefyLink> {
     ) {
         if(!isMe(userId, token))
             return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        return (T) linksHelper.getAllUserLinks(userId);
+        return (T) successResponse(linksHelper.getAllUserLinks(userId));
     }
 
     @PostMapping(

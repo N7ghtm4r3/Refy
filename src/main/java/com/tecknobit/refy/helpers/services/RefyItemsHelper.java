@@ -6,12 +6,15 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 
 @Transactional
 public abstract class RefyItemsHelper<T extends RefyItem> {
 
     protected static final String RELATIONSHIP_VALUES_SLICE = "(?, ?)";
+
+    protected static final String TUPLE_VALUES_SLICE = "(?, ?, ?)";
 
     private static final String SINGLE_QUOTE = "'";
 
@@ -60,7 +63,8 @@ public abstract class RefyItemsHelper<T extends RefyItem> {
         executeDeleteBatch(workflow.deleteQuery(), itemId, currentAttachmentsIds);
     }
 
-    protected <I> void executeInsertBatch(String insertQuery, String valuesSlice, List<I> values, BatchQuery batchQuery) {
+    protected <I> void executeInsertBatch(String insertQuery, String valuesSlice, Collection<I> values,
+                                          BatchQuery batchQuery) {
         if(values.isEmpty())
             return;
         Query query = assembleInsertBatchQuery(insertQuery, valuesSlice, values);
@@ -68,7 +72,7 @@ public abstract class RefyItemsHelper<T extends RefyItem> {
         query.executeUpdate();
     }
 
-    private <I> Query assembleInsertBatchQuery(String insertQuery, String valuesSlice, List<I> values) {
+    private <I> Query assembleInsertBatchQuery(String insertQuery, String valuesSlice, Collection<I> values) {
         StringBuilder queryAssembler = new StringBuilder(insertQuery);
         int size = values.size();
         for (int j = 0; j < size; j++) {

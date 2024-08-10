@@ -8,4 +8,6 @@ public class RefyEndpointsSet extends EquinoxBaseEndpointsSet {
 
     public static final String LEAVE_ENDPOINT = "/leave";
 
+    public static final String CUSTOM_LINKS_ENDPOINT = "/customLinks";
+
 }

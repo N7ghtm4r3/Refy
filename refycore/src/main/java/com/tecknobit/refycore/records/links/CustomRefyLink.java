@@ -1,16 +1,17 @@
 package com.tecknobit.refycore.records.links;
 
-import com.tecknobit.refycore.records.LinksCollection;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.refycore.records.RefyUser;
-import com.tecknobit.refycore.records.Team;
 import jakarta.persistence.*;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import static com.tecknobit.refycore.records.RefyUser.CUSTOM_LINKS_KEY;
+import static com.tecknobit.refycore.records.LinksCollection.COLLECTIONS_KEY;
+import static com.tecknobit.refycore.records.RefyUser.*;
 import static com.tecknobit.refycore.records.links.CustomRefyLink.CUSTOM_LINK_KEY;
 import static jakarta.persistence.EnumType.STRING;
 import static java.util.concurrent.TimeUnit.*;
@@ -18,6 +19,10 @@ import static java.util.concurrent.TimeUnit.*;
 @Entity
 @Table(name = CUSTOM_LINKS_KEY)
 @DiscriminatorValue(CUSTOM_LINK_KEY)
+@JsonIgnoreProperties({
+    COLLECTIONS_KEY,
+    TEAMS_KEY
+})
 public class CustomRefyLink extends RefyLink {
 
     public static final String CUSTOM_LINK_KEY = "custom_link";
@@ -88,7 +93,11 @@ public class CustomRefyLink extends RefyLink {
     @ElementCollection
     @CollectionTable(
             name = RESOURCES_KEY,
-            joinColumns = @JoinColumn(name = IDENTIFIER_KEY)
+            joinColumns = @JoinColumn(name = IDENTIFIER_KEY),
+            foreignKey = @ForeignKey(
+                    foreignKeyDefinition = "FOREIGN KEY (" + IDENTIFIER_KEY + ") REFERENCES "
+                            + LINKS_KEY + "(" + LINK_IDENTIFIER_KEY + ") ON DELETE CASCADE"
+            )
     )
     @MapKeyColumn(name = RESOURCE_KEY)
     @Column(name = RESOURCE_VALUE_KEY)
@@ -97,20 +106,24 @@ public class CustomRefyLink extends RefyLink {
     @ElementCollection
     @CollectionTable(
             name = FIELDS_KEY,
-            joinColumns = @JoinColumn(name = IDENTIFIER_KEY)
+            joinColumns = @JoinColumn(name = IDENTIFIER_KEY),
+            foreignKey = @ForeignKey(
+                    foreignKeyDefinition = "FOREIGN KEY (" + IDENTIFIER_KEY + ") REFERENCES "
+                            + LINKS_KEY + "(" + LINK_IDENTIFIER_KEY + ") ON DELETE CASCADE"
+            )
     )
     @MapKeyColumn(name = FIELD_KEY)
     @Column(name = FIELD_VALUE_KEY)
     private final Map<String, String> fields;
 
     public CustomRefyLink() {
-        this(null, null, null, null, null, List.of(), List.of(), -1, false, null, null, null);
+        this(null, null, null, null, null, -1, false, null, null, null);
     }
 
     public CustomRefyLink(String id, RefyUser owner, String title, String description, String referenceLink,
-                          List<Team> teams, List<LinksCollection> collections, long creationDate, boolean uniqueAccess,
-                          ExpiredTime expiredTime, Map<String, String> resources, Map<String, String> fields) {
-        super(id, owner, title, description, referenceLink, teams, collections);
+                          long creationDate, boolean uniqueAccess, ExpiredTime expiredTime,
+                          Map<String, String> resources, Map<String, String> fields) {
+        super(id, owner, title, description, referenceLink, null, null);
         this.creationDate = creationDate;
         this.uniqueAccess = uniqueAccess;
         this.expiredTime = expiredTime;
@@ -128,10 +141,12 @@ public class CustomRefyLink extends RefyLink {
         fields = new HashMap<>();
     }
 
+    @JsonGetter(CREATION_DATE_KEY)
     public long getCreationTimestamp() {
         return creationDate;
     }
 
+    @JsonIgnore
     public String getCreationDate() {
         return timeFormatter.formatAsString(creationDate);
     }
@@ -144,12 +159,14 @@ public class CustomRefyLink extends RefyLink {
         return expiredTime != null && expiredTime != ExpiredTime.NO_EXPIRATION;
     }
 
+    @JsonIgnore
     public long getExpirationTimestamp() {
         if(expires())
             return creationDate + expiredTime.getGap();
         return -1;
     }
 
+    @JsonIgnore
     public String getExpirationDate() {
         long expiration = getExpirationTimestamp();
         if(expiration != -1)

@@ -1,6 +1,5 @@
 package com.tecknobit.refy.helpers.services.links;
 
-import com.tecknobit.refy.helpers.services.RefyItemsHelper;
 import com.tecknobit.refy.helpers.services.repositories.links.LinksRepository;
 import com.tecknobit.refycore.records.links.RefyLink;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,7 @@ import static com.tecknobit.refycore.records.links.RefyLink.LINK_IDENTIFIER_KEY;
 import static com.tecknobit.refycore.records.links.RefyLink.LINK_KEY;
 
 @Service
-public class LinksHelper extends RefyItemsHelper<RefyLink> {
+public class LinksHelper extends LinksBaseHelper<RefyLink> {
 
     protected static final String ATTACH_LINK_TO_COLLECTIONS_QUERY =
             "REPLACE INTO " + COLLECTIONS_LINKS_TABLE +
@@ -119,6 +118,7 @@ public class LinksHelper extends RefyItemsHelper<RefyLink> {
         );
     }
 
+    @Override
     public void deleteLink(String linkId) {
         linksRepository.detachLinkFromCollections(linkId);
         linksRepository.detachLinkFromTeams(linkId);

@@ -3,6 +3,7 @@ package com.tecknobit.refycore.helpers;
 import com.tecknobit.equinox.inputs.InputValidator;
 
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,6 +34,21 @@ public class RefyInputValidator extends InputValidator {
 
     public static boolean isCollectionPayloadValid(String color, String title, String description, List<String> links) {
         return isCollectionColorValid(color) && isTitleValid(title) && isDescriptionValid(description) && !links.isEmpty();
+    }
+
+    public static boolean isCustomLinkPayloadValid(String title, String description, Map<String, Object> resources,
+                                                   Map<String, Object> fields) {
+        return isTitleValid(title) && isDescriptionValid(description) && !resources.isEmpty() &&
+                isCustomLinkMapValid(resources) && isCustomLinkMapValid(fields);
+    }
+
+    private static boolean isCustomLinkMapValid(Map<String, Object> map) {
+        if(map.isEmpty())
+            return true;
+        for (Object value : map.values())
+            if(value.toString().isEmpty())
+                return false;
+        return true;
     }
 
     public static boolean isTitleValid(String title) {

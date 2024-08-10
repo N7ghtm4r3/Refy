@@ -36,8 +36,6 @@ public class TeamsHelper extends RefyItemsHelper<Team> implements RefyResourcesM
                     ")" +
             " VALUES ";
 
-    private static final String VALUES_SLICE = "(?, ?, ?)";
-
     private static final String DETACH_MEMBERS_FROM_TEAM_QUERY =
             "DELETE FROM " + MEMBERS_KEY + " WHERE "
                     + TEAM_IDENTIFIER_KEY + "='%s' " + "AND " + OWNER_KEY + " IN (";
@@ -96,7 +94,7 @@ public class TeamsHelper extends RefyItemsHelper<Team> implements RefyResourcesM
         String logoUrl = createLogoResource(logo, teamId + System.currentTimeMillis());
         teamsRepository.saveTeam(teamId, payload.title, logoUrl, payload.description, userId);
         List<String> members = JsonHelper.toList(payload.members.put(userId));
-        executeInsertBatch(ADD_MEMBERS_QUERY, VALUES_SLICE, members, query -> {
+        executeInsertBatch(ADD_MEMBERS_QUERY, TUPLE_VALUES_SLICE, members, query -> {
             int index = 1;
             TeamRole role = VIEWER;
             for (String member : members) {
@@ -116,7 +114,7 @@ public class TeamsHelper extends RefyItemsHelper<Team> implements RefyResourcesM
         String logoUrl = createLogoResource(logo, teamId + System.currentTimeMillis());
         teamsRepository.editTeam(teamId, payload.title, logoUrl, payload.description, userId);
         List<String> members = JsonHelper.toList(payload.members.put(userId));
-        manageAttachments(getEditWorkflow(team), VALUES_SLICE, teamId, members, getBatchQuery(team, members));
+        manageAttachments(getEditWorkflow(team), TUPLE_VALUES_SLICE, teamId, members, getBatchQuery(team, members));
         deleteLogoResource(teamId);
         saveResource(logo, logoUrl);
     }

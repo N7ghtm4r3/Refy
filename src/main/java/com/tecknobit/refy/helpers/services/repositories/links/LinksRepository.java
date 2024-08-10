@@ -1,6 +1,5 @@
 package com.tecknobit.refy.helpers.services.repositories.links;
 
-import com.tecknobit.refy.helpers.services.repositories.RefyItemsRepository;
 import com.tecknobit.refycore.records.links.RefyLink;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.Modifying;
@@ -24,7 +23,7 @@ import static com.tecknobit.refycore.records.links.RefyLink.*;
 
 @Service
 @Repository
-public interface LinksRepository extends RefyItemsRepository<RefyLink> {
+public interface LinksRepository extends LinksBaseRepository<RefyLink> {
 
     @Query(
             value = "SELECT " + LINK_IDENTIFIER_KEY + " FROM " + LINKS_KEY + " WHERE "
@@ -37,6 +36,7 @@ public interface LinksRepository extends RefyItemsRepository<RefyLink> {
 
     @Query(
             value = "SELECT l.* FROM " + LINKS_KEY + " AS l WHERE l." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
+                    " AND dtype='" + LINK_KEY + "'" +
                     " UNION" +
                     " SELECT l.* FROM " + LINKS_KEY + " AS l INNER JOIN " + MEMBERS_KEY + " ON l." + OWNER_KEY + "=" +
                     MEMBERS_KEY + "." + OWNER_KEY + " INNER JOIN " + COLLECTIONS_TEAMS_TABLE + " ON " + MEMBERS_KEY +
@@ -115,16 +115,6 @@ public interface LinksRepository extends RefyItemsRepository<RefyLink> {
             @Param(DESCRIPTION_KEY) String description,
             @Param(REFERENCE_LINK_KEY) String referenceLink,
             @Param(OWNER_KEY) String owner
-    );
-
-    @Modifying(clearAutomatically = true)
-    @Transactional
-    @Query(
-            value = "DELETE FROM " + LINKS_KEY + " WHERE " + LINK_IDENTIFIER_KEY + "=:" + LINK_IDENTIFIER_KEY,
-            nativeQuery = true
-    )
-    void deleteLink(
-            @Param(LINK_IDENTIFIER_KEY) String linkId
     );
 
 }

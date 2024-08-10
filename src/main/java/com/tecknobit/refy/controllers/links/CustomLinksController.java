@@ -85,12 +85,42 @@ public class CustomLinksController extends DefaultRefyController<CustomRefyLink>
             @PathVariable(LINK_IDENTIFIER_KEY) String linkId,
             @RequestBody Map<String, Object> payload
     ) {
-        return "";
+        if(isUserNotAuthorized(userId, token, linkId))
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        loadJsonHelper(payload);
+        String title = jsonHelper.getString(TITLE_KEY);
+        String description = jsonHelper.getString(DESCRIPTION_KEY);
+        Map<String, Object> resources = jsonHelper.getJSONObject(RESOURCES_KEY, new JSONObject()).toMap();
+        Map<String, Object> fields = jsonHelper.getJSONObject(FIELDS_KEY, new JSONObject()).toMap();
+        if(!isCustomLinkPayloadValid(title, description, resources, fields))
+            return failedResponse(WRONG_PROCEDURE_MESSAGE);
+        boolean hasUniqueAccess = jsonHelper.getBoolean(UNIQUE_ACCESS_KEY);
+        String sExpiredTime = jsonHelper.getString(EXPIRED_TIME_KEY);
+        ExpiredTime expiredTime;
+        if(sExpiredTime != null) {
+            try {
+                expiredTime = ExpiredTime.valueOf(sExpiredTime);
+            } catch (IllegalArgumentException e) {
+                return failedResponse(WRONG_PROCEDURE_MESSAGE);
+            }
+        } else
+            expiredTime = ExpiredTime.NO_EXPIRATION;
+        customLinksHelper.editCustomLink(userId, linkId, title, description, hasUniqueAccess, expiredTime, resources,
+                fields);
+        return successResponse();
     }
 
+    @GetMapping(
+            headers = TOKEN_KEY,
+            path = "/{" + LINK_IDENTIFIER_KEY + "}"
+    )
     @Override
-    public <T> T getItem(String token, String userId, String itemId) {
-        return super.getItem(token, userId, itemId);
+    public <T> T getItem(
+            @RequestHeader(TOKEN_KEY) String token,
+            @PathVariable(USER_IDENTIFIER_KEY) String userId,
+            @PathVariable(LINK_IDENTIFIER_KEY) String linkId
+    ) {
+        return super.getItem(token, userId, linkId);
     }
 
     @DeleteMapping(

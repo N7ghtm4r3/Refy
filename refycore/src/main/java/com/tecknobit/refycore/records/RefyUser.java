@@ -131,6 +131,16 @@ public class RefyUser extends EquinoxUser {
         );
     }
 
+    //TODO: TO REMOVE
+    public RefyUser(String id, boolean toRemoveForTestingOnly) {
+        super(id, null, "Bello", "Utente", "Prova@gmail.com", "12345678", "https://res.cloudinary.com/momentum-media-group-pty-ltd/image/upload/v1686795211/Space%20Connect/space-exploration-sc_fm1ysf.jpg", "en",
+                ApplicationTheme.Auto);
+        tagName = "@tagName";
+        this.links = List.of();
+        this.teams = List.of();
+        this.collections = List.of();
+    }
+
     public RefyUser(String id, String token, String name, String surname, String email, String password, String language,
                     String tagName, List<RefyLink> links, List<Team> teams, List<LinksCollection> collections,
                     List<CustomRefyLink> customLinks) {

@@ -25,7 +25,7 @@ public interface CustomLinksRepository extends LinksBaseRepository<CustomRefyLin
 
     @Query(
             value = "SELECT l.* FROM " + LINKS_KEY + " AS l WHERE l." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY
-                    + " AND dtype='" + CUSTOM_LINK_KEY + "'",
+                    + " AND dtype='" + CUSTOM_LINK_KEY + "' ORDER BY " + CREATION_DATE_KEY,
             nativeQuery = true
     )
     List<CustomRefyLink> getUserCustomLinks(
@@ -86,9 +86,8 @@ public interface CustomLinksRepository extends LinksBaseRepository<CustomRefyLin
             value = "UPDATE " + LINKS_KEY + " SET " +
                     TITLE_KEY + "=:" + TITLE_KEY + "," +
                     DESCRIPTION_KEY + "=:" + DESCRIPTION_KEY + "," +
-                    REFERENCE_LINK_KEY + "=:" + REFERENCE_LINK_KEY +
-                    EXPIRED_TIME_KEY + "=:" + EXPIRED_TIME_KEY + "," +
-                    UNIQUE_ACCESS_KEY + "=:" + UNIQUE_ACCESS_KEY + "," +
+                    EXPIRED_TIME_KEY + "=" + ":#{#" + EXPIRED_TIME_KEY + ".name()}," +
+                    UNIQUE_ACCESS_KEY + "=:" + UNIQUE_ACCESS_KEY +
                     " WHERE " + LINK_IDENTIFIER_KEY + "=:" + LINK_IDENTIFIER_KEY + " AND " + OWNER_KEY + "=:" + OWNER_KEY,
             nativeQuery = true
     )
@@ -96,7 +95,6 @@ public interface CustomLinksRepository extends LinksBaseRepository<CustomRefyLin
             @Param(LINK_IDENTIFIER_KEY) String linkId,
             @Param(TITLE_KEY) String title,
             @Param(DESCRIPTION_KEY) String description,
-            @Param(REFERENCE_LINK_KEY) String referenceLink,
             @Param(EXPIRED_TIME_KEY) ExpiredTime expiredTime,
             @Param(UNIQUE_ACCESS_KEY) boolean hasUniqueAccess,
             @Param(OWNER_KEY) String owner

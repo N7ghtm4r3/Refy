@@ -326,6 +326,11 @@ public class Team extends RefyItem {
         }
 
         //TODO: TO REMOVE
+        public RefyTeamMember(String id) {
+            this(new RefyUser(id), null, null);
+        }
+
+        //TODO: TO REMOVE
         public RefyTeamMember(String id, String name, String surname, String email, String profilePic, String tagName,
                               TeamRole role) {
             this(id, name, surname, email, profilePic, tagName, role, null);
@@ -335,7 +340,7 @@ public class Team extends RefyItem {
         public RefyTeamMember(String id, String name, String surname, String email, String profilePic, String tagName,
                               TeamRole role, Team sourceTeam) {
             hItem = null;
-            owner = null;
+            owner = new RefyUser(id, true);
             this.role = role;
             this.sourceTeam = sourceTeam;
         }

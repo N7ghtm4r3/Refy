@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.tecknobit.refycore.records.LinksCollection.COLLECTIONS_KEY;
@@ -90,7 +91,9 @@ public class CustomRefyLink extends RefyLink {
     @Column(name = EXPIRED_TIME_KEY)
     private final ExpiredTime expiredTime;
 
-    @ElementCollection
+    @ElementCollection(
+            fetch = FetchType.EAGER
+    )
     @CollectionTable(
             name = RESOURCES_KEY,
             joinColumns = @JoinColumn(name = IDENTIFIER_KEY),
@@ -103,7 +106,9 @@ public class CustomRefyLink extends RefyLink {
     @Column(name = RESOURCE_VALUE_KEY)
     private final Map<String, String> resources;
 
-    @ElementCollection
+    @ElementCollection(
+            fetch = FetchType.EAGER
+    )
     @CollectionTable(
             name = FIELDS_KEY,
             joinColumns = @JoinColumn(name = IDENTIFIER_KEY),
@@ -123,7 +128,7 @@ public class CustomRefyLink extends RefyLink {
     public CustomRefyLink(String id, RefyUser owner, String title, String description, String referenceLink,
                           long creationDate, boolean uniqueAccess, ExpiredTime expiredTime,
                           Map<String, String> resources, Map<String, String> fields) {
-        super(id, owner, title, description, referenceLink, null, null);
+        super(id, owner, title, description, referenceLink, List.of(), List.of());
         this.creationDate = creationDate;
         this.uniqueAccess = uniqueAccess;
         this.expiredTime = expiredTime;
@@ -151,6 +156,7 @@ public class CustomRefyLink extends RefyLink {
         return timeFormatter.formatAsString(creationDate);
     }
 
+    @JsonGetter(UNIQUE_ACCESS_KEY)
     public boolean hasUniqueAccess() {
         return uniqueAccess;
     }

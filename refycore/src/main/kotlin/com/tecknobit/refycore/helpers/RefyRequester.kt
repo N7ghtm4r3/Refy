@@ -11,11 +11,18 @@ import com.tecknobit.refycore.records.LinksCollection.COLLECTIONS_KEY
 import com.tecknobit.refycore.records.LinksCollection.COLLECTION_COLOR_KEY
 import com.tecknobit.refycore.records.RefyItem.TITLE_KEY
 import com.tecknobit.refycore.records.RefyUser.*
+import com.tecknobit.refycore.records.Team
+import com.tecknobit.refycore.records.Team.LOGO_PIC_KEY
+import com.tecknobit.refycore.records.Team.MEMBERS_KEY
 import com.tecknobit.refycore.records.links.RefyLink
 import com.tecknobit.refycore.records.links.RefyLink.DESCRIPTION_KEY
 import com.tecknobit.refycore.records.links.RefyLink.REFERENCE_LINK_KEY
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
 import org.json.JSONObject
+import java.io.File
 
 class RefyRequester(
     host: String,
@@ -115,7 +122,7 @@ class RefyRequester(
         val payload = Params()
         payload.addParam(REFERENCE_LINK_KEY, referenceLink)
         payload.addParam(DESCRIPTION_KEY, description)
-        return payload;
+        return payload
     }
 
     fun manageLinkCollections(
@@ -189,12 +196,9 @@ class RefyRequester(
     private fun assembleLinksEndpointPath(
         subEndpoint: String = ""
     ): String {
-        val subPath = if(subEndpoint.isNotBlank())
-            "/$subEndpoint"
-        else
-            subEndpoint
-        return assembleUsersEndpointPath(
-            endpoint = "/$LINKS_KEY$subPath"
+        return assembleCustomEndpointPath(
+            customEndpoint = LINKS_KEY,
+            subEndpoint = subEndpoint
         )
     }
 
@@ -270,7 +274,7 @@ class RefyRequester(
         payload.addParam(TITLE_KEY, title)
         payload.addParam(DESCRIPTION_KEY, description)
         payload.addParam(LINKS_KEY, JSONArray(links))
-        return payload;
+        return payload
     }
 
     fun manageCollectionLinks(
@@ -360,12 +364,185 @@ class RefyRequester(
     private fun assembleCollectionsEndpointPath(
         subEndpoint: String = ""
     ): String {
+        return assembleCustomEndpointPath(
+            customEndpoint = COLLECTIONS_KEY,
+            subEndpoint = subEndpoint
+        )
+    }
+
+    fun getTeams() : JSONObject {
+        return execGet(
+            endpoint = assembleTeamsEndpointPath()
+        )
+    }
+
+    fun createTeam(
+        title: String,
+        logoPic: File,
+        description: String,
+        members: List<String>
+    ) : JSONObject {
+        val body = createTeamPayload(
+            title = title,
+            logoPic = logoPic,
+            description = description,
+            members = members
+        )
+        return execMultipartRequest(
+            endpoint = assembleTeamsEndpointPath(),
+            body = body
+        )
+    }
+
+    fun editTeam(
+        team: Team,
+        title: String,
+        logoPic: File,
+        description: String,
+        members: List<String>
+    ) : JSONObject {
+        return editTeam(
+            teamId = team.id,
+            title = title,
+            logoPic = logoPic,
+            description = description,
+            members = members
+        )
+    }
+
+    fun editTeam(
+        teamId: String,
+        title: String,
+        logoPic: File,
+        description: String,
+        members: List<String>
+    ) : JSONObject {
+        val body = createTeamPayload(
+            title = title,
+            logoPic = logoPic,
+            description = description,
+            members = members
+        )
+        return execMultipartRequest(
+            endpoint = assembleTeamsEndpointPath(
+                subEndpoint = teamId
+            ),
+            body = body
+        )
+    }
+
+    private fun createTeamPayload(
+        title: String,
+        logoPic: File,
+        description: String,
+        members: List<String>
+    ) : MultipartBody {
+        return MultipartBody.Builder().setType(MultipartBody.FORM)
+            .addFormDataPart(
+                TITLE_KEY,
+                title,
+            )
+            .addFormDataPart(
+                LOGO_PIC_KEY,
+                logoPic.name,
+                logoPic.readBytes().toRequestBody("*/*".toMediaType())
+            )
+            .addFormDataPart(
+                DESCRIPTION_KEY,
+                description,
+            )
+            .addFormDataPart(
+                MEMBERS_KEY,
+                JSONArray(members).toString(),
+            )
+            .build()
+    }
+
+    fun manageTeamLinks(
+        team: Team,
+        links: List<String>
+    ) : JSONObject {
+        return manageTeamLinks(
+            teamId = team.id,
+            links = links
+        )
+    }
+
+    fun manageTeamLinks(
+        teamId: String,
+        links: List<String>
+    ) : JSONObject {
+        val payload = Params()
+        payload.addParam(LINKS_KEY, JSONArray(links))
+        return execPut(
+            endpoint = assembleTeamsEndpointPath(
+                subEndpoint = "$teamId/$LINKS_KEY"
+            ),
+            payload = payload
+        )
+    }
+
+    fun manageTeamCollections(
+        team: Team,
+        collections: List<String>
+    ) : JSONObject {
+        return manageTeamCollections(
+            teamId = team.id,
+            collections = collections
+        )
+    }
+
+    fun manageTeamCollections(
+        teamId: String,
+        collections: List<String>
+    ) : JSONObject {
+        val payload = Params()
+        payload.addParam(COLLECTIONS_KEY, JSONArray(collections))
+        return execPut(
+            endpoint = assembleTeamsEndpointPath(
+                subEndpoint = "$teamId/$COLLECTIONS_KEY"
+            ),
+            payload = payload
+        )
+    }
+
+    fun getTeam(
+        team: Team
+    ): JSONObject {
+        return getTeam(
+            teamId = team.id
+        )
+    }
+
+    fun getTeam(
+        teamId: String
+    ): JSONObject {
+        return execGet(
+            endpoint = assembleTeamsEndpointPath(
+                subEndpoint = teamId
+            )
+        )
+    }
+
+    private fun assembleTeamsEndpointPath(
+        subEndpoint: String = ""
+    ): String {
+        return assembleCustomEndpointPath(
+            customEndpoint = TEAMS_KEY,
+            subEndpoint = subEndpoint
+        )
+    }
+
+    private fun assembleCustomEndpointPath(
+        customEndpoint: String,
+        subEndpoint: String = ""
+    ): String {
         val subPath = if(subEndpoint.isNotBlank())
             "/$subEndpoint"
         else
             subEndpoint
         return assembleUsersEndpointPath(
-            endpoint = "/$COLLECTIONS_KEY$subPath"
+            endpoint = "/$customEndpoint$subPath"
         )
     }
 

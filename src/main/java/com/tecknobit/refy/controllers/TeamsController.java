@@ -37,7 +37,7 @@ public class TeamsController extends DefaultRefyController<Team> {
     ) {
         if(!isMe(userId, token))
             return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        return (T) teamsHelper.getAllUserTeams(userId);
+        return (T) successResponse(teamsHelper.getAllUserTeams(userId));
     }
 
     @Override
@@ -58,7 +58,7 @@ public class TeamsController extends DefaultRefyController<Team> {
         try {
             teamsHelper.createTeam(userId, generateIdentifier(), payload);
             return successResponse();
-        } catch (IOException e) {
+        } catch (Exception e) {
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         }
     }
@@ -68,7 +68,7 @@ public class TeamsController extends DefaultRefyController<Team> {
         return null;
     }
 
-    @PatchMapping(
+    @PostMapping(
             headers = TOKEN_KEY,
             path = "/{" + TEAM_IDENTIFIER_KEY + "}"
     )
@@ -98,7 +98,7 @@ public class TeamsController extends DefaultRefyController<Team> {
             @PathVariable(TEAM_IDENTIFIER_KEY) String teamId,
             @RequestBody Map<String, Object> payload
     ) {
-        if(isUserNotAuthorized(userId, token, teamId) || !userItem.isAdmin(teamId))
+        if(isUserNotAuthorized(userId, token, teamId) || !userItem.isAdmin(userId))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         return editAttachmentsList(payload, LINKS_KEY, new AttachmentsManagement() {
 
@@ -130,7 +130,7 @@ public class TeamsController extends DefaultRefyController<Team> {
             @PathVariable(TEAM_IDENTIFIER_KEY) String teamId,
             @RequestBody Map<String, Object> payload
     ) {
-        if(isUserNotAuthorized(userId, token, teamId) || !userItem.isAdmin(teamId))
+        if(isUserNotAuthorized(userId, token, teamId) || !userItem.isAdmin(userId))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         return editAttachmentsList(payload, COLLECTIONS_KEY, new AttachmentsManagement() {
 

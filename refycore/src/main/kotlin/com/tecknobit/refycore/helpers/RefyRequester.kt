@@ -6,6 +6,7 @@ import com.tecknobit.equinox.environment.helpers.EquinoxBaseEndpointsSet.SIGN_UP
 import com.tecknobit.equinox.environment.helpers.EquinoxRequester
 import com.tecknobit.equinox.inputs.InputValidator.DEFAULT_LANGUAGE
 import com.tecknobit.equinox.inputs.InputValidator.isLanguageValid
+import com.tecknobit.refycore.helpers.RefyEndpointsSet.*
 import com.tecknobit.refycore.records.LinksCollection
 import com.tecknobit.refycore.records.LinksCollection.COLLECTIONS_KEY
 import com.tecknobit.refycore.records.LinksCollection.COLLECTION_COLOR_KEY
@@ -14,12 +15,18 @@ import com.tecknobit.refycore.records.RefyUser.*
 import com.tecknobit.refycore.records.Team
 import com.tecknobit.refycore.records.Team.LOGO_PIC_KEY
 import com.tecknobit.refycore.records.Team.MEMBERS_KEY
+import com.tecknobit.refycore.records.Team.RefyTeamMember
+import com.tecknobit.refycore.records.Team.RefyTeamMember.TEAM_ROLE_KEY
+import com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole
+import com.tecknobit.refycore.records.links.CustomRefyLink
+import com.tecknobit.refycore.records.links.CustomRefyLink.*
 import com.tecknobit.refycore.records.links.RefyLink
 import com.tecknobit.refycore.records.links.RefyLink.DESCRIPTION_KEY
 import com.tecknobit.refycore.records.links.RefyLink.REFERENCE_LINK_KEY
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.aspectj.weaver.Member
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
@@ -176,10 +183,8 @@ class RefyRequester(
     fun deleteLink(
         link: RefyLink
     ): JSONObject {
-        return execDelete(
-            endpoint = assembleLinksEndpointPath(
-                subEndpoint = link.id
-            )
+        return deleteLink(
+            linkId = link.id
         )
     }
 
@@ -524,11 +529,231 @@ class RefyRequester(
         )
     }
 
+    fun updateMemberRole(
+        team: Team,
+        member: RefyTeamMember,
+        role: TeamRole
+    ): JSONObject {
+        return updateMemberRole(
+            teamId = team.id,
+            memberId = member.id,
+            role = role
+        )
+    }
+
+    fun updateMemberRole(
+        teamId: String,
+        memberId: String,
+        role: TeamRole
+    ): JSONObject {
+        val payload = Params()
+        payload.addParam(TEAM_ROLE_KEY, role)
+        return execPatch(
+            endpoint = assembleTeamsEndpointPath(
+                subEndpoint = "$teamId/$MEMBERS_KEY/$memberId$UPDATE_MEMBER_ROLE_ENDPOINT"
+            ),
+            payload = payload
+        )
+    }
+
+    fun removeMember(
+        team: Team,
+        member: RefyTeamMember
+    ): JSONObject {
+        return removeMember(
+            teamId = team.id,
+            memberId = member.id
+        )
+    }
+
+    fun removeMember(
+        teamId: String,
+        memberId: String
+    ): JSONObject {
+        return execDelete(
+            endpoint = assembleTeamsEndpointPath(
+                subEndpoint = "$teamId/$MEMBERS_KEY/$memberId"
+            )
+        )
+    }
+
+    fun leave(
+        team: Team
+    ): JSONObject {
+        return leave(
+            teamId = team.id
+        )
+    }
+
+    fun leave(
+        teamId: String
+    ): JSONObject {
+        return execDelete(
+            endpoint = assembleTeamsEndpointPath(
+                subEndpoint = "$teamId$LEAVE_ENDPOINT"
+            )
+        )
+    }
+
+    fun deleteTeam(
+        team: Team
+    ): JSONObject {
+        return leave(
+            teamId = team.id
+        )
+    }
+
+    fun deleteTeam(
+        teamId: String
+    ): JSONObject {
+        return execDelete(
+            endpoint = assembleTeamsEndpointPath(
+                subEndpoint = teamId
+            )
+        )
+    }
+
     private fun assembleTeamsEndpointPath(
         subEndpoint: String = ""
     ): String {
         return assembleCustomEndpointPath(
             customEndpoint = TEAMS_KEY,
+            subEndpoint = subEndpoint
+        )
+    }
+
+    fun getCustomLinks() : JSONObject {
+        return execGet(
+            endpoint = assembleCustomLinksEndpointPath()
+        )
+    }
+
+    fun createCustomLink(
+        title: String,
+        description: String,
+        resources: Map<String, String>,
+        fields: Map<String, String>,
+        hasUniqueAccess: Boolean = false,
+        expiredTime: ExpiredTime = ExpiredTime.NO_EXPIRATION
+    ): JSONObject {
+        val payload = createCustomLinkPayload(
+            title = title,
+            description = description,
+            resources = resources,
+            fields = fields,
+            hasUniqueAccess = hasUniqueAccess,
+            expiredTime = expiredTime
+        )
+        return execPost(
+            endpoint = assembleCustomLinksEndpointPath(),
+            payload = payload
+        )
+    }
+
+    fun editCustomLink(
+        link: CustomRefyLink,
+        title: String,
+        description: String,
+        resources: Map<String, String>,
+        fields: Map<String, String>,
+        hasUniqueAccess: Boolean = false,
+        expiredTime: ExpiredTime = ExpiredTime.NO_EXPIRATION
+    ): JSONObject {
+        return editCustomLink(
+            linkId = link.id,
+            title = title,
+            description = description,
+            resources = resources,
+            fields = fields,
+            hasUniqueAccess = hasUniqueAccess,
+            expiredTime = expiredTime
+        )
+    }
+
+    fun editCustomLink(
+        linkId: String,
+        title: String,
+        description: String,
+        resources: Map<String, String>,
+        fields: Map<String, String>,
+        hasUniqueAccess: Boolean = false,
+        expiredTime: ExpiredTime = ExpiredTime.NO_EXPIRATION
+    ): JSONObject {
+        val payload = createCustomLinkPayload(
+            title = title,
+            description = description,
+            resources = resources,
+            fields = fields,
+            hasUniqueAccess = hasUniqueAccess,
+            expiredTime = expiredTime
+        )
+        return execPatch(
+            endpoint = assembleCustomLinksEndpointPath(
+                subEndpoint = linkId
+            ),
+            payload = payload
+        )
+    }
+
+    private fun createCustomLinkPayload(
+        title: String,
+        description: String,
+        resources: Map<String, String>,
+        fields: Map<String, String>,
+        hasUniqueAccess: Boolean,
+        expiredTime: ExpiredTime
+    ) : Params {
+        val payload = Params()
+        payload.addParam(TITLE_KEY, title)
+        payload.addParam(DESCRIPTION_KEY, description)
+        payload.addParam(RESOURCES_KEY, JSONObject(resources))
+        payload.addParam(FIELDS_KEY, JSONObject(fields))
+        payload.addParam(UNIQUE_ACCESS_KEY, hasUniqueAccess)
+        payload.addParam(EXPIRED_TIME_KEY, expiredTime)
+        return payload
+    }
+
+    fun getCustomLink(
+        link: CustomRefyLink
+    ): JSONObject {
+        return getCustomLink(
+            linkId = link.id
+        )
+    }
+
+    fun getCustomLink(
+        linkId: String
+    ): JSONObject {
+        return execGet(
+            endpoint = assembleCustomLinksEndpointPath(
+                subEndpoint = linkId
+            )
+        )
+    }
+
+    fun deleteCustomLink(
+        link: CustomRefyLink
+    ): JSONObject {
+        return deleteCustomLink(
+            linkId = link.id
+        )
+    }
+
+    fun deleteCustomLink(
+        linkId: String
+    ): JSONObject {
+        return execDelete(
+            endpoint = assembleCustomLinksEndpointPath(
+                subEndpoint = linkId
+            )
+        )
+    }
+
+    private fun assembleCustomLinksEndpointPath(
+        subEndpoint: String = ""
+    ): String {
+        return assembleCustomEndpointPath(
+            customEndpoint = CUSTOM_LINKS_ENDPOINT,
             subEndpoint = subEndpoint
         )
     }
@@ -541,8 +766,12 @@ class RefyRequester(
             "/$subEndpoint"
         else
             subEndpoint
+        val requestUrl = "$customEndpoint$subPath"
         return assembleUsersEndpointPath(
-            endpoint = "/$customEndpoint$subPath"
+            endpoint = if(customEndpoint.startsWith("/"))
+                requestUrl
+            else
+                "/$requestUrl"
         )
     }
 

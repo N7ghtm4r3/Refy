@@ -37,7 +37,7 @@ public class CustomLinksController extends DefaultRefyController<CustomRefyLink>
     ) {
         if(!isMe(userId, token))
             return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        return (T) customLinksHelper.getUserCustomLinks(userId);
+        return (T) successResponse(customLinksHelper.getUserCustomLinks(userId));
     }
 
     @PostMapping(

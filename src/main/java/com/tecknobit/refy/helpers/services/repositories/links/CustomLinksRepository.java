@@ -62,7 +62,7 @@ public interface CustomLinksRepository extends LinksBaseRepository<CustomRefyLin
                     ":" + DESCRIPTION_KEY + "," +
                     ":" + REFERENCE_LINK_KEY + "," +
                     ":" + CREATION_DATE_KEY + "," +
-                    ":" + EXPIRED_TIME_KEY + "," +
+                    ":#{#" + EXPIRED_TIME_KEY + ".name()}," +
                     ":" + UNIQUE_ACCESS_KEY + "," +
                     ":" + OWNER_KEY +
                     ")",

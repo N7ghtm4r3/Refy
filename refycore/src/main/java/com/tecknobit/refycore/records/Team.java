@@ -3,12 +3,14 @@ package com.tecknobit.refycore.records;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.tecknobit.apimanager.annotations.Returner;
 import com.tecknobit.apimanager.formatters.JsonHelper;
 import com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole;
 import com.tecknobit.refycore.records.links.RefyLink;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -16,13 +18,14 @@ import java.util.HashSet;
 import java.util.List;
 
 import static com.tecknobit.equinox.environment.records.EquinoxUser.PROFILE_PIC_KEY;
-import static com.tecknobit.refycore.records.LinksCollection.COLLECTIONS_KEY;
-import static com.tecknobit.refycore.records.LinksCollection.COLLECTION_IDENTIFIER_KEY;
+import static com.tecknobit.refycore.records.LinksCollection.*;
 import static com.tecknobit.refycore.records.RefyUser.*;
 import static com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole.ADMIN;
 import static com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole.VIEWER;
+import static com.tecknobit.refycore.records.Team.RefyTeamMember.returnMembers;
 import static com.tecknobit.refycore.records.Team.TEAM_IDENTIFIER_KEY;
 import static com.tecknobit.refycore.records.links.RefyLink.LINK_IDENTIFIER_KEY;
+import static com.tecknobit.refycore.records.links.RefyLink.returnLinks;
 import static jakarta.persistence.EnumType.STRING;
 
 @Entity
@@ -185,10 +188,9 @@ public class Team extends RefyItem {
     public Team(JSONObject jTeam) {
         super(jTeam);
         logoPic = hItem.getString(LOGO_PIC_KEY);
-        //TODO: TO LOAD CORRECTLY
-        members = List.of();
-        links = List.of();
-        collections = List.of();
+        members = returnMembers(hItem.getJSONArray(MEMBERS_KEY));
+        links = returnLinks(hItem.getJSONArray(LINKS_KEY));
+        collections = returnCollections(hItem.getJSONArray(COLLECTIONS_KEY));
     }
 
     @JsonGetter(LOGO_PIC_KEY)
@@ -273,6 +275,23 @@ public class Team extends RefyItem {
         return userId.equals(owner.getId());
     }
 
+    /**
+     * Method to assemble and return an {@link ArrayList} of teams
+     *
+     * @param jTeams: teams list details formatted as JSON
+     *
+     * @return the team list as {@link ArrayList} of {@link Team}
+     */
+    @Returner
+    public static ArrayList<Team> returnTeams(JSONArray jTeams) {
+        ArrayList<Team> teams = new ArrayList<>();
+        if (jTeams == null)
+            return teams;
+        for (int j = 0; j < jTeams.length(); j++)
+            teams.add(new Team(jTeams.getJSONObject(j)));
+        return teams;
+    }
+
     @Entity
     @Table(name = MEMBERS_KEY)
     @IdClass(TeamMemberCompositeKey.class)
@@ -355,8 +374,7 @@ public class Team extends RefyItem {
 
         public RefyTeamMember(JSONObject jRefyTeamMember) {
             hItem = new JsonHelper(jRefyTeamMember);
-            //TODO: TO LOAD CORRECTLY
-            owner = null;
+            owner = getInstance(hItem.getJSONObject(OWNER_KEY));
             role = TeamRole.valueOf(TEAM_ROLE_KEY);
             sourceTeam = null;
         }
@@ -394,6 +412,23 @@ public class Team extends RefyItem {
 
         public TeamRole getRole() {
             return role;
+        }
+
+        /**
+         * Method to assemble and return an {@link ArrayList} of members
+         *
+         * @param jMembers: members list details formatted as JSON
+         *
+         * @return the members list as {@link ArrayList} of {@link RefyTeamMember}
+         */
+        @Returner
+        public static ArrayList<RefyTeamMember> returnMembers(JSONArray jMembers) {
+            ArrayList<RefyTeamMember> members = new ArrayList<>();
+            if (jMembers == null)
+                return members;
+            for (int j = 0; j < jMembers.length(); j++)
+                members.add(new RefyTeamMember(jMembers.getJSONObject(j)));
+            return members;
         }
 
     }

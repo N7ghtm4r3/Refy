@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import static com.tecknobit.equinox.environment.records.EquinoxUser.*;
 import static com.tecknobit.refycore.records.LinksCollection.COLLECTIONS_KEY;
 import static com.tecknobit.refycore.records.RefyUser.*;
+import static com.tecknobit.refycore.records.RefyUser.getInstance;
 
 @Structure
 @MappedSuperclass
@@ -52,8 +53,7 @@ public abstract class RefyItem extends EquinoxItem {
 
     public RefyItem(JSONObject jRefyItem) {
         super(jRefyItem);
-        //TODO: TO LOAD CORRECTLY
-        owner = null;
+        owner = getInstance(hItem.getJSONObject(OWNER_KEY));
         title = hItem.getString(NAME_KEY);
         description = hItem.getString(DESCRIPTION_KEY);
     }

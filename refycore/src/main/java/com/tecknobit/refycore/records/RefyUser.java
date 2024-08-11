@@ -3,6 +3,7 @@ package com.tecknobit.refycore.records;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.tecknobit.apimanager.annotations.Returner;
 import com.tecknobit.equinox.environment.records.EquinoxUser;
 import com.tecknobit.refycore.records.Team.RefyTeamMember;
 import com.tecknobit.refycore.records.links.CustomRefyLink;
@@ -14,7 +15,11 @@ import java.util.List;
 
 import static com.tecknobit.equinox.environment.records.EquinoxUser.USERS_KEY;
 import static com.tecknobit.refycore.records.LinksCollection.COLLECTIONS_KEY;
+import static com.tecknobit.refycore.records.LinksCollection.returnCollections;
 import static com.tecknobit.refycore.records.RefyItem.OWNER_KEY;
+import static com.tecknobit.refycore.records.Team.returnTeams;
+import static com.tecknobit.refycore.records.links.CustomRefyLink.returnCustomLinks;
+import static com.tecknobit.refycore.records.links.RefyLink.returnLinks;
 
 @Entity
 @Table(name = USERS_KEY)
@@ -88,24 +93,8 @@ public class RefyUser extends EquinoxUser {
     private List<RefyTeamMember> member;
 
     public RefyUser() {
-        super();
-        tagName = "@tagName";
-        this.links = List.of();
-        //TODO: TO LOAD CORRECTLY
-        this.teams = List.of(
-                new Team("id", "Ciao", this,
-                        "https://res.cloudinary.com/momentum-media-group-pty-ltd/image/upload/v1686795211/Space%20Connect/space-exploration-sc_fm1ysf.jpg",
-                        "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper. Fusce ut justo egestas, consectetur ipsum eget, suscipit felis. Vivamus sodales iaculis ligula vitae pretium. Suspendisse interdum varius sem, sed porta elit hendrerit sed. Suspendisse accumsan auctor lectus a venenatis. Maecenas id fermentum leo. Praesent aliquam sagittis aliquam."
-                        ),
-                new Team("id2", "Ciao2", this, "https://cdn.mos.cms.futurecdn.net/9UmWCbyxpKaEGXjwFG7dXo-1200-80.jpg",
-                        "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper. Fusce ut justo egestas, consectetur ipsum eget, suscipit felis. Vivamus sodales iaculis ligula vitae pretium. Suspendisse interdum varius sem, sed porta elit hendrerit sed. Suspendisse accumsan auctor lectus a venenatis. Maecenas id fermentum leo. Praesent aliquam sagittis aliquam.")
-        );
-        //TODO: TO LOAD CORRECTLY
-        this.collections = List.of(
-                new LinksCollection("#gegw", this, "id", "#FFFFFF",
-                        "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper. Fusce ut justo egestas, consectetur ipsum eget, suscipit felis. Vivamus sodales iaculis ligula vitae pretium. Suspendisse interdum varius sem, sed porta elit hendrerit sed. Suspendisse accumsan auctor lectus a venenatis. Maecenas id fermentum leo. Praesent aliquam sagittis aliquam."
-                        )
-        );
+        this(null, null, null, null, null, null, null, null, null, null,
+                List.of(), List.of(), List.of(), List.of());
     }
 
     //TODO: TO REMOVE
@@ -174,14 +163,10 @@ public class RefyUser extends EquinoxUser {
     public RefyUser(JSONObject jRefyUser) {
         super(jRefyUser);
         tagName = hItem.getString(TAG_NAME_KEY);
-        //TODO: TO LOAD CORRECTLY
-        this.links = List.of();
-        //TODO: TO LOAD CORRECTLY
-        this.teams = List.of();
-        //TODO: TO LOAD CORRECTLY
-        this.collections = List.of();
-        //TODO: TO LOAD CORRECTLY
-        this.customLinks = List.of();
+        links = returnLinks(hItem.getJSONArray(LINKS_KEY));
+        teams = returnTeams(hItem.getJSONArray(TEAMS_KEY));
+        collections = returnCollections(hItem.getJSONArray(COLLECTIONS_KEY));
+        customLinks = returnCustomLinks(hItem.getJSONArray(CUSTOM_LINKS_KEY));
     }
 
     @JsonGetter(TAG_NAME_KEY)
@@ -220,6 +205,19 @@ public class RefyUser extends EquinoxUser {
 
     public void setCustomLinks(List<CustomRefyLink> customLinks) {
         this.customLinks = customLinks;
+    }
+
+    /**
+     * Method to assemble and return a {@link EquinoxUser} instance
+     *
+     * @param jUser: user details formatted as JSON
+     * @return the user instance as {@link EquinoxUser}
+     */
+    @Returner
+    public static RefyUser getInstance(JSONObject jUser) {
+        if (jUser != null)
+            return new RefyUser(jUser);
+        return null;
     }
 
 }

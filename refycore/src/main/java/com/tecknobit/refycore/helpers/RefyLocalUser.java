@@ -3,6 +3,12 @@ package com.tecknobit.refycore.helpers;
 import com.tecknobit.apimanager.annotations.Structure;
 import com.tecknobit.apimanager.formatters.JsonHelper;
 import com.tecknobit.equinox.environment.records.EquinoxLocalUser;
+import com.tecknobit.refycore.records.LinksCollection;
+import com.tecknobit.refycore.records.Team;
+import com.tecknobit.refycore.records.links.CustomRefyLink;
+import com.tecknobit.refycore.records.links.RefyLink;
+
+import java.util.List;
 
 import static com.tecknobit.refycore.records.RefyUser.TAG_NAME_KEY;
 
@@ -18,6 +24,14 @@ public abstract class RefyLocalUser extends EquinoxLocalUser {
      * {@code tagName} the tag name of the user
      */
     protected String tagName;
+
+    private List<RefyLink> links;
+
+    private List<LinksCollection> collections;
+
+    private List<Team> teams;
+
+    private List<CustomRefyLink> customLinks;
 
     @Override
     protected void initLocalUser() {
@@ -38,6 +52,38 @@ public abstract class RefyLocalUser extends EquinoxLocalUser {
 
     public String getTagName() {
         return tagName;
+    }
+
+    public List<RefyLink> getLinks() {
+        return links;
+    }
+
+    public void setLinks(List<RefyLink> links) {
+        this.links = links;
+    }
+
+    public List<LinksCollection> getCollections() {
+        return collections;
+    }
+
+    public void setCollections(List<LinksCollection> collections) {
+        this.collections = collections;
+    }
+
+    public List<Team> getTeams() {
+        return teams;
+    }
+
+    public void setTeams(List<Team> teams) {
+        this.teams = teams;
+    }
+
+    public List<CustomRefyLink> getCustomLinks() {
+        return customLinks;
+    }
+
+    public void setCustomLinks(List<CustomRefyLink> customLinks) {
+        this.customLinks = customLinks;
     }
 
 }

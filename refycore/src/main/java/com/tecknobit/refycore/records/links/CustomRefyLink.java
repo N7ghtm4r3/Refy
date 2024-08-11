@@ -3,10 +3,13 @@ package com.tecknobit.refycore.records.links;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.tecknobit.apimanager.annotations.Returner;
 import com.tecknobit.refycore.records.RefyUser;
 import jakarta.persistence.*;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -141,9 +144,16 @@ public class CustomRefyLink extends RefyLink {
         creationDate = hItem.getLong(CREATION_DATE_KEY, -1);
         uniqueAccess = hItem.getBoolean(UNIQUE_ACCESS_KEY);
         expiredTime = ExpiredTime.valueOf(EXPIRED_TIME_KEY);
-        //TODO: TO LOAD CORRECTLY
-        resources = new HashMap<>();
-        fields = new HashMap<>();
+        resources = loadMap(hItem.getJSONObject(RESOURCE_KEY));
+        fields = loadMap(hItem.getJSONObject(FIELDS_KEY));
+    }
+
+    private Map<String, String> loadMap(JSONObject jMap) {
+        HashMap<String, String> map = new HashMap<>();
+        if(jMap != null)
+            for (String key : jMap.keySet())
+                map.put(key, jMap.getString(key));
+        return map;
     }
 
     @JsonGetter(CREATION_DATE_KEY)
@@ -190,6 +200,22 @@ public class CustomRefyLink extends RefyLink {
 
     public Map<String, String> getFields() {
         return fields;
+    }
+
+    /**
+     * Method to assemble and return an {@link ArrayList} of links
+     *
+     * @param jLinks : links list details formatted as JSON
+     * @return the link list as {@link ArrayList} of {@link CustomRefyLink}
+     */
+    @Returner
+    public static ArrayList<CustomRefyLink> returnCustomLinks(JSONArray jLinks) {
+        ArrayList<CustomRefyLink> links = new ArrayList<>();
+        if (jLinks == null)
+            return links;
+        for (int j = 0; j < jLinks.length(); j++)
+            links.add(new CustomRefyLink(jLinks.getJSONObject(j)));
+        return links;
     }
 
 }

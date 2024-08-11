@@ -2,8 +2,10 @@ package com.tecknobit.refycore.records;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.tecknobit.apimanager.annotations.Returner;
 import com.tecknobit.refycore.records.links.RefyLink;
 import jakarta.persistence.*;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -12,7 +14,9 @@ import java.util.List;
 import static com.tecknobit.refycore.records.LinksCollection.COLLECTIONS_KEY;
 import static com.tecknobit.refycore.records.RefyUser.LINKS_KEY;
 import static com.tecknobit.refycore.records.RefyUser.TEAMS_KEY;
+import static com.tecknobit.refycore.records.Team.returnTeams;
 import static com.tecknobit.refycore.records.links.RefyLink.LINK_IDENTIFIER_KEY;
+import static com.tecknobit.refycore.records.links.RefyLink.returnLinks;
 
 @Entity
 @Table(name = COLLECTIONS_KEY)
@@ -93,10 +97,8 @@ public class LinksCollection extends RefyItem implements RefyItem.ListScreenItem
     public LinksCollection(JSONObject jLinksCollection) {
         super(jLinksCollection);
         color = hItem.getString(COLLECTION_COLOR_KEY);
-        //TODO: TO LOAD CORRECTLY
-        this.links = List.of();
-        //TODO: TO LOAD CORRECTLY
-        this.teams = List.of();
+        links = returnLinks(hItem.getJSONArray(LINKS_KEY));
+        teams = returnTeams(hItem.getJSONArray(TEAMS_KEY));
     }
 
     public String getColor() {
@@ -134,6 +136,23 @@ public class LinksCollection extends RefyItem implements RefyItem.ListScreenItem
     @Override
     public boolean canBeUpdatedByUser(String loggedUserId) {
         return loggedUserId.equals(owner.getId()) || teams.isEmpty();
+    }
+
+    /**
+     * Method to assemble and return an {@link ArrayList} of collection
+     *
+     * @param jCollections: collection list details formatted as JSON
+     *
+     * @return the team list as {@link ArrayList} of {@link LinksCollection}
+     */
+    @Returner
+    public static ArrayList<LinksCollection> returnCollections(JSONArray jCollections) {
+        ArrayList<LinksCollection> collections = new ArrayList<>();
+        if (jCollections == null)
+            return collections;
+        for (int j = 0; j < jCollections.length(); j++)
+            collections.add(new LinksCollection(jCollections.getJSONObject(j)));
+        return collections;
     }
 
 }

@@ -3,11 +3,13 @@ package com.tecknobit.refycore.records.links;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.tecknobit.apimanager.annotations.Returner;
 import com.tecknobit.refycore.records.LinksCollection;
 import com.tecknobit.refycore.records.RefyItem;
 import com.tecknobit.refycore.records.RefyUser;
 import com.tecknobit.refycore.records.Team;
 import jakarta.persistence.*;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -15,8 +17,10 @@ import java.util.List;
 
 import static com.tecknobit.equinox.environment.records.EquinoxItem.IDENTIFIER_KEY;
 import static com.tecknobit.refycore.records.LinksCollection.COLLECTIONS_KEY;
+import static com.tecknobit.refycore.records.LinksCollection.returnCollections;
 import static com.tecknobit.refycore.records.RefyUser.LINKS_KEY;
 import static com.tecknobit.refycore.records.RefyUser.TEAMS_KEY;
+import static com.tecknobit.refycore.records.Team.returnTeams;
 import static com.tecknobit.refycore.records.links.RefyLink.LINK_IDENTIFIER_KEY;
 import static com.tecknobit.refycore.records.links.RefyLink.LINK_KEY;
 
@@ -102,10 +106,8 @@ public class RefyLink extends RefyItem implements RefyItem.ListScreenItem {
     public RefyLink(JSONObject jRefyLink) {
         super(jRefyLink);
         referenceLink = hItem.getString(REFERENCE_LINK_KEY);
-        //TODO: TO LOAD CORRECTLY
-        this.teams = List.of();
-        //TODO: TO LOAD CORRECTLY
-        this.collections = List.of();
+        teams = returnTeams(hItem.getJSONArray(TEAMS_KEY));
+        collections = returnCollections(hItem.getJSONArray(COLLECTIONS_KEY));
     }
 
     @JsonGetter(REFERENCE_LINK_KEY)
@@ -140,6 +142,22 @@ public class RefyLink extends RefyItem implements RefyItem.ListScreenItem {
     @Override
     public boolean canBeUpdatedByUser(String loggedUserId) {
         return loggedUserId.equals(owner.getId()) || teams.isEmpty();
+    }
+
+    /**
+     * Method to assemble and return an {@link ArrayList} of links
+     *
+     * @param jLinks : links list details formatted as JSON
+     * @return the link list as {@link ArrayList} of {@link RefyLink}
+     */
+    @Returner
+    public static ArrayList<RefyLink> returnLinks(JSONArray jLinks) {
+        ArrayList<RefyLink> links = new ArrayList<>();
+        if (jLinks == null)
+            return links;
+        for (int j = 0; j < jLinks.length(); j++)
+            links.add(new RefyLink(jLinks.getJSONObject(j)));
+        return links;
     }
 
 }

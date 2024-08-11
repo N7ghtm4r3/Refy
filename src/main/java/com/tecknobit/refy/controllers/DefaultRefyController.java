@@ -69,7 +69,7 @@ public abstract class DefaultRefyController<I extends RefyItem> extends EquinoxC
     ) {
         if(isUserNotAuthorized(userId, token, itemId))
             return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        return (T) userItem;
+        return (T) successResponse(userItem);
     }
 
     public abstract String delete(

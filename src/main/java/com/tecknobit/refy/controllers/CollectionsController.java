@@ -31,7 +31,7 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
     ) {
         if(!isMe(userId, token))
             return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        return (T) collectionsHelper.getAllUserCollections(userId);
+        return (T) successResponse(collectionsHelper.getAllUserCollections(userId));
     }
 
     @PostMapping(

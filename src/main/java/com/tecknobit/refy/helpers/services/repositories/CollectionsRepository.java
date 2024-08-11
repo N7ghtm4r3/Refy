@@ -38,8 +38,8 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
                     "SELECT c.* FROM " + COLLECTIONS_KEY + " as c INNER JOIN " + MEMBERS_KEY + " ON c." + OWNER_KEY +
                     "=" + MEMBERS_KEY + "." + OWNER_KEY + " INNER JOIN " + COLLECTIONS_TEAMS_TABLE + " ON " +
                     MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY + "=" + COLLECTIONS_TEAMS_TABLE + "." + TEAM_IDENTIFIER_KEY +
-                    " WHERE c." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY + " OR " +
-                    COLLECTIONS_TEAMS_TABLE + "." + COLLECTION_IDENTIFIER_KEY + "=" + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY,
+                    " WHERE c." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY + " AND " +
+                    COLLECTIONS_TEAMS_TABLE + "." + TEAM_IDENTIFIER_KEY + "=" + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY,
             nativeQuery = true
     )
     List<LinksCollection> getAllUserCollections(
@@ -79,9 +79,9 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
                     "SELECT c.* FROM " + COLLECTIONS_KEY + " as c INNER JOIN " + MEMBERS_KEY + " ON c." + OWNER_KEY +
                     "=" + MEMBERS_KEY + "." + OWNER_KEY + " INNER JOIN " + COLLECTIONS_TEAMS_TABLE + " ON " +
                     MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY + "=" + COLLECTIONS_TEAMS_TABLE + "." + TEAM_IDENTIFIER_KEY +
-                    " WHERE c." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY + " OR " +
-                    COLLECTIONS_TEAMS_TABLE + "." + COLLECTION_IDENTIFIER_KEY + "=" + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY +
-                    " AND " + IDENTIFIER_KEY + "=:" + IDENTIFIER_KEY + " LIMIT 1",
+                    " WHERE c." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY + " AND " +
+                    COLLECTIONS_TEAMS_TABLE + "." + TEAM_IDENTIFIER_KEY + "=" + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY +
+                    " AND c." + IDENTIFIER_KEY + "=:" + IDENTIFIER_KEY + " LIMIT 1",
             nativeQuery = true
     )
     LinksCollection getCollectionIfAllowed(

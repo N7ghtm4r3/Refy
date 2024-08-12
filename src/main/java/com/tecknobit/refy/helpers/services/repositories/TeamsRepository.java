@@ -37,6 +37,16 @@ public interface TeamsRepository extends RefyItemsRepository<Team> {
                     + " WHERE " + MEMBERS_KEY + "." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY,
             nativeQuery = true
     )
+    List<Team> getUserOwnedTeams(
+            @Param(USER_IDENTIFIER_KEY) String owner
+    );
+
+    @Query(
+            value = "SELECT t.* " + "FROM " + TEAMS_KEY + " as t INNER JOIN " + MEMBERS_KEY
+                    + " ON t." + TEAM_IDENTIFIER_KEY + "=" + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY
+                    + " WHERE " + MEMBERS_KEY + "." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY,
+            nativeQuery = true
+    )
     List<Team> getAllUserTeams(
             @Param(USER_IDENTIFIER_KEY) String owner
     );

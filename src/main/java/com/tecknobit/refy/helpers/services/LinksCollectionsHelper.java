@@ -49,6 +49,10 @@ public class LinksCollectionsHelper extends RefyItemsHelper<LinksCollection> {
         return collectionsRepository.getUserCollections(userId);
     }
 
+    public List<LinksCollection> getUserOwnedCollections(String userId) {
+        return collectionsRepository.getUserOwnedCollections(userId);
+    }
+
     public List<LinksCollection> getAllUserCollections(String userId) {
         return collectionsRepository.getAllUserCollections(userId);
     }

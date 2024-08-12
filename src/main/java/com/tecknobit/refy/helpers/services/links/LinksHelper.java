@@ -49,6 +49,10 @@ public class LinksHelper extends LinksBaseHelper<RefyLink> {
         return linksRepository.getUserLinks(userId);
     }
 
+    public List<RefyLink> getUserOwnedLinks(String userId) {
+        return linksRepository.getUserOwnedLinks(userId);
+    }
+
     public List<RefyLink> getAllUserLinks(String userId) {
         return linksRepository.getAllUserLinks(userId);
     }

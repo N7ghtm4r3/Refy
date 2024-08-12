@@ -374,8 +374,8 @@ public class Team extends RefyItem {
 
         public RefyTeamMember(JSONObject jRefyTeamMember) {
             hItem = new JsonHelper(jRefyTeamMember);
-            owner = getInstance(hItem.getJSONObject(OWNER_KEY));
-            role = TeamRole.valueOf(TEAM_ROLE_KEY);
+            owner = getInstance(hItem.getJSONObjectSource());
+            role = TeamRole.valueOf(hItem.getString(TEAM_ROLE_KEY));
             sourceTeam = null;
         }
 
@@ -410,6 +410,7 @@ public class Team extends RefyItem {
             return owner.getProfilePic();
         }
 
+        @JsonGetter(TEAM_ROLE_KEY)
         public TeamRole getRole() {
             return role;
         }

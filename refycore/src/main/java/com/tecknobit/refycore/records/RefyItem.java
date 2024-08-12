@@ -17,6 +17,8 @@ import static com.tecknobit.refycore.records.RefyUser.getInstance;
 @MappedSuperclass
 public abstract class RefyItem extends EquinoxItem {
 
+    public static final String OWNED_ONLY_KEY = "owned_only";
+
     public static final String OWNER_KEY = "owner";
 
     public static final String TITLE_KEY = "title";
@@ -54,7 +56,7 @@ public abstract class RefyItem extends EquinoxItem {
     public RefyItem(JSONObject jRefyItem) {
         super(jRefyItem);
         owner = getInstance(hItem.getJSONObject(OWNER_KEY));
-        title = hItem.getString(NAME_KEY);
+        title = hItem.getString(TITLE_KEY);
         description = hItem.getString(DESCRIPTION_KEY);
     }
 

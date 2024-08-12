@@ -16,6 +16,7 @@ import static com.tecknobit.refy.helpers.services.TeamsHelper.TeamPayload;
 import static com.tecknobit.refycore.helpers.RefyEndpointsSet.LEAVE_ENDPOINT;
 import static com.tecknobit.refycore.helpers.RefyEndpointsSet.UPDATE_MEMBER_ROLE_ENDPOINT;
 import static com.tecknobit.refycore.records.LinksCollection.COLLECTIONS_KEY;
+import static com.tecknobit.refycore.records.RefyItem.OWNED_ONLY_KEY;
 import static com.tecknobit.refycore.records.RefyUser.*;
 import static com.tecknobit.refycore.records.Team.MEMBERS_KEY;
 import static com.tecknobit.refycore.records.Team.RefyTeamMember.MEMBER_IDENTIFIER_KEY;
@@ -33,11 +34,17 @@ public class TeamsController extends DefaultRefyController<Team> {
     @Override
     public <T> T list(
             @RequestHeader(TOKEN_KEY) String token,
-            @PathVariable(USER_IDENTIFIER_KEY) String userId
+            @PathVariable(USER_IDENTIFIER_KEY) String userId,
+            @RequestParam(name = OWNED_ONLY_KEY) boolean ownedOnly
     ) {
         if(!isMe(userId, token))
             return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        return (T) successResponse(teamsHelper.getAllUserTeams(userId));
+        List<Team> teams;
+        if(ownedOnly)
+            teams = teamsHelper.getUserOwnedTeams(userId);
+        else
+            teams = teamsHelper.getAllUserTeams(userId);
+        return (T) successResponse(teams);
     }
 
     @Override

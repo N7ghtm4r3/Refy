@@ -16,6 +16,7 @@ import static com.tecknobit.equinox.environment.records.EquinoxUser.USERS_KEY;
 import static com.tecknobit.refycore.helpers.RefyInputValidator.isLinkPayloadValid;
 import static com.tecknobit.refycore.records.LinksCollection.COLLECTIONS_KEY;
 import static com.tecknobit.refycore.records.RefyItem.DESCRIPTION_KEY;
+import static com.tecknobit.refycore.records.RefyItem.OWNED_ONLY_KEY;
 import static com.tecknobit.refycore.records.RefyUser.*;
 import static com.tecknobit.refycore.records.links.RefyLink.LINK_IDENTIFIER_KEY;
 import static com.tecknobit.refycore.records.links.RefyLink.REFERENCE_LINK_KEY;
@@ -30,11 +31,17 @@ public class LinksController extends DefaultRefyController<RefyLink> {
     @Override
     public <T> T list(
             @RequestHeader(TOKEN_KEY) String token,
-            @PathVariable(USER_IDENTIFIER_KEY) String userId
+            @PathVariable(USER_IDENTIFIER_KEY) String userId,
+            @RequestParam(name = OWNED_ONLY_KEY) boolean ownedOnly
     ) {
         if(!isMe(userId, token))
             return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        return (T) successResponse(linksHelper.getAllUserLinks(userId));
+        List<RefyLink> links;
+        if(ownedOnly)
+            links = linksHelper.getUserOwnedLinks(userId);
+        else
+            links = linksHelper.getAllUserLinks(userId);
+        return (T) successResponse(links);
     }
 
     @PostMapping(

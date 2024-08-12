@@ -33,7 +33,8 @@ public class CustomLinksController extends DefaultRefyController<CustomRefyLink>
     @Override
     public <T> T list(
             @RequestHeader(TOKEN_KEY) String token,
-            @PathVariable(USER_IDENTIFIER_KEY) String userId
+            @PathVariable(USER_IDENTIFIER_KEY) String userId,
+            boolean ownedOnly
     ) {
         if(!isMe(userId, token))
             return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);

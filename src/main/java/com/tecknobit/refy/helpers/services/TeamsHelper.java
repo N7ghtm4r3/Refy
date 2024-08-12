@@ -80,6 +80,10 @@ public class TeamsHelper extends RefyItemsHelper<Team> implements RefyResourcesM
         return teamsRepository.getUserTeams(userId);
     }
 
+    public List<Team> getUserOwnedTeams(String userId) {
+        return teamsRepository.getUserOwnedTeams(userId);
+    }
+
     public List<Team> getAllUserTeams(String userId) {
         return teamsRepository.getAllUserTeams(userId);
     }

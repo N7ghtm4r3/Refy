@@ -27,11 +27,17 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
     @Override
     public <T> T list(
             @RequestHeader(TOKEN_KEY) String token,
-            @PathVariable(USER_IDENTIFIER_KEY) String userId
+            @PathVariable(USER_IDENTIFIER_KEY) String userId,
+            @RequestParam(name = OWNED_ONLY_KEY) boolean ownedOnly
     ) {
         if(!isMe(userId, token))
             return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        return (T) successResponse(collectionsHelper.getAllUserCollections(userId));
+        List<LinksCollection> collections;
+        if(ownedOnly)
+            collections = collectionsHelper.getUserOwnedCollections(userId);
+        else
+            collections = collectionsHelper.getAllUserCollections(userId);
+        return (T) successResponse(collections);
     }
 
     @PostMapping(

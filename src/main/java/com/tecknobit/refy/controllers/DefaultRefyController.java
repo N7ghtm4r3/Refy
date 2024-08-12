@@ -46,7 +46,8 @@ public abstract class DefaultRefyController<I extends RefyItem> extends EquinoxC
 
     public abstract <T> T list(
             String token,
-            String userId
+            String userId,
+            boolean ownedOnly
     );
 
     public abstract String create(

@@ -33,6 +33,14 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
     );
 
     @Query(
+            value = "SELECT c.* FROM " + COLLECTIONS_KEY + " as c WHERE c." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY,
+            nativeQuery = true
+    )
+    List<LinksCollection> getUserOwnedCollections(
+            @Param(USER_IDENTIFIER_KEY) String userId
+    );
+
+    @Query(
             value = "SELECT c.* FROM " + COLLECTIONS_KEY + " as c WHERE c." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
                     " UNION " +
                     "SELECT c.* FROM " + COLLECTIONS_KEY + " as c INNER JOIN " + MEMBERS_KEY + " ON c." + OWNER_KEY +

@@ -26,7 +26,6 @@ import com.tecknobit.refycore.records.links.RefyLink.REFERENCE_LINK_KEY
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import org.aspectj.weaver.Member
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
@@ -73,9 +72,15 @@ class RefyRequester(
         )
     }
 
-    fun getLinks() : JSONObject {
+    fun getLinks(
+        ownedOnly: Boolean = false
+    ) : JSONObject {
         return execGet(
-            endpoint = assembleLinksEndpointPath()
+            endpoint = assembleLinksEndpointPath(
+                query = createOwnedOnlyQuery(
+                    ownedOnly = ownedOnly
+                )
+            )
         )
     }
 
@@ -199,17 +204,25 @@ class RefyRequester(
     }
 
     private fun assembleLinksEndpointPath(
-        subEndpoint: String = ""
+        subEndpoint: String = "",
+        query: String = ""
     ): String {
         return assembleCustomEndpointPath(
             customEndpoint = LINKS_KEY,
-            subEndpoint = subEndpoint
+            subEndpoint = subEndpoint,
+            query = query
         )
     }
 
-    fun getCollections() : JSONObject {
+    fun getCollections(
+        ownedOnly: Boolean
+    ) : JSONObject {
         return execGet(
-            endpoint = assembleCollectionsEndpointPath()
+            endpoint = assembleCollectionsEndpointPath(
+                query = createOwnedOnlyQuery(
+                    ownedOnly = ownedOnly
+                )
+            )
         )
     }
 
@@ -367,17 +380,25 @@ class RefyRequester(
     }
 
     private fun assembleCollectionsEndpointPath(
-        subEndpoint: String = ""
+        subEndpoint: String = "",
+        query: String = ""
     ): String {
         return assembleCustomEndpointPath(
             customEndpoint = COLLECTIONS_KEY,
-            subEndpoint = subEndpoint
+            subEndpoint = subEndpoint,
+            query = query
         )
     }
 
-    fun getTeams() : JSONObject {
+    fun getTeams(
+        ownedOnly: Boolean
+    ) : JSONObject {
         return execGet(
-            endpoint = assembleTeamsEndpointPath()
+            endpoint = assembleTeamsEndpointPath(
+                query = createOwnedOnlyQuery(
+                    ownedOnly = ownedOnly
+                )
+            )
         )
     }
 
@@ -614,12 +635,22 @@ class RefyRequester(
     }
 
     private fun assembleTeamsEndpointPath(
-        subEndpoint: String = ""
+        subEndpoint: String = "",
+        query: String = ""
     ): String {
         return assembleCustomEndpointPath(
             customEndpoint = TEAMS_KEY,
-            subEndpoint = subEndpoint
+            subEndpoint = subEndpoint,
+            query = query
         )
+    }
+
+    private fun createOwnedOnlyQuery(
+        ownedOnly: Boolean
+    ) : String {
+        val query = Params()
+        query.addParam(OWNED_ONLY_KEY, ownedOnly.toString())
+        return query.createQueryString()
     }
 
     fun getCustomLinks() : JSONObject {
@@ -750,23 +781,26 @@ class RefyRequester(
     }
 
     private fun assembleCustomLinksEndpointPath(
-        subEndpoint: String = ""
+        subEndpoint: String = "",
+        query: String = ""
     ): String {
         return assembleCustomEndpointPath(
             customEndpoint = CUSTOM_LINKS_ENDPOINT,
-            subEndpoint = subEndpoint
+            subEndpoint = subEndpoint,
+            query = query
         )
     }
 
     private fun assembleCustomEndpointPath(
         customEndpoint: String,
-        subEndpoint: String = ""
+        subEndpoint: String = "",
+        query: String = ""
     ): String {
         val subPath = if(subEndpoint.isNotBlank())
             "/$subEndpoint"
         else
             subEndpoint
-        val requestUrl = "$customEndpoint$subPath"
+        val requestUrl = "$customEndpoint$subPath$query"
         return assembleUsersEndpointPath(
             endpoint = if(customEndpoint.startsWith("/"))
                 requestUrl

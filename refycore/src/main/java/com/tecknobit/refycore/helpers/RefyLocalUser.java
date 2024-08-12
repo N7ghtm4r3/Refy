@@ -36,6 +36,10 @@ public abstract class RefyLocalUser extends EquinoxLocalUser {
     @Override
     protected void initLocalUser() {
         super.initLocalUser();
+        links = List.of();
+        collections = List.of();
+        teams = List.of();
+        customLinks = List.of();
         tagName = getPreference(TAG_NAME_KEY);
     }
 

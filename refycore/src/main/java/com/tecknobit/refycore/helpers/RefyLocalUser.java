@@ -8,6 +8,7 @@ import com.tecknobit.refycore.records.Team;
 import com.tecknobit.refycore.records.links.CustomRefyLink;
 import com.tecknobit.refycore.records.links.RefyLink;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.tecknobit.refycore.records.RefyUser.TAG_NAME_KEY;
@@ -25,21 +26,21 @@ public abstract class RefyLocalUser extends EquinoxLocalUser {
      */
     protected String tagName;
 
-    private List<RefyLink> links;
+    private ArrayList<RefyLink> links;
 
-    private List<LinksCollection> collections;
+    private ArrayList<LinksCollection> collections;
 
-    private List<Team> teams;
+    private ArrayList<Team> teams;
 
-    private List<CustomRefyLink> customLinks;
+    private ArrayList<CustomRefyLink> customLinks;
 
     @Override
     protected void initLocalUser() {
         super.initLocalUser();
-        links = List.of();
-        collections = List.of();
-        teams = List.of();
-        customLinks = List.of();
+        links = new ArrayList<>();
+        collections = new ArrayList<>();
+        teams = new ArrayList<>();
+        customLinks = new ArrayList<>();
         tagName = getPreference(TAG_NAME_KEY);
     }
 
@@ -63,7 +64,8 @@ public abstract class RefyLocalUser extends EquinoxLocalUser {
     }
 
     public void setLinks(List<RefyLink> links) {
-        this.links = links;
+        this.links.clear();
+        this.links.addAll(links);
     }
 
     public List<LinksCollection> getCollections() {
@@ -71,7 +73,8 @@ public abstract class RefyLocalUser extends EquinoxLocalUser {
     }
 
     public void setCollections(List<LinksCollection> collections) {
-        this.collections = collections;
+        this.collections.clear();
+        this.collections.addAll(collections);
     }
 
     public List<Team> getTeams() {
@@ -79,7 +82,8 @@ public abstract class RefyLocalUser extends EquinoxLocalUser {
     }
 
     public void setTeams(List<Team> teams) {
-        this.teams = teams;
+        this.teams.clear();
+        this.teams.addAll(teams);
     }
 
     public List<CustomRefyLink> getCustomLinks() {
@@ -87,7 +91,8 @@ public abstract class RefyLocalUser extends EquinoxLocalUser {
     }
 
     public void setCustomLinks(List<CustomRefyLink> customLinks) {
-        this.customLinks = customLinks;
+        this.customLinks.clear();
+        this.customLinks.addAll(customLinks);
     }
 
 }

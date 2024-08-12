@@ -1,8 +1,10 @@
 package com.tecknobit.refycore.records;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.apimanager.annotations.Returner;
+import com.tecknobit.equinox.environment.records.EquinoxUser;
 import com.tecknobit.refycore.records.links.RefyLink;
 import jakarta.persistence.*;
 import org.json.JSONArray;
@@ -101,6 +103,7 @@ public class LinksCollection extends RefyItem implements RefyItem.ListScreenItem
         teams = returnTeams(hItem.getJSONArray(TEAMS_KEY));
     }
 
+    @JsonGetter(COLLECTION_COLOR_KEY)
     public String getColor() {
         return color;
     }
@@ -153,6 +156,19 @@ public class LinksCollection extends RefyItem implements RefyItem.ListScreenItem
         for (int j = 0; j < jCollections.length(); j++)
             collections.add(new LinksCollection(jCollections.getJSONObject(j)));
         return collections;
+    }
+
+    /**
+     * Method to assemble and return a {@link LinksCollection} instance
+     *
+     * @param jCollection: collection formatted as JSON
+     * @return the collection as {@link EquinoxUser}
+     */
+    @Returner
+    public static LinksCollection getInstance(JSONObject jCollection) {
+        if (jCollection != null)
+            return new LinksCollection(jCollection);
+        return null;
     }
 
 }

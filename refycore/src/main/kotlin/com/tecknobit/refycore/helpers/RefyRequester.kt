@@ -215,7 +215,7 @@ class RefyRequester(
     }
 
     fun getCollections(
-        ownedOnly: Boolean
+        ownedOnly: Boolean = false
     ) : JSONObject {
         return execGet(
             endpoint = assembleCollectionsEndpointPath(
@@ -391,7 +391,7 @@ class RefyRequester(
     }
 
     fun getTeams(
-        ownedOnly: Boolean
+        ownedOnly: Boolean = false
     ) : JSONObject {
         return execGet(
             endpoint = assembleTeamsEndpointPath(

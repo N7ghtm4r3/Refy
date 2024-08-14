@@ -81,4 +81,14 @@ public interface RefyUsersRepository extends EquinoxUsersRepository<RefyUser> {
             @Param(IDENTIFIER_KEY) String userId
     );
 
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query(
+            value = "DELETE FROM " + USERS_KEY + " WHERE " + IDENTIFIER_KEY + "=:" + IDENTIFIER_KEY,
+            nativeQuery = true
+    )
+    void deleteUser(
+            @Param(IDENTIFIER_KEY) String userId
+    );
+
 }

@@ -66,7 +66,8 @@ public class RefyUsersHelper extends EquinoxUsersHelper<RefyUser> {
         HashSet<String> teams = teamsRepository.getUserTeams(id);
         for (String teamId : teams)
             teamsRepository.detachTeamFromLinks(teamId);
-        super.deleteUser(id);
+        refyUsersRepository.deleteUser(id);
+        deleteProfileResource(id);
     }
 
     /**

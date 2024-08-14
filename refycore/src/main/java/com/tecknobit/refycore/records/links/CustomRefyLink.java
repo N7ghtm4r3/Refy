@@ -143,8 +143,8 @@ public class CustomRefyLink extends RefyLink {
         super(jCustomRefyLink);
         creationDate = hItem.getLong(CREATION_DATE_KEY, -1);
         uniqueAccess = hItem.getBoolean(UNIQUE_ACCESS_KEY);
-        expiredTime = ExpiredTime.valueOf(EXPIRED_TIME_KEY);
-        resources = loadMap(hItem.getJSONObject(RESOURCE_KEY));
+        expiredTime = ExpiredTime.valueOf(hItem.getString(EXPIRED_TIME_KEY));
+        resources = loadMap(hItem.getJSONObject(RESOURCES_KEY));
         fields = loadMap(hItem.getJSONObject(FIELDS_KEY));
     }
 
@@ -190,6 +190,7 @@ public class CustomRefyLink extends RefyLink {
         return null;
     }
 
+    @JsonGetter(EXPIRED_TIME_KEY)
     public ExpiredTime getExpiredTime() {
         return expiredTime;
     }

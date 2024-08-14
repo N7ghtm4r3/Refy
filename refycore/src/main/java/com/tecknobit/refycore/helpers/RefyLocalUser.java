@@ -26,13 +26,13 @@ public abstract class RefyLocalUser extends EquinoxLocalUser {
      */
     protected String tagName;
 
-    private ArrayList<RefyLink> links;
+    protected ArrayList<RefyLink> links;
 
-    private ArrayList<LinksCollection> collections;
+    protected ArrayList<LinksCollection> collections;
 
-    private ArrayList<Team> teams;
+    protected ArrayList<Team> teams;
 
-    private ArrayList<CustomRefyLink> customLinks;
+    protected ArrayList<CustomRefyLink> customLinks;
 
     @Override
     protected void initLocalUser() {
@@ -93,6 +93,14 @@ public abstract class RefyLocalUser extends EquinoxLocalUser {
     public void setCustomLinks(List<CustomRefyLink> customLinks) {
         this.customLinks.clear();
         this.customLinks.addAll(customLinks);
+    }
+
+    @Override
+    public void clear() {
+        links.clear();
+        collections.clear();
+        teams.clear();
+        customLinks.clear();
     }
 
 }

@@ -10,6 +10,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static com.tecknobit.equinox.environment.records.EquinoxItem.DISCRIMINATOR_VALUE_KEY;
 import static com.tecknobit.equinox.environment.records.EquinoxItem.IDENTIFIER_KEY;
 import static com.tecknobit.equinox.environment.records.EquinoxUser.*;
@@ -70,6 +72,13 @@ public interface RefyUsersRepository extends EquinoxUsersRepository<RefyUser> {
             @Param(LANGUAGE_KEY) String language
     );
 
-
+    @Query(
+            value = "SELECT " + IDENTIFIER_KEY + "," + PROFILE_PIC_KEY + "," + NAME_KEY + "," + SURNAME_KEY + ","
+                    + TAG_NAME_KEY + " FROM " + USERS_KEY + " WHERE " + IDENTIFIER_KEY + "!=:" + IDENTIFIER_KEY,
+            nativeQuery = true
+    )
+    List<List<String>> getPotentialMembers(
+            @Param(IDENTIFIER_KEY) String userId
+    );
 
 }

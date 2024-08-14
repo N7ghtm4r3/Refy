@@ -115,12 +115,19 @@ public class TeamsHelper extends RefyItemsHelper<Team> implements RefyResourcesM
     public void editTeam(String userId, Team team, TeamPayload payload) throws IOException {
         String teamId = team.getId();
         MultipartFile logo = payload.logo_pic;
-        String logoUrl = createLogoResource(logo, teamId + System.currentTimeMillis());
+        boolean logoChanged = logo != null;
+        String logoUrl;
+        if(logoChanged)
+            logoUrl = createLogoResource(logo, teamId + System.currentTimeMillis());
+        else
+            logoUrl = team.getLogoPic();
         teamsRepository.editTeam(teamId, payload.title, logoUrl, payload.description, userId);
         List<String> members = JsonHelper.toList(payload.members.put(userId));
         manageAttachments(getEditWorkflow(team), TUPLE_VALUES_SLICE, teamId, members, getBatchQuery(team, members));
-        deleteLogoResource(teamId);
-        saveResource(logo, logoUrl);
+        if(logoChanged) {
+            deleteLogoResource(teamId);
+            saveResource(logo, logoUrl);
+        }
     }
 
     private AttachmentsManagementWorkflow getEditWorkflow(Team team) {
@@ -236,9 +243,11 @@ public class TeamsHelper extends RefyItemsHelper<Team> implements RefyResourcesM
 
     public record TeamPayload(String title, MultipartFile logo_pic, String description, JSONArray members) {
 
-        public boolean isValidTeamPayload() {
-            return isTitleValid(title) && (logo_pic != null && !logo_pic.isEmpty()) && isDescriptionValid(description)
-                    && !members.isEmpty();
+        public boolean isValidTeamPayload(boolean validateLogoPic) {
+            boolean validPayload = isTitleValid(title) && isDescriptionValid(description) && !members.isEmpty();
+            if(validateLogoPic)
+                return validPayload && (logo_pic != null && !logo_pic.isEmpty());
+            return validPayload;
         }
 
     }

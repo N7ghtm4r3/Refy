@@ -29,6 +29,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
+import java.io.FileNotFoundException
 
 class RefyRequester(
     host: String,
@@ -402,15 +403,23 @@ class RefyRequester(
         )
     }
 
+    fun getPotentialMembers() : JSONObject {
+        return execGet(
+            endpoint = assembleTeamsEndpointPath(
+                subEndpoint = MEMBERS_KEY
+            )
+        )
+    }
+
     fun createTeam(
         title: String,
-        logoPic: File,
+        logoPic: String,
         description: String,
         members: List<String>
     ) : JSONObject {
         val body = createTeamPayload(
             title = title,
-            logoPic = logoPic,
+            logoPic = File(logoPic),
             description = description,
             members = members
         )
@@ -423,7 +432,7 @@ class RefyRequester(
     fun editTeam(
         team: Team,
         title: String,
-        logoPic: File,
+        logoPic: String,
         description: String,
         members: List<String>
     ) : JSONObject {
@@ -439,13 +448,16 @@ class RefyRequester(
     fun editTeam(
         teamId: String,
         title: String,
-        logoPic: File,
+        logoPic: String,
         description: String,
         members: List<String>
     ) : JSONObject {
         val body = createTeamPayload(
             title = title,
-            logoPic = logoPic,
+            logoPic = if(logoPic.contains(teamId))
+                null
+            else
+                File(logoPic),
             description = description,
             members = members
         )
@@ -459,19 +471,14 @@ class RefyRequester(
 
     private fun createTeamPayload(
         title: String,
-        logoPic: File,
+        logoPic: File?,
         description: String,
         members: List<String>
     ) : MultipartBody {
-        return MultipartBody.Builder().setType(MultipartBody.FORM)
+        val body = MultipartBody.Builder().setType(MultipartBody.FORM)
             .addFormDataPart(
                 TITLE_KEY,
                 title,
-            )
-            .addFormDataPart(
-                LOGO_PIC_KEY,
-                logoPic.name,
-                logoPic.readBytes().toRequestBody("*/*".toMediaType())
             )
             .addFormDataPart(
                 DESCRIPTION_KEY,
@@ -481,7 +488,14 @@ class RefyRequester(
                 MEMBERS_KEY,
                 JSONArray(members).toString(),
             )
-            .build()
+        logoPic?.let {
+            body.addFormDataPart(
+                LOGO_PIC_KEY,
+                logoPic.name,
+                logoPic.readBytes().toRequestBody("*/*".toMediaType())
+            )
+        }
+        return body.build()
     }
 
     fun manageTeamLinks(
@@ -550,19 +564,19 @@ class RefyRequester(
         )
     }
 
-    fun updateMemberRole(
+    fun changeMemberRole(
         team: Team,
         member: RefyTeamMember,
         role: TeamRole
     ): JSONObject {
-        return updateMemberRole(
+        return changeMemberRole(
             teamId = team.id,
             memberId = member.id,
             role = role
         )
     }
 
-    fun updateMemberRole(
+    fun changeMemberRole(
         teamId: String,
         memberId: String,
         role: TeamRole
@@ -619,7 +633,7 @@ class RefyRequester(
     fun deleteTeam(
         team: Team
     ): JSONObject {
-        return leave(
+        return deleteTeam(
             teamId = team.id
         )
     }

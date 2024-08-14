@@ -1,10 +1,14 @@
 package com.tecknobit.refy.controllers;
 
+import com.tecknobit.refy.helpers.services.RefyUsersHelper;
 import com.tecknobit.refycore.records.Team;
+import com.tecknobit.refycore.records.Team.RefyTeamMember;
 import com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +32,9 @@ import static com.tecknobit.refycore.records.Team.TEAM_IDENTIFIER_KEY;
 @RequestMapping(BASE_EQUINOX_ENDPOINT + USERS_KEY + "/{" + USER_IDENTIFIER_KEY + "}/" + TEAMS_KEY)
 public class TeamsController extends DefaultRefyController<Team> {
 
+    @Autowired
+    private RefyUsersHelper refyUsersHelper;
+
     @GetMapping(
             headers = TOKEN_KEY
     )
@@ -47,6 +54,23 @@ public class TeamsController extends DefaultRefyController<Team> {
         return (T) successResponse(teams);
     }
 
+    @GetMapping(
+            headers = TOKEN_KEY,
+            path = "/" + MEMBERS_KEY
+    )
+    public <T> T listPotentialMembers(
+            @RequestHeader(TOKEN_KEY) String token,
+            @PathVariable(USER_IDENTIFIER_KEY) String userId
+    ) {
+        if(!isMe(userId, token))
+            return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        List<RefyTeamMember> members = new ArrayList<>();
+        List<List<String>> membersDetails = refyUsersHelper.getPotentialMembers(userId);
+        for (List<String> details : membersDetails)
+            members.add(new RefyTeamMember(details));
+        return (T) successResponse(members);
+    }
+
     @Override
     public String create(String token, String userId, Map<String, Object> payload) {
         return null;
@@ -60,7 +84,7 @@ public class TeamsController extends DefaultRefyController<Team> {
             @PathVariable(USER_IDENTIFIER_KEY) String userId,
             @ModelAttribute TeamPayload payload
     ) {
-        if(!isMe(userId, token) || !payload.isValidTeamPayload())
+        if(!isMe(userId, token) || !payload.isValidTeamPayload(true))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         try {
             teamsHelper.createTeam(userId, generateIdentifier(), payload);
@@ -85,7 +109,7 @@ public class TeamsController extends DefaultRefyController<Team> {
             @PathVariable(TEAM_IDENTIFIER_KEY) String teamId,
             @ModelAttribute TeamPayload payload
     ) {
-        if(isUserNotAuthorized(userId, token, teamId) || !userItem.isAdmin(userId) || !payload.isValidTeamPayload())
+        if(isUserNotAuthorized(userId, token, teamId) || !userItem.isAdmin(userId) || !payload.isValidTeamPayload(false))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         try {
             teamsHelper.editTeam(userId, userItem, payload);
@@ -228,7 +252,7 @@ public class TeamsController extends DefaultRefyController<Team> {
             @PathVariable(USER_IDENTIFIER_KEY) String userId,
             @PathVariable(TEAM_IDENTIFIER_KEY) String teamId
     ) {
-        if(isUserNotAuthorized(userId, token, teamId))
+        if(isUserNotAuthorized(userId, token, teamId) || userItem.isTheAuthor(userId))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         if(userItem.isAdmin(userId)) {
             if(userItem.hasMembers()) {

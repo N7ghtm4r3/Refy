@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
+import java.util.List;
 
 import static com.tecknobit.apimanager.apis.APIRequest.SHA256_ALGORITHM;
 
@@ -46,6 +47,10 @@ public class RefyUsersHelper extends EquinoxUsersHelper<RefyUser> {
     @Override
     public RefyUser signInUser(String email, String password) throws NoSuchAlgorithmException {
         return (RefyUser) super.signInUser(email, password);
+    }
+
+    public List<List<String>> getPotentialMembers(String userId) {
+        return refyUsersRepository.getPotentialMembers(userId);
     }
 
     /**

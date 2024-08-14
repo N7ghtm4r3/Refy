@@ -72,14 +72,6 @@ public abstract class RefyItem extends EquinoxItem {
         return description;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RefyItem refyItem = (RefyItem) o;
-        return refyItem.id.equals(id);
-    }
-
     public interface ListScreenItem {
 
         boolean canBeUpdatedByUser(String loggedUserId);

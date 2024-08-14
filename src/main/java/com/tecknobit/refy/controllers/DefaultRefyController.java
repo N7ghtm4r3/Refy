@@ -102,6 +102,13 @@ public abstract class DefaultRefyController<I extends RefyItem> extends EquinoxC
         return successResponse();
     }
 
+    protected boolean userIsNotTheItemOwner(String userId, String token, String itemId) {
+        boolean isNotAuthorized = isUserNotAuthorized(userId, token, itemId);
+        if(isNotAuthorized)
+            return true;
+        return !userItem.getOwner().getId().equals(userId);
+    }
+
     protected abstract boolean isUserNotAuthorized(String userId, String token, String itemId);
 
 }

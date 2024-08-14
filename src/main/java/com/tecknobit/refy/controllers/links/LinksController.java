@@ -175,7 +175,7 @@ public class LinksController extends DefaultRefyController<RefyLink> {
             @PathVariable(USER_IDENTIFIER_KEY) String userId,
             @PathVariable(LINK_IDENTIFIER_KEY) String linkId
     ) {
-        if(isUserNotAuthorized(userId, token, linkId))
+        if(userIsNotTheItemOwner(userId, token, linkId))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         linksHelper.deleteLink(linkId);
         return successResponse();

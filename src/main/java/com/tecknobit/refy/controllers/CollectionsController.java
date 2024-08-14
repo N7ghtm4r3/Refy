@@ -74,7 +74,7 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
             @PathVariable(COLLECTION_IDENTIFIER_KEY) String collectionId,
             @RequestBody Map<String, Object> payload
     ) {
-        if(isUserNotAuthorized(userId, token, collectionId))
+        if(userIsNotTheItemOwner(userId, token, collectionId))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         loadJsonHelper(payload);
         String color = jsonHelper.getString(COLLECTION_COLOR_KEY);
@@ -192,7 +192,7 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
             @PathVariable(USER_IDENTIFIER_KEY) String userId,
             @PathVariable(COLLECTION_IDENTIFIER_KEY) String collectionId
     ) {
-        if(isUserNotAuthorized(userId, token, collectionId))
+        if(userIsNotTheItemOwner(userId, token, collectionId))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         collectionsHelper.deleteCollection(collectionId);
         return successResponse();

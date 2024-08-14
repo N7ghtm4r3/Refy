@@ -46,14 +46,13 @@ public interface LinksRepository extends LinksBaseRepository<RefyLink> {
     @Query(
             value = "SELECT l.* FROM " + LINKS_KEY + " AS l WHERE l." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
                     " AND dtype='" + LINK_KEY + "'" +
-                    " UNION" +
-                    " SELECT l.* FROM " + LINKS_KEY + " AS l INNER JOIN " + MEMBERS_KEY + " ON l." + OWNER_KEY + "=" +
-                    MEMBERS_KEY + "." + OWNER_KEY + " INNER JOIN " + COLLECTIONS_TEAMS_TABLE + " ON " + MEMBERS_KEY +
-                    "." + TEAM_IDENTIFIER_KEY + "=" + COLLECTIONS_TEAMS_TABLE + "." + TEAM_IDENTIFIER_KEY +
-                    " INNER JOIN " + COLLECTIONS_LINKS_TABLE + " ON " + COLLECTIONS_TEAMS_TABLE + "." + COLLECTION_IDENTIFIER_KEY +
-                    "=" + COLLECTIONS_LINKS_TABLE + "." + COLLECTION_IDENTIFIER_KEY + " WHERE l." + OWNER_KEY + "=:" +
-                    USER_IDENTIFIER_KEY + " AND " + COLLECTIONS_TEAMS_TABLE + "." + TEAM_IDENTIFIER_KEY + "=" +
-                    MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY + " AND dtype='" + LINK_KEY + "'",
+                    " UNION " +
+                    "SELECT l.* FROM " + LINKS_KEY + " AS l INNER JOIN " + COLLECTIONS_LINKS_TABLE + " ON " +
+                    COLLECTIONS_LINKS_TABLE + "." + LINK_IDENTIFIER_KEY + " = l." + LINK_IDENTIFIER_KEY + " INNER JOIN " +
+                    COLLECTIONS_TEAMS_TABLE + " ON " + COLLECTIONS_TEAMS_TABLE + "." + COLLECTION_IDENTIFIER_KEY + " = " +
+                    COLLECTIONS_LINKS_TABLE + "." + COLLECTION_IDENTIFIER_KEY + " INNER JOIN " + MEMBERS_KEY + " ON " +
+                    COLLECTIONS_TEAMS_TABLE + "." + TEAM_IDENTIFIER_KEY + " = " + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY +
+                    " WHERE " + MEMBERS_KEY + "." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY + " AND dtype='" + LINK_KEY + "'",
             nativeQuery = true
     )
     List<RefyLink> getAllUserLinks(
@@ -92,15 +91,14 @@ public interface LinksRepository extends LinksBaseRepository<RefyLink> {
     @Query(
             value = "SELECT l.* FROM " + LINKS_KEY + " AS l WHERE l." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY + " AND l." +
                     LINK_IDENTIFIER_KEY + "=:" + LINK_IDENTIFIER_KEY +
-                    " UNION" +
-                    " SELECT l.* FROM " + LINKS_KEY + " AS l INNER JOIN " + MEMBERS_KEY + " ON l." + OWNER_KEY + "=" +
-                    MEMBERS_KEY + "." + OWNER_KEY + " INNER JOIN " + COLLECTIONS_TEAMS_TABLE + " ON " + MEMBERS_KEY +
-                    "." + TEAM_IDENTIFIER_KEY + "=" + COLLECTIONS_TEAMS_TABLE + "." + TEAM_IDENTIFIER_KEY +
-                    " INNER JOIN " + COLLECTIONS_LINKS_TABLE + " ON " + COLLECTIONS_TEAMS_TABLE + "." + COLLECTION_IDENTIFIER_KEY +
-                    "=" + COLLECTIONS_LINKS_TABLE + "." + COLLECTION_IDENTIFIER_KEY + " WHERE l." + OWNER_KEY + "=:" +
-                    USER_IDENTIFIER_KEY + " AND " + COLLECTIONS_TEAMS_TABLE + "." + TEAM_IDENTIFIER_KEY + "=" +
-                    MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY + " AND l." + LINK_IDENTIFIER_KEY + "=:" + LINK_IDENTIFIER_KEY
-                    + " LIMIT 1",
+                    " UNION " +
+                    "SELECT l.* FROM " + LINKS_KEY + " AS l INNER JOIN " + COLLECTIONS_LINKS_TABLE + " ON " +
+                    COLLECTIONS_LINKS_TABLE + "." + LINK_IDENTIFIER_KEY + " = l." + LINK_IDENTIFIER_KEY + " INNER JOIN " +
+                    COLLECTIONS_TEAMS_TABLE + " ON " + COLLECTIONS_TEAMS_TABLE + "." + COLLECTION_IDENTIFIER_KEY + " = " +
+                    COLLECTIONS_LINKS_TABLE + "." + COLLECTION_IDENTIFIER_KEY + " INNER JOIN " + MEMBERS_KEY + " ON " +
+                    COLLECTIONS_TEAMS_TABLE + "." + TEAM_IDENTIFIER_KEY + " = " + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY +
+                    " WHERE " + MEMBERS_KEY + "." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
+                    " AND l." + LINK_IDENTIFIER_KEY + "=:" + LINK_IDENTIFIER_KEY + " AND dtype='" + LINK_KEY + "'",
             nativeQuery = true
     )
     RefyLink getLinkIfAllowed(

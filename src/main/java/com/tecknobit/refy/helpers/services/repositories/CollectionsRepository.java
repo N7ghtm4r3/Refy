@@ -43,11 +43,10 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
     @Query(
             value = "SELECT c.* FROM " + COLLECTIONS_KEY + " as c WHERE c." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
                     " UNION " +
-                    "SELECT c.* FROM " + COLLECTIONS_KEY + " as c INNER JOIN " + MEMBERS_KEY + " ON c." + OWNER_KEY +
-                    "=" + MEMBERS_KEY + "." + OWNER_KEY + " INNER JOIN " + COLLECTIONS_TEAMS_TABLE + " ON " +
-                    MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY + "=" + COLLECTIONS_TEAMS_TABLE + "." + TEAM_IDENTIFIER_KEY +
-                    " WHERE c." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY + " AND " +
-                    COLLECTIONS_TEAMS_TABLE + "." + TEAM_IDENTIFIER_KEY + "=" + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY,
+                    "SELECT c.* FROM " + COLLECTIONS_KEY + " as c INNER JOIN " + COLLECTIONS_TEAMS_TABLE + " ON c." +
+                    IDENTIFIER_KEY + " = " + COLLECTIONS_TEAMS_TABLE + "." + COLLECTION_IDENTIFIER_KEY + " INNER JOIN " +
+                    MEMBERS_KEY + " ON " + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY + " WHERE " + MEMBERS_KEY + "." +
+                    OWNER_KEY + "=:" + USER_IDENTIFIER_KEY,
             nativeQuery = true
     )
     List<LinksCollection> getAllUserCollections(
@@ -84,12 +83,10 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
             value = "SELECT c.* FROM " + COLLECTIONS_KEY + " as c WHERE c." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
                     " AND c." + IDENTIFIER_KEY + "=:" + IDENTIFIER_KEY +
                     " UNION " +
-                    "SELECT c.* FROM " + COLLECTIONS_KEY + " as c INNER JOIN " + MEMBERS_KEY + " ON c." + OWNER_KEY +
-                    "=" + MEMBERS_KEY + "." + OWNER_KEY + " INNER JOIN " + COLLECTIONS_TEAMS_TABLE + " ON " +
-                    MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY + "=" + COLLECTIONS_TEAMS_TABLE + "." + TEAM_IDENTIFIER_KEY +
-                    " WHERE c." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY + " AND " +
-                    COLLECTIONS_TEAMS_TABLE + "." + TEAM_IDENTIFIER_KEY + "=" + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY +
-                    " AND c." + IDENTIFIER_KEY + "=:" + IDENTIFIER_KEY + " LIMIT 1",
+                    "SELECT c.* FROM " + COLLECTIONS_KEY + " as c INNER JOIN " + COLLECTIONS_TEAMS_TABLE + " ON c." +
+                    IDENTIFIER_KEY + " = " + COLLECTIONS_TEAMS_TABLE + "." + COLLECTION_IDENTIFIER_KEY + " INNER JOIN " +
+                    MEMBERS_KEY + " ON " + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY + " WHERE " + MEMBERS_KEY + "." +
+                    OWNER_KEY + "=:" + USER_IDENTIFIER_KEY + " AND c." + IDENTIFIER_KEY + "=:" + IDENTIFIER_KEY,
             nativeQuery = true
     )
     LinksCollection getCollectionIfAllowed(

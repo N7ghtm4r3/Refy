@@ -4,6 +4,7 @@ import com.tecknobit.apimanager.annotations.Structure;
 import com.tecknobit.apimanager.formatters.JsonHelper;
 import com.tecknobit.equinox.environment.records.EquinoxLocalUser;
 import com.tecknobit.refycore.records.LinksCollection;
+import com.tecknobit.refycore.records.RefyItem;
 import com.tecknobit.refycore.records.Team;
 import com.tecknobit.refycore.records.links.CustomRefyLink;
 import com.tecknobit.refycore.records.links.RefyLink;
@@ -59,40 +60,51 @@ public abstract class RefyLocalUser extends EquinoxLocalUser {
         return tagName;
     }
 
-    public List<RefyLink> getLinks() {
-        return links;
+    public List<RefyLink> getLinks(boolean ownedOnly) {
+        return filterOwnedOnlyUserList(links, ownedOnly);
     }
 
     public void setLinks(List<RefyLink> links) {
-        this.links.clear();
-        this.links.addAll(links);
+        setUserList(this.links, links);
     }
 
-    public List<LinksCollection> getCollections() {
-        return collections;
+    public List<LinksCollection> getCollections(boolean ownedOnly) {
+        return filterOwnedOnlyUserList(collections, ownedOnly);
     }
 
     public void setCollections(List<LinksCollection> collections) {
-        this.collections.clear();
-        this.collections.addAll(collections);
+        setUserList(this.collections, collections);
     }
 
-    public List<Team> getTeams() {
-        return teams;
+    public List<Team> getTeams(boolean ownedOnly) {
+        return filterOwnedOnlyUserList(teams, ownedOnly);
     }
 
     public void setTeams(List<Team> teams) {
-        this.teams.clear();
-        this.teams.addAll(teams);
+        setUserList(this.teams, teams);
     }
 
-    public List<CustomRefyLink> getCustomLinks() {
-        return customLinks;
+    public List<CustomRefyLink> getCustomLinks(boolean ownedOnly) {
+        return filterOwnedOnlyUserList(customLinks, ownedOnly);
     }
 
     public void setCustomLinks(List<CustomRefyLink> customLinks) {
-        this.customLinks.clear();
-        this.customLinks.addAll(customLinks);
+        setUserList(this.customLinks, customLinks);
+    }
+
+    private <T extends RefyItem> void setUserList(List<T> currentList, List<T> newList) {
+        currentList.clear();
+        currentList.addAll(newList);
+    }
+
+    private <T extends RefyItem> List<T> filterOwnedOnlyUserList(List<T> userList, boolean filter) {
+        if(!filter)
+            return userList;
+        List<T> ownedOnly = new ArrayList<>();
+        for (T item : userList)
+            if(item.getOwner().getId().equals(userId))
+                ownedOnly.add(item);
+        return ownedOnly;
     }
 
     @Override

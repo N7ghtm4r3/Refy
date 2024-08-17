@@ -45,6 +45,10 @@ public class CustomLinksHelper extends LinksBaseHelper<CustomRefyLink> {
     @Autowired
     private CustomLinksRepository customLinksRepository;
 
+    public CustomRefyLink findById(String linkId) {
+        return customLinksRepository.findById(linkId).orElse(null);
+    }
+
     public List<CustomRefyLink> getUserCustomLinks(String userId) {
         return customLinksRepository.getUserCustomLinks(userId);
     }

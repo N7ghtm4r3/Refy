@@ -190,6 +190,10 @@ public class CustomRefyLink extends RefyLink {
         return null;
     }
 
+    public boolean isExpired() {
+        return expires() && System.currentTimeMillis() >= getExpirationTimestamp();
+    }
+
     @JsonGetter(EXPIRED_TIME_KEY)
     public ExpiredTime getExpiredTime() {
         return expiredTime;

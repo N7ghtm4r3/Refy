@@ -1,0 +1,23 @@
+body {
+    text-align: center;
+    background-color: #AAC7FF;
+}
+
+.main_text {
+    margin-top: 20px;
+    font-family: "Ubuntu", sans-serif;
+    font-size: 30px;
+}
+
+.sub_text {
+    font-family: "Titillium Web", sans-serif;
+    font-size: 24px;
+}
+
+.form_div {
+    margin-top:10px;
+}
+
+.send_button {
+    margin-top:10px;
+}

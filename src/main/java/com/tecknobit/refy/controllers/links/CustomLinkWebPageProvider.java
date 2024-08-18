@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import static com.tecknobit.equinox.environment.helpers.EquinoxBaseEndpointsSet.BASE_EQUINOX_ENDPOINT;
 import static com.tecknobit.refy.controllers.links.CustomLinkWebPageProvider.CUSTOM_LINKS_PATH;
 import static com.tecknobit.refycore.records.RefyItem.OWNER_KEY;
+import static com.tecknobit.refycore.records.RefyItem.TITLE_KEY;
 import static com.tecknobit.refycore.records.links.CustomRefyLink.CUSTOM_LINK_KEY;
 import static com.tecknobit.refycore.records.links.RefyLink.LINK_IDENTIFIER_KEY;
 
@@ -25,6 +26,8 @@ public class CustomLinkWebPageProvider {
     private static final String MAIN_TEXT_KEY = "main_text";
 
     private static final String SUB_TEXT_KEY = "sub_text";
+
+    private static final String SEND_BUTTON_TEXT_KEY = "send_button_text";
 
     private static final String INVALID_CUSTOM_LINK_PAGE = "invalid_link";
 
@@ -47,12 +50,19 @@ public class CustomLinkWebPageProvider {
         if(customLink == null || customLink.isExpired()) {
             model.addAttribute(MAIN_TEXT_KEY, "Invalid link...");
             model.addAttribute(SUB_TEXT_KEY, "The link requested not exists or has been expired.");
+            if(customLink != null)
+                customLinksHelper.deleteLink(linkId);
             return INVALID_CUSTOM_LINK_PAGE;
         }
-        if(!owner.equals(customLink.getOwner().getId())) {
+        if(owner != null && !owner.equals(customLink.getOwner().getId())) {
             model.addAttribute(MAIN_TEXT_KEY, "Wrong attempt");
             model.addAttribute(SUB_TEXT_KEY, "You are not authorized");
             return INVALID_CUSTOM_LINK_PAGE;
+        }
+        model.addAttribute(TITLE_KEY, customLink.getTitle());
+        if(customLink.mustValidateFields()) {
+            model.addAttribute(MAIN_TEXT_KEY, "Fill the below form");
+            model.addAttribute(SEND_BUTTON_TEXT_KEY, "Send");
         }
         return CUSTOM_LINK_KEY;
     }

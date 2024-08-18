@@ -207,6 +207,10 @@ public class CustomRefyLink extends RefyLink {
         return fields;
     }
 
+    public boolean mustValidateFields() {
+        return !fields.isEmpty();
+    }
+
     /**
      * Method to assemble and return an {@link ArrayList} of links
      *

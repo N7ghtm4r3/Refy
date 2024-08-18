@@ -124,6 +124,9 @@ public class CustomRefyLink extends RefyLink {
     @Column(name = FIELD_VALUE_KEY)
     private final Map<String, String> fields;
 
+    @Transient
+    private boolean validated;
+
     public CustomRefyLink() {
         this(null, null, null, null, null, -1, false, null, null, null);
     }
@@ -209,6 +212,11 @@ public class CustomRefyLink extends RefyLink {
 
     public boolean mustValidateFields() {
         return !fields.isEmpty();
+    }
+
+    @JsonIgnore
+    public boolean isValidated() {
+        return validated;
     }
 
     /**

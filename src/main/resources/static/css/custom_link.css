@@ -23,18 +23,24 @@ body {
 
 .card {
     height:450px;
+    max-height:450px;
     width:400px;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
     border-radius: 5px;
     background-color: #F9F9FF;
+     overflow-y:auto;
 }
 
 .form_div {
     margin-top:10px;
 }
 
-.send_button {
+.validate_button {
     margin-top:50%;
     margin-left:70%;
+}
+
+.resourcesList {
+    width:100%;
 }

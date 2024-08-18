@@ -18,6 +18,10 @@ body {
     margin-top:10px;
 }
 
-.send_button {
+.validate_button {
     margin-top:10px;
+}
+
+.resourcesList {
+    width:300px;
 }

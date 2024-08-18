@@ -23,13 +23,15 @@ public class CustomLinkWebPageProvider {
 
     public static final String CUSTOM_LINKS_PATH = "customLinks";
 
+    private static final String INVALID_CUSTOM_LINK_PAGE = "invalid_link";
+
     private static final String MAIN_TEXT_KEY = "main_text";
 
     private static final String SUB_TEXT_KEY = "sub_text";
 
-    private static final String SEND_BUTTON_TEXT_KEY = "send_button_text";
+    private static final String MUST_VALIDATE_FIELDS = "must_validate_fields";
 
-    private static final String INVALID_CUSTOM_LINK_PAGE = "invalid_link";
+    private static final String VALIDATE_BUTTON_TEXT_KEY = "validate_button_text";
 
     @Autowired
     private CustomLinksHelper customLinksHelper;
@@ -59,10 +61,14 @@ public class CustomLinkWebPageProvider {
             model.addAttribute(SUB_TEXT_KEY, "You are not authorized");
             return INVALID_CUSTOM_LINK_PAGE;
         }
+        model.addAttribute(CUSTOM_LINK_KEY, customLink);
         model.addAttribute(TITLE_KEY, customLink.getTitle());
-        if(customLink.mustValidateFields()) {
+        boolean mustValidateFields = customLink.mustValidateFields();
+        model.addAttribute(MUST_VALIDATE_FIELDS, mustValidateFields);
+        if(mustValidateFields) {
             model.addAttribute(MAIN_TEXT_KEY, "Fill the below form");
-            model.addAttribute(SEND_BUTTON_TEXT_KEY, "Send");
+            model.addAttribute(VALIDATE_BUTTON_TEXT_KEY, "Send");
+            model.addAttribute("validated", true);
         }
         return CUSTOM_LINK_KEY;
     }

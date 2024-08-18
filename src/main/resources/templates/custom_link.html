@@ -51,30 +51,32 @@
                     var resourcesDiv = document.getElementById('resourcesDiv');
                     resourcesDiv.classList.remove('hidden');
                 };
-                if(customLink.mustValidateFields == false)
+                const linkFields = Object.entries(customLink.fields);
+                if(Object.keys(linkFields).length === 0)
                     showResources();
-                var validateButton = document.getElementById('validateButton');
-                validateButton.addEventListener('click', function() {
-                    var validated = true;
-                    const linkFields = Object.entries(customLink.fields);
-                    const formFields = document.querySelectorAll('.form_field');
-                    formFields.forEach((field, index) => {
-                        const label = field.label;
-                        const foundField = linkFields.find(([key, value]) => key === label);
-                        if(foundField != null) {
-                            const [, value] = foundField;
-                            if(value !== field.value) {
-                                validated = false;
-                                return;
+                else {
+                    var validateButton = document.getElementById('validateButton');
+                    validateButton.addEventListener('click', function() {
+                        var validated = true;
+                        const formFields = document.querySelectorAll('.form_field');
+                        formFields.forEach((field, index) => {
+                            const label = field.label;
+                            const foundField = linkFields.find(([key, value]) => key === label);
+                            if(foundField != null) {
+                                const [, value] = foundField;
+                                if(value !== field.value) {
+                                    validated = false;
+                                    return;
+                                }
+                            } else {
+                                 validated = false;
+                                 return;
                             }
-                        } else {
-                             validated = false;
-                             return;
-                        }
+                        });
+                        if(validated)
+                            showResources();
                     });
-                    if(validated)
-                        showResources();
-                });
+                }
             });
         /*]]>*/
     </script>

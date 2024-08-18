@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:id="http://www.w3.org/1999/xhtml" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <link th:href="@{custom_link.css}" media="screen and (min-device-width: 661px)" rel="stylesheet">
@@ -36,16 +36,36 @@
            alert("Copied the text: " + copyText.value);
         }
     </script>
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
     <script th:inline="javascript">
         /*<![CDATA[*/
-        var customLink = /*[[${custom_link}]]*/ {};
+            var customLink = /*[[${custom_link}]]*/ {};
+            document.addEventListener('DOMContentLoaded', function() {
+                var showResources = () => {
+                    var validationForm = document.getElementById('validation_form')
+                    validationForm.style.display = 'none';
+                    var resourcesDiv = document.getElementById('resourcesDiv');
+                    resourcesDiv.classList.remove('hidden');
+                };
+                if(customLink.mustValidateFields == false)
+                    showResources();
+                var validateButton = document.getElementById('validateButton');
+                validateButton.addEventListener('click', function() {
+                    //TODO: VALIDATE CORRECTLY THE FIELDS
+                    showResources();
+                });
+            });
         /*]]>*/
     </script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
     <body>
         <div class="container" th:object="${custom_link}">
-            <div th:if="${must_validate_fields}" id="validation_form" class="card">
+            <div id="validation_form" class="card">
                 <h1 class="main_text" th:text="${main_text}">form_title</h1>
                 <div class="form_div">
                     <md-outlined-text-field
@@ -60,7 +80,7 @@
                             name="A"
                     />
                 </div>
-                <div class="validate_button">
+                <div id= "validateButton" class="validate_button">
                     <md-filled-tonal-button th:text="${validate_button_text}">
                         Validate
                         <svg slot="icon" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 0 24 24"
@@ -69,7 +89,7 @@
                     </md-filled-tonal-button>
                 </div>
             </div>
-            <div class="resources" th:if="${must_validate_fields} ? true : ${customLink.isValidated}">
+            <div id="resourcesDiv" class="resources hidden">
                 <div class="card">
                     <h1 class="main_text" th:text="${main_text}">form_title</h1>
                     <md-list class="resourcesList" style="display:inline-block;">
@@ -103,16 +123,6 @@
                     </script>
                 </div>
             </div>
-            <script>
-                var validateButton = document.getElementsByClassName('validate_button')[0]
-                validateButton.addEventListener('click', function() {
-                    var resources = document.getElementsByClassName('resources')[0]
-                    var validationForm = document.getElementById('validation_form')
-                    resources.style.display = 'inline';
-                    validationForm.style.display = 'none';
-                    customLink.validated = true;
-                });
-            </script>
         </div>
     </body>
 </html>

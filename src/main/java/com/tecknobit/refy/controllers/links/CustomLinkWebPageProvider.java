@@ -29,8 +29,6 @@ public class CustomLinkWebPageProvider {
 
     private static final String SUB_TEXT_KEY = "sub_text";
 
-    private static final String MUST_VALIDATE_FIELDS = "must_validate_fields";
-
     private static final String VALIDATE_BUTTON_TEXT_KEY = "validate_button_text";
 
     @Autowired
@@ -63,9 +61,7 @@ public class CustomLinkWebPageProvider {
         }
         model.addAttribute(CUSTOM_LINK_KEY, customLink);
         model.addAttribute(TITLE_KEY, customLink.getTitle());
-        boolean mustValidateFields = customLink.mustValidateFields();
-        model.addAttribute(MUST_VALIDATE_FIELDS, mustValidateFields);
-        if(mustValidateFields) {
+        if(customLink.mustValidateFields()) {
             model.addAttribute(MAIN_TEXT_KEY, "Fill the below form");
             model.addAttribute(VALIDATE_BUTTON_TEXT_KEY, "Send");
             model.addAttribute("validated", true);

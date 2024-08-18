@@ -31,6 +31,8 @@ public class CustomLinkWebPageProvider {
 
     private static final String VALIDATE_BUTTON_TEXT_KEY = "validate_button_text";
 
+    private static final String RESOURCES_TITLE_TEXT_KEY = "resources_title_text";
+
     @Autowired
     private CustomLinksHelper customLinksHelper;
 
@@ -63,8 +65,8 @@ public class CustomLinkWebPageProvider {
         model.addAttribute(TITLE_KEY, customLink.getTitle());
         if(customLink.mustValidateFields()) {
             model.addAttribute(MAIN_TEXT_KEY, "Fill the below form");
-            model.addAttribute(VALIDATE_BUTTON_TEXT_KEY, "Send");
-            model.addAttribute("validated", true);
+            model.addAttribute(VALIDATE_BUTTON_TEXT_KEY, "Validate");
+            model.addAttribute(RESOURCES_TITLE_TEXT_KEY, "Copy the resources!");
         }
         return CUSTOM_LINK_KEY;
     }

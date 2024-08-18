@@ -66,8 +66,8 @@ public class CustomLinksHelper extends LinksBaseHelper<CustomRefyLink> {
             int index = 1;
             for (String key : map.keySet()) {
                 query.setParameter(index++, linkId);
-                query.setParameter(index++, key);
                 query.setParameter(index++, map.get(key));
+                query.setParameter(index++, key);
             }
         });
     }

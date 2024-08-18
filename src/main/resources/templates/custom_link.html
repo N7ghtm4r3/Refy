@@ -55,8 +55,25 @@
                     showResources();
                 var validateButton = document.getElementById('validateButton');
                 validateButton.addEventListener('click', function() {
-                    //TODO: VALIDATE CORRECTLY THE FIELDS
-                    showResources();
+                    var validated = true;
+                    const linkFields = Object.entries(customLink.fields);
+                    const formFields = document.querySelectorAll('.form_field');
+                    formFields.forEach((field, index) => {
+                        const label = field.label;
+                        const foundField = linkFields.find(([key, value]) => key === label);
+                        if(foundField != null) {
+                            const [, value] = foundField;
+                            if(value !== field.value) {
+                                validated = false;
+                                return;
+                            }
+                        } else {
+                             validated = false;
+                             return;
+                        }
+                    });
+                    if(validated)
+                        showResources();
                 });
             });
         /*]]>*/
@@ -67,18 +84,13 @@
         <div class="container" th:object="${custom_link}">
             <div id="validation_form" class="card">
                 <h1 class="main_text" th:text="${main_text}">form_title</h1>
-                <div class="form_div">
+                <div th:each="field : ${custom_link.fields.keySet()}" class="item_field">
                     <md-outlined-text-field
-                            label="Email" type="email"
-                            name="email"
-                            required
-                    />
-                </div>
-                <div class="form_div">
-                    <md-outlined-text-field
-                            label="Email" type="email"
-                            name="A"
-                    />
+                            class="form_field"
+                            th:label="${field}"
+                            label="field_key" type="text"
+                            required>
+                    </md-outlined-text-field>
                 </div>
                 <div id= "validateButton" class="validate_button">
                     <md-filled-tonal-button th:text="${validate_button_text}">
@@ -91,18 +103,20 @@
             </div>
             <div id="resourcesDiv" class="resources hidden">
                 <div class="card">
-                    <h1 class="main_text" th:text="${main_text}">form_title</h1>
+                    <h1 class="main_text" th:text="${resources_title_text}">form_title</h1>
                     <md-list class="resourcesList" style="display:inline-block;">
-                        <md-list-item>
-                            <div slot="headline" th:text="${resource_key}">resource_key</div>
-                            <div class="supportingText" slot="supporting-text" th:text="${resource_value}">resource_value</div>
-                            <div slot="end">
-                                <md-filled-tonal-icon-button class="copyButton">
-                                    <md-icon>content_copy</md-icon>
-                                </md-filled-tonal-icon-button>
-                            </div>
-                        </md-list-item>
-                        <md-divider></md-divider>
+                        <div th:each="resource : ${custom_link.resources.entrySet()}" class="item_field">
+                            <md-list-item>
+                                <div slot="headline" th:text="${resource.key}">resource_key</div>
+                                <div class="supportingText" slot="supporting-text" th:text="${resource.value}">resource_value</div>
+                                <div slot="end">
+                                    <md-filled-tonal-icon-button class="copyButton">
+                                        <md-icon>content_copy</md-icon>
+                                    </md-filled-tonal-icon-button>
+                                </div>
+                            </md-list-item>
+                            <md-divider></md-divider>
+                        </div>
                     </md-list>
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {

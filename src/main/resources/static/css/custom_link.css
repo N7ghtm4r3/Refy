@@ -3,6 +3,27 @@ body {
     background-color: #AAC7FF;
 }
 
+.preview_mode_alert {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 20%;
+    transform: translate(-50%, -50%);
+    height:50px;
+    width:150px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 5px;
+    background-color: #F9F9FF;
+    margin-bottom: 100px;
+}
+
+.warn_text {
+    display: inline-block;
+    font-family: "Ubuntu", sans-serif;
+}
+
 .main_text {
     padding-top:20px;
     font-family: "Ubuntu", sans-serif;
@@ -29,7 +50,7 @@ body {
     transition: 0.3s;
     border-radius: 5px;
     background-color: #F9F9FF;
-     overflow-y:auto;
+    overflow-y:auto;
 }
 
 .item_field {

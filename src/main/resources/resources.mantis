@@ -1,5 +1,6 @@
 {
     "en": {
+        "link_unique_access_warn_key": "At the next refresh the link will be deleted, pay attention!",
         "invalid_link_key": "Invalid link...",
         "invalid_link_subtext_key": "The link requested not exists or has been expired.",
         "validate_key": "Validate",
@@ -21,8 +22,9 @@
     },
     "ignored_resources": {},
     "it": {
+        "link_unique_access_warn_key": "Al prossimo caricamento il link sara' eliminato, presta attenzione!",
         "invalid_link_key": "Link non valido...",
-        "invalid_link_subtext_key": "Il link richiesto non esiste o è scaduto.",
+        "invalid_link_subtext_key": "Il link richiesto non esiste o e' scaduto.",
         "validate_key": "Convalida",
         "copy_the_resources_key": "Copia le risorse!",
         "wrong_procedure_key": "Procedura sbagliata",
@@ -33,7 +35,7 @@
         "wrong_language_key": "Lingua non supportata",
         "wrong_attempt_key": "Tentativo sbagliato",
         "wrong_tag_name_key": "Tagname non valido",
-        "you_are_not_authorized_key": "Tu non sei autorizzato",
+        "you_are_not_authorized_key": "Tu non sei autorizzat",
         "connection_error_message_key": "Il server è temporaneamente non disponibile",
         "wrong_name_key": "Nome non valido",
         "wrong_surname_key": "Cognome non valido",
@@ -41,10 +43,11 @@
         "not_authorized_key": "Non autorizzat o dati errati"
     },
     "fr": {
+        "link_unique_access_warn_key": "Au prochain rafrachissement le lien sera supprimé, faites attention!",
         "invalid_link_key": "Lien non valide...",
         "invalid_link_subtext_key": "Le lien demanda n'existe pas ou a expire.",
         "validate_key": "Valider",
-        "copy_the_resources_key": "Recopiez les ressources !",
+        "copy_the_resources_key": "Recopiez les ressources!",
         "wrong_procedure_key": "Mauvaise procadure",
         "wrong_password_key": "Mot de passe n'est pas valide",
         "wrong_currency_key": "La monnaie n'est pas prise en charge",
@@ -53,7 +56,7 @@
         "wrong_language_key": "La langue n'est pas prise en charge",
         "wrong_attempt_key": "Mauvaise tentative",
         "wrong_tag_name_key": "Tagname is not valid",
-        "you_are_not_authorized_key": "Vous n'Ãªtes pas autorisÃ©",
+        "you_are_not_authorized_key": "Vous n'ates pas autorisa",
         "connection_error_message_key": "Le serveur est temporairement indisponible",
         "wrong_name_key": "Le nom n'est pas valide",
         "wrong_surname_key": "Le nom n'est pas valide",
@@ -61,6 +64,7 @@
         "not_authorized_key": "Non autorisa ou faux datails"
     },
     "es": {
+        "link_unique_access_warn_key": "En la próxima actualización el enlace se eliminará, ¡presta atención!",
         "invalid_link_key": "Enlace invalido...",
         "invalid_link_subtext_key": "El enlace solicitado no existe o ha sido vencido.",
         "validate_key": "Validacian",

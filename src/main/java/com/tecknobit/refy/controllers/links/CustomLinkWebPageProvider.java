@@ -20,6 +20,7 @@ import static com.tecknobit.refy.controllers.links.CustomLinkWebPageProvider.CUS
 import static com.tecknobit.refycore.records.RefyItem.OWNER_KEY;
 import static com.tecknobit.refycore.records.RefyItem.TITLE_KEY;
 import static com.tecknobit.refycore.records.links.CustomRefyLink.CUSTOM_LINK_KEY;
+import static com.tecknobit.refycore.records.links.CustomRefyLink.UNIQUE_ACCESS_KEY;
 import static com.tecknobit.refycore.records.links.RefyLink.LINK_IDENTIFIER_KEY;
 
 @Controller
@@ -40,13 +41,17 @@ public class CustomLinkWebPageProvider {
 
     private static final String INVALID_CUSTOM_LINK_PAGE = "invalid_link";
 
-    private static final String MAIN_TEXT_KEY = "main_text";
+    private static final String MAIN_TEXT = "main_text";
 
-    private static final String SUB_TEXT_KEY = "sub_text";
+    private static final String SUB_TEXT = "sub_text";
 
-    private static final String VALIDATE_BUTTON_TEXT_KEY = "validate_button_text";
+    private static final String IS_IN_PREVIEW_MODE = "is_in_preview_mode";
 
-    private static final String RESOURCES_TITLE_TEXT_KEY = "resources_title_text";
+    private static final String VALIDATE_BUTTON_TEXT = "validate_button_text";
+
+    private static final String RESOURCES_TITLE_TEXT = "resources_title_text";
+
+    private static final String LINK_UNIQUE_ACCESS_WARN_TEXT = "link_unique_access_warn";
 
     @Autowired
     private CustomLinksHelper customLinksHelper;
@@ -65,25 +70,43 @@ public class CustomLinkWebPageProvider {
     ) {
         mantis.changeCurrentLocale(request.getLocale());
         CustomRefyLink customLink = customLinksHelper.findById(linkId);
-        if(customLink == null || customLink.isExpired()) {
-            model.addAttribute(MAIN_TEXT_KEY, mantis.getResource("invalid_link_key"));
-            model.addAttribute(SUB_TEXT_KEY, mantis.getResource("invalid_link_subtext_key"));
-            if(customLink != null)
-                customLinksHelper.deleteLink(linkId);
-            return INVALID_CUSTOM_LINK_PAGE;
-        }
-        if(owner != null && !owner.equals(customLink.getOwner().getId())) {
-            model.addAttribute(MAIN_TEXT_KEY, mantis.getResource("wrong_attempt_key"));
-            model.addAttribute(SUB_TEXT_KEY, mantis.getResource("you_are_not_authorized_key"));
-            return INVALID_CUSTOM_LINK_PAGE;
-        }
+        if(customLink == null || customLink.isExpired())
+            return linkNotExistsOrExpired(customLink, model);
+        boolean isInPreviewMode = owner != null;
+        if(isInPreviewMode && !owner.equals(customLink.getOwner().getId()))
+            return wrongAttemptToPreviewMode(model);
+        return customLinkPage(customLink, model, isInPreviewMode);
+    }
+
+    private String linkNotExistsOrExpired(CustomRefyLink customLink, Model model) {
+        model.addAttribute(MAIN_TEXT, mantis.getResource("invalid_link_key"));
+        model.addAttribute(SUB_TEXT, mantis.getResource("invalid_link_subtext_key"));
+        if(customLink != null)
+            customLinksHelper.deleteLink(customLink.getId());
+        return INVALID_CUSTOM_LINK_PAGE;
+    }
+
+    private String wrongAttemptToPreviewMode(Model model) {
+        model.addAttribute(MAIN_TEXT, mantis.getResource("wrong_attempt_key"));
+        model.addAttribute(SUB_TEXT, mantis.getResource("you_are_not_authorized_key"));
+        return INVALID_CUSTOM_LINK_PAGE;
+    }
+
+    private String customLinkPage(CustomRefyLink customLink, Model model, boolean isPreviewMode) {
         model.addAttribute(CUSTOM_LINK_KEY, customLink);
         model.addAttribute(TITLE_KEY, customLink.getTitle());
+        model.addAttribute(IS_IN_PREVIEW_MODE, isPreviewMode);
+        boolean hasUniqueAccess = customLink.hasUniqueAccess();
+        model.addAttribute(UNIQUE_ACCESS_KEY, hasUniqueAccess);
+        if(hasUniqueAccess)
+            model.addAttribute(LINK_UNIQUE_ACCESS_WARN_TEXT, mantis.getResource("link_unique_access_warn_key"));
         if(customLink.mustValidateFields()) {
-            model.addAttribute(MAIN_TEXT_KEY, mantis.getResource("fill_the_below_form_key"));
-            model.addAttribute(VALIDATE_BUTTON_TEXT_KEY, mantis.getResource("validate_key"));
-            model.addAttribute(RESOURCES_TITLE_TEXT_KEY, mantis.getResource("copy_the_resources_key"));
+            model.addAttribute(MAIN_TEXT, mantis.getResource("fill_the_below_form_key"));
+            model.addAttribute(VALIDATE_BUTTON_TEXT, mantis.getResource("validate_key"));
+            model.addAttribute(RESOURCES_TITLE_TEXT, mantis.getResource("copy_the_resources_key"));
         }
+        if(!isPreviewMode && hasUniqueAccess)
+            customLinksHelper.deleteLink(customLink.getId());
         return CUSTOM_LINK_KEY;
     }
 

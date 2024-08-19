@@ -66,6 +66,8 @@
                                 const [, value] = foundField;
                                 if(value !== field.value) {
                                     validated = false;
+                                    field.reportValidity();
+                                    field.error = true;
                                     return;
                                 }
                             } else {

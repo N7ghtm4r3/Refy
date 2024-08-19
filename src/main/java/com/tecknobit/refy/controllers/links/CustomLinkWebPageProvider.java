@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.util.Locale;
 
 import static com.tecknobit.equinox.environment.helpers.EquinoxBaseEndpointsSet.BASE_EQUINOX_ENDPOINT;
-import static com.tecknobit.refy.controllers.links.CustomLinkWebPageProvider.CUSTOM_LINKS_PATH;
 import static com.tecknobit.refycore.records.RefyItem.TITLE_KEY;
 import static com.tecknobit.refycore.records.links.CustomRefyLink.*;
 import static com.tecknobit.refycore.records.links.RefyLink.LINK_IDENTIFIER_KEY;
@@ -34,8 +33,6 @@ public class CustomLinkWebPageProvider {
             throw new RuntimeException(e);
         }
     }
-
-    public static final String CUSTOM_LINKS_PATH = "customLinks";
 
     private static final String INVALID_CUSTOM_LINK_PAGE = "invalid_link";
 
@@ -101,8 +98,8 @@ public class CustomLinkWebPageProvider {
         if(customLink.mustValidateFields()) {
             model.addAttribute(MAIN_TEXT, mantis.getResource("fill_the_below_form_key"));
             model.addAttribute(VALIDATE_BUTTON_TEXT, mantis.getResource("validate_key"));
-            model.addAttribute(RESOURCES_TITLE_TEXT, mantis.getResource("copy_the_resources_key"));
         }
+        model.addAttribute(RESOURCES_TITLE_TEXT, mantis.getResource("copy_the_resources_key"));
         if(!isPreviewMode && hasUniqueAccess)
             customLinksHelper.deleteLink(customLink.getId());
         return CUSTOM_LINK_KEY;

@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.tecknobit.equinox.environment.helpers.EquinoxBaseEndpointsSet.BASE_EQUINOX_ENDPOINT;
 import static com.tecknobit.refycore.records.LinksCollection.COLLECTIONS_KEY;
 import static com.tecknobit.refycore.records.RefyUser.*;
 import static com.tecknobit.refycore.records.links.CustomRefyLink.CUSTOM_LINK_KEY;
@@ -28,6 +29,8 @@ import static java.util.concurrent.TimeUnit.*;
     TEAMS_KEY
 })
 public class CustomRefyLink extends RefyLink {
+
+    public static final String CUSTOM_LINKS_PATH = "customLinks";
 
     public static final String CUSTOM_LINK_KEY = "custom_link";
 
@@ -229,7 +232,8 @@ public class CustomRefyLink extends RefyLink {
 
     @JsonIgnore
     public String getPreviewModeUrl(String hostAddress) {
-        return hostAddress + "?" + PREVIEW_TOKEN_KEY + "=" + previewToken;
+        return hostAddress + BASE_EQUINOX_ENDPOINT + CUSTOM_LINKS_PATH + "/" + id + "?" + PREVIEW_TOKEN_KEY + "="
+                + previewToken;
     }
 
     /**

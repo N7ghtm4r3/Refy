@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.tecknobit.equinox.environment.controllers.EquinoxController.generateIdentifier;
 import static com.tecknobit.equinox.environment.records.EquinoxItem.IDENTIFIER_KEY;
 import static com.tecknobit.refycore.helpers.RefyEndpointsSet.CUSTOM_LINKS_ENDPOINT;
 import static com.tecknobit.refycore.records.links.CustomRefyLink.*;
@@ -55,8 +56,8 @@ public class CustomLinksHelper extends LinksBaseHelper<CustomRefyLink> {
 
     public void createCustomLink(String userId, String linkId, String title, String description, boolean hasUniqueAccess,
                                  ExpiredTime expiredTime, Map<String, Object> resources, Map<String, Object> fields) {
-        customLinksRepository.saveLink(CUSTOM_LINK_KEY, linkId, title, description, CUSTOM_LINKS_ENDPOINT
-                        + "/" + userId, System.currentTimeMillis(), expiredTime, hasUniqueAccess, userId);
+        customLinksRepository.saveLink(CUSTOM_LINK_KEY, linkId, title, description, CUSTOM_LINKS_ENDPOINT + "/" + userId,
+                System.currentTimeMillis(), expiredTime, hasUniqueAccess, generateIdentifier(), userId);
         attachMap(linkId, ATTACH_RESOURCES_TO_CUSTOM_LINK_QUERY, resources);
         attachMap(linkId, ATTACH_FIELDS_TO_CUSTOM_LINK_QUERY, fields);
     }

@@ -49,6 +49,8 @@ public class CustomRefyLink extends RefyLink {
 
     public static final String FIELD_VALUE_KEY = "field_value";
 
+    public static final String PREVIEW_TOKEN_KEY = "preview_token";
+
     public enum ExpiredTime {
 
         NO_EXPIRATION(0, -1),
@@ -124,19 +126,27 @@ public class CustomRefyLink extends RefyLink {
     @Column(name = FIELD_VALUE_KEY)
     private final Map<String, String> fields;
 
+    @Column(
+            name = PREVIEW_TOKEN_KEY,
+            columnDefinition = "VARCHAR(32) DEFAULT NULL",
+            unique = true
+    )
+    private final String previewToken;
+
     public CustomRefyLink() {
-        this(null, null, null, null, null, -1, false, null, null, null);
+        this(null, null, null, null, null, -1, false, null, null, null, null);
     }
 
     public CustomRefyLink(String id, RefyUser owner, String title, String description, String referenceLink,
-                          long creationDate, boolean uniqueAccess, ExpiredTime expiredTime,
-                          Map<String, String> resources, Map<String, String> fields) {
+                          long creationDate, boolean uniqueAccess, ExpiredTime expiredTime, Map<String, String> resources,
+                          Map<String, String> fields, String previewToken) {
         super(id, owner, title, description, referenceLink, List.of(), List.of());
         this.creationDate = creationDate;
         this.uniqueAccess = uniqueAccess;
         this.expiredTime = expiredTime;
         this.resources = resources;
         this.fields = fields;
+        this.previewToken = previewToken;
     }
 
     public CustomRefyLink(JSONObject jCustomRefyLink) {
@@ -146,6 +156,7 @@ public class CustomRefyLink extends RefyLink {
         expiredTime = ExpiredTime.valueOf(hItem.getString(EXPIRED_TIME_KEY));
         resources = loadMap(hItem.getJSONObject(RESOURCES_KEY));
         fields = loadMap(hItem.getJSONObject(FIELDS_KEY));
+        previewToken = hItem.getString(PREVIEW_TOKEN_KEY);
     }
 
     private Map<String, String> loadMap(JSONObject jMap) {
@@ -209,6 +220,16 @@ public class CustomRefyLink extends RefyLink {
 
     public boolean mustValidateFields() {
         return !fields.isEmpty();
+    }
+
+    @JsonGetter(PREVIEW_TOKEN_KEY)
+    public String getPreviewToken() {
+        return previewToken;
+    }
+
+    @JsonIgnore
+    public String getPreviewModeUrl(String hostAddress) {
+        return hostAddress + "?" + PREVIEW_TOKEN_KEY + "=" + previewToken;
     }
 
     /**

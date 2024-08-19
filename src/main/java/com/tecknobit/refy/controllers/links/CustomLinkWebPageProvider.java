@@ -17,10 +17,8 @@ import java.util.Locale;
 
 import static com.tecknobit.equinox.environment.helpers.EquinoxBaseEndpointsSet.BASE_EQUINOX_ENDPOINT;
 import static com.tecknobit.refy.controllers.links.CustomLinkWebPageProvider.CUSTOM_LINKS_PATH;
-import static com.tecknobit.refycore.records.RefyItem.OWNER_KEY;
 import static com.tecknobit.refycore.records.RefyItem.TITLE_KEY;
-import static com.tecknobit.refycore.records.links.CustomRefyLink.CUSTOM_LINK_KEY;
-import static com.tecknobit.refycore.records.links.CustomRefyLink.UNIQUE_ACCESS_KEY;
+import static com.tecknobit.refycore.records.links.CustomRefyLink.*;
 import static com.tecknobit.refycore.records.links.RefyLink.LINK_IDENTIFIER_KEY;
 
 @Controller
@@ -64,16 +62,16 @@ public class CustomLinkWebPageProvider {
             HttpServletRequest request,
             @PathVariable(LINK_IDENTIFIER_KEY) String linkId,
             @RequestParam(
-                    name = OWNER_KEY,
+                    name = PREVIEW_TOKEN_KEY,
                     required = false
-            ) String owner
+            ) String previewToken
     ) {
         mantis.changeCurrentLocale(request.getLocale());
         CustomRefyLink customLink = customLinksHelper.findById(linkId);
         if(customLink == null || customLink.isExpired())
             return linkNotExistsOrExpired(customLink, model);
-        boolean isInPreviewMode = owner != null;
-        if(isInPreviewMode && !owner.equals(customLink.getOwner().getId()))
+        boolean isInPreviewMode = previewToken != null;
+        if(isInPreviewMode && !previewToken.equals(customLink.getPreviewToken()))
             return wrongAttemptToPreviewMode(model);
         return customLinkPage(customLink, model, isInPreviewMode);
     }

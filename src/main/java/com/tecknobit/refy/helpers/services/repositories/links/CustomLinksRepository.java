@@ -54,6 +54,7 @@ public interface CustomLinksRepository extends LinksBaseRepository<CustomRefyLin
                     CREATION_DATE_KEY + "," +
                     EXPIRED_TIME_KEY + "," +
                     UNIQUE_ACCESS_KEY + "," +
+                    PREVIEW_TOKEN_KEY + "," +
                     OWNER_KEY
                     + ") VALUES (" +
                     ":" + DISCRIMINATOR_VALUE_KEY + "," +
@@ -64,6 +65,7 @@ public interface CustomLinksRepository extends LinksBaseRepository<CustomRefyLin
                     ":" + CREATION_DATE_KEY + "," +
                     ":#{#" + EXPIRED_TIME_KEY + ".name()}," +
                     ":" + UNIQUE_ACCESS_KEY + "," +
+                    ":" + PREVIEW_TOKEN_KEY + "," +
                     ":" + OWNER_KEY +
                     ")",
             nativeQuery = true
@@ -77,6 +79,7 @@ public interface CustomLinksRepository extends LinksBaseRepository<CustomRefyLin
             @Param(CREATION_DATE_KEY) long creationDate,
             @Param(EXPIRED_TIME_KEY) ExpiredTime expiredTime,
             @Param(UNIQUE_ACCESS_KEY) boolean hasUniqueAccess,
+            @Param(PREVIEW_TOKEN_KEY) String previewToken,
             @Param(OWNER_KEY) String owner
     );
 

@@ -97,39 +97,6 @@ public class RefyUser extends EquinoxUser {
                 List.of(), List.of(), List.of(), List.of());
     }
 
-    //TODO: TO REMOVE
-    public RefyUser(String id) {
-        super(id, null, "Bello", "Utente", "Prova@gmail.com", "12345678", "https://res.cloudinary.com/momentum-media-group-pty-ltd/image/upload/v1686795211/Space%20Connect/space-exploration-sc_fm1ysf.jpg", "en",
-                ApplicationTheme.Auto);
-        tagName = "@tagName";
-        this.links = List.of();
-        //TODO: TO LOAD CORRECTLY
-        this.teams = List.of(
-                new Team("id", "Ciao", this,
-                        "https://res.cloudinary.com/momentum-media-group-pty-ltd/image/upload/v1686795211/Space%20Connect/space-exploration-sc_fm1ysf.jpg",
-                        "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper. Fusce ut justo egestas, consectetur ipsum eget, suscipit felis. Vivamus sodales iaculis ligula vitae pretium. Suspendisse interdum varius sem, sed porta elit hendrerit sed. Suspendisse accumsan auctor lectus a venenatis. Maecenas id fermentum leo. Praesent aliquam sagittis aliquam."
-                ),
-                new Team("id2", "Ciao2", this, "https://cdn.mos.cms.futurecdn.net/9UmWCbyxpKaEGXjwFG7dXo-1200-80.jpg",
-                        "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper. Fusce ut justo egestas, consectetur ipsum eget, suscipit felis. Vivamus sodales iaculis ligula vitae pretium. Suspendisse interdum varius sem, sed porta elit hendrerit sed. Suspendisse accumsan auctor lectus a venenatis. Maecenas id fermentum leo. Praesent aliquam sagittis aliquam.")
-        );
-        //TODO: TO LOAD CORRECTLY
-        this.collections = List.of(
-                new LinksCollection("#gegw", this, "id", "#FFFFFF",
-                        "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper. Fusce ut justo egestas, consectetur ipsum eget, suscipit felis. Vivamus sodales iaculis ligula vitae pretium. Suspendisse interdum varius sem, sed porta elit hendrerit sed. Suspendisse accumsan auctor lectus a venenatis. Maecenas id fermentum leo. Praesent aliquam sagittis aliquam."
-                )
-        );
-    }
-
-    //TODO: TO REMOVE
-    public RefyUser(String id, boolean toRemoveForTestingOnly) {
-        super(id, null, "Bello", "Utente", "Prova@gmail.com", "12345678", "https://res.cloudinary.com/momentum-media-group-pty-ltd/image/upload/v1686795211/Space%20Connect/space-exploration-sc_fm1ysf.jpg", "en",
-                ApplicationTheme.Auto);
-        tagName = "@tagName";
-        this.links = List.of();
-        this.teams = List.of();
-        this.collections = List.of();
-    }
-
     public RefyUser(String id, String token, String name, String surname, String email, String password, String language,
                     String tagName, List<RefyLink> links, List<Team> teams, List<LinksCollection> collections,
                     List<CustomRefyLink> customLinks) {

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.apimanager.annotations.Returner;
 import com.tecknobit.apimanager.formatters.JsonHelper;
-import com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole;
 import com.tecknobit.refycore.records.links.RefyLink;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
@@ -18,10 +17,10 @@ import java.util.HashSet;
 import java.util.List;
 
 import static com.tecknobit.equinox.environment.records.EquinoxUser.PROFILE_PIC_KEY;
+import static com.tecknobit.refycore.records.LinksCollection.IDENTIFIER_KEY;
 import static com.tecknobit.refycore.records.LinksCollection.*;
 import static com.tecknobit.refycore.records.RefyUser.*;
 import static com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole.ADMIN;
-import static com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole.VIEWER;
 import static com.tecknobit.refycore.records.Team.RefyTeamMember.returnMembers;
 import static com.tecknobit.refycore.records.Team.TEAM_IDENTIFIER_KEY;
 import static com.tecknobit.refycore.records.links.RefyLink.LINK_IDENTIFIER_KEY;
@@ -110,70 +109,6 @@ public class Team extends RefyItem {
 
     public Team() {
         this(null, null, null, null, null, List.of(), List.of(), List.of());
-    }
-
-    //TODO: TO REMOVE
-    public Team(String id, String name, RefyUser author, String logoPic, String description) {
-        super(id, author, name, description);
-        this.logoPic = logoPic;
-        this.links = List.of();
-        this.collections = List.of();
-        this.members = List.of(
-                new RefyTeamMember(
-                        "id",
-                        "User",
-                        "One",
-                        "p@gmail.com",
-                        "https://t4.ftcdn.net/jpg/03/86/82/73/360_F_386827376_uWOOhKGk6A4UVL5imUBt20Bh8cmODqzx.jpg",
-                        "@id",
-                        VIEWER
-                ),
-                new RefyTeamMember(
-                        "id3213",
-                        "User",
-                        "One",
-                        "p@gmail.com",
-                        "https://images.photowall.com/products/56987/outer-space-4.jpg?h=699&q=85",
-                        "@id3213",
-                        ADMIN
-                ),
-                new RefyTeamMember(
-                        "id2",
-                        "User",
-                        "One",
-                        "p@gmail.com",
-                        "https://images.photowall.com/products/56987/outer-space-4.jpg?h=699&q=85",
-                        "@id2",
-                        TeamRole.VIEWER
-                ),
-                new RefyTeamMember(
-                        "idwgewgw2",
-                        "User",
-                        "One",
-                        "p@gmail.com",
-                        "https://images.photowall.com/products/56987/outer-space-4.jpg?h=699&q=85",
-                        "@id2",
-                        VIEWER
-                ),
-                new RefyTeamMember(
-                        "igwegwgwegwegwegewgd2",
-                        "User",
-                        "LAST",
-                        "p@gmail.com",
-                        "https://images.photowall.com/products/56987/outer-space-4.jpg?h=699&q=85",
-                        "@id2",
-                        ADMIN
-                ),
-                new RefyTeamMember(
-                        "iegwgwed2",
-                        "User",
-                        "One",
-                        "p@gmail.com",
-                        "https://images.photowall.com/products/56987/outer-space-4.jpg?h=699&q=85",
-                        "@id2",
-                        TeamRole.VIEWER
-                )
-        );
     }
 
     public Team(String id, String name, RefyUser author, String logoPic, String description, List<RefyTeamMember> members,
@@ -343,26 +278,6 @@ public class Team extends RefyItem {
 
         public RefyTeamMember() {
             this(new RefyUser(), null, null);
-        }
-
-        //TODO: TO REMOVE
-        public RefyTeamMember(String id) {
-            this(new RefyUser(id), null, null);
-        }
-
-        //TODO: TO REMOVE
-        public RefyTeamMember(String id, String name, String surname, String email, String profilePic, String tagName,
-                              TeamRole role) {
-            this(id, name, surname, email, profilePic, tagName, role, null);
-        }
-
-        //TODO: TO REMOVE
-        public RefyTeamMember(String id, String name, String surname, String email, String profilePic, String tagName,
-                              TeamRole role, Team sourceTeam) {
-            hItem = null;
-            owner = new RefyUser(id, true);
-            this.role = role;
-            this.sourceTeam = sourceTeam;
         }
 
         public RefyTeamMember(RefyUser owner, TeamRole role, Team sourceTeam) {

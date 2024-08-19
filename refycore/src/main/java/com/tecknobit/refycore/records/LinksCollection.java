@@ -70,24 +70,6 @@ public class LinksCollection extends RefyItem implements RefyItem.ListScreenItem
         this(null, null, null, null, null, null, null);
     }
 
-    //TODO: TO REMOVE
-    public LinksCollection(String id, RefyUser owner, String name, String color, String description) {
-        super(id, owner, name, description);
-        this.color = color;
-        this.links = List.of();
-        //TODO: TO LOAD CORRECTLY
-        this.teams = List.of();
-    }
-
-    //TODO: TO REMOVE
-    public LinksCollection(String id, RefyUser owner, String name, String color, String description, List<Team> teams) {
-        super(id, owner, name, description);
-        this.color = color;
-        this.links = List.of();
-        //TODO: TO LOAD CORRECTLY
-        this.teams = teams;
-    }
-
     public LinksCollection(String id, RefyUser owner, String name, String color, String description, List<Team> teams,
                            List<RefyLink> links) {
         super(id, owner, name, description);

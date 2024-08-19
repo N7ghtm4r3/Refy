@@ -39,7 +39,6 @@ class RefyRequester(
     host = host,
     userId = userId,
     userToken = userToken,
-    debugMode = true, //TODO: REMOVE THIS LINE
     connectionTimeout = 5000,
     connectionErrorMessage = DEFAULT_CONNECTION_ERROR_MESSAGE
 ) {

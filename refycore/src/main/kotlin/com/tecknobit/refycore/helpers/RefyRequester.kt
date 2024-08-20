@@ -226,7 +226,7 @@ class RefyRequester(
      *
      */
     @WrappedRequest
-    @RequestPath(path = "/api/v1/users/{user_id}/links/{link_id}/collections", method = PATCH)
+    @RequestPath(path = "/api/v1/users/{user_id}/links/{link_id}/collections", method = PUT)
     fun manageLinkCollections(
         link: RefyLink,
         collections: List<String>
@@ -247,7 +247,7 @@ class RefyRequester(
      *
      */
     @WrappedRequest
-    @RequestPath(path = "/api/v1/users/{user_id}/links/{link_id}/collections", method = PATCH)
+    @RequestPath(path = "/api/v1/users/{user_id}/links/{link_id}/collections", method = PUT)
     fun manageLinkCollections(
         linkId: String,
         collections: List<String>
@@ -272,7 +272,7 @@ class RefyRequester(
      *
      */
     @WrappedRequest
-    @RequestPath(path = "/api/v1/users/{user_id}/links/{link_id}/teams", method = PATCH)
+    @RequestPath(path = "/api/v1/users/{user_id}/links/{link_id}/teams", method = PUT)
     fun manageLinkTeams(
         link: RefyLink,
         teams: List<String>
@@ -293,7 +293,7 @@ class RefyRequester(
      *
      */
     @WrappedRequest
-    @RequestPath(path = "/api/v1/users/{user_id}/links/{link_id}/teams", method = PATCH)
+    @RequestPath(path = "/api/v1/users/{user_id}/links/{link_id}/teams", method = PUT)
     fun manageLinkTeams(
         linkId: String,
         teams: List<String>
@@ -390,7 +390,7 @@ class RefyRequester(
      *
      * @param color: color of the collection
      * @param title: title of the collection
-     * @param description: description to check the validity
+     * @param description: description of the collection
      * @param links: list of links shared in a collection
      *
      * @return the result of the request as [JSONObject]
@@ -421,7 +421,7 @@ class RefyRequester(
      * @param collection: the collection to edit
      * @param color: color of the collection
      * @param title: title of the collection
-     * @param description: description to check the validity
+     * @param description: description of the collection
      * @param links: list of links shared in a collection
      *
      * @return the result of the request as [JSONObject]
@@ -451,7 +451,7 @@ class RefyRequester(
      * @param collectionId: the identifier of the collection to edit
      * @param color: color of the collection
      * @param title: title of the collection
-     * @param description: description to check the validity
+     * @param description: description of the collection
      * @param links: list of links shared in a collection
      *
      * @return the result of the request as [JSONObject]
@@ -484,7 +484,7 @@ class RefyRequester(
      *
      * @param color: color of the collection
      * @param title: title of the collection
-     * @param description: description to check the validity
+     * @param description: description of the collection
      * @param links: list of links shared in a collection
      *
      * @return the payload as [Params]
@@ -514,7 +514,7 @@ class RefyRequester(
      *
      */
     @WrappedRequest
-    @RequestPath(path = "/api/v1/users/{user_id}/collections/{collection_id}/links", method = PATCH)
+    @RequestPath(path = "/api/v1/users/{user_id}/collections/{collection_id}/links", method = PUT)
     fun manageCollectionLinks(
         collection: LinksCollection,
         links: List<String>
@@ -534,7 +534,7 @@ class RefyRequester(
      * @return the result of the request as [JSONObject]
      *
      */
-    @RequestPath(path = "/api/v1/users/{user_id}/collections/{collection_id}/links", method = PATCH)
+    @RequestPath(path = "/api/v1/users/{user_id}/collections/{collection_id}/links", method = PUT)
     fun manageCollectionLinks(
         collectionId: String,
         links: List<String>
@@ -559,7 +559,7 @@ class RefyRequester(
      *
      */
     @WrappedRequest
-    @RequestPath(path = "/api/v1/users/{user_id}/collections/{collection_id}/teams", method = PATCH)
+    @RequestPath(path = "/api/v1/users/{user_id}/collections/{collection_id}/teams", method = PUT)
     fun manageCollectionTeams(
         collection: LinksCollection,
         teams: List<String>
@@ -580,7 +580,7 @@ class RefyRequester(
      *
      */
     @WrappedRequest
-    @RequestPath(path = "/api/v1/users/{user_id}/collections/{collection_id}/teams", method = PATCH)
+    @RequestPath(path = "/api/v1/users/{user_id}/collections/{collection_id}/teams", method = PUT)
     fun manageCollectionTeams(
         collectionId: String,
         teams: List<String>
@@ -688,6 +688,15 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to execute the request to get the teams where the user is a member
+     *
+     * @param ownedOnly: whether to get only the teams where the user is the owner
+     *
+     * @return the result of the request as [JSONObject]
+     *
+     */
+    @RequestPath(path = "/api/v1/users/{user_id}/teams", method = GET)
     fun getTeams(
         ownedOnly: Boolean = false
     ) : JSONObject {
@@ -700,6 +709,15 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to execute the request to get the potential members to add in a team 
+     * 
+     * No-any params required
+     *
+     * @return the result of the request as [JSONObject]
+     *
+     */
+    @RequestPath(path = "/api/v1/users/{user_id}/teams/members", method = GET)
     fun getPotentialMembers() : JSONObject {
         return execGet(
             endpoint = assembleTeamsEndpointPath(
@@ -708,6 +726,18 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to execute the request to create a team
+     *
+     * @param title: title of the team
+     * @param logoPic: the logo of the team
+     * @param description: description of the team
+     * @param members: list of the members in the team
+     *
+     * @return the result of the request as [JSONObject]
+     *
+     */
+    @RequestPath(path = "/api/v1/users/{user_id}/teams", method = POST)
     fun createTeam(
         title: String,
         logoPic: String,
@@ -726,6 +756,20 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to execute the request to edit a team
+     *
+     * @param team: the team to edit
+     * @param title: title of the team
+     * @param logoPic: the logo of the team
+     * @param description: description of the team
+     * @param members: list of the members in the team
+     *
+     * @return the result of the request as [JSONObject]
+     *
+     */
+    @WrappedRequest
+    @RequestPath(path = "/api/v1/users/{user_id}/teams/{team_id}", method = POST)
     fun editTeam(
         team: Team,
         title: String,
@@ -742,6 +786,19 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to execute the request to edit a team
+     *
+     * @param teamId: the identifier of the team to edit
+     * @param title: title of the team
+     * @param logoPic: the logo of the team
+     * @param description: description of the team
+     * @param members: list of the members in the team
+     *
+     * @return the result of the request as [JSONObject]
+     *
+     */
+    @RequestPath(path = "/api/v1/users/{user_id}/teams/{team_id}", method = POST)
     fun editTeam(
         teamId: String,
         title: String,
@@ -766,6 +823,17 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to create a payload for the team creation/edit actions
+     *
+     * @param title: title of the team
+     * @param logoPic: the logo of the team
+     * @param description: description of the team
+     * @param members: list of the members in the team
+     *
+     * @return the payload as [Params]
+     *
+     */
     private fun createTeamPayload(
         title: String,
         logoPic: File?,
@@ -795,6 +863,17 @@ class RefyRequester(
         return body.build()
     }
 
+    /**
+     * Function to execute the request to manage the links shared with the team
+     *
+     * @param team: the team where manage the shared link
+     * @param links: the list of links shared with the team
+     *
+     * @return the result of the request as [JSONObject]
+     *
+     */
+    @WrappedRequest
+    @RequestPath(path = "/api/v1/users/{user_id}/teams/{team_id}/links", method = PUT)
     fun manageTeamLinks(
         team: Team,
         links: List<String>
@@ -805,6 +884,16 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to execute the request to manage the links shared with the team
+     *
+     * @param teamId: the team identifier where manage the shared link
+     * @param links: the list of links shared with the team
+     *
+     * @return the result of the request as [JSONObject]
+     *
+     */
+    @RequestPath(path = "/api/v1/users/{user_id}/teams/{team_id}/links", method = PUT)
     fun manageTeamLinks(
         teamId: String,
         links: List<String>
@@ -819,6 +908,17 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to execute the request to manage the collections shared with the team
+     *
+     * @param team: the team where manage the shared collections
+     * @param collections: the list of collections shared with the team
+     *
+     * @return the result of the request as [JSONObject]
+     *
+     */
+    @WrappedRequest
+    @RequestPath(path = "/api/v1/users/{user_id}/teams/{team_id}/collections", method = PUT)
     fun manageTeamCollections(
         team: Team,
         collections: List<String>
@@ -829,6 +929,16 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to execute the request to manage the collections shared with the team
+     *
+     * @param teamId: the team identifier where manage the shared collections
+     * @param collections: the list of collections shared with the team
+     *
+     * @return the result of the request as [JSONObject]
+     *
+     */
+    @RequestPath(path = "/api/v1/users/{user_id}/teams/{team_id}/collections", method = PUT)
     fun manageTeamCollections(
         teamId: String,
         collections: List<String>
@@ -843,6 +953,16 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to execute the request to get a team
+     *
+     * @param team: the team to get
+     *
+     * @return the result of the request as [JSONObject]
+     *
+     */
+    @WrappedRequest
+    @RequestPath(path = "/api/v1/users/{user_id}/teams/{team_id}", method = GET)
     fun getTeam(
         team: Team
     ): JSONObject {
@@ -851,6 +971,15 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to execute the request to get a team
+     *
+     * @param teamId: the identifier of the team to get
+     *
+     * @return the result of the request as [JSONObject]
+     *
+     */
+    @RequestPath(path = "/api/v1/users/{user_id}/teams/{team_id}", method = GET)
     fun getTeam(
         teamId: String
     ): JSONObject {
@@ -861,6 +990,18 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to execute the request to change the role of a member
+     *
+     * @param team: the team to where change the member role
+     * @param member: the member to change its role
+     * @param role: the role of the member
+     *
+     * @return the result of the request as [JSONObject]
+     *
+     */
+    @WrappedRequest
+    @RequestPath(path = "/api/v1/users/{user_id}/teams/{team_id}/members/{member_id}/updateRole", method = PATCH)
     fun changeMemberRole(
         team: Team,
         member: RefyTeamMember,
@@ -873,6 +1014,17 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to execute the request to change the role of a member
+     *
+     * @param teamId: the identifier of the team to where change the member role
+     * @param memberId: the identifier of the member to change its role
+     * @param role: the role of the member
+     *
+     * @return the result of the request as [JSONObject]
+     *
+     */
+    @RequestPath(path = "/api/v1/users/{user_id}/teams/{team_id}/members/{member_id}/updateRole", method = PATCH)
     fun changeMemberRole(
         teamId: String,
         memberId: String,
@@ -888,6 +1040,17 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to execute the request to remove a member from the team
+     *
+     * @param team: the team to where remove the member
+     * @param member: the member to remove
+     *
+     * @return the result of the request as [JSONObject]
+     *
+     */
+    @WrappedRequest
+    @RequestPath(path = "/api/v1/users/{user_id}/teams/{team_id}/members/{member_id}", method = DELETE)
     fun removeMember(
         team: Team,
         member: RefyTeamMember
@@ -898,6 +1061,16 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to execute the request to remove a member from the team
+     *
+     * @param teamId: the identifier of the team to where remove the member
+     * @param memberId: the identifier of the member to remove
+     *
+     * @return the result of the request as [JSONObject]
+     *
+     */
+    @RequestPath(path = "/api/v1/users/{user_id}/teams/{team_id}/members/{member_id}", method = DELETE)
     fun removeMember(
         teamId: String,
         memberId: String
@@ -909,6 +1082,16 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to execute the request to leave from a team
+     *
+     * @param team: the team from leave
+     *
+     * @return the result of the request as [JSONObject]
+     *
+     */
+    @WrappedRequest
+    @RequestPath(path = "/api/v1/users/{user_id}/teams/{team_id}/leave}", method = DELETE)
     fun leave(
         team: Team
     ): JSONObject {
@@ -917,6 +1100,15 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to execute the request to leave from a team
+     *
+     * @param teamId: the identifier of the team from leave
+     *
+     * @return the result of the request as [JSONObject]
+     *
+     */
+    @RequestPath(path = "/api/v1/users/{user_id}/teams/{team_id}/leave}", method = DELETE)
     fun leave(
         teamId: String
     ): JSONObject {
@@ -927,6 +1119,16 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to execute the request to delete a team
+     *
+     * @param team: the team to delete
+     *
+     * @return the result of the request as [JSONObject]
+     *
+     */
+    @WrappedRequest
+    @RequestPath(path = "/api/v1/users/{user_id}/teams/{team_id}", method = DELETE)
     fun deleteTeam(
         team: Team
     ): JSONObject {
@@ -935,6 +1137,15 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to execute the request to delete a team
+     *
+     * @param teamId: the identifier of the team to delete
+     *
+     * @return the result of the request as [JSONObject]
+     *
+     */
+    @RequestPath(path = "/api/v1/users/{user_id}/teams/{team_id}", method = DELETE)
     fun deleteTeam(
         teamId: String
     ): JSONObject {
@@ -945,6 +1156,14 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to assemble the endpoint to make the request to the teams controller
+     *
+     * @param subEndpoint: the sub-endpoint path of the url
+     * @param query: the query to attach to the request
+     *
+     * @return an endpoint to make the request as [String]
+     */
     private fun assembleTeamsEndpointPath(
         subEndpoint: String = "",
         query: String = ""
@@ -956,6 +1175,13 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to assemble the query to manage the owned only query
+     *
+     * @param ownedOnly: whether to get only the teams where the user is the owner
+     *
+     * @return an endpoint to make the request as [String]
+     */
     private fun createOwnedOnlyQuery(
         ownedOnly: Boolean
     ) : String {
@@ -964,12 +1190,35 @@ class RefyRequester(
         return query.createQueryString()
     }
 
+    /**
+     * Function to execute the request to get the custom links of the user
+     *
+     * No-any params
+     *
+     * @return the result of the request as [JSONObject]
+     *
+     */
+    @RequestPath(path = "/api/v1/users/{user_id}/customLinks", method = GET)
     fun getCustomLinks() : JSONObject {
         return execGet(
             endpoint = assembleCustomLinksEndpointPath()
         )
     }
 
+    /**
+     * Function to execute the request to create a custom link
+     *
+     * @param title: title of the link
+     * @param description: description of the link
+     * @param resources: the resources to share with the link
+     * @param fields: the fields used to protect the [resources] with a validation form
+     * @param hasUniqueAccess: whether the link, when requested for the first time, must be deleted and no more accessible
+     * @param expiredTime: when the link expires and automatically deleted
+     *
+     * @return the result of the request as [JSONObject]
+     *
+     */
+    @RequestPath(path = "/api/v1/users/{user_id}/customLinks", method = POST)
     fun createCustomLink(
         title: String,
         description: String,
@@ -992,6 +1241,22 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to execute the request to edit a custom link
+     *
+     * @param link: the link to edit
+     * @param title: title of the link
+     * @param description: description of the link
+     * @param resources: the resources to share with the link
+     * @param fields: the fields used to protect the [resources] with a validation form
+     * @param hasUniqueAccess: whether the link, when requested for the first time, must be deleted and no more accessible
+     * @param expiredTime: when the link expires and automatically deleted
+     *
+     * @return the result of the request as [JSONObject]
+     *
+     */
+    @WrappedRequest
+    @RequestPath(path = "/api/v1/users/{user_id}/customLinks/{link_id}", method = PATCH)
     fun editCustomLink(
         link: CustomRefyLink,
         title: String,
@@ -1012,6 +1277,21 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to execute the request to edit a custom link
+     *
+     * @param linkId: the identifier of the link to edit
+     * @param title: title of the link
+     * @param description: description of the link
+     * @param resources: the resources to share with the link
+     * @param fields: the fields used to protect the [resources] with a validation form
+     * @param hasUniqueAccess: whether the link, when requested for the first time, must be deleted and no more accessible
+     * @param expiredTime: when the link expires and automatically deleted
+     *
+     * @return the result of the request as [JSONObject]
+     *
+     */
+    @RequestPath(path = "/api/v1/users/{user_id}/customLinks/{link_id}", method = PATCH)
     fun editCustomLink(
         linkId: String,
         title: String,
@@ -1037,6 +1317,19 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to create a payload for the custom link creation/edit actions
+     *
+     * @param title: title of the link
+     * @param description: description of the link
+     * @param resources: the resources to share with the link
+     * @param fields: the fields used to protect the [resources] with a validation form
+     * @param hasUniqueAccess: whether the link, when requested for the first time, must be deleted and no more accessible
+     * @param expiredTime: when the link expires and automatically deleted
+     *
+     * @return the payload as [Params]
+     *
+     */
     private fun createCustomLinkPayload(
         title: String,
         description: String,
@@ -1055,6 +1348,16 @@ class RefyRequester(
         return payload
     }
 
+    /**
+     * Function to execute the request to get a custom link
+     *
+     * @param link: the link to get
+     *
+     * @return the result of the request as [JSONObject]
+     *
+     */
+    @WrappedRequest
+    @RequestPath(path = "/api/v1/users/{user_id}/customLinks/{link_id}", method = GET)
     fun getCustomLink(
         link: CustomRefyLink
     ): JSONObject {
@@ -1063,6 +1366,15 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to execute the request to get a custom link
+     *
+     * @param linkId: the identifier of the link to get
+     *
+     * @return the result of the request as [JSONObject]
+     *
+     */
+    @RequestPath(path = "/api/v1/users/{user_id}/customLinks/{link_id}", method = GET)
     fun getCustomLink(
         linkId: String
     ): JSONObject {
@@ -1073,6 +1385,16 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to execute the request to delete a custom link
+     *
+     * @param link: the link to delete
+     *
+     * @return the result of the request as [JSONObject]
+     *
+     */
+    @WrappedRequest
+    @RequestPath(path = "/api/v1/users/{user_id}/customLinks/{link_id}", method = DELETE)
     fun deleteCustomLink(
         link: CustomRefyLink
     ): JSONObject {
@@ -1081,6 +1403,15 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to execute the request to delete a custom link
+     *
+     * @param linkId: the identifier of the link to delete
+     *
+     * @return the result of the request as [JSONObject]
+     *
+     */
+    @RequestPath(path = "/api/v1/users/{user_id}/customLinks/{link_id}", method = DELETE)
     fun deleteCustomLink(
         linkId: String
     ): JSONObject {
@@ -1091,6 +1422,14 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to assemble the endpoint to make the request to the custom links controller
+     *
+     * @param subEndpoint: the sub-endpoint path of the url
+     * @param query: the query to attach to the request
+     *
+     * @return an endpoint to make the request as [String]
+     */
     private fun assembleCustomLinksEndpointPath(
         subEndpoint: String = "",
         query: String = ""
@@ -1102,6 +1441,15 @@ class RefyRequester(
         )
     }
 
+    /**
+     * Function to assemble the endpoint to make the request to the custom controllers
+     *
+     * @param customEndpoint: the custom endpoint of the request, the main part of the complete url
+     * @param subEndpoint: the sub-endpoint path of the url
+     * @param query: the query to attach to the request
+     *
+     * @return an endpoint to make the request as [String]
+     */
     private fun assembleCustomEndpointPath(
         customEndpoint: String,
         subEndpoint: String = "",

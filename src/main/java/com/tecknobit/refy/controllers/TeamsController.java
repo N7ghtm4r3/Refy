@@ -214,7 +214,7 @@ public class TeamsController extends DefaultRefyController<Team> {
         loadJsonHelper(payload);
         try {
             TeamRole role = TeamRole.valueOf(jsonHelper.getString(TEAM_ROLE_KEY));
-            teamsHelper.updateMemberRole(teamId, memberId, role);
+            teamsHelper.changeMemberRole(teamId, memberId, role);
             return successResponse();
         } catch (IllegalArgumentException e) {
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
@@ -260,7 +260,7 @@ public class TeamsController extends DefaultRefyController<Team> {
                     teamsHelper.removeMember(teamId, userId);
                 else {
                     String viewerId = userItem.getViewer().getId();
-                    teamsHelper.updateMemberRole(teamId, viewerId, ADMIN);
+                    teamsHelper.changeMemberRole(teamId, viewerId, ADMIN);
                     teamsHelper.removeMember(teamId, userId);
                 }
             } else

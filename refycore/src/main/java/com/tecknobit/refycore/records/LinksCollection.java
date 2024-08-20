@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.apimanager.annotations.Returner;
+import com.tecknobit.equinox.environment.records.EquinoxItem;
 import com.tecknobit.equinox.environment.records.EquinoxUser;
+import com.tecknobit.refycore.records.RefyItem.ListScreenItem;
 import com.tecknobit.refycore.records.links.RefyLink;
 import jakarta.persistence.*;
 import org.json.JSONArray;
@@ -20,21 +22,50 @@ import static com.tecknobit.refycore.records.Team.returnTeams;
 import static com.tecknobit.refycore.records.links.RefyLink.LINK_IDENTIFIER_KEY;
 import static com.tecknobit.refycore.records.links.RefyLink.returnLinks;
 
+/**
+ * The {@code LinksCollection} class is useful to represent a collection of links
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ * @see EquinoxItem
+ * @see RefyItem
+ * @see ListScreenItem
+ * @see RefyLink
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ */
 @Entity
 @Table(name = COLLECTIONS_KEY)
-public class LinksCollection extends RefyItem implements RefyItem.ListScreenItem {
+public class LinksCollection extends RefyItem implements ListScreenItem {
 
+    /**
+     * {@code COLLECTIONS_LINKS_TABLE} the key for the <b>"collections_links"</b> field
+     */
     public static final String COLLECTIONS_LINKS_TABLE = "collections_links";
 
+    /**
+     * {@code COLLECTIONS_KEY} the key for the <b>"collections"</b> field
+     */
     public static final String COLLECTIONS_KEY = "collections";
 
+    /**
+     * {@code COLLECTION_COLOR_KEY} the key for the <b>"collection_color"</b> field
+     */
     public static final String COLLECTION_COLOR_KEY = "collection_color";
 
+    /**
+     * {@code COLLECTION_IDENTIFIER_KEY} the key for the <b>"collection_id"</b> field
+     */
     public static final String COLLECTION_IDENTIFIER_KEY = "collection_id";
 
+    /**
+     * {@code color} the color of the collection
+     */
     @Column(name = COLLECTION_COLOR_KEY)
     private final String color;
 
+    /**
+     * {@code links} the links contained by the collection
+     */
     @ManyToMany(
             fetch = FetchType.EAGER
     )
@@ -54,6 +85,9 @@ public class LinksCollection extends RefyItem implements RefyItem.ListScreenItem
     })
     private final List<RefyLink> links;
 
+    /**
+     * {@code teams} the teams where the collection is shared
+     */
     @ManyToMany(
             fetch = FetchType.EAGER,
             mappedBy = COLLECTIONS_KEY
@@ -66,18 +100,42 @@ public class LinksCollection extends RefyItem implements RefyItem.ListScreenItem
     })
     private final List<Team> teams;
 
+    /**
+     * Constructor to init the {@link LinksCollection} class <br>
+     *
+     * No-any params required
+     * @apiNote empty constructor required
+     */
     public LinksCollection() {
         this(null, null, null, null, null, null, null);
     }
 
-    public LinksCollection(String id, RefyUser owner, String name, String color, String description, List<Team> teams,
+    /**
+     * Constructor to init the {@link RefyItem} class
+     *
+     * @param id: the identifier of the collection
+     * @param owner: the owner of the collection
+     * @param title: the title of the collection
+     * @param description:the description of the collection
+     * @param color:{@code color} the color of the collection
+     * @param links:{@code links} the links contained by the collection
+     * @param teams:{@code teams} the teams where the collection is shared
+     *
+     */
+    public LinksCollection(String id, RefyUser owner, String title, String color, String description, List<Team> teams,
                            List<RefyLink> links) {
-        super(id, owner, name, description);
+        super(id, owner, title, description);
         this.color = color;
         this.teams = teams;
         this.links = links;
     }
 
+    /**
+     * Constructor to init the {@link LinksCollection} class
+     *
+     * @param jLinksCollection: the json details of the collection as {@link JSONObject}
+     *
+     */
     public LinksCollection(JSONObject jLinksCollection) {
         super(jLinksCollection);
         color = hItem.getString(COLLECTION_COLOR_KEY);
@@ -85,15 +143,33 @@ public class LinksCollection extends RefyItem implements RefyItem.ListScreenItem
         teams = returnTeams(hItem.getJSONArray(TEAMS_KEY));
     }
 
+    /**
+     * Method to get {@link #color} instance <br>
+     * No-any params required
+     *
+     * @return {@link #color} instance as {@link String}
+     */
     @JsonGetter(COLLECTION_COLOR_KEY)
     public String getColor() {
         return color;
     }
 
+    /**
+     * Method to get {@link #links} instance <br>
+     * No-any params required
+     *
+     * @return {@link #links} instance as {@link List} of {@link RefyLink}
+     */
     public List<RefyLink> getLinks() {
         return links;
     }
 
+    /**
+     * Method to get the ids of the {@link #links} <br>
+     * No-any params required
+     *
+     * @return ids of the {@link #links} as {@link List} of {@link String}
+     */
     @JsonIgnore
     public List<String> getLinkIds() {
         ArrayList<String> ids = new ArrayList<>();
@@ -102,10 +178,22 @@ public class LinksCollection extends RefyItem implements RefyItem.ListScreenItem
         return ids;
     }
 
+    /**
+     * Method to get {@link #teams} instance <br>
+     * No-any params required
+     *
+     * @return {@link #teams} instance as {@link List} of {@link Team}
+     */
     public List<Team> getTeams() {
         return teams;
     }
 
+    /**
+     * Method to get the ids of the {@link #teams} <br>
+     * No-any params required
+     *
+     * @return ids of the {@link #teams} as {@link List} of {@link String}
+     */
     @JsonIgnore
     public List<String> getTeamIds() {
         ArrayList<String> ids = new ArrayList<>();
@@ -114,10 +202,19 @@ public class LinksCollection extends RefyItem implements RefyItem.ListScreenItem
         return ids;
     }
 
+    /**
+     * Method to get whether the collection is shared in any teams <br>
+     * No-any params required
+     *
+     * @return whether the collection is shared in any teams as boolean
+     */
     public boolean hasTeams() {
         return !teams.isEmpty();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean canBeUpdatedByUser(String loggedUserId) {
         return loggedUserId.equals(owner.getId()) || teams.isEmpty();

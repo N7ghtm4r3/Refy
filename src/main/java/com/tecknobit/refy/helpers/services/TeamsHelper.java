@@ -227,7 +227,7 @@ public class TeamsHelper extends RefyItemsHelper<Team> implements RefyResourcesM
     }
 
     public void updateMemberRole(String teamId, String memberId, TeamRole role) {
-        teamsRepository.updateMemberRole(memberId, teamId, role);
+        teamsRepository.changeMemberRole(memberId, teamId, role);
     }
 
     public void removeMember(String teamId, String memberId) {

@@ -4,6 +4,7 @@ import com.tecknobit.equinox.environment.helpers.services.repositories.EquinoxUs
 import com.tecknobit.refycore.records.RefyUser;
 import jakarta.transaction.Transactional;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,9 +18,17 @@ import static com.tecknobit.equinox.environment.records.EquinoxItem.IDENTIFIER_K
 import static com.tecknobit.equinox.environment.records.EquinoxUser.*;
 import static com.tecknobit.refycore.records.RefyUser.TAG_NAME_KEY;
 
+/**
+ * The {@code RefyUsersRepository} interface is useful to manage the queries for the users operations
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ * @see JpaRepository
+ * @see EquinoxUsersRepository
+ *
+ */
+@Primary
 @Service
 @Repository
-@Primary
 public interface RefyUsersRepository extends EquinoxUsersRepository<RefyUser> {
 
     /**
@@ -28,6 +37,7 @@ public interface RefyUsersRepository extends EquinoxUsersRepository<RefyUser> {
      * @param discriminatorValue: the discriminator value
      * @param id:                 the identifier of the user
      * @param token:              the token of the user
+     * @param tagName:              the tag name of the user
      * @param name:               the name of the user
      * @param surname:            the surname of the user
      * @param email:              the email of the user
@@ -72,6 +82,13 @@ public interface RefyUsersRepository extends EquinoxUsersRepository<RefyUser> {
             @Param(LANGUAGE_KEY) String language
     );
 
+    /**
+     * Method to execute the query to get the potential members for a team
+     *
+     * @param userId: the identifier of the user to not fetch
+     *
+     * @return list of potential members as {@link List} of {@link List} of {@link String}
+     */
     @Query(
             value = "SELECT " + IDENTIFIER_KEY + "," + PROFILE_PIC_KEY + "," + NAME_KEY + "," + SURNAME_KEY + ","
                     + TAG_NAME_KEY + " FROM " + USERS_KEY + " WHERE " + IDENTIFIER_KEY + "!=:" + IDENTIFIER_KEY,
@@ -81,6 +98,11 @@ public interface RefyUsersRepository extends EquinoxUsersRepository<RefyUser> {
             @Param(IDENTIFIER_KEY) String userId
     );
 
+    /**
+     * Method to execute the query to delete a user from the system
+     *
+     * @param userId: the user identifier of the user to delete
+     */
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(

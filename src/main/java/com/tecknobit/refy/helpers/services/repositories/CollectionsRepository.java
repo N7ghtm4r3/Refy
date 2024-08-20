@@ -2,6 +2,7 @@ package com.tecknobit.refy.helpers.services.repositories;
 
 import com.tecknobit.refycore.records.LinksCollection;
 import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,10 +20,25 @@ import static com.tecknobit.refycore.records.RefyItem.OWNER_KEY;
 import static com.tecknobit.refycore.records.RefyUser.USER_IDENTIFIER_KEY;
 import static com.tecknobit.refycore.records.Team.*;
 
+/**
+ * The {@code CollectionsRepository} interface is useful to manage the queries of the {@link LinksCollection}
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ * @see JpaRepository
+ * @see RefyItemsRepository
+ *
+ */
 @Service
 @Repository
 public interface CollectionsRepository extends RefyItemsRepository<LinksCollection> {
 
+    /**
+     * Method to execute the query to get the user's owned collections identifiers
+     *
+     * @param owner: the identifier of the user
+     *
+     * @return the identifiers of the owned user collections as {@link HashSet} of {@link String}
+     */
     @Query(
             value = "SELECT " + IDENTIFIER_KEY + " FROM " + COLLECTIONS_KEY + " WHERE "
                     + OWNER_KEY + "=:" + OWNER_KEY,
@@ -32,6 +48,13 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
             @Param(OWNER_KEY) String owner
     );
 
+    /**
+     * Method to execute the query to get the user's owned collections
+     *
+     * @param userId: the identifier of the user
+     *
+     * @return the user collections as {@link List} of {@link LinksCollection}
+     */
     @Query(
             value = "SELECT c.* FROM " + COLLECTIONS_KEY + " as c WHERE c." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY,
             nativeQuery = true
@@ -40,6 +63,13 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
             @Param(USER_IDENTIFIER_KEY) String userId
     );
 
+    /**
+     * Method to execute the query to get all the user's collections, included the collections shared in the teams
+     *
+     * @param userId: the identifier of the user
+     *
+     * @return the user collections as {@link List} of {@link LinksCollection}
+     */
     @Query(
             value = "SELECT c.* FROM " + COLLECTIONS_KEY + " as c WHERE c." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
                     " UNION " +
@@ -53,6 +83,15 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
             @Param(USER_IDENTIFIER_KEY) String userId
     );
 
+    /**
+     * Method to execute the query to save a collection
+     *
+     * @param collectionId: the identifier of the collection
+     * @param color: the color of the collection
+     * @param title: the title of the collection
+     * @param description: the description of the collection
+     * @param owner: the owner of the collection
+     */
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(
@@ -79,6 +118,14 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
             @Param(OWNER_KEY) String owner
     );
 
+    /**
+     * Method to execute the query to get a collection if the user is authorized
+     *
+     * @param userId: the identifier of the user
+     * @param collectionId: the collection identifier
+     *
+     * @return the collection if the user is authorized as {@link LinksCollection}
+     */
     @Query(
             value = "SELECT c.* FROM " + COLLECTIONS_KEY + " as c WHERE c." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
                     " AND c." + IDENTIFIER_KEY + "=:" + IDENTIFIER_KEY +
@@ -94,6 +141,15 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
             @Param(IDENTIFIER_KEY) String collectionId
     );
 
+    /**
+     * Method to execute the query to edit a collection
+     *
+     * @param collectionId: the identifier of the collection
+     * @param color: the color of the collection
+     * @param title: the title of the collection
+     * @param description: the description of the collection
+     * @param owner: the owner of the collection
+     */
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(
@@ -112,6 +168,11 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
             @Param(OWNER_KEY) String owner
     );
 
+    /**
+     * Method to execute the query to delete a collection
+     *
+     * @param collectionId: the identifier of the collection to delete
+     */
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(

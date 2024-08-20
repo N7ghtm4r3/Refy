@@ -3,6 +3,7 @@ package com.tecknobit.refy.helpers.services.repositories;
 import com.tecknobit.refycore.records.Team;
 import com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole;
 import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,10 +19,25 @@ import static com.tecknobit.refycore.records.RefyUser.USER_IDENTIFIER_KEY;
 import static com.tecknobit.refycore.records.Team.*;
 import static com.tecknobit.refycore.records.Team.RefyTeamMember.TEAM_ROLE_KEY;
 
+/**
+ * The {@code TeamsRepository} interface is useful to manage the queries of the {@link Team}
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ * @see JpaRepository
+ * @see RefyItemsRepository
+ *
+ */
 @Service
 @Repository
 public interface TeamsRepository extends RefyItemsRepository<Team> {
 
+    /**
+     * Method to execute the query to get the user's owned teams identifiers
+     *
+     * @param owner: the identifier of the user
+     *
+     * @return the identifiers of the owned user teams as {@link HashSet} of {@link String}
+     */
     @Query(
             value = "SELECT " + TEAM_IDENTIFIER_KEY + " FROM " + TEAMS_KEY + " WHERE "
                     + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY,
@@ -31,6 +47,13 @@ public interface TeamsRepository extends RefyItemsRepository<Team> {
             @Param(USER_IDENTIFIER_KEY) String owner
     );
 
+    /**
+     * Method to execute the query to get the user's owned teams
+     *
+     * @param owner: the identifier of the owner
+     *
+     * @return the user teams as {@link List} of {@link Team}
+     */
     @Query(
             value = "SELECT t.* " + "FROM " + TEAMS_KEY + " as t INNER JOIN " + MEMBERS_KEY
                     + " ON t." + TEAM_IDENTIFIER_KEY + "=" + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY
@@ -41,6 +64,13 @@ public interface TeamsRepository extends RefyItemsRepository<Team> {
             @Param(USER_IDENTIFIER_KEY) String owner
     );
 
+    /**
+     * Method to execute the query to get all the user's teams
+     *
+     * @param owner: the identifier of the owner
+     *
+     * @return the user teams as {@link List} of {@link Team}
+     */
     @Query(
             value = "SELECT t.* " + "FROM " + TEAMS_KEY + " as t INNER JOIN " + MEMBERS_KEY
                     + " ON t." + TEAM_IDENTIFIER_KEY + "=" + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY
@@ -51,6 +81,14 @@ public interface TeamsRepository extends RefyItemsRepository<Team> {
             @Param(USER_IDENTIFIER_KEY) String owner
     );
 
+    /**
+     * Method to execute the query to get a team if the user is authorized
+     *
+     * @param userId: the identifier of the user
+     * @param teamId: the team identifier
+     *
+     * @return the team if the user is authorized as {@link Team}
+     */
     @Query(
             value = "SELECT t.* " + "FROM " + TEAMS_KEY + " as t INNER JOIN " + MEMBERS_KEY
                     + " ON t." + TEAM_IDENTIFIER_KEY + "=" + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY
@@ -63,6 +101,15 @@ public interface TeamsRepository extends RefyItemsRepository<Team> {
             @Param(TEAM_IDENTIFIER_KEY) String teamId
     );
 
+    /**
+     * Method to execute the query to save a team
+     *
+     * @param teamId: the identifier of the team
+     * @param title: the title of the team
+     * @param logoPic: the logo picture of the team
+     * @param description: the description of the team
+     * @param owner: the owner of the team
+     */
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(
@@ -89,6 +136,15 @@ public interface TeamsRepository extends RefyItemsRepository<Team> {
             @Param(OWNER_KEY) String owner
     );
 
+    /**
+     * Method to execute the query to edit a team
+     *
+     * @param teamId: the identifier of the team
+     * @param title: the title of the team
+     * @param logoPic: the logo picture of the team
+     * @param description: the description of the team
+     * @param owner: the owner of the team
+     */
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(
@@ -107,6 +163,13 @@ public interface TeamsRepository extends RefyItemsRepository<Team> {
             @Param(OWNER_KEY) String owner
     );
 
+    /**
+     * Method to execute the query to change a role of a member
+     *
+     * @param teamId: the identifier of the team
+     * @param member: the member to change the role
+     * @param role: the role of the member to set
+     */
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(
@@ -116,12 +179,18 @@ public interface TeamsRepository extends RefyItemsRepository<Team> {
                     + " AND " + TEAM_IDENTIFIER_KEY + "=:" + TEAM_IDENTIFIER_KEY,
             nativeQuery = true
     )
-    void updateMemberRole(
-            @Param(OWNER_KEY) String owner,
+    void changeMemberRole(
+            @Param(OWNER_KEY) String member,
             @Param(TEAM_IDENTIFIER_KEY) String teamId,
             @Param(TEAM_ROLE_KEY) TeamRole role
     );
 
+    /**
+     * Method to execute the query to remove a member from a team
+     *
+     * @param teamId: the identifier of the team
+     * @param member: the member to remove
+     */
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(
@@ -131,10 +200,15 @@ public interface TeamsRepository extends RefyItemsRepository<Team> {
             nativeQuery = true
     )
     void removeMember(
-            @Param(OWNER_KEY) String owner,
+            @Param(OWNER_KEY) String member,
             @Param(TEAM_IDENTIFIER_KEY) String teamId
     );
 
+    /**
+     * Method to execute the query to delete a team
+     *
+     * @param teamId: the identifier of the team
+     */
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(

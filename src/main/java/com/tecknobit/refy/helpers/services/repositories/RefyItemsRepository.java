@@ -14,10 +14,22 @@ import static com.tecknobit.refycore.records.LinksCollection.COLLECTION_IDENTIFI
 import static com.tecknobit.refycore.records.Team.*;
 import static com.tecknobit.refycore.records.links.RefyLink.LINK_IDENTIFIER_KEY;
 
+/**
+ * The {@code RefyItemsRepository} interface is useful to manage the queries of the {@link RefyItem}
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ * @see JpaRepository
+ *
+ */
 @Service
 @Repository
 public interface RefyItemsRepository<T extends RefyItem> extends JpaRepository<T, String> {
 
+    /**
+     * Method to execute the query to detach a link from collections
+     *
+     * @param linkId: the identifier of the link to detach from the collections
+     */
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(
@@ -28,6 +40,11 @@ public interface RefyItemsRepository<T extends RefyItem> extends JpaRepository<T
             @Param(LINK_IDENTIFIER_KEY) String linkId
     );
 
+    /**
+     * Method to execute the query to detach a link from teams
+     *
+     * @param linkId: the identifier of the link to detach from the teams
+     */
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(
@@ -38,6 +55,11 @@ public interface RefyItemsRepository<T extends RefyItem> extends JpaRepository<T
             @Param(LINK_IDENTIFIER_KEY) String linkId
     );
 
+    /**
+     * Method to execute the query to detach a team from links
+     *
+     * @param teamId: the identifier of the team to detach from the links
+     */
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(
@@ -48,6 +70,11 @@ public interface RefyItemsRepository<T extends RefyItem> extends JpaRepository<T
             @Param(TEAM_IDENTIFIER_KEY) String teamId
     );
 
+    /**
+     * Method to execute the query to detach a team from collections
+     *
+     * @param teamId: the identifier of the team to detach from the collections
+     */
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(
@@ -58,6 +85,11 @@ public interface RefyItemsRepository<T extends RefyItem> extends JpaRepository<T
             @Param(TEAM_IDENTIFIER_KEY) String teamId
     );
 
+    /**
+     * Method to execute the query to detach a collection from links
+     *
+     * @param collectionId: the identifier of the collection to detach from the links
+     */
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(
@@ -69,6 +101,11 @@ public interface RefyItemsRepository<T extends RefyItem> extends JpaRepository<T
             @Param(COLLECTION_IDENTIFIER_KEY) String collectionId
     );
 
+    /**
+     * Method to execute the query to detach a collection from teams
+     *
+     * @param collectionId: the identifier of the collection to detach from the teams
+     */
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(

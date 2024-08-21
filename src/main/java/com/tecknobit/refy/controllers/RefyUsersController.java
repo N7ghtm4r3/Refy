@@ -1,6 +1,7 @@
 package com.tecknobit.refy.controllers;
 
 import com.tecknobit.apimanager.annotations.RequestPath;
+import com.tecknobit.equinox.environment.controllers.EquinoxController;
 import com.tecknobit.equinox.environment.controllers.EquinoxUsersController;
 import com.tecknobit.refy.helpers.services.RefyUsersHelper;
 import com.tecknobit.refycore.records.RefyUser;
@@ -21,16 +22,50 @@ import static com.tecknobit.refycore.helpers.RefyInputValidator.WRONG_TAG_NAME_M
 import static com.tecknobit.refycore.helpers.RefyInputValidator.isTagNameValid;
 import static com.tecknobit.refycore.records.RefyUser.TAG_NAME_KEY;
 
+/**
+ * The {@code RefyUsersController} class is useful to manage all the Refy users operations
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ * @see EquinoxController
+ * @see EquinoxUsersController
+ *
+ */
 @RestController
 public class RefyUsersController extends EquinoxUsersController<RefyUser> {
 
+    /**
+     * {@code refyUsersHelper} helper to manage the {@link RefyUser} database operations
+     */
     private final RefyUsersHelper refyUsersHelper;
 
+    /**
+     * Constructor to init the {@link RefyUsersController} controller
+     *
+     * @param refyUsersHelper: helper to manage the {@link RefyUser} database operations
+     */
     public RefyUsersController(RefyUsersHelper refyUsersHelper) {
         super(refyUsersHelper);
         this.refyUsersHelper = refyUsersHelper;
     }
 
+    /**
+     * Method to sign up in the <b>Refy's system</b>
+     *
+     * @param payload: payload of the request
+     *                 <pre>
+     *                      {@code
+     *                              {
+     *                                  "server_secret" : "the secret of the server" -> [String],
+     *                                  "name" : "the name of the user" -> [String],
+     *                                  "tag_name" : "the tag name of the user" -> [String],
+     *                                  "surname": "the surname of the user" -> [String],
+     *                                  "email": "the email of the user" -> [String],
+     *                                  "password": "the password of the user" -> [String]
+     *                              }
+     *                      }
+     *                 </pre>
+     * @return the result of the request as {@link String}
+     */
     @Override
     @PostMapping(path = SIGN_UP_ENDPOINT)
     @RequestPath(path = "/api/v1/users/signUp", method = POST)

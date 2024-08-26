@@ -53,7 +53,8 @@ class RefyRequester(
     userId = userId,
     userToken = userToken,
     connectionTimeout = 5000,
-    connectionErrorMessage = DEFAULT_CONNECTION_ERROR_MESSAGE
+    connectionErrorMessage = DEFAULT_CONNECTION_ERROR_MESSAGE,
+    enableCertificatesValidation = true
 ) {
 
     /**

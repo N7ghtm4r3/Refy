@@ -1,0 +1,16 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+
+module:backend
+com.tecknobit.refy
+com.tecknobit.refy.controllers
+com.tecknobit.refy.controllers.links
+com.tecknobit.refy.helpers.resources
+com.tecknobit.refy.helpers.services
+com.tecknobit.refy.helpers.services.links
+com.tecknobit.refy.helpers.services.repositories
+com.tecknobit.refy.helpers.services.repositories.links
+module:core
+com.tecknobit.refycore.helpers
+com.tecknobit.refycore.records
+com.tecknobit.refycore.records.links

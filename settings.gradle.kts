@@ -5,4 +5,5 @@ pluginManagement {
 }
 
 rootProject.name = "Refy"
-include("refycore")
+include("core")
+include("backend")

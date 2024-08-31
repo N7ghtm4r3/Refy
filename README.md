@@ -9,7 +9,7 @@ Save your references with **Refy**!
 
 ## Customize the application
 
-To customize and create your own version of this application you need to have the <a href="https://github.com/N7ghtm4r3/Refy/tree/main/Refy-core">
+To customize and create your own version of this application you need to have the <a href="https://github.com/N7ghtm4r3/Refy/tree/main/core">
 core library</a> implemented in your project and published into maven local system
 
 ### Clone the core library and publish to maven local

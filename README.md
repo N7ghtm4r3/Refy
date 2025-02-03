@@ -69,7 +69,7 @@ steps:
 ### Backend configuration
 
 > [!WARNING]  
-> Note: the service will run using the *HTTP* protocol as default, it is recommended to implement an *SSL* or *TLS* certificate to secure communication on your infrastructure.
+> Note The service will run using the *HTTP* protocol as default, it is recommended to implement an *SSL* or *TLS* certificate to secure communication on your infrastructure.
 >
 > **Wikis**
 >
@@ -120,7 +120,7 @@ The **spring.datasource.username** if is not set is used the default password of
 #### Custom configuration
 
 To customize the properties to launch the backend service you must create a file **in the same folder where you placed
-the server file (.jar)** and call it **"custom.properties"** as below:
+the server file (.jar)** and call it `custom.properties` as below:
 
 ``` bash
   folderOfWhereYouPlacedTheServerFile
@@ -168,7 +168,7 @@ When you have to start the service you will have different scenarios:
   the server, share it **only to the users that you retains allowed to access to your server**
   ``` java
   Exception in thread "main" com.tecknobit.apimanager.exceptions.SaveData: Note: is not an error, but is an alert!
-  Please you should safely save: the_server_secret_generated to correctly register a new user in the Refy system
+  Please you should safely save The_server_secret_generated to correctly register a new user in the Refy system
   ```
 - If is not the first launch the service will start directly
 - If you need to recreate the server secret you need to launch the service with the **rss** command like this:

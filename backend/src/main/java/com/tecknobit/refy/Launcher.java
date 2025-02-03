@@ -1,7 +1,6 @@
 package com.tecknobit.refy;
 
-import com.tecknobit.equinox.environment.controllers.EquinoxController;
-import com.tecknobit.equinox.resourcesutils.ResourcesProvider;
+import com.tecknobit.equinoxbackend.resourcesutils.ResourcesProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,10 +11,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.util.List;
 
-import static com.tecknobit.equinox.resourcesutils.ResourcesManager.RESOURCES_KEY;
-import static com.tecknobit.equinox.resourcesutils.ResourcesProvider.CUSTOM_CONFIGURATION_FILE_PATH;
-import static com.tecknobit.equinox.resourcesutils.ResourcesProvider.DEFAULT_CONFIGURATION_FILE_PATH;
-import static com.tecknobit.refy.helpers.resources.RefyResourcesManager.LOGOS_DIRECTORY;
+import static com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController.*;
+import static com.tecknobit.equinoxbackend.resourcesutils.ResourcesProvider.CUSTOM_CONFIGURATION_FILE_PATH;
+import static com.tecknobit.equinoxbackend.resourcesutils.ResourcesProvider.DEFAULT_CONFIGURATION_FILE_PATH;
+import static com.tecknobit.refy.helpers.RefyResourcesManager.LOGOS_DIRECTORY;
 
 /**
  * The {@code Launcher} class is useful to launch <b>Refy's backend service</b>
@@ -67,13 +66,12 @@ public class Launcher {
      * </ul>
      */
     public static void main(String[] args) {
-        EquinoxController.initEquinoxEnvironment(
+        initEquinoxEnvironment(
                 "tecknobit/refy/backend",
                 " to correctly register a new user in the Refy system ",
                 Launcher.class,
-                args);
-        ResourcesProvider resourcesProvider = new ResourcesProvider(RESOURCES_KEY, List.of(LOGOS_DIRECTORY));
-        resourcesProvider.createSubDirectories();
+                args,
+                LOGOS_DIRECTORY);
         SpringApplication.run(Launcher.class, args);
     }
 

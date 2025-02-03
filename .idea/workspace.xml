@@ -5,14 +5,608 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7573192c-9907-420a-8b90-0a0937ffb2dc" name="Changes" comment="Reorganized the project structure and generated the Dokka's documentation">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_31_08_2024_15_58_[Changes]/defProfilePic.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_31_08_2024_15_58_[Changes]/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_31_08_2024_15_58_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_31_08_2024_15_58_[Changes]1/defProfilePic.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_31_08_2024_15_58_[Changes]1/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_31_08_2024_15_58_[Changes]1/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_31_08_2024_15_58__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_31_08_2024_15_58__Changes_1.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/core_jvm_1_0_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/core_wasm_js_1_0_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/core/src/commonMain/kotlin/com/tecknobit/refycore/Constants.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/core/src/commonMain/kotlin/com/tecknobit/refycore/enums/ExpiredTime.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/core/src/commonMain/kotlin/com/tecknobit/refycore/enums/TeamRole.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/core/src/commonMain/kotlin/com/tecknobit/refycore/helpers/RefyEndpointsSet.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/core/src/commonMain/kotlin/com/tecknobit/refycore/helpers/RefyInputsValidator.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/core/src/commonMain/kotlin/com/tecknobit/refycore/helpers/RefyLocalUser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/core/src/commonMain/kotlin/com/tecknobit/refycore/helpers/RefyRequester.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle/libs.versions.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/kotlinc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/Launcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/Launcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/controllers/CollectionsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/services/collections/controller/CollectionsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/controllers/DefaultRefyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/services/shared/controllers/DefaultRefyController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/controllers/RefyUsersController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/services/users/controller/RefyUsersController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/controllers/TeamsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/services/teams/controller/TeamsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/controllers/links/CustomLinkWebPageProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/services/customlinks/controllers/CustomLinkWebPageProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/controllers/links/CustomLinksController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/services/customlinks/controllers/CustomLinksController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/controllers/links/LinksController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/services/links/controller/LinksController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/helpers/resources/CORSAdvice.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/configuration/CORSAdvice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/helpers/resources/RefyResourcesManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/helpers/RefyResourcesManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/helpers/resources/ResourcesConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/configuration/ResourcesConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/helpers/services/LinksCollectionsHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/services/collections/service/LinksCollectionsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/helpers/services/RefyItemsHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/services/shared/services/RefyItemsHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/helpers/services/RefyUsersHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/services/users/service/RefyUsersService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/helpers/services/TeamsHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/services/teams/service/TeamsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/helpers/services/links/CustomLinksHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/services/customlinks/service/CustomLinksService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/helpers/services/links/LinksBaseHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/services/shared/links/service/LinksBaseService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/helpers/services/links/LinksHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/services/links/service/LinksService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/helpers/services/repositories/CollectionsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/services/collections/repository/CollectionsRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/helpers/services/repositories/RefyItemsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/services/shared/repositories/RefyItemsRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/helpers/services/repositories/RefyUsersRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/services/users/repository/RefyUsersRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/helpers/services/repositories/TeamsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/services/teams/repository/TeamsRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/helpers/services/repositories/links/CustomLinksRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/services/customlinks/repository/CustomLinksRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/helpers/services/repositories/links/LinksBaseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/services/shared/links/repository/LinksBaseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/helpers/services/repositories/links/LinksRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/services/links/repository/LinksRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/templates/custom_link.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/templates/custom_link.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/templates/invalid_link.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/templates/invalid_link.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/core/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/com/tecknobit/refycore/helpers/RefyEndpointsSet.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/com/tecknobit/refycore/helpers/RefyInputValidator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/com/tecknobit/refycore/helpers/RefyLocalUser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/com/tecknobit/refycore/records/LinksCollection.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/services/collections/entity/LinksCollection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/com/tecknobit/refycore/records/RefyItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/services/shared/entities/RefyItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/com/tecknobit/refycore/records/RefyUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/services/users/entity/RefyUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/com/tecknobit/refycore/records/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/services/teams/entities/Team.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/com/tecknobit/refycore/records/TeamMemberCompositeKey.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/services/teams/entities/TeamMemberCompositeKey.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/com/tecknobit/refycore/records/links/CustomRefyLink.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/services/customlinks/entity/CustomRefyLink.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/com/tecknobit/refycore/records/links/RefyLink.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/tecknobit/refy/services/links/entity/RefyLink.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/kotlin/com/tecknobit/refycore/helpers/RefyRequester.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-custom-link-web-page-provider/-custom-link-web-page-provider.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-custom-link-web-page-provider/-i-n-v-a-l-i-d_-c-u-s-t-o-m_-l-i-n-k_-p-a-g-e.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-custom-link-web-page-provider/-i-s_-i-n_-p-r-e-v-i-e-w_-m-o-d-e.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-custom-link-web-page-provider/-l-i-n-k_-u-n-i-q-u-e_-a-c-c-e-s-s_-w-a-r-n_-t-e-x-t.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-custom-link-web-page-provider/-m-a-i-n_-t-e-x-t.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-custom-link-web-page-provider/-r-e-s-o-u-r-c-e-s_-t-i-t-l-e_-t-e-x-t.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-custom-link-web-page-provider/-s-u-b_-t-e-x-t.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-custom-link-web-page-provider/-v-a-l-i-d-a-t-e_-b-u-t-t-o-n_-t-e-x-t.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-custom-link-web-page-provider/custom-link-page.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-custom-link-web-page-provider/custom-links-helper.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-custom-link-web-page-provider/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-custom-link-web-page-provider/link-not-exists-or-expired.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-custom-link-web-page-provider/load-custom-link-web-page.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-custom-link-web-page-provider/mantis.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-custom-link-web-page-provider/wrong-attempt-to-preview-mode.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-custom-links-controller/-custom-links-controller.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-custom-links-controller/create.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-custom-links-controller/custom-links-helper.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-custom-links-controller/delete.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-custom-links-controller/edit.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-custom-links-controller/get-item.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-custom-links-controller/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-custom-links-controller/is-user-not-authorized.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-custom-links-controller/list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-links-controller/-links-controller.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-links-controller/create.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-links-controller/delete.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-links-controller/edit.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-links-controller/get-link-title.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-links-controller/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-links-controller/is-user-not-authorized.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-links-controller/list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-links-controller/manage-link-collections.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/-links-controller/manage-link-teams.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers.links/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-collections-controller/-collections-controller.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-collections-controller/create.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-collections-controller/delete.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-collections-controller/edit.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-collections-controller/get-item.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-collections-controller/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-collections-controller/is-user-not-authorized.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-collections-controller/list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-collections-controller/manage-collection-links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-collections-controller/manage-collection-teams.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-default-refy-controller/-attachments-management/execute.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-default-refy-controller/-attachments-management/get-attachments-ids.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-default-refy-controller/-attachments-management/get-user-attachments.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-default-refy-controller/-attachments-management/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-default-refy-controller/-default-refy-controller.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-default-refy-controller/collections-helper.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-default-refy-controller/create.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-default-refy-controller/delete.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-default-refy-controller/edit-attachments-list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-default-refy-controller/edit.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-default-refy-controller/get-item.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-default-refy-controller/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-default-refy-controller/is-user-not-authorized.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-default-refy-controller/links-helper.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-default-refy-controller/list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-default-refy-controller/teams-helper.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-default-refy-controller/user-is-not-the-item-owner.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-default-refy-controller/user-item.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-refy-users-controller/-refy-users-controller.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-refy-users-controller/execute-auth.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-refy-users-controller/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-refy-users-controller/refy-users-helper.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-refy-users-controller/sign-in.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-refy-users-controller/sign-up.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-teams-controller/-teams-controller.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-teams-controller/create.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-teams-controller/delete.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-teams-controller/edit.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-teams-controller/get-item.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-teams-controller/hierarchy-is-not-respected.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-teams-controller/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-teams-controller/is-user-not-authorized.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-teams-controller/leave.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-teams-controller/list-potential-members.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-teams-controller/list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-teams-controller/manage-link-teams.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-teams-controller/manage-team-collections.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-teams-controller/refy-users-helper.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-teams-controller/remove-member.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/-teams-controller/update-member-role.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.controllers/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.resources/-c-o-r-s-advice/-c-o-r-s-advice.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.resources/-c-o-r-s-advice/cors-filter.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.resources/-c-o-r-s-advice/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.resources/-refy-resources-manager/-l-o-g-o-s_-d-i-r-e-c-t-o-r-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.resources/-refy-resources-manager/create-logo-resource.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.resources/-refy-resources-manager/delete-logo-resource.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.resources/-refy-resources-manager/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.resources/-resources-config/-resources-config.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.resources/-resources-config/add-resource-handlers.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.resources/-resources-config/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.resources/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-custom-links-helper/-a-t-t-a-c-h_-f-i-e-l-d-s_-t-o_-c-u-s-t-o-m_-l-i-n-k_-q-u-e-r-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-custom-links-helper/-a-t-t-a-c-h_-r-e-s-o-u-r-c-e-s_-t-o_-c-u-s-t-o-m_-l-i-n-k_-q-u-e-r-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-custom-links-helper/-custom-links-helper.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-custom-links-helper/-d-e-t-a-c-h_-f-i-e-l-d-s_-f-r-o-m_-c-u-s-t-o-m_-l-i-n-k_-q-u-e-r-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-custom-links-helper/-d-e-t-a-c-h_-r-e-s-o-u-r-c-e-s_-f-r-o-m_-c-u-s-t-o-m_-l-i-n-k_-q-u-e-r-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-custom-links-helper/attach-map.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-custom-links-helper/create-custom-link.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-custom-links-helper/custom-links-repository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-custom-links-helper/delete-link.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-custom-links-helper/edit-custom-link.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-custom-links-helper/edit-map.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-custom-links-helper/find-by-id.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-custom-links-helper/get-item-if-allowed.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-custom-links-helper/get-user-custom-links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-custom-links-helper/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-links-base-helper/-links-base-helper.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-links-base-helper/delete-link.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-links-base-helper/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-links-helper/-a-t-t-a-c-h_-l-i-n-k_-t-o_-c-o-l-l-e-c-t-i-o-n-s_-q-u-e-r-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-links-helper/-a-t-t-a-c-h_-l-i-n-k_-t-o_-t-e-a-m-s_-q-u-e-r-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-links-helper/-d-e-t-a-c-h_-l-i-n-k_-f-r-o-m_-c-o-l-l-e-c-t-i-o-n-s_-q-u-e-r-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-links-helper/-d-e-t-a-c-h_-l-i-n-k_-f-r-o-m_-t-e-a-m-s_-q-u-e-r-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-links-helper/-links-helper.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-links-helper/create-link.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-links-helper/delete-link.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-links-helper/edit-link.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-links-helper/get-all-user-links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-links-helper/get-item-if-allowed.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-links-helper/get-user-links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-links-helper/get-user-owned-links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-links-helper/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-links-helper/links-repository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-links-helper/manage-link-collections.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/-links-helper/manage-link-teams.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.links/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories.links/-custom-links-repository/get-link-if-allowed.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories.links/-custom-links-repository/get-user-custom-links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories.links/-custom-links-repository/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories.links/-custom-links-repository/save-link.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories.links/-custom-links-repository/update-link.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories.links/-links-base-repository/delete-link.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories.links/-links-base-repository/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories.links/-links-repository/get-all-user-links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories.links/-links-repository/get-link-if-allowed.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories.links/-links-repository/get-user-links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories.links/-links-repository/get-user-owned-links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories.links/-links-repository/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories.links/-links-repository/save-link.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories.links/-links-repository/update-link.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories.links/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-collections-repository/delete-collection.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-collections-repository/get-all-user-collections.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-collections-repository/get-collection-if-allowed.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-collections-repository/get-user-collections.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-collections-repository/get-user-owned-collections.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-collections-repository/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-collections-repository/save-collection.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-collections-repository/update-collection.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-refy-items-repository/detach-collection-from-links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-refy-items-repository/detach-collection-from-teams.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-refy-items-repository/detach-link-from-collections.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-refy-items-repository/detach-link-from-teams.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-refy-items-repository/detach-team-from-collections.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-refy-items-repository/detach-team-from-links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-refy-items-repository/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-refy-users-repository/delete-user.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-refy-users-repository/get-potential-members.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-refy-users-repository/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-refy-users-repository/save-user.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-teams-repository/change-member-role.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-teams-repository/delete-team.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-teams-repository/edit-team.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-teams-repository/get-all-user-teams.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-teams-repository/get-team-if-allowed.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-teams-repository/get-user-owned-teams.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-teams-repository/get-user-teams.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-teams-repository/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-teams-repository/remove-member.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/-teams-repository/save-team.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services.repositories/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-links-collections-helper/-a-t-t-a-c-h_-c-o-l-l-e-c-t-i-o-n_-t-o_-l-i-n-k-s_-q-u-e-r-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-links-collections-helper/-a-t-t-a-c-h_-c-o-l-l-e-c-t-i-o-n_-t-o_-t-e-a-m_-q-u-e-r-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-links-collections-helper/-d-e-t-a-c-h_-c-o-l-l-e-c-t-i-o-n_-f-r-o-m_-l-i-n-k-s_-q-u-e-r-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-links-collections-helper/-d-e-t-a-c-h_-c-o-l-l-e-c-t-i-o-n_-f-r-o-m_-t-e-a-m-s_-q-u-e-r-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-links-collections-helper/-links-collections-helper.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-links-collections-helper/collections-repository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-links-collections-helper/create-collection.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-links-collections-helper/delete-collection.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-links-collections-helper/edit-collection.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-links-collections-helper/get-all-user-collections.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-links-collections-helper/get-item-if-allowed.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-links-collections-helper/get-user-collections.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-links-collections-helper/get-user-owned-collections.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-links-collections-helper/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-links-collections-helper/manage-collection-links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-links-collections-helper/manage-collection-teams.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-items-helper/-attachments-management-workflow/delete-query.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-items-helper/-attachments-management-workflow/get-ids.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-items-helper/-attachments-management-workflow/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-items-helper/-attachments-management-workflow/insert-query.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-items-helper/-batch-query/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-items-helper/-batch-query/prepare-query.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-items-helper/-c-o-m-m-a.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-items-helper/-r-e-l-a-t-i-o-n-s-h-i-p_-v-a-l-u-e-s_-s-l-i-c-e.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-items-helper/-r-o-u-n-d_-b-r-a-c-k-e-t.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-items-helper/-refy-items-helper.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-items-helper/-s-i-n-g-l-e_-q-u-o-t-e.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-items-helper/-t-u-p-l-e_-v-a-l-u-e-s_-s-l-i-c-e.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-items-helper/assemble-delete-batch-query.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-items-helper/assemble-insert-batch-query.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-items-helper/entity-manager.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-items-helper/execute-delete-batch.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-items-helper/execute-insert-batch.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-items-helper/get-item-if-allowed.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-items-helper/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-items-helper/manage-attachments.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-users-helper/-refy-users-helper.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-users-helper/collections-repository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-users-helper/delete-user.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-users-helper/get-potential-members.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-users-helper/hash.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-users-helper/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-users-helper/refy-users-repository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-users-helper/sign-in-user.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-users-helper/sign-up-user.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-refy-users-helper/teams-repository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-teams-helper/-a-d-d_-m-e-m-b-e-r-s_-q-u-e-r-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-teams-helper/-a-t-t-a-c-h_-t-e-a-m_-t-o_-c-o-l-l-e-c-t-i-o-n-s_-q-u-e-r-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-teams-helper/-a-t-t-a-c-h_-t-e-a-m_-t-o_-l-i-n-k-s_-q-u-e-r-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-teams-helper/-d-e-t-a-c-h_-t-e-a-m_-f-r-o-m_-c-o-l-l-e-c-t-i-o-n-s_-q-u-e-r-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-teams-helper/-d-e-t-a-c-h_-t-e-a-m_-f-r-o-m_-l-i-n-k-s_-q-u-e-r-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-teams-helper/-r-e-m-o-v-e_-m-e-m-b-e-r-s_-f-r-o-m_-t-e-a-m_-q-u-e-r-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-teams-helper/-r-e-p-l-a-c-e_-m-e-m-b-e-r-s_-q-u-e-r-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-teams-helper/-team-payload/-team-payload.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-teams-helper/-team-payload/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-teams-helper/-team-payload/is-valid-team-payload.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-teams-helper/-teams-helper.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-teams-helper/change-member-role.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-teams-helper/create-team.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-teams-helper/delete-team.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-teams-helper/edit-team.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-teams-helper/get-all-user-teams.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-teams-helper/get-batch-query.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-teams-helper/get-edit-workflow.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-teams-helper/get-item-if-allowed.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-teams-helper/get-user-owned-teams.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-teams-helper/get-user-teams.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-teams-helper/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-teams-helper/manage-team-collections.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-teams-helper/manage-team-links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-teams-helper/remove-member.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/-teams-helper/teams-repository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy.helpers.services/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy/-launcher/-launcher.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy/-launcher/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy/-launcher/main.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/com.tecknobit.refy/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/backend/navigation.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-endpoints-set/-c-u-s-t-o-m_-l-i-n-k-s_-e-n-d-p-o-i-n-t.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-endpoints-set/-l-e-a-v-e_-e-n-d-p-o-i-n-t.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-endpoints-set/-refy-endpoints-set.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-endpoints-set/-u-p-d-a-t-e_-m-e-m-b-e-r_-r-o-l-e_-e-n-d-p-o-i-n-t.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-endpoints-set/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-input-validator/-h-e-x_-c-o-l-o-r_-p-a-t-t-e-r-n.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-input-validator/-m-a-x_-d-e-s-c-r-i-p-t-i-o-n_-l-e-n-g-t-h.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-input-validator/-m-a-x_-t-a-g_-n-a-m-e_-l-e-n-g-t-h.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-input-validator/-m-a-x_-t-i-t-l-e_-l-e-n-g-t-h.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-input-validator/-refy-input-validator.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-input-validator/-w-r-o-n-g_-t-a-g_-n-a-m-e_-m-e-s-s-a-g-e.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-input-validator/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-input-validator/is-collection-color-valid.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-input-validator/is-collection-payload-valid.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-input-validator/is-custom-link-map-valid.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-input-validator/is-custom-link-payload-valid.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-input-validator/is-description-valid.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-input-validator/is-link-payload-valid.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-input-validator/is-link-resource-valid.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-input-validator/is-tag-name-valid.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-input-validator/is-title-valid.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-input-validator/pattern.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-local-user/-r-e-f-y_-p-r-e-f-e-r-e-n-c-e-s_-f-i-l-e.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-local-user/-refy-local-user.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-local-user/clear.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-local-user/collections.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-local-user/custom-links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-local-user/filter-owned-only-user-list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-local-user/get-collections.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-local-user/get-custom-links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-local-user/get-links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-local-user/get-tag-name.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-local-user/get-teams.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-local-user/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-local-user/init-local-user.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-local-user/insert-new-user.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-local-user/links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-local-user/set-collections.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-local-user/set-custom-links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-local-user/set-links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-local-user/set-tag-name.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-local-user/set-teams.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-local-user/set-user-list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-local-user/tag-name.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-local-user/teams.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/-refy-requester.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/assemble-collections-endpoint-path.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/assemble-custom-endpoint-path.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/assemble-custom-links-endpoint-path.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/assemble-links-endpoint-path.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/assemble-teams-endpoint-path.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/change-member-role.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/create-collection-payload.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/create-collection.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/create-custom-link-payload.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/create-custom-link.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/create-link-payload.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/create-link.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/create-owned-only-query.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/create-team-payload.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/create-team.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/delete-collection.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/delete-custom-link.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/delete-link.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/delete-team.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/edit-collection.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/edit-custom-link.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/edit-link.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/edit-team.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/get-collection.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/get-collections.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/get-custom-link.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/get-custom-links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/get-links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/get-potential-members.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/get-team.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/get-teams.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/leave.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/manage-collection-links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/manage-collection-teams.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/manage-link-collections.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/manage-link-teams.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/manage-team-collections.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/manage-team-links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/remove-member.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/-refy-requester/sign-up.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.helpers/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/-c-r-e-a-t-i-o-n_-d-a-t-e_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/-c-u-s-t-o-m_-l-i-n-k-s_-p-a-t-h.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/-c-u-s-t-o-m_-l-i-n-k_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/-custom-refy-link.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/-e-x-p-i-r-e-d_-t-i-m-e_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/-expired-time/-expired-time.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/-expired-time/-f-i-f-t-e-e-n_-m-i-n-u-t-e-s/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/-expired-time/-n-o_-e-x-p-i-r-a-t-i-o-n/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/-expired-time/-o-n-e_-d-a-y/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/-expired-time/-o-n-e_-h-o-u-r/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/-expired-time/-o-n-e_-m-i-n-u-t-e/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/-expired-time/-o-n-e_-w-e-e-k/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/-expired-time/-t-h-i-r-t-y_-m-i-n-u-t-e-s/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/-expired-time/gap.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/-expired-time/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/-expired-time/time-value.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/-expired-time/value-of.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/-expired-time/values.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/-f-i-e-l-d-s_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/-f-i-e-l-d_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/-f-i-e-l-d_-v-a-l-u-e_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/-p-r-e-v-i-e-w_-t-o-k-e-n_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/-r-e-s-o-u-r-c-e-s_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/-r-e-s-o-u-r-c-e_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/-r-e-s-o-u-r-c-e_-v-a-l-u-e_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/-u-n-i-q-u-e_-a-c-c-e-s-s_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/creation-date.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/expired-time.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/expires.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/fields.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/get-creation-date.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/get-creation-timestamp.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/get-expiration-date.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/get-expiration-timestamp.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/get-preview-mode-url.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/has-unique-access.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/is-expired.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/load-map.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/must-validate-fields.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/preview-token.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/resources.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/return-custom-links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-custom-refy-link/unique-access.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-refy-link/-l-i-n-k_-i-d-e-n-t-i-f-i-e-r_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-refy-link/-l-i-n-k_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-refy-link/-r-e-f-e-r-e-n-c-e_-l-i-n-k_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-refy-link/-refy-link.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-refy-link/can-be-updated-by-user.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-refy-link/collections.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-refy-link/get-collections-ids.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-refy-link/get-collections.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-refy-link/get-reference-link.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-refy-link/get-team-ids.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-refy-link/get-teams.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-refy-link/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-refy-link/reference-link.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-refy-link/return-links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/-refy-link/teams.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records.links/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-links-collection/-c-o-l-l-e-c-t-i-o-n-s_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-links-collection/-c-o-l-l-e-c-t-i-o-n-s_-l-i-n-k-s_-t-a-b-l-e.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-links-collection/-c-o-l-l-e-c-t-i-o-n_-c-o-l-o-r_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-links-collection/-c-o-l-l-e-c-t-i-o-n_-i-d-e-n-t-i-f-i-e-r_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-links-collection/-links-collection.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-links-collection/can-be-updated-by-user.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-links-collection/color.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-links-collection/get-instance.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-links-collection/get-link-ids.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-links-collection/get-team-ids.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-links-collection/has-teams.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-links-collection/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-links-collection/links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-links-collection/return-collections.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-links-collection/teams.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-refy-item/-d-e-s-c-r-i-p-t-i-o-n_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-refy-item/-list-screen-item/can-be-updated-by-user.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-refy-item/-list-screen-item/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-refy-item/-o-w-n-e-d_-o-n-l-y_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-refy-item/-o-w-n-e-r_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-refy-item/-refy-item.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-refy-item/-t-i-t-l-e_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-refy-item/description.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-refy-item/get-description.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-refy-item/get-owner.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-refy-item/get-title.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-refy-item/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-refy-item/owner.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-refy-item/title.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-refy-user/-c-u-s-t-o-m_-l-i-n-k-s_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-refy-user/-l-i-n-k-s_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-refy-user/-refy-user.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-refy-user/-t-a-g_-n-a-m-e_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-refy-user/-t-e-a-m-s_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-refy-user/-u-s-e-r_-i-d-e-n-t-i-f-i-e-r_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-refy-user/collections.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-refy-user/custom-links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-refy-user/get-instance.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-refy-user/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-refy-user/links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-refy-user/member.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-refy-user/tag-name.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-refy-user/teams.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team-member-composite-key/-team-member-composite-key.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team-member-composite-key/get-id.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team-member-composite-key/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team-member-composite-key/owner.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team-member-composite-key/source-team.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-c-o-l-l-e-c-t-i-o-n-s_-t-e-a-m-s_-t-a-b-l-e.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-l-o-g-o_-p-i-c_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-m-a-x_-t-e-a-m-s_-d-i-s-p-l-a-y-e-d.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-m-e-m-b-e-r-s_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-refy-team-member/-m-e-m-b-e-r_-i-d-e-n-t-i-f-i-e-r_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-refy-team-member/-refy-team-member.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-refy-team-member/-t-e-a-m_-r-o-l-e_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-refy-team-member/-team-role/-a-d-m-i-n/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-refy-team-member/-team-role/-v-i-e-w-e-r/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-refy-team-member/-team-role/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-refy-team-member/-team-role/value-of.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-refy-team-member/-team-role/values.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-refy-team-member/get-complete-name.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-refy-team-member/get-email.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-refy-team-member/get-id.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-refy-team-member/get-name.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-refy-team-member/get-profile-pic.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-refy-team-member/get-surname.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-refy-team-member/get-tag-name.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-refy-team-member/h-item.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-refy-team-member/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-refy-team-member/owner.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-refy-team-member/return-members.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-refy-team-member/role.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-refy-team-member/source-team.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-s-o-u-r-c-e_-t-e-a-m_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-t-e-a-m-s_-l-i-n-k-s_-t-a-b-l-e.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-t-e-a-m_-i-d-e-n-t-i-f-i-e-r_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-t-e-a-m_-k-e-y.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/-team.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/collections.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/get-collections-ids.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/get-link-ids.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/get-members-ids.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/get-viewer.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/has-admins.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/has-member.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/has-members.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/is-admin.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/is-the-author.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/links.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/logo-pic.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/members-mapping.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/members.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/-team/return-teams.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/com.tecknobit.refycore.records/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/core/navigation.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/images/anchor-copy-button.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/images/arrow_down.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/images/burger.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/images/copy-icon.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/images/copy-successful-icon.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/images/footer-go-to-link.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/images/go-to-top-icon.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/images/homepage.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/images/logo-icon.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/images/nav-icons/abstract-class-kotlin.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/images/nav-icons/abstract-class.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/images/nav-icons/annotation-kotlin.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/images/nav-icons/annotation.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/images/nav-icons/class-kotlin.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/images/nav-icons/class.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/images/nav-icons/enum-kotlin.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/images/nav-icons/enum.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/images/nav-icons/exception-class.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/images/nav-icons/field-value.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/images/nav-icons/field-variable.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/images/nav-icons/function.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/images/nav-icons/interface-kotlin.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/images/nav-icons/interface.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/images/nav-icons/object.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/images/nav-icons/typealias-kotlin.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/images/theme-toggle.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/navigation.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/package-list" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/scripts/clipboard.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/scripts/main.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/scripts/navigation-loader.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/scripts/pages.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/scripts/platform-content-handler.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/scripts/prism.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/scripts/sourceset_dependencies.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/scripts/symbol-parameters-wrapper_deferred.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/styles/font-jb-sans-auto.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/styles/logo-styles.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/styles/main.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/styles/prism.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/styles/style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle.kts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,6 +627,9 @@
         <task path="$PROJECT_DIR$/backend">
           <activation />
         </task>
+        <task path="$PROJECT_DIR$/core">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
             <expand>
@@ -49,7 +646,31 @@
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="Refy" type="f1a62948:ProjectNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="documentation" type="c8890929:TasksNode$1" />
+                <item name="build" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Refy" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build setup" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Refy" type="f1a62948:ProjectNode" />
+                <item name="core" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Refy" type="f1a62948:ProjectNode" />
+                <item name="core" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Refy" type="f1a62948:ProjectNode" />
+                <item name="core" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="publishing" type="c8890929:TasksNode$1" />
               </path>
             </expand>
             <select />
@@ -58,7 +679,19 @@
       </state>
     </system>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -88,36 +721,42 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Gradle.Build Refy.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Refy [bootJar].executor&quot;: &quot;Run&quot;,
     &quot;Gradle.Refy [clean].executor&quot;: &quot;Run&quot;,
     &quot;Gradle.Refy [dokkaHtmlCollector].executor&quot;: &quot;Run&quot;,
     &quot;Gradle.Refy [dokkaHtmlMultiModule].executor&quot;: &quot;Run&quot;,
     &quot;Gradle.Refy:backend [:backend:Launcher.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Refy:backend [:backend:com.tecknobit.refy.Launcher.main()].executor&quot;: &quot;Run&quot;,
     &quot;Gradle.Refy:backend [bootJar].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Refy:core [publishMavenPublicationToMavenLocal].executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;e1.0.1&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Manu/Desktop/Refy&quot;
-  },
-  &quot;keyToStringList&quot;: {
-    &quot;kotlin-gradle-user-dirs&quot;: [
-      &quot;C:\\Users\\Manu\\.gradle&quot;
-    ]
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Manu/Desktop/Tecknobit/RefyProject/BackendVersion/Refy/gradle&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Manu\Desktop\Tecknobit\RefyProject\BackendVersion\Refy\gradle" />
       <recent name="C:\Users\Manu\Desktop\Refy" />
       <recent name="C:\Users\Manu\Desktop\Refy\docs" />
       <recent name="C:\Users\Manu\Desktop\Refy\core" />
       <recent name="C:\Users\Manu\Desktop\Refy\backend\src\main" />
-      <recent name="C:\Users\Manu\Desktop\Refy\backend\src\main\java" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Manu\Desktop\Refy" />
       <recent name="C:\Users\Manu\Desktop\Refy\docs" />
     </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.tecknobit.refycore.helpers" />
+    </key>
   </component>
-  <component name="RunManager" selected="Gradle.Refy [dokkaHtmlMultiModule]">
+  <component name="RunManager" selected="Application.Launcher">
     <configuration name="Launcher" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.tecknobit.refy.Launcher" />
       <module name="Refy.backend.main" />
@@ -131,6 +770,28 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Refy [bootJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="bootJar" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
     <configuration name="Refy [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -143,28 +804,6 @@
         <option name="taskNames">
           <list>
             <option value="clean" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="Refy [dokkaHtmlCollector]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="dokkaHtmlCollector" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -197,10 +836,10 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="Refy:backend [bootJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="Refy:core [publishMavenPublicationToMavenLocal]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/backend" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/core" />
         <option name="externalSystemIdString" value="GRADLE" />
         <option name="scriptParameters" />
         <option name="taskDescriptions">
@@ -208,7 +847,7 @@
         </option>
         <option name="taskNames">
           <list>
-            <option value="bootJar" />
+            <option value="publishMavenPublicationToMavenLocal" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -221,11 +860,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.Refy [dokkaHtmlMultiModule]" />
+        <item itemvalue="Gradle.Refy:core [publishMavenPublicationToMavenLocal]" />
         <item itemvalue="Gradle.Refy [clean]" />
-        <item itemvalue="Gradle.Refy:backend [bootJar]" />
-        <item itemvalue="Gradle.Refy [dokkaHtmlCollector]" />
         <item itemvalue="Application.Launcher" />
+        <item itemvalue="Gradle.Refy [bootJar]" />
+        <item itemvalue="Gradle.Refy [dokkaHtmlMultiModule]" />
       </list>
     </recent_temporary>
   </component>
@@ -246,7 +885,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725117387602</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Reorganized the project structure and generated the Dokka's documentation">
+      <option name="closed" value="true" />
+      <created>1725117900510</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1725117900510</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

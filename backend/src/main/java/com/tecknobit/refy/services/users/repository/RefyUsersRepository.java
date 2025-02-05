@@ -34,14 +34,14 @@ public interface RefyUsersRepository extends EquinoxUsersRepository<RefyUser> {
      * Method to execute the query to save a new user in the system
      *
      * @param discriminatorValue The discriminator value
-     * @param id:                 the identifier of the user
-     * @param token:              the token of the user
-     * @param tagName:              the tag name of the user
-     * @param name:               the name of the user
-     * @param surname:            the surname of the user
-     * @param email:              the email of the user
-     * @param password:           the password of the user
-     * @param language:           the language of the user
+     * @param id The identifier of the user
+     * @param token The token of the user
+     * @param tagName The tag name of the user
+     * @param name The name of the user
+     * @param surname The surname of the user
+     * @param email The email of the user
+     * @param password The password of the user
+     * @param language The language of the user
      */
     @Modifying(clearAutomatically = true)
     @Transactional

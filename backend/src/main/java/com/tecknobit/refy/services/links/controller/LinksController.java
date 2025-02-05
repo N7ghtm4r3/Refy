@@ -4,7 +4,9 @@ import com.tecknobit.apimanager.annotations.RequestPath;
 import com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController;
 import com.tecknobit.refy.services.links.entity.RefyLink;
 import com.tecknobit.refy.services.shared.controllers.DefaultRefyController;
+import kotlin.Pair;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -30,6 +32,12 @@ import static com.tecknobit.refycore.helpers.RefyInputsValidator.INSTANCE;
 @RestController
 @RequestMapping(BASE_EQUINOX_ENDPOINT + USERS_KEY + "/{" + USER_IDENTIFIER_KEY + "}/" + LINKS_KEY)
 public class LinksController extends DefaultRefyController<RefyLink> {
+
+    // TODO: 05/02/2025 TO COMMENT
+    private static final String OG_IMAGE_METADATA = "meta[property=og:image]";
+
+    // TODO: 05/02/2025 TO COMMENT
+    private static final String CONTENT_KEY = "content";
 
     /**
      * Method to get a list of links
@@ -98,22 +106,13 @@ public class LinksController extends DefaultRefyController<RefyLink> {
         if(!INSTANCE.isLinkPayloadValid(description, referenceLink))
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         try {
-            linksService.createLink(userId, generateIdentifier(), getLinkTitle(referenceLink), description, referenceLink);
+            Pair<String, String> metadata = getMetaData(referenceLink);
+            linksService.createLink(userId, generateIdentifier(), metadata.getFirst(), metadata.getSecond(), description,
+                    referenceLink);
             return successResponse();
         } catch (IOException e) {
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         }
-    }
-
-    /**
-     * Method to get from the reference link the real title from the related web page
-     *
-     * @param referenceLink The reference link from fetch its title
-     * @return the title of the reference link as {@link String}
-     * @throws IOException when an error occurred during the scraping of the title
-     */
-    private String getLinkTitle(String referenceLink) throws IOException {
-        return Jsoup.connect(referenceLink).get().title();
     }
 
     /**
@@ -155,13 +154,25 @@ public class LinksController extends DefaultRefyController<RefyLink> {
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         try {
             String title = userItem.getTitle();
-            if(!userItem.getReferenceLink().equals(referenceLink))
-                title = getLinkTitle(referenceLink);
-            linksService.editLink(userId, linkId, title, description, referenceLink);
+            String thumbnailPreview = userItem.getLinkThumbnailPreview();
+            if(!userItem.getReferenceLink().equals(referenceLink)) {
+                Pair<String, String> metadata = getMetaData(referenceLink);
+                title = metadata.getFirst();
+                thumbnailPreview = metadata.getSecond();
+            }
+            linksService.editLink(userId, linkId, title, thumbnailPreview, description, referenceLink);
             return successResponse();
         } catch (IOException e) {
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         }
+    }
+
+    // TODO: 05/02/2025 TO COMMENT
+    private Pair<String, String> getMetaData(String referenceLink) throws IOException {
+        Document document = Jsoup.connect(referenceLink).get();
+        String title = document.title();
+        String thumbnailPreview = document.select(OG_IMAGE_METADATA).attr(CONTENT_KEY);
+        return new Pair<>(title, thumbnailPreview);
     }
 
     /**

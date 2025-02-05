@@ -22,8 +22,6 @@ import static com.tecknobit.apimanager.apis.APIRequest.RequestMethod.*;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.TOKEN_KEY;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.USERS_KEY;
 import static com.tecknobit.equinoxcore.network.EquinoxBaseEndpointsSet.BASE_EQUINOX_ENDPOINT;
-import static com.tecknobit.refy.services.teams.entities.Team.RefyTeamMember.MEMBER_IDENTIFIER_KEY;
-import static com.tecknobit.refy.services.teams.entities.Team.RefyTeamMember.TEAM_ROLE_KEY;
 import static com.tecknobit.refycore.ConstantsKt.*;
 import static com.tecknobit.refycore.enums.TeamRole.ADMIN;
 import static com.tecknobit.refycore.helpers.RefyEndpointsSet.LEAVE_ENDPOINT;

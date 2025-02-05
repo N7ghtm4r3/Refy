@@ -351,16 +351,6 @@ public class Team extends RefyItem {
     public static class RefyTeamMember {
 
         /**
-         * {@code MEMBER_IDENTIFIER_KEY} the key for the `member_id` field
-         */
-        public static final String MEMBER_IDENTIFIER_KEY = "member_id";
-
-        /**
-         * {@code TEAM_ROLE_KEY} the key for the `team_role` field
-         */
-        public static final String TEAM_ROLE_KEY = "team_role";
-
-        /**
          * {@code hItem} helper to work with JSON values
          */
         @Transient

@@ -16,6 +16,11 @@ const val OWNER_KEY = "owner"
 const val TITLE_KEY = "title"
 
 /**
+ * `THUMBNAIL_PREVIEW_KEY` the key for the `thumbnail_preview` field
+ */
+const val THUMBNAIL_PREVIEW_KEY = "thumbnail_preview"
+
+/**
  * `DESCRIPTION_KEY` the key for the `description` field
  */
 const val DESCRIPTION_KEY = "description"
@@ -174,3 +179,13 @@ const val LOGO_PIC_KEY = "logo_pic"
  * `members` the key for the `members` field
  */
 const val MEMBERS_KEY = "members"
+
+/**
+ * `MEMBER_IDENTIFIER_KEY` the key for the `member_id` field
+ */
+const val MEMBER_IDENTIFIER_KEY = "member_id"
+
+/**
+ * `TEAM_ROLE_KEY` the key for the `team_role` field
+ */
+const val TEAM_ROLE_KEY = "team_role"

@@ -91,7 +91,7 @@ public class LinksCollection extends RefyItem implements ListScreenItem {
      * @param id The identifier of the collection
      * @param owner The owner of the collection
      * @param title The title of the collection
-     * @param description:the description of the collection
+     * @param description The description of the collection
      * @param color:{@code color} the color of the collection
      * @param links:{@code links} the links contained by the collection
      * @param teams:{@code teams} the teams where the collection is shared

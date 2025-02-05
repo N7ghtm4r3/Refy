@@ -101,11 +101,13 @@ public class LinksService extends LinksBaseService<RefyLink> {
      * @param userId The owner of the link
      * @param linkId The identifier of the link
      * @param title The title of the link
+     * @param thumbnailPreview The url of the thumbnail preview of the link
      * @param description The description of the link
      * @param referenceLink The reference link value
      */
-    public void createLink(String userId, String linkId, String title, String description, String referenceLink) {
-        linksRepository.saveLink(LINK_KEY, linkId, title, description, referenceLink, userId);
+    public void createLink(String userId, String linkId, String title, String thumbnailPreview, String description,
+                           String referenceLink) {
+        linksRepository.saveLink(LINK_KEY, linkId, title, thumbnailPreview, description, referenceLink, userId);
     }
 
     /**
@@ -122,11 +124,13 @@ public class LinksService extends LinksBaseService<RefyLink> {
      * @param userId The owner of the link
      * @param linkId The identifier of the link
      * @param title The title of the link
+     * @param thumbnailPreview The url of the thumbnail preview of the link
      * @param description The description of the link
      * @param referenceLink The reference link value
      */
-    public void editLink(String userId, String linkId, String title, String description, String referenceLink) {
-        linksRepository.updateLink(linkId, title, description, referenceLink, userId);
+    public void editLink(String userId, String linkId, String title, String thumbnailPreview, String description,
+                         String referenceLink) {
+        linksRepository.updateLink(linkId, title, thumbnailPreview, description, referenceLink, userId);
     }
 
     /**

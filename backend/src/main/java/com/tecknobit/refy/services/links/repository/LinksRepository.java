@@ -92,6 +92,7 @@ public interface LinksRepository extends LinksBaseRepository<RefyLink> {
      * @param discriminatorValue The discriminator value
      * @param linkId The identifier of the link
      * @param title The title of the link
+     * @param thumbnailPreview The url of the thumbnail preview of the link
      * @param description The description of the link
      * @param referenceLink The reference link value
      * @param owner The owner of the link
@@ -103,6 +104,7 @@ public interface LinksRepository extends LinksBaseRepository<RefyLink> {
                     DISCRIMINATOR_VALUE_KEY + "," +
                     LINK_IDENTIFIER_KEY + "," +
                     TITLE_KEY + "," +
+                    THUMBNAIL_PREVIEW_KEY + "," +
                     DESCRIPTION_KEY + "," +
                     REFERENCE_LINK_KEY + "," +
                     OWNER_KEY
@@ -110,6 +112,7 @@ public interface LinksRepository extends LinksBaseRepository<RefyLink> {
                     ":" + DISCRIMINATOR_VALUE_KEY + "," +
                     ":" + LINK_IDENTIFIER_KEY + "," +
                     ":" + TITLE_KEY + "," +
+                    ":" + THUMBNAIL_PREVIEW_KEY + "," +
                     ":" + DESCRIPTION_KEY + "," +
                     ":" + REFERENCE_LINK_KEY + "," +
                     ":" + OWNER_KEY +
@@ -120,6 +123,7 @@ public interface LinksRepository extends LinksBaseRepository<RefyLink> {
             @Param(DISCRIMINATOR_VALUE_KEY) String discriminatorValue,
             @Param(LINK_IDENTIFIER_KEY) String linkId,
             @Param(TITLE_KEY) String title,
+            @Param(THUMBNAIL_PREVIEW_KEY) String thumbnailPreview,
             @Param(DESCRIPTION_KEY) String description,
             @Param(REFERENCE_LINK_KEY) String referenceLink,
             @Param(OWNER_KEY) String owner
@@ -156,6 +160,7 @@ public interface LinksRepository extends LinksBaseRepository<RefyLink> {
      *
      * @param linkId The identifier of the link
      * @param title The title of the link
+     * @param thumbnailPreview The url of the thumbnail preview of the link
      * @param description The description of the link
      * @param referenceLink The reference link value
      * @param owner The owner of the link
@@ -165,6 +170,7 @@ public interface LinksRepository extends LinksBaseRepository<RefyLink> {
     @Query(
             value = "UPDATE " + LINKS_KEY + " SET " +
                     TITLE_KEY + "=:" + TITLE_KEY + "," +
+                    THUMBNAIL_PREVIEW_KEY + "=:" + THUMBNAIL_PREVIEW_KEY + "," +
                     DESCRIPTION_KEY + "=:" + DESCRIPTION_KEY + "," +
                     REFERENCE_LINK_KEY + "=:" + REFERENCE_LINK_KEY +
                     " WHERE " + LINK_IDENTIFIER_KEY + "=:" + LINK_IDENTIFIER_KEY + " AND " + OWNER_KEY + "=:" + OWNER_KEY,
@@ -173,6 +179,7 @@ public interface LinksRepository extends LinksBaseRepository<RefyLink> {
     void updateLink(
             @Param(LINK_IDENTIFIER_KEY) String linkId,
             @Param(TITLE_KEY) String title,
+            @Param(THUMBNAIL_PREVIEW_KEY) String thumbnailPreview,
             @Param(DESCRIPTION_KEY) String description,
             @Param(REFERENCE_LINK_KEY) String referenceLink,
             @Param(OWNER_KEY) String owner

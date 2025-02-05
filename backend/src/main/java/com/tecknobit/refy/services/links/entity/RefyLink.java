@@ -10,7 +10,6 @@ import com.tecknobit.refy.services.shared.entities.RefyItem.ListScreenItem;
 import com.tecknobit.refy.services.teams.entities.Team;
 import com.tecknobit.refy.services.users.entity.RefyUser;
 import jakarta.persistence.*;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +35,10 @@ import static com.tecknobit.refycore.ConstantsKt.*;
 )
 @DiscriminatorValue(LINK_KEY)
 public class RefyLink extends RefyItem implements ListScreenItem {
+
+    // TODO: 05/02/2025 TO COMMENT
+    @Column(name = THUMBNAIL_PREVIEW_KEY)
+    private final String linkThumbnailPreview;
 
     /**
      * {@code referenceLink} the link reference value
@@ -80,7 +83,7 @@ public class RefyLink extends RefyItem implements ListScreenItem {
      * @apiNote empty constructor required
      */
     public RefyLink() {
-        this(null, null, null, null, null, List.of(), List.of());
+        this(null, null, null, null, null, null, List.of(), List.of());
     }
 
     /**
@@ -89,26 +92,22 @@ public class RefyLink extends RefyItem implements ListScreenItem {
      * @param id The identifier of the link
      * @param owner The owner of the link
      * @param title The title of the link
-     * @param description:the description of the link
+     * @param description The description of the link
      * @param referenceLink The link reference value
      * @param teams The teams where the link is shared
      * @param collections The collections where the link is shared
      *
      */
-    public RefyLink(String id, RefyUser owner, String title, String description, String referenceLink,
-                    List<Team> teams, List<LinksCollection> collections) {
+    // TODO: 05/02/2025 TO COMMENT
+    public RefyLink(String id, RefyUser owner, String title, String description, String linkThumbnailPreview,
+                    String referenceLink, List<Team> teams, List<LinksCollection> collections) {
         super(id, owner, title, description);
+        this.linkThumbnailPreview = linkThumbnailPreview;
         this.referenceLink = referenceLink;
         this.teams = teams;
         this.collections = collections;
     }
 
-    /**
-     * Constructor to init the {@link RefyLink} class
-     *
-     * @param jRefyLink The json details of the link as {@link JSONObject}
-     *
-     */
     // TODO: 03/02/2025 CHECK TO REMOVE
     /*public RefyLink(JSONObject jRefyLink) {
         super(jRefyLink);
@@ -116,6 +115,11 @@ public class RefyLink extends RefyItem implements ListScreenItem {
         teams = returnTeams(hItem.getJSONArray(TEAMS_KEY));
         collections = returnCollections(hItem.getJSONArray(COLLECTIONS_KEY));
     }*/
+
+    // TODO: 05/02/2025 TO COMMENT 
+    public String getLinkThumbnailPreview() {
+        return linkThumbnailPreview;
+    }
 
     /**
      * Method to get {@link #referenceLink} instance <br>

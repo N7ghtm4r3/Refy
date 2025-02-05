@@ -35,7 +35,6 @@ import static jakarta.persistence.EnumType.STRING;
  * @author N7ghtm4r3 - Tecknobit
  */
 @Entity
-@Table(name = CUSTOM_LINKS_KEY)
 @DiscriminatorValue(CUSTOM_LINK_KEY)
 @JsonIgnoreProperties({
     COLLECTIONS_KEY,
@@ -125,7 +124,7 @@ public class CustomRefyLink extends RefyLink {
      * @param id The identifier of the link
      * @param owner The owner of the link
      * @param title The title of the link
-     * @param description:the description of the link
+     * @param description The description of the link
      * @param referenceLink The link reference value
      * @param uniqueAccess: whether the link, when requested for the first time, must be deleted and no more accessible
      * @param expiredTime: if set, when the link expires and automatically deleted
@@ -137,7 +136,7 @@ public class CustomRefyLink extends RefyLink {
     public CustomRefyLink(String id, RefyUser owner, String title, String description, String referenceLink,
                           long creationDate, boolean uniqueAccess, ExpiredTime expiredTime, Map<String, String> resources,
                           Map<String, String> fields, String previewToken) {
-        super(id, owner, title, description, referenceLink, List.of(), List.of());
+        super(id, owner, title, description, null, referenceLink, List.of(), List.of());
         this.creationDate = creationDate;
         this.uniqueAccess = uniqueAccess;
         this.expiredTime = expiredTime;

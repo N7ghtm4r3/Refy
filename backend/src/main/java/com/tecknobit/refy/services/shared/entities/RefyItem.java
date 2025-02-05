@@ -64,7 +64,7 @@ public abstract class RefyItem extends EquinoxItem {
      * @param id The identifier of the item
      * @param owner The owner of the item
      * @param title The title of the item
-     * @param description:the description of the item
+     * @param description The description of the item
      *
      */
     public RefyItem(String id, RefyUser owner, String title, String description) {

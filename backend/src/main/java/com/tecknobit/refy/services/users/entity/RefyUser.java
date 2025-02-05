@@ -10,11 +10,13 @@ import com.tecknobit.refy.services.customlinks.entity.CustomRefyLink;
 import com.tecknobit.refy.services.links.entity.RefyLink;
 import com.tecknobit.refy.services.teams.entities.Team;
 import com.tecknobit.refy.services.teams.entities.Team.RefyTeamMember;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 
 import java.util.List;
 
-import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.USERS_KEY;
 import static com.tecknobit.refycore.ConstantsKt.*;
 
 /**
@@ -26,7 +28,6 @@ import static com.tecknobit.refycore.ConstantsKt.*;
  *
  */
 @Entity
-@Table(name = USERS_KEY)
 public class RefyUser extends EquinoxUser {
 
     /**

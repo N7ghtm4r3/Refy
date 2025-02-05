@@ -10,8 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+
+import static com.tecknobit.refycore.ConstantsKt.TAG_NAME_KEY;
 
 /**
  * The {@code RefyUsersHelper} class is useful to manage all the Refy's user database operations
@@ -51,6 +54,16 @@ public class RefyUsersService extends EquinoxUsersService<RefyUser, RefyUsersRep
      */
     public List<List<String>> getPotentialMembers(String userId) {
         return refyUsersRepository.getPotentialMembers(userId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected List<String> getQueryValuesKeys() {
+        ArrayList<String> keys = new ArrayList<>(super.getQueryValuesKeys());
+        keys.add(TAG_NAME_KEY);
+        return keys;
     }
 
     /**

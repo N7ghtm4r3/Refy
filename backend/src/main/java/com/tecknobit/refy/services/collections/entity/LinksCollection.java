@@ -120,8 +120,7 @@ public class LinksCollection extends RefyItem implements ListScreenItem {
     }*/
 
     /**
-     * Method to get {@link #color} instance <br>
-     * No-any params required
+     * Method to get {@link #color} instance
      *
      * @return {@link #color} instance as {@link String}
      */
@@ -131,8 +130,7 @@ public class LinksCollection extends RefyItem implements ListScreenItem {
     }
 
     /**
-     * Method to get {@link #links} instance <br>
-     * No-any params required
+     * Method to get {@link #links} instance
      *
      * @return {@link #links} instance as {@link List} of {@link RefyLink}
      */
@@ -141,8 +139,7 @@ public class LinksCollection extends RefyItem implements ListScreenItem {
     }
 
     /**
-     * Method to get the ids of the {@link #links} <br>
-     * No-any params required
+     * Method to get the ids of the {@link #links}
      *
      * @return ids of the {@link #links} as {@link List} of {@link String}
      */
@@ -155,8 +152,7 @@ public class LinksCollection extends RefyItem implements ListScreenItem {
     }
 
     /**
-     * Method to get {@link #teams} instance <br>
-     * No-any params required
+     * Method to get {@link #teams} instance
      *
      * @return {@link #teams} instance as {@link List} of {@link Team}
      */
@@ -165,8 +161,7 @@ public class LinksCollection extends RefyItem implements ListScreenItem {
     }
 
     /**
-     * Method to get the ids of the {@link #teams} <br>
-     * No-any params required
+     * Method to get the ids of the {@link #teams}
      *
      * @return ids of the {@link #teams} as {@link List} of {@link String}
      */
@@ -179,8 +174,7 @@ public class LinksCollection extends RefyItem implements ListScreenItem {
     }
 
     /**
-     * Method to get whether the collection is shared in any teams <br>
-     * No-any params required
+     * Method to get whether the collection is shared in any teams
      *
      * @return whether the collection is shared in any teams as boolean
      */

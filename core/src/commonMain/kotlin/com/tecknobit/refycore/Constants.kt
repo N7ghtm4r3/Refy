@@ -1,6 +1,11 @@
 package com.tecknobit.refycore
 
 /**
+ * `AT_SYMBOL` constant value for the `@` symbol
+ */
+const val AT_SYMBOL = "@"
+
+/**
  * `OWNED_ONLY_KEY` the key for the `owned_only` field
  */
 const val OWNED_ONLY_KEY = "owned_only"

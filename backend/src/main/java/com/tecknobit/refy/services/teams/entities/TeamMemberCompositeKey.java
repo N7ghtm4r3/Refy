@@ -41,8 +41,7 @@ public class TeamMemberCompositeKey {
     }
 
     /**
-     * Method to get {@link #owner} instance <br>
-     * No-any params required
+     * Method to get {@link #owner} instance
      *
      * @return {@link #owner} instance as {@link String}
      */
@@ -51,8 +50,7 @@ public class TeamMemberCompositeKey {
     }
 
     /**
-     * Method to get {@link #sourceTeam} instance <br>
-     * No-any params required
+     * Method to get {@link #sourceTeam} instance
      *
      * @return {@link #sourceTeam} instance as {@link String}
      */

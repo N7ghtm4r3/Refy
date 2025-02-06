@@ -201,8 +201,7 @@ public class RefyUser extends EquinoxUser {
     }*/
 
     /**
-     * Method to get {@link #tagName} instance <br>
-     * No-any params required
+     * Method to get {@link #tagName} instance
      *
      * @return {@link #tagName} instance as {@link String}
      */
@@ -222,8 +221,7 @@ public class RefyUser extends EquinoxUser {
     }
 
     /**
-     * Method to get {@link #links} instance <br>
-     * No-any params required
+     * Method to get {@link #links} instance
      *
      * @return {@link #links} instance as {@link List} of {@link RefyLink}
      */
@@ -242,8 +240,7 @@ public class RefyUser extends EquinoxUser {
     }
 
     /**
-     * Method to get {@link #teams} instance <br>
-     * No-any params required
+     * Method to get {@link #teams} instance
      *
      * @return {@link #teams} instance as {@link List} of {@link Team}
      */
@@ -262,8 +259,7 @@ public class RefyUser extends EquinoxUser {
     }
 
     /**
-     * Method to get {@link #collections} instance <br>
-     * No-any params required
+     * Method to get {@link #collections} instance
      *
      * @return {@link #collections} instance as {@link List} of {@link LinksCollection}
      */
@@ -272,8 +268,7 @@ public class RefyUser extends EquinoxUser {
     }
 
     /**
-     * Method to get {@link #customLinks} instance <br>
-     * No-any params required
+     * Method to get {@link #customLinks} instance
      *
      * @return {@link #customLinks} instance as {@link List} of {@link CustomRefyLink}
      */

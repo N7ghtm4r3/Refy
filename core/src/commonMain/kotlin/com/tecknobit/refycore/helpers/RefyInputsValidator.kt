@@ -1,6 +1,7 @@
 package com.tecknobit.refycore.helpers
 
 import com.tecknobit.equinoxcore.helpers.InputsValidator
+import com.tecknobit.refycore.AT_SYMBOL
 
 /**
  * The `RefyInputValidator` class is useful to validate the inputs
@@ -14,7 +15,7 @@ object RefyInputsValidator : InputsValidator() {
     /**
      * `MAX_TAG_NAME_LENGTH` the max valid length for the tag name
      */
-    const val MAX_TAG_NAME_LENGTH: Int = 15
+    const val MAX_TAG_NAME_LENGTH: Int = 16
 
     /**
      * `MAX_DESCRIPTION_LENGTH` the max valid length for the description field
@@ -50,7 +51,7 @@ object RefyInputsValidator : InputsValidator() {
     fun isTagNameValid(
         tagName: String
     ): Boolean {
-        return isInputValid(tagName) && tagName.startsWith("@") && tagName.length <= MAX_TAG_NAME_LENGTH
+        return isInputValid(tagName) && tagName.startsWith(AT_SYMBOL) && tagName.length <= MAX_TAG_NAME_LENGTH
     }
 
     /**

@@ -89,8 +89,7 @@ public abstract class RefyItem extends EquinoxItem {
     }*/
 
     /**
-     * Method to get {@link #owner} instance <br>
-     * No-any params required
+     * Method to get {@link #owner} instance
      *
      * @return {@link #owner} instance as {@link RefyUser}
      */
@@ -99,8 +98,7 @@ public abstract class RefyItem extends EquinoxItem {
     }
 
     /**
-     * Method to get {@link #title} instance <br>
-     * No-any params required
+     * Method to get {@link #title} instance
      *
      * @return {@link #title} instance as {@link String}
      */
@@ -109,8 +107,7 @@ public abstract class RefyItem extends EquinoxItem {
     }
 
     /**
-     * Method to get {@link #description} instance <br>
-     * No-any params required
+     * Method to get {@link #description} instance
      *
      * @return {@link #description} instance as {@link String}
      */

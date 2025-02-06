@@ -33,10 +33,14 @@ import static com.tecknobit.refycore.helpers.RefyInputsValidator.INSTANCE;
 @RequestMapping(BASE_EQUINOX_ENDPOINT + USERS_KEY + "/{" + USER_IDENTIFIER_KEY + "}/" + LINKS_KEY)
 public class LinksController extends DefaultRefyController<RefyLink> {
 
-    // TODO: 05/02/2025 TO COMMENT
+    /**
+     * {@code OG_IMAGE_METADATA} constant value to extract from an HTML page the {@code og:image} metadata property
+     */
     private static final String OG_IMAGE_METADATA = "meta[property=og:image]";
 
-    // TODO: 05/02/2025 TO COMMENT
+    /**
+     * {@code CONTENT_KEY} constant value for the {@code content} value
+     */
     private static final String CONTENT_KEY = "content";
 
     /**
@@ -106,7 +110,7 @@ public class LinksController extends DefaultRefyController<RefyLink> {
         if(!INSTANCE.isLinkPayloadValid(description, referenceLink))
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         try {
-            Pair<String, String> metadata = getMetaData(referenceLink);
+            Pair<String, String> metadata = getMetadata(referenceLink);
             linksService.createLink(userId, generateIdentifier(), metadata.getFirst(), metadata.getSecond(), description,
                     referenceLink);
             return successResponse();
@@ -156,7 +160,7 @@ public class LinksController extends DefaultRefyController<RefyLink> {
             String title = userItem.getTitle();
             String thumbnailPreview = userItem.getLinkThumbnailPreview();
             if(!userItem.getReferenceLink().equals(referenceLink)) {
-                Pair<String, String> metadata = getMetaData(referenceLink);
+                Pair<String, String> metadata = getMetadata(referenceLink);
                 title = metadata.getFirst();
                 thumbnailPreview = metadata.getSecond();
             }
@@ -167,8 +171,15 @@ public class LinksController extends DefaultRefyController<RefyLink> {
         }
     }
 
-    // TODO: 05/02/2025 TO COMMENT
-    private Pair<String, String> getMetaData(String referenceLink) throws IOException {
+    /**
+     * Method to extract from the reference link the metadata information such website title and {@link #OG_IMAGE_METADATA}
+     * property
+     *
+     * @param referenceLink The link used to extract the metadata
+     *
+     * @return the metadata information as {@link Pair} of {@link String}
+     */
+    private Pair<String, String> getMetadata(String referenceLink) throws IOException {
         Document document = Jsoup.connect(referenceLink).get();
         String title = document.title();
         String thumbnailPreview = document.select(OG_IMAGE_METADATA).attr(CONTENT_KEY);

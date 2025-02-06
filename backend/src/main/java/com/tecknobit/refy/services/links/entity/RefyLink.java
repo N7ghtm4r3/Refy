@@ -36,7 +36,9 @@ import static com.tecknobit.refycore.ConstantsKt.*;
 @DiscriminatorValue(LINK_KEY)
 public class RefyLink extends RefyItem implements ListScreenItem {
 
-    // TODO: 05/02/2025 TO COMMENT
+    /**
+     * {@code linkThumbnailPreview} the url of the thumbnail preview of the link
+     */
     @Column(name = THUMBNAIL_PREVIEW_KEY)
     private final String linkThumbnailPreview;
 
@@ -93,12 +95,12 @@ public class RefyLink extends RefyItem implements ListScreenItem {
      * @param owner The owner of the link
      * @param title The title of the link
      * @param description The description of the link
+     * @param linkThumbnailPreview The url of the thumbnail preview of the link
      * @param referenceLink The link reference value
      * @param teams The teams where the link is shared
      * @param collections The collections where the link is shared
      *
      */
-    // TODO: 05/02/2025 TO COMMENT
     public RefyLink(String id, RefyUser owner, String title, String description, String linkThumbnailPreview,
                     String referenceLink, List<Team> teams, List<LinksCollection> collections) {
         super(id, owner, title, description);
@@ -116,14 +118,17 @@ public class RefyLink extends RefyItem implements ListScreenItem {
         collections = returnCollections(hItem.getJSONArray(COLLECTIONS_KEY));
     }*/
 
-    // TODO: 05/02/2025 TO COMMENT 
+    /**
+     * Method to get {@link #linkThumbnailPreview} instance
+     *
+     * @return {@link #linkThumbnailPreview} instance as {@link String}
+     */
     public String getLinkThumbnailPreview() {
         return linkThumbnailPreview;
     }
 
     /**
-     * Method to get {@link #referenceLink} instance <br>
-     * No-any params required
+     * Method to get {@link #referenceLink} instance
      *
      * @return {@link #referenceLink} instance as {@link String}
      */
@@ -133,8 +138,7 @@ public class RefyLink extends RefyItem implements ListScreenItem {
     }
 
     /**
-     * Method to get {@link #teams} instance <br>
-     * No-any params required
+     * Method to get {@link #teams} instance
      *
      * @return {@link #teams} instance as {@link List} of {@link Team}
      */
@@ -143,8 +147,7 @@ public class RefyLink extends RefyItem implements ListScreenItem {
     }
 
     /**
-     * Method to get the ids of the {@link #teams} <br>
-     * No-any params required
+     * Method to get the ids of the {@link #teams}
      *
      * @return ids of the {@link #teams} as {@link List} of {@link String}
      */
@@ -157,8 +160,7 @@ public class RefyLink extends RefyItem implements ListScreenItem {
     }
 
     /**
-     * Method to get {@link #collections} instance <br>
-     * No-any params required
+     * Method to get {@link #collections} instance
      *
      * @return {@link #collections} instance as {@link List} of {@link LinksCollection}
      */
@@ -167,8 +169,7 @@ public class RefyLink extends RefyItem implements ListScreenItem {
     }
 
     /**
-     * Method to get the ids of the {@link #collections} <br>
-     * No-any params required
+     * Method to get the ids of the {@link #collections}
      *
      * @return ids of the {@link #collections} as {@link List} of {@link String}
      */

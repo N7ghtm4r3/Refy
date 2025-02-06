@@ -159,8 +159,7 @@ public class Team extends RefyItem {
     }*/
 
     /**
-     * Method to get {@link #logoPic} instance <br>
-     * No-any params required
+     * Method to get {@link #logoPic} instance
      *
      * @return {@link #logoPic} instance as {@link String}
      */
@@ -170,8 +169,7 @@ public class Team extends RefyItem {
     }
 
     /**
-     * Method to get {@link #members} instance <br>
-     * No-any params required
+     * Method to get {@link #members} instance
      *
      * @return {@link #members} instance as {@link List} of {@link RefyTeamMember}
      */
@@ -180,8 +178,7 @@ public class Team extends RefyItem {
     }
 
     /**
-     * Method to get whether the team has members apart the author <br>
-     * No-any params required
+     * Method to get whether the team has members apart the author
      *
      * @return whether the team has members apart the author as boolean
      */
@@ -206,8 +203,7 @@ public class Team extends RefyItem {
     }
 
     /**
-     * Method to get the first member who is a viewer <br>
-     * No-any params required
+     * Method to get the first member who is a viewer
      *
      * @return the first member who is a viewer as {@link RefyTeamMember}
      */
@@ -220,8 +216,7 @@ public class Team extends RefyItem {
     }
 
     /**
-     * Method to get the ids of the {@link #members} <br>
-     * No-any params required
+     * Method to get the ids of the {@link #members}
      *
      * @return ids of the {@link #members} as {@link List} of {@link String}
      */
@@ -248,8 +243,7 @@ public class Team extends RefyItem {
     }
 
     /**
-     * Method to get {@link #links} instance <br>
-     * No-any params required
+     * Method to get {@link #links} instance
      *
      * @return {@link #links} instance as {@link List} of {@link RefyLink}
      */
@@ -258,8 +252,7 @@ public class Team extends RefyItem {
     }
 
     /**
-     * Method to get the ids of the {@link #links} <br>
-     * No-any params required
+     * Method to get the ids of the {@link #links}
      *
      * @return ids of the {@link #links} as {@link List} of {@link String}
      */
@@ -272,8 +265,7 @@ public class Team extends RefyItem {
     }
 
     /**
-     * Method to get {@link #collections} instance <br>
-     * No-any params required
+     * Method to get {@link #collections} instance
      *
      * @return {@link #collections} instance as {@link List} of {@link LinksCollection}
      */
@@ -282,8 +274,7 @@ public class Team extends RefyItem {
     }
 
     /**
-     * Method to get the ids of the {@link #collections} <br>
-     * No-any params required
+     * Method to get the ids of the {@link #collections}
      *
      * @return ids of the {@link #collections} as {@link List} of {@link String}
      */

@@ -177,8 +177,7 @@ public class CustomRefyLink extends RefyLink {
     }
 
     /**
-     * Method to get {@link #creationDate} instance <br>
-     * No-any params required
+     * Method to get {@link #creationDate} instance
      *
      * @return {@link #creationDate} instance as long
      */
@@ -188,8 +187,7 @@ public class CustomRefyLink extends RefyLink {
     }
 
     /**
-     * Method to get {@link #creationDate} instance <br>
-     * No-any params required
+     * Method to get {@link #creationDate} instance
      *
      * @return {@link #creationDate} instance as {@link String}
      */
@@ -199,8 +197,7 @@ public class CustomRefyLink extends RefyLink {
     }
 
     /**
-     * Method to get {@link #uniqueAccess} instance <br>
-     * No-any params required
+     * Method to get {@link #uniqueAccess} instance
      *
      * @return {@link #uniqueAccess} instance as boolean
      */
@@ -220,8 +217,7 @@ public class CustomRefyLink extends RefyLink {
     }
 
     /**
-     * Method to get the expiration timestamp value <br>
-     * No-any params required
+     * Method to get the expiration timestamp value
      *
      * @return {@link #creationDate+expiredTime.getGap()} instance as long
      */
@@ -233,8 +229,7 @@ public class CustomRefyLink extends RefyLink {
     }
 
     /**
-     * Method to get the expiration date <br>
-     * No-any params required
+     * Method to get the expiration date
      *
      * @return the expiration date as {@link String}
      */
@@ -247,8 +242,7 @@ public class CustomRefyLink extends RefyLink {
     }
 
     /**
-     * Method to get whether the link has been expired <br>
-     * No-any params required
+     * Method to get whether the link has been expired
      *
      * @return whether the link has been expired as boolean
      */
@@ -257,8 +251,7 @@ public class CustomRefyLink extends RefyLink {
     }
 
     /**
-     * Method to get {@link #expiredTime} instance <br>
-     * No-any params required
+     * Method to get {@link #expiredTime} instance
      *
      * @return {@link #expiredTime} instance as {@link ExpiredTime}
      */
@@ -268,8 +261,7 @@ public class CustomRefyLink extends RefyLink {
     }
 
     /**
-     * Method to get {@link #resources} instance <br>
-     * No-any params required
+     * Method to get {@link #resources} instance
      *
      * @return {@link #resources} instance as {@link Map} of {@link String} and {@link String}
      */
@@ -278,8 +270,7 @@ public class CustomRefyLink extends RefyLink {
     }
 
     /**
-     * Method to get {@link #fields} instance <br>
-     * No-any params required
+     * Method to get {@link #fields} instance
      *
      * @return {@link #fields} instance as {@link Map} of {@link String} and {@link String}
      */
@@ -298,8 +289,7 @@ public class CustomRefyLink extends RefyLink {
     }
 
     /**
-     * Method to get {@link #previewToken} instance <br>
-     * No-any params required
+     * Method to get {@link #previewToken} instance
      *
      * @return {@link #previewToken} instance as {@link String}
      */
@@ -309,8 +299,7 @@ public class CustomRefyLink extends RefyLink {
     }
 
     /**
-     * Method to get the url to enter the preview mode <br>
-     * No-any params required
+     * Method to get the url to enter the preview mode
      *
      * @return the url to enter the preview mode as {@link String}
      */

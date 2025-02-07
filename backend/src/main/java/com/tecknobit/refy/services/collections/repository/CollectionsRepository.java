@@ -14,7 +14,6 @@ import java.util.HashSet;
 import java.util.List;
 
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.IDENTIFIER_KEY;
-import static com.tecknobit.refy.services.teams.entities.Team.*;
 import static com.tecknobit.refycore.ConstantsKt.*;
 
 /**
@@ -38,7 +37,8 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
      */
     @Query(
             value = "SELECT " + IDENTIFIER_KEY + " FROM " + COLLECTIONS_KEY + " WHERE "
-                    + OWNER_KEY + "=:" + OWNER_KEY,
+                    + OWNER_KEY + "=:" + OWNER_KEY +
+                    " ORDER BY " + DATE_KEY + " DESC",
             nativeQuery = true
     )
     HashSet<String> getUserCollections(
@@ -53,7 +53,8 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
      * @return the user collections as {@link List} of {@link LinksCollection}
      */
     @Query(
-            value = "SELECT c.* FROM " + COLLECTIONS_KEY + " as c WHERE c." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY,
+            value = "SELECT c.* FROM " + COLLECTIONS_KEY + " as c WHERE c." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
+                    " ORDER BY " + DATE_KEY + " DESC",
             nativeQuery = true
     )
     List<LinksCollection> getUserOwnedCollections(
@@ -73,7 +74,8 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
                     "SELECT c.* FROM " + COLLECTIONS_KEY + " as c INNER JOIN " + COLLECTIONS_TEAMS_TABLE + " ON c." +
                     IDENTIFIER_KEY + " = " + COLLECTIONS_TEAMS_TABLE + "." + COLLECTION_IDENTIFIER_KEY + " INNER JOIN " +
                     MEMBERS_KEY + " ON " + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY + " WHERE " + MEMBERS_KEY + "." +
-                    OWNER_KEY + "=:" + USER_IDENTIFIER_KEY,
+                    OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
+                    " ORDER BY " + DATE_KEY + " DESC",
             nativeQuery = true
     )
     List<LinksCollection> getAllUserCollections(
@@ -87,6 +89,7 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
      * @param color The color of the collection
      * @param title The title of the collection
      * @param description The description of the collection
+     * @param timestamp The date when the item has been inserted in the system
      * @param owner The owner of the collection
      */
     @Modifying(clearAutomatically = true)
@@ -97,12 +100,14 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
                     COLLECTION_COLOR_KEY + "," +
                     TITLE_KEY + "," +
                     DESCRIPTION_KEY + "," +
+                    DATE_KEY + "," +
                     OWNER_KEY
                     + ") VALUES (" +
                     ":" + IDENTIFIER_KEY + "," +
                     ":" + COLLECTION_COLOR_KEY + "," +
                     ":" + TITLE_KEY + "," +
                     ":" + DESCRIPTION_KEY + "," +
+                    ":" + DATE_KEY + "," +
                     ":" + OWNER_KEY +
                     ")",
             nativeQuery = true
@@ -112,6 +117,7 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
             @Param(COLLECTION_COLOR_KEY) String color,
             @Param(TITLE_KEY) String title,
             @Param(DESCRIPTION_KEY) String description,
+            @Param(DATE_KEY) long timestamp,
             @Param(OWNER_KEY) String owner
     );
 

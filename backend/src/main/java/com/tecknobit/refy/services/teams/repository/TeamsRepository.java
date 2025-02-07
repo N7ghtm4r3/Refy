@@ -37,7 +37,8 @@ public interface TeamsRepository extends RefyItemsRepository<Team> {
      */
     @Query(
             value = "SELECT " + TEAM_IDENTIFIER_KEY + " FROM " + TEAMS_KEY + " WHERE "
-                    + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY,
+                    + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
+                    " ORDER BY " + DATE_KEY + " DESC",
             nativeQuery = true
     )
     HashSet<String> getUserTeams(
@@ -54,7 +55,8 @@ public interface TeamsRepository extends RefyItemsRepository<Team> {
     @Query(
             value = "SELECT t.* " + "FROM " + TEAMS_KEY + " as t INNER JOIN " + MEMBERS_KEY
                     + " ON t." + TEAM_IDENTIFIER_KEY + "=" + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY
-                    + " WHERE " + MEMBERS_KEY + "." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY,
+                    + " WHERE " + MEMBERS_KEY + "." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
+                    " ORDER BY " + DATE_KEY + " DESC",
             nativeQuery = true
     )
     List<Team> getUserOwnedTeams(
@@ -71,7 +73,8 @@ public interface TeamsRepository extends RefyItemsRepository<Team> {
     @Query(
             value = "SELECT t.* " + "FROM " + TEAMS_KEY + " as t INNER JOIN " + MEMBERS_KEY
                     + " ON t." + TEAM_IDENTIFIER_KEY + "=" + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY
-                    + " WHERE " + MEMBERS_KEY + "." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY,
+                    + " WHERE " + MEMBERS_KEY + "." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
+                    " ORDER BY " + DATE_KEY + " DESC",
             nativeQuery = true
     )
     List<Team> getAllUserTeams(
@@ -105,6 +108,7 @@ public interface TeamsRepository extends RefyItemsRepository<Team> {
      * @param title The title of the team
      * @param logoPic The logo picture of the team
      * @param description The description of the team
+     * @param timestamp The date when the item has been inserted in the system
      * @param owner The owner of the team
      */
     @Modifying(clearAutomatically = true)
@@ -115,12 +119,14 @@ public interface TeamsRepository extends RefyItemsRepository<Team> {
                     TITLE_KEY + "," +
                     LOGO_PIC_KEY + "," +
                     DESCRIPTION_KEY + "," +
+                    DATE_KEY + "," +
                     OWNER_KEY
                     + ") VALUES (" +
                     ":" + TEAM_IDENTIFIER_KEY + "," +
                     ":" + TITLE_KEY + "," +
                     ":" + LOGO_PIC_KEY + "," +
                     ":" + DESCRIPTION_KEY + "," +
+                    ":" + DATE_KEY + "," +
                     ":" + OWNER_KEY +
                     ")",
             nativeQuery = true
@@ -130,6 +136,7 @@ public interface TeamsRepository extends RefyItemsRepository<Team> {
             @Param(TITLE_KEY) String title,
             @Param(LOGO_PIC_KEY) String logoPic,
             @Param(DESCRIPTION_KEY) String description,
+            @Param(DATE_KEY) long timestamp,
             @Param(OWNER_KEY) String owner
     );
 

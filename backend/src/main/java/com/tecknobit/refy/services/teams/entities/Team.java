@@ -119,7 +119,7 @@ public class Team extends RefyItem {
      * @apiNote empty constructor required
      */
     public Team() {
-        this(null, null, null, null, null, List.of(), List.of(), List.of());
+        this(null, null, null, null, null, 0, List.of(), List.of(), List.of());
     }
 
     /**
@@ -130,14 +130,15 @@ public class Team extends RefyItem {
      * @param author The author of the team
      * @param logoPic The logo picture of the team
      * @param description The description of the team
+     * @param date The date when the item has been inserted in the system
      * @param members The members of the team
      * @param links The links shared with the team
      * @param collections The collections shared with the team
      *
      */
-    public Team(String id, String title, RefyUser author, String logoPic, String description, List<RefyTeamMember> members,
-                List<RefyLink> links, List<LinksCollection> collections) {
-        super(id, author, title, description);
+    public Team(String id, String title, RefyUser author, String logoPic, String description, long date,
+                List<RefyTeamMember> members, List<RefyLink> links, List<LinksCollection> collections) {
+        super(id, author, title, description, date);
         this.logoPic = logoPic;
         this.members = members;
         this.links = links;

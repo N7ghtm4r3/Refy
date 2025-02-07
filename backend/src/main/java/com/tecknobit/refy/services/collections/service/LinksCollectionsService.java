@@ -108,7 +108,7 @@ public class LinksCollectionsService extends RefyItemsHelper<LinksCollection> {
      */
     public void createCollection(String userId, String collectionId, String color, String title, String description,
                                  List<String> links) {
-        collectionsRepository.saveCollection(collectionId, color, title, description, userId);
+        collectionsRepository.saveCollection(collectionId, color, title, description, System.currentTimeMillis(), userId);
         executeInsertBatch(ATTACH_COLLECTION_TO_LINKS_QUERY, RELATIONSHIP_VALUES_SLICE, links, query -> {
             int index = 1;
             for (String link : links) {

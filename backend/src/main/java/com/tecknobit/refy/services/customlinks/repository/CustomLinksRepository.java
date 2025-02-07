@@ -39,7 +39,7 @@ public interface CustomLinksRepository extends LinksBaseRepository<CustomRefyLin
      */
     @Query(
             value = "SELECT l.* FROM " + LINKS_KEY + " AS l WHERE l." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY
-                    + " AND dtype='" + CUSTOM_LINK_KEY + "' ORDER BY " + CREATION_DATE_KEY,
+                    + " AND dtype='" + CUSTOM_LINK_KEY + "' ORDER BY " + DATE_KEY + " DESC",
             nativeQuery = true
     )
     List<CustomRefyLink> getUserCustomLinks(
@@ -87,7 +87,7 @@ public interface CustomLinksRepository extends LinksBaseRepository<CustomRefyLin
                     TITLE_KEY + "," +
                     DESCRIPTION_KEY + "," +
                     REFERENCE_LINK_KEY + "," +
-                    CREATION_DATE_KEY + "," +
+                    DATE_KEY + "," +
                     EXPIRED_TIME_KEY + "," +
                     UNIQUE_ACCESS_KEY + "," +
                     PREVIEW_TOKEN_KEY + "," +
@@ -98,7 +98,7 @@ public interface CustomLinksRepository extends LinksBaseRepository<CustomRefyLin
                     ":" + TITLE_KEY + "," +
                     ":" + DESCRIPTION_KEY + "," +
                     ":" + REFERENCE_LINK_KEY + "," +
-                    ":" + CREATION_DATE_KEY + "," +
+                    ":" + DATE_KEY + "," +
                     ":#{#" + EXPIRED_TIME_KEY + ".name()}," +
                     ":" + UNIQUE_ACCESS_KEY + "," +
                     ":" + PREVIEW_TOKEN_KEY + "," +
@@ -112,7 +112,7 @@ public interface CustomLinksRepository extends LinksBaseRepository<CustomRefyLin
             @Param(TITLE_KEY) String title,
             @Param(DESCRIPTION_KEY) String description,
             @Param(REFERENCE_LINK_KEY) String referenceLink,
-            @Param(CREATION_DATE_KEY) long creationDate,
+            @Param(DATE_KEY) long creationDate,
             @Param(EXPIRED_TIME_KEY) ExpiredTime expiredTime,
             @Param(UNIQUE_ACCESS_KEY) boolean hasUniqueAccess,
             @Param(PREVIEW_TOKEN_KEY) String previewToken,

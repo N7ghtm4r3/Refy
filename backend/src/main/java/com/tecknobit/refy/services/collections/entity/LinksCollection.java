@@ -82,7 +82,7 @@ public class LinksCollection extends RefyItem implements ListScreenItem {
      * @apiNote empty constructor required
      */
     public LinksCollection() {
-        this(null, null, null, null, null, null, null);
+        this(null, null, null, null, null, 0, null, null);
     }
 
     /**
@@ -92,14 +92,15 @@ public class LinksCollection extends RefyItem implements ListScreenItem {
      * @param owner The owner of the collection
      * @param title The title of the collection
      * @param description The description of the collection
+     * @param date The date when the item has been inserted in the system
      * @param color:{@code color} the color of the collection
      * @param links:{@code links} the links contained by the collection
      * @param teams:{@code teams} the teams where the collection is shared
      *
      */
-    public LinksCollection(String id, RefyUser owner, String title, String color, String description, List<Team> teams,
-                           List<RefyLink> links) {
-        super(id, owner, title, description);
+    public LinksCollection(String id, RefyUser owner, String title, String color, String description, long date,
+                           List<Team> teams, List<RefyLink> links) {
+        super(id, owner, title, description, date);
         this.color = color;
         this.teams = teams;
         this.links = links;

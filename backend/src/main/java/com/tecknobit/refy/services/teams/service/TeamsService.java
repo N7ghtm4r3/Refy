@@ -153,7 +153,7 @@ public class TeamsService extends RefyItemsHelper<Team> implements RefyResources
     public void createTeam(String userId, String teamId, TeamPayload payload) throws IOException {
         MultipartFile logo = payload.logo_pic;
         String logoUrl = createLogoResource(logo, teamId + System.currentTimeMillis());
-        teamsRepository.saveTeam(teamId, payload.title, logoUrl, payload.description, userId);
+        teamsRepository.saveTeam(teamId, payload.title, logoUrl, payload.description, System.currentTimeMillis(), userId);
         List<String> members = JsonHelper.toList(payload.members.put(userId));
         executeInsertBatch(ADD_MEMBERS_QUERY, TUPLE_VALUES_SLICE, members, query -> {
             int index = 1;

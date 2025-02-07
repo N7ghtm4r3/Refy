@@ -39,7 +39,8 @@ public interface LinksRepository extends LinksBaseRepository<RefyLink> {
      */
     @Query(
             value = "SELECT " + LINK_IDENTIFIER_KEY + " FROM " + LINKS_KEY + " WHERE "
-                    + OWNER_KEY + "=:" + OWNER_KEY,
+                    + OWNER_KEY + "=:" + OWNER_KEY +
+                    " ORDER BY " + DATE_KEY + " DESC",
             nativeQuery = true
     )
     HashSet<String> getUserLinks(
@@ -55,7 +56,8 @@ public interface LinksRepository extends LinksBaseRepository<RefyLink> {
      */
     @Query(
             value = "SELECT l.* FROM " + LINKS_KEY + " AS l WHERE l." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
-                    " AND dtype='" + LINK_KEY + "'",
+                    " AND dtype='" + LINK_KEY + "'" +
+                    " ORDER BY " + DATE_KEY + " DESC",
             nativeQuery = true
     )
     List<RefyLink> getUserOwnedLinks(
@@ -79,7 +81,8 @@ public interface LinksRepository extends LinksBaseRepository<RefyLink> {
                     COLLECTIONS_TEAMS_TABLE + " ON " + COLLECTIONS_TEAMS_TABLE + "." + COLLECTION_IDENTIFIER_KEY + " = " +
                     COLLECTIONS_LINKS_TABLE + "." + COLLECTION_IDENTIFIER_KEY + " INNER JOIN " + MEMBERS_KEY + " ON " +
                     COLLECTIONS_TEAMS_TABLE + "." + TEAM_IDENTIFIER_KEY + " = " + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY +
-                    " WHERE " + MEMBERS_KEY + "." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY + " AND dtype='" + LINK_KEY + "'",
+                    " WHERE " + MEMBERS_KEY + "." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY + " AND dtype='" + LINK_KEY + "'" +
+                    " ORDER BY " + DATE_KEY + " DESC",
             nativeQuery = true
     )
     List<RefyLink> getAllUserLinks(
@@ -92,6 +95,7 @@ public interface LinksRepository extends LinksBaseRepository<RefyLink> {
      * @param discriminatorValue The discriminator value
      * @param linkId The identifier of the link
      * @param title The title of the link
+     * @param timestamp The date when the item has been inserted in the system
      * @param thumbnailPreview The url of the thumbnail preview of the link
      * @param description The description of the link
      * @param referenceLink The reference link value
@@ -104,6 +108,7 @@ public interface LinksRepository extends LinksBaseRepository<RefyLink> {
                     DISCRIMINATOR_VALUE_KEY + "," +
                     LINK_IDENTIFIER_KEY + "," +
                     TITLE_KEY + "," +
+                    DATE_KEY + "," +
                     THUMBNAIL_PREVIEW_KEY + "," +
                     DESCRIPTION_KEY + "," +
                     REFERENCE_LINK_KEY + "," +
@@ -112,6 +117,7 @@ public interface LinksRepository extends LinksBaseRepository<RefyLink> {
                     ":" + DISCRIMINATOR_VALUE_KEY + "," +
                     ":" + LINK_IDENTIFIER_KEY + "," +
                     ":" + TITLE_KEY + "," +
+                    ":" + DATE_KEY + "," +
                     ":" + THUMBNAIL_PREVIEW_KEY + "," +
                     ":" + DESCRIPTION_KEY + "," +
                     ":" + REFERENCE_LINK_KEY + "," +
@@ -123,6 +129,7 @@ public interface LinksRepository extends LinksBaseRepository<RefyLink> {
             @Param(DISCRIMINATOR_VALUE_KEY) String discriminatorValue,
             @Param(LINK_IDENTIFIER_KEY) String linkId,
             @Param(TITLE_KEY) String title,
+            @Param(DATE_KEY) long timestamp,
             @Param(THUMBNAIL_PREVIEW_KEY) String thumbnailPreview,
             @Param(DESCRIPTION_KEY) String description,
             @Param(REFERENCE_LINK_KEY) String referenceLink,

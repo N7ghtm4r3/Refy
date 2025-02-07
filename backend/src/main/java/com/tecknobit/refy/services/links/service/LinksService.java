@@ -107,7 +107,8 @@ public class LinksService extends LinksBaseService<RefyLink> {
      */
     public void createLink(String userId, String linkId, String title, String thumbnailPreview, String description,
                            String referenceLink) {
-        linksRepository.saveLink(LINK_KEY, linkId, title, thumbnailPreview, description, referenceLink, userId);
+        linksRepository.saveLink(LINK_KEY, linkId, title, System.currentTimeMillis(), thumbnailPreview, description,
+                referenceLink, userId);
     }
 
     /**

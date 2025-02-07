@@ -20,7 +20,7 @@ object RefyInputsValidator : InputsValidator() {
     /**
      * `MAX_DESCRIPTION_LENGTH` the max valid length for the description field
      */
-    const val MAX_DESCRIPTION_LENGTH: Int = 250
+    const val MAX_DESCRIPTION_LENGTH: Int = 65535
 
     /**
      * `MAX_TITLE_LENGTH` the max valid length for the title

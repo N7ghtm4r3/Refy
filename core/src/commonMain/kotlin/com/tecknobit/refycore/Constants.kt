@@ -21,6 +21,11 @@ const val OWNER_KEY = "owner"
 const val TITLE_KEY = "title"
 
 /**
+ * `DATE_KEY` the key for the `date` field
+ */
+const val DATE_KEY = "date"
+
+/**
  * `THUMBNAIL_PREVIEW_KEY` the key for the `thumbnail_preview` field
  */
 const val THUMBNAIL_PREVIEW_KEY = "thumbnail_preview"
@@ -99,11 +104,6 @@ const val CUSTOM_LINKS_PATH = "customLinks"
  * `CUSTOM_LINK_KEY` the key for the `custom_link` field
  */
 const val CUSTOM_LINK_KEY = "custom_link"
-
-/**
- * `CREATION_DATE_KEY` the key for the `creation_date` field
- */
-const val CREATION_DATE_KEY = "creation_date"
 
 /**
  * `UNIQUE_ACCESS_KEY` the key for the `unique_access` field

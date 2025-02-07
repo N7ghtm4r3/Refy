@@ -42,13 +42,6 @@ import static jakarta.persistence.EnumType.STRING;
 })
 public class CustomRefyLink extends RefyLink {
 
-
-    /**
-     * {@code creationDate} when the link has been created
-     */
-    @Column(name = CREATION_DATE_KEY)
-    private final long creationDate;
-
     /**
      * {@code uniqueAccess} whether the link, when requested for the first time, must be deleted and no more accessible
      */
@@ -136,8 +129,7 @@ public class CustomRefyLink extends RefyLink {
     public CustomRefyLink(String id, RefyUser owner, String title, String description, String referenceLink,
                           long creationDate, boolean uniqueAccess, ExpiredTime expiredTime, Map<String, String> resources,
                           Map<String, String> fields, String previewToken) {
-        super(id, owner, title, description, null, referenceLink, List.of(), List.of());
-        this.creationDate = creationDate;
+        super(id, owner, title, description, creationDate, null, referenceLink, List.of(), List.of());
         this.uniqueAccess = uniqueAccess;
         this.expiredTime = expiredTime;
         this.resources = resources;
@@ -154,7 +146,7 @@ public class CustomRefyLink extends RefyLink {
     // TODO: 03/02/2025 CHECK TO REMOVE
     /*public CustomRefyLink(JSONObject jCustomRefyLink) {
         super(jCustomRefyLink);
-        creationDate = hItem.getLong(CREATION_DATE_KEY, -1);
+        creationDate = hItem.getLong(DATE_KEY, -1);
         uniqueAccess = hItem.getBoolean(UNIQUE_ACCESS_KEY);
         expiredTime = ExpiredTime.valueOf(hItem.getString(EXPIRED_TIME_KEY));
         resources = loadMap(hItem.getJSONObject(RESOURCES_KEY));
@@ -174,26 +166,6 @@ public class CustomRefyLink extends RefyLink {
             for (String key : jMap.keySet())
                 map.put(key, jMap.getString(key));
         return map;
-    }
-
-    /**
-     * Method to get {@link #creationDate} instance
-     *
-     * @return {@link #creationDate} instance as long
-     */
-    @JsonGetter(CREATION_DATE_KEY)
-    public long getCreationTimestamp() {
-        return creationDate;
-    }
-
-    /**
-     * Method to get {@link #creationDate} instance
-     *
-     * @return {@link #creationDate} instance as {@link String}
-     */
-    @JsonIgnore
-    public String getCreationDate() {
-        return timeFormatter.formatAsString(creationDate);
     }
 
     /**
@@ -219,12 +191,12 @@ public class CustomRefyLink extends RefyLink {
     /**
      * Method to get the expiration timestamp value
      *
-     * @return {@link #creationDate+expiredTime.getGap()} instance as long
+     * @returne xpiration timestamp instance as long
      */
     @JsonIgnore
     public long getExpirationTimestamp() {
         if(expires())
-            return creationDate + expiredTime.getGap();
+            return date + expiredTime.getGap();
         return -1;
     }
 

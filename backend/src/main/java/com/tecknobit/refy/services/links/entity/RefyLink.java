@@ -85,7 +85,7 @@ public class RefyLink extends RefyItem implements ListScreenItem {
      * @apiNote empty constructor required
      */
     public RefyLink() {
-        this(null, null, null, null, null, null, List.of(), List.of());
+        this(null, null, null, null, 0, null, null, List.of(), List.of());
     }
 
     /**
@@ -95,15 +95,16 @@ public class RefyLink extends RefyItem implements ListScreenItem {
      * @param owner The owner of the link
      * @param title The title of the link
      * @param description The description of the link
+     * @param date The date when the item has been inserted in the system
      * @param linkThumbnailPreview The url of the thumbnail preview of the link
      * @param referenceLink The link reference value
      * @param teams The teams where the link is shared
      * @param collections The collections where the link is shared
      *
      */
-    public RefyLink(String id, RefyUser owner, String title, String description, String linkThumbnailPreview,
+    public RefyLink(String id, RefyUser owner, String title, String description, long date, String linkThumbnailPreview,
                     String referenceLink, List<Team> teams, List<LinksCollection> collections) {
-        super(id, owner, title, description);
+        super(id, owner, title, description, date);
         this.linkThumbnailPreview = linkThumbnailPreview;
         this.referenceLink = referenceLink;
         this.teams = teams;

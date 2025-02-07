@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.apimanager.annotations.Structure;
 import com.tecknobit.equinoxbackend.environment.services.builtin.entity.EquinoxItem;
 import com.tecknobit.refy.services.users.entity.RefyUser;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.json.JSONObject;
@@ -55,8 +52,19 @@ public abstract class RefyItem extends EquinoxItem {
     /**
      * {@code description} the description of the item
      */
-    @Column(name = DESCRIPTION_KEY)
+    @Lob
+    @Column(
+            name = DESCRIPTION_KEY,
+            columnDefinition = "MEDIUMTEXT",
+            nullable = false
+    )
     protected final String description;
+
+    /**
+     * {@code date} the date when the item has been inserted in the system
+     */
+    @Column(name = DATE_KEY)
+    protected final long date;
 
     /**
      * Constructor to init the {@link RefyItem} class
@@ -65,13 +73,15 @@ public abstract class RefyItem extends EquinoxItem {
      * @param owner The owner of the item
      * @param title The title of the item
      * @param description The description of the item
+     * @param date The date when the item has been inserted in the system
      *
      */
-    public RefyItem(String id, RefyUser owner, String title, String description) {
+    public RefyItem(String id, RefyUser owner, String title, String description, long date) {
         super(id);
         this.title = title;
         this.owner = owner;
         this.description = description;
+        this.date = date;
     }
 
     /**
@@ -113,6 +123,15 @@ public abstract class RefyItem extends EquinoxItem {
      */
     public String getDescription() {
         return description;
+    }
+
+    /**
+     * Method to get {@link #date} instance
+     *
+     * @return {@link #date} instance as {@code long}
+     */
+    public long getDate() {
+        return date;
     }
 
     /**

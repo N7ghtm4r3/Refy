@@ -10,6 +10,11 @@ import com.tecknobit.equinoxcore.network.EquinoxBaseEndpointsSet
 object RefyEndpointsSet : EquinoxBaseEndpointsSet() {
 
     /**
+     * `CHANGE_TAG_NAME_ENDPOINT` the endpoint to change the tag name of the user
+     */
+    const val CHANGE_TAG_NAME_ENDPOINT: String = "/changeTagName"
+
+    /**
      * `UPDATE_MEMBER_ROLE_ENDPOINT` the endpoint to execute the update of a member role action
      */
     const val UPDATE_MEMBER_ROLE_ENDPOINT: String = "/updateRole"

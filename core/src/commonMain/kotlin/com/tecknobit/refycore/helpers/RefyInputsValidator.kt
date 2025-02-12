@@ -49,10 +49,10 @@ object RefyInputsValidator : InputsValidator() {
      * @return whether the tag name is valid or not as `boolean`
      */
     fun isTagNameValid(
-        tagName: String
+        tagName: String?,
     ): Boolean {
         return isInputValid(tagName) &&
-                tagName.startsWith(AT_SYMBOL) &&
+                tagName!!.startsWith(AT_SYMBOL) &&
                 tagName.length <= MAX_TAG_NAME_LENGTH &&
                 tagName.length > 1
     }

@@ -66,6 +66,16 @@ public class RefyUsersService extends EquinoxUsersService<RefyUser, RefyUsersRep
     }
 
     /**
+     * Method to change the tag name of the {@link RefyUser}
+     *
+     * @param newTagName The new tag name of the user
+     * @param userId:    the identifier of the user
+     */
+    public void changeTagName(String newTagName, String userId) {
+        usersRepository.changeTagName(newTagName, userId);
+    }
+
+    /**
      * Method to get the potential members for a team
      *
      * @param userId The identifier of the user to not fetch
@@ -89,8 +99,7 @@ public class RefyUsersService extends EquinoxUsersService<RefyUser, RefyUsersRep
         HashSet<String> teams = teamsRepository.getUserTeams(id);
         for (String teamId : teams)
             teamsRepository.detachTeamFromLinks(teamId);
-        refyUsersRepository.deleteUser(id);
-        deleteProfileResource(id);
+        super.deleteUser(id);
     }
 
 }

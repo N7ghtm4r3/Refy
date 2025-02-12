@@ -46,6 +46,26 @@ public class RefyUsersService extends EquinoxUsersService<RefyUser, RefyUsersRep
     private TeamsRepository teamsRepository;
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected List<String> getQueryValuesKeys() {
+        ArrayList<String> keys = new ArrayList<>(super.getQueryValuesKeys());
+        keys.add(TAG_NAME_KEY);
+        return keys;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected List<String> getDynamicAccountDataKeys() {
+        ArrayList<String> keys = new ArrayList<>(super.getDynamicAccountDataKeys());
+        keys.add(TAG_NAME_KEY);
+        return keys;
+    }
+
+    /**
      * Method to get the potential members for a team
      *
      * @param userId The identifier of the user to not fetch
@@ -54,16 +74,6 @@ public class RefyUsersService extends EquinoxUsersService<RefyUser, RefyUsersRep
      */
     public List<List<String>> getPotentialMembers(String userId) {
         return refyUsersRepository.getPotentialMembers(userId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected List<String> getQueryValuesKeys() {
-        ArrayList<String> keys = new ArrayList<>(super.getQueryValuesKeys());
-        keys.add(TAG_NAME_KEY);
-        return keys;
     }
 
     /**

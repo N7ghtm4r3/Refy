@@ -131,6 +131,11 @@ const val RESOURCE_VALUE_KEY = "resource_value"
 const val FIELDS_KEY = "fields"
 
 /**
+ * `RESOURCES_KEY` the key for the `resources` field
+ */
+const val RESOURCES_KEY = "resources"
+
+/**
  * `FIELD_KEY` the key for the `field_key` field
  */
 const val FIELD_KEY = "field_key"

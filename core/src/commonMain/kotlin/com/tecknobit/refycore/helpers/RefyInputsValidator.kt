@@ -51,7 +51,10 @@ object RefyInputsValidator : InputsValidator() {
     fun isTagNameValid(
         tagName: String
     ): Boolean {
-        return isInputValid(tagName) && tagName.startsWith(AT_SYMBOL) && tagName.length <= MAX_TAG_NAME_LENGTH
+        return isInputValid(tagName) &&
+                tagName.startsWith(AT_SYMBOL) &&
+                tagName.length <= MAX_TAG_NAME_LENGTH &&
+                tagName.length > 1
     }
 
     /**
@@ -152,7 +155,7 @@ object RefyInputsValidator : InputsValidator() {
     fun isDescriptionValid(
         description: String?
     ): Boolean {
-        return description != null && description.length <= MAX_DESCRIPTION_LENGTH
+        return isInputValid(description) && description!!.length <= MAX_DESCRIPTION_LENGTH
     }
 
     /**

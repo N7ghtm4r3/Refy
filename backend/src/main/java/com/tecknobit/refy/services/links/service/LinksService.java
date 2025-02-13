@@ -1,7 +1,8 @@
 package com.tecknobit.refy.services.links.service;
 
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
-import com.tecknobit.refy.services.links.batchitems.LinkCollectionsBatchItem;
+import com.tecknobit.refy.services.links.batchitems.CollectionLinkBatchItem;
+import com.tecknobit.refy.services.links.batchitems.TeamLinkBatchItem;
 import com.tecknobit.refy.services.links.entity.RefyLink;
 import com.tecknobit.refy.services.links.repository.LinksRepository;
 import com.tecknobit.refy.services.shared.links.service.LinksBaseService;
@@ -153,17 +154,13 @@ public class LinksService extends LinksBaseService<RefyLink> {
     public void shareLinkWithCollections(String userId, String linkId, List<String> collections) {
         SyncBatchModel model = new SyncBatchModel() {
             @Override
-            public Collection<LinkCollectionsBatchItem> getCurrentData() {
+            public Collection<CollectionLinkBatchItem> getCurrentData() {
                 RefyLink link = getItemIfAllowed(userId, linkId);
                 List<String> collectionsIds = link.getCollectionsIds();
-                ArrayList<LinkCollectionsBatchItem> collectionsBatchItems = new ArrayList<>();
-                for (String collectionId : collectionsIds) {
-                    collectionsBatchItems.add(new LinkCollectionsBatchItem(
-                            linkId,
-                            collectionId
-                    ));
-                }
-                return collectionsBatchItems;
+                ArrayList<CollectionLinkBatchItem> collectionLinkBatchItems = new ArrayList<>();
+                for (String collectionId : collectionsIds)
+                    collectionLinkBatchItems.add(new CollectionLinkBatchItem(collectionId, linkId));
+                return collectionLinkBatchItems;
             }
 
             @Override
@@ -171,25 +168,18 @@ public class LinksService extends LinksBaseService<RefyLink> {
                 return new String[]{COLLECTION_IDENTIFIER_KEY, LINK_IDENTIFIER_KEY};
             }
         };
-        BatchQuery<LinkCollectionsBatchItem> batchQuery = new BatchQuery<>() {
+        BatchQuery<CollectionLinkBatchItem> batchQuery = new BatchQuery<>() {
             @Override
-            public Collection<LinkCollectionsBatchItem> getData() {
-                ArrayList<LinkCollectionsBatchItem> collectionsBatchItems = new ArrayList<>();
-                for (String collectionId : collections) {
-                    collectionsBatchItems.add(new LinkCollectionsBatchItem(
-                            collectionId,
-                            linkId
-                    ));
-                }
-                System.out.println("getData");
-                System.out.println(collectionsBatchItems);
-                //LinkCollectionsBatchItem batchElement = new LinkCollectionsBatchItem(linkId, collections);
-                return collectionsBatchItems;
+            public Collection<CollectionLinkBatchItem> getData() {
+                ArrayList<CollectionLinkBatchItem> collectionLinkBatchItems = new ArrayList<>();
+                for (String collectionId : collections)
+                    collectionLinkBatchItems.add(new CollectionLinkBatchItem(collectionId, linkId));
+                return collectionLinkBatchItems;
             }
 
             @Override
-            public void prepareQuery(Query query, int index, Collection<LinkCollectionsBatchItem> elements) {
-                for (LinkCollectionsBatchItem element : elements) {
+            public void prepareQuery(Query query, int index, Collection<CollectionLinkBatchItem> items) {
+                for (CollectionLinkBatchItem element : items) {
                     query.setParameter(index++, element.getOwner());
                     query.setParameter(index++, element.getOwned());
                 }
@@ -203,39 +193,47 @@ public class LinksService extends LinksBaseService<RefyLink> {
         syncBatch(model, COLLECTIONS_LINKS_TABLE, batchQuery);
     }
 
-    //public void shareLinkWithTeams(String userId, String linkId)
+    public void shareLinkWithTeams(String userId, String linkId, List<String> teams) {
+        SyncBatchModel model = new SyncBatchModel() {
+            @Override
+            public Collection<TeamLinkBatchItem> getCurrentData() {
+                RefyLink link = getItemIfAllowed(userId, linkId);
+                List<String> teamsIds = link.getTeamIds();
+                ArrayList<TeamLinkBatchItem> teamLinkBatchItems = new ArrayList<>();
+                for (String teamId : teamsIds)
+                    teamLinkBatchItems.add(new TeamLinkBatchItem(teamId, linkId));
+                return teamLinkBatchItems;
+            }
 
-    /**
-     * Method to manage the teams where the link is shared
-     *
-     * @param linkId The identifier of the link
-     * @param teams The teams where the link is shared
-     *
-    public void shareLinkWithTeams(String linkId, List<String> teams) {
-        RefyLink link = linksRepository.findById(linkId).orElseThrow();
-        manageAttachments(
-                new AttachmentsManagementWorkflow() {
+            @Override
+            public String[] getDeletingColumns() {
+                return new String[]{TEAM_IDENTIFIER_KEY, LINK_IDENTIFIER_KEY};
+            }
+        };
+        BatchQuery<TeamLinkBatchItem> batchQuery = new BatchQuery<>() {
+            @Override
+            public Collection<TeamLinkBatchItem> getData() {
+                ArrayList<TeamLinkBatchItem> teamLinkBatchItems = new ArrayList<>();
+                for (String teamId : teams)
+                    teamLinkBatchItems.add(new TeamLinkBatchItem(teamId, linkId));
+                return teamLinkBatchItems;
+            }
 
-                    @Override
-                    public List<String> getIds() {
-                        return link.getTeamIds();
-                    }
+            @Override
+            public void prepareQuery(Query query, int index, Collection<TeamLinkBatchItem> items) {
+                for (TeamLinkBatchItem element : items) {
+                    query.setParameter(index++, element.getOwner());
+                    query.setParameter(index++, element.getOwned());
+                }
+            }
 
-                    @Override
-                    public String insertQuery() {
-                        return ATTACH_LINK_TO_TEAMS_QUERY;
-                    }
-
-                    @Override
-                    public String deleteQuery() {
-                        return DETACH_LINK_FROM_TEAMS_QUERY;
-                    }
-
-                },
-                linkId,
-                teams
-        );
-    }*/
+            @Override
+            public String[] getColumns() {
+                return new String[]{TEAM_IDENTIFIER_KEY, LINK_IDENTIFIER_KEY};
+            }
+        };
+        syncBatch(model, TEAMS_LINKS_TABLE, batchQuery);
+    }
 
     /**
      * {@inheritDoc}

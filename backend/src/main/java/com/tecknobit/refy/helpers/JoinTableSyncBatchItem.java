@@ -1,9 +1,14 @@
 package com.tecknobit.refy.helpers;
 
 import com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Deprecated(since = "USE THE EQUINOX BUILT-IN ONE")
-public abstract class JoinTableSyncBatchItem<T> implements EquinoxItemsHelper.ComplexBatchItem {
+// TODO: 13/02/2025 CHECK WHETHER PROVIDE A METHOD TO CONVERT THE LIST INTO JoinTableSyncBatchItem LIST
+public class JoinTableSyncBatchItem<T> implements EquinoxItemsHelper.ComplexBatchItem {
 
     protected final T owner;
 
@@ -34,6 +39,15 @@ public abstract class JoinTableSyncBatchItem<T> implements EquinoxItemsHelper.Co
         int result = owner.hashCode();
         result = 31 * result + owned.hashCode();
         return result;
+    }
+
+    @NotNull
+    @Override
+    public List<?> mappedValues() {
+        ArrayList<T> mappedValues = new ArrayList<>();
+        mappedValues.add(owner);
+        mappedValues.add(owned);
+        return mappedValues;
     }
 
 }

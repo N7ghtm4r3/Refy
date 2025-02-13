@@ -11,8 +11,7 @@ import org.jsoup.nodes.Document;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
@@ -254,7 +253,7 @@ public class LinksController extends DefaultRefyController<RefyLink> {
         if(isUserNotAuthorized(userId, token, linkId))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         loadJsonHelper(payload);
-        linksService.shareLinkWithCollections(userId, linkId, jsonHelper.fetchList(COLLECTIONS_KEY));
+        linksService.shareLinkWithCollections(userId, linkId, jsonHelper.fetchList(COLLECTIONS_KEY, new ArrayList<>()));
         return successResponse();
     }
 
@@ -288,24 +287,9 @@ public class LinksController extends DefaultRefyController<RefyLink> {
     ) {
         if(isUserNotAuthorized(userId, token, linkId))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        return editAttachmentsList(payload, TEAMS_KEY, new AttachmentsManagement() {
-
-            @Override
-            public HashSet<String> getUserAttachments() {
-                return teamsService.getUserTeams(userId);
-            }
-
-            @Override
-            public List<String> getAttachmentsIds() {
-                return userItem.getTeamIds();
-            }
-
-            @Override
-            public void execute(List<String> teams) {
-                //linksService.shareLinkWithTeams(linkId, teams);
-            }
-
-        });
+        loadJsonHelper(payload);
+        linksService.shareLinkWithTeams(userId, linkId, jsonHelper.fetchList(TEAMS_KEY, new ArrayList<>()));
+        return successResponse();
     }
 
     /**

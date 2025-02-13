@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.equinoxbackend.environment.services.builtin.entity.EquinoxItem;
 import com.tecknobit.refy.services.collections.entity.LinksCollection;
 import com.tecknobit.refy.services.shared.entities.RefyItem;
-import com.tecknobit.refy.services.shared.entities.RefyItem.ListScreenItem;
 import com.tecknobit.refy.services.teams.entities.Team;
 import com.tecknobit.refy.services.users.entity.RefyUser;
 import jakarta.persistence.*;
@@ -23,7 +22,6 @@ import static com.tecknobit.refycore.ConstantsKt.*;
  * @author N7ghtm4r3 - Tecknobit
  * @see EquinoxItem
  * @see RefyItem
- * @see ListScreenItem
  *
  * @author N7ghtm4r3 - Tecknobit
  */
@@ -34,7 +32,7 @@ import static com.tecknobit.refycore.ConstantsKt.*;
         column = @Column(name = LINK_IDENTIFIER_KEY)
 )
 @DiscriminatorValue(LINK_KEY)
-public class RefyLink extends RefyItem implements ListScreenItem {
+public class RefyLink extends RefyItem {
 
     /**
      * {@code linkThumbnailPreview} the url of the thumbnail preview of the link
@@ -179,25 +177,11 @@ public class RefyLink extends RefyItem implements ListScreenItem {
      * {@inheritDoc}
      */
     @Override
-    public boolean canBeUpdatedByUser(String loggedUserId) {
-        return loggedUserId.equals(owner.getId()) || teams.isEmpty();
-    }
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
 
-    /**
-     * Method to assemble and return an {@link ArrayList} of links
-     *
-     * @param jLinks : links list details formatted as JSON
-     * @return the link list as {@link ArrayList} of {@link RefyLink}
-     */
-    // TODO: 03/02/2025 CHECK TO REMOVE
-    /*@Returner
-    public static ArrayList<RefyLink> returnLinks(JSONArray jLinks) {
-        ArrayList<RefyLink> links = new ArrayList<>();
-        if (jLinks == null)
-            return links;
-        for (int j = 0; j < jLinks.length(); j++)
-            links.add(new RefyLink(jLinks.getJSONObject(j)));
-        return links;
-    }*/
+        RefyLink link = (RefyLink) o;
+        return linkThumbnailPreview.equals(link.linkThumbnailPreview) && referenceLink.equals(link.referenceLink) && teams.equals(link.teams) && collections.equals(link.collections);
+    }
 
 }

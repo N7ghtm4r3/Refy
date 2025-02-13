@@ -31,7 +31,7 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
     /**
      * Method to get a list of collections
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param ownedOnly Whether to get only the collections where the user is the owner
      * @param page      The page requested
@@ -68,7 +68,7 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
     /**
      * Method to create a new collection
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param payload The payload of the request
      *                 <pre>
@@ -112,7 +112,7 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
     /**
      * Method to edit a collection
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param payload The payload of the request
      *                 <pre>
@@ -173,7 +173,7 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
     /**
      * Method to manage the links shared with the collection
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param payload The payload of the request
      *                 <pre>
@@ -225,7 +225,7 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
     /**
      * Method to manage the teams where the collection is shared
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param payload The payload of the request
      *                 <pre>
@@ -275,7 +275,7 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
     /**
      * Method to get a collection
      * @param token The token of the user
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param collectionId The identifier of the collection to get
      *
      * @return the collection requested, if authorized, or the failed response message as {@link T}
@@ -297,7 +297,7 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
     /**
      * Method to delete a collection
      * @param token The token of the user
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param collectionId The identifier of the collection to delete
      *
      * @return the response message as {@link String}
@@ -322,7 +322,7 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
     /**
      * Method to get whether the user is or not authorized to operate with the collection requested
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param collectionId The identifier of the collection requested
      * @return whether the user is or not authorized to operate with the collection requested

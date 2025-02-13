@@ -45,7 +45,7 @@ public class CustomLinksController extends DefaultRefyController<CustomRefyLink>
     /**
      * Method to get a list of custom links
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param ownedOnly Whether to get only the collections where the user is the owner
      * @param page      The page requested
@@ -77,7 +77,7 @@ public class CustomLinksController extends DefaultRefyController<CustomRefyLink>
     /**
      * Method to create a new custom link
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param payload The payload of the request
      *                 <pre>
@@ -134,7 +134,7 @@ public class CustomLinksController extends DefaultRefyController<CustomRefyLink>
     /**
      * Method to edit an existing custom link
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param payload The payload of the request
      *                 <pre>
@@ -193,7 +193,7 @@ public class CustomLinksController extends DefaultRefyController<CustomRefyLink>
     /**
      * Method to get an existing custom link
      * @param token The token of the user
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param linkId The identifier of the custom link to get
      *
      * @return the custom link requested, if authorized, or the failed response message as {@link T}
@@ -216,7 +216,7 @@ public class CustomLinksController extends DefaultRefyController<CustomRefyLink>
      * Method to delete a custom link
      *
      * @param token The token of the user
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param linkId The identifier of the custom link to delete
      *
      * @return the response message as {@link String}
@@ -241,7 +241,7 @@ public class CustomLinksController extends DefaultRefyController<CustomRefyLink>
     /**
      * Method to get whether the user is or not authorized to operate with the custom link requested
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param linkId The identifier of the link requested
      * @return whether the user is or not authorized to operate with the custom link requested

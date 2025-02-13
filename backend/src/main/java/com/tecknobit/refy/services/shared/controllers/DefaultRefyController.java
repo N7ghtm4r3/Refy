@@ -93,7 +93,7 @@ public abstract class DefaultRefyController<I extends RefyItem> extends EquinoxC
     /**
      * Method to get a list of items
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param ownedOnly Whether to get only the items where the user is the owner
      * @param page      The page requested
@@ -116,7 +116,7 @@ public abstract class DefaultRefyController<I extends RefyItem> extends EquinoxC
     /**
      * Method to create a new item
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param payload The payload to create the item
      *
@@ -132,7 +132,7 @@ public abstract class DefaultRefyController<I extends RefyItem> extends EquinoxC
     /**
      * Method to edit an existing item
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param itemId The identifier of the item to edit
      * @param payload The payload to edit the item
@@ -150,7 +150,7 @@ public abstract class DefaultRefyController<I extends RefyItem> extends EquinoxC
     /**
      * Method to get an existing item
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param itemId The identifier of the item to get
      *
@@ -170,7 +170,7 @@ public abstract class DefaultRefyController<I extends RefyItem> extends EquinoxC
     /**
      * Method to delete an item
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param itemId The identifier of the item to delete
      *
@@ -227,7 +227,7 @@ public abstract class DefaultRefyController<I extends RefyItem> extends EquinoxC
     /**
      * Method to get whether the user is or not the owner of the item requested
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param itemId The identifier of the item requested
      * @return whether the user is or not the owner of the item requested as boolean
@@ -242,7 +242,7 @@ public abstract class DefaultRefyController<I extends RefyItem> extends EquinoxC
     /**
      * Method to get whether the user is or not authorized to operate with the item requested
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param itemId The identifier of the item requested
      * @return whether the user is or not authorized to operate with the item requested

@@ -49,7 +49,7 @@ public class LinksController extends DefaultRefyController<RefyLink> {
     /**
      * Method to get a list of links
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param ownedOnly Whether to get only the links where the user is the owner
      * @param page      The page requested
@@ -86,7 +86,7 @@ public class LinksController extends DefaultRefyController<RefyLink> {
     /**
      * Method to create a new link
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param payload The payload of the request
      *                 <pre>
@@ -131,7 +131,7 @@ public class LinksController extends DefaultRefyController<RefyLink> {
     /**
      * Method to edit an existing link
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param payload The payload of the request
      *                 <pre>
@@ -189,22 +189,50 @@ public class LinksController extends DefaultRefyController<RefyLink> {
      * @return the metadata information as {@link Pair} of {@link String}
      */
     private Pair<String, String> getMetadata(String referenceLink) throws IOException {
-        Document document = Jsoup.connect(referenceLink).get();
+        Document document = Jsoup.connect(referenceLink)
+                .get();
         String title = document.title();
         String thumbnailPreview = document.select(OG_IMAGE_METADATA).attr(CONTENT_KEY);
         return new Pair<>(title, thumbnailPreview);
     }
 
     /**
+     * Method to get a team
+     *
+     * @param token  The token of the user
+     * @param userId The identifier of the user
+     * @param linkId The identifier of the team to get
+     * @return the team requested, if authorized, or the failed response message as {@link T}
+     */
+    @GetMapping(
+            headers = TOKEN_KEY,
+            path = "/{" + LINK_IDENTIFIER_KEY + "}"
+    )
+    @Override
+    @RequestPath(path = "/api/v1/users/{user_id}/links/{link_id}", method = GET)
+    public <T> T getItem(
+            @RequestHeader(TOKEN_KEY) String token,
+            @PathVariable(USER_IDENTIFIER_KEY) String userId,
+            @PathVariable(LINK_IDENTIFIER_KEY) String linkId
+    ) {
+        if (!isMe(userId, token))
+            return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        RefyLink link = linksService.getItemIfAllowed(userId, linkId);
+        if (link == null)
+            return (T) failedResponse(WRONG_PROCEDURE_MESSAGE);
+        return (T) successResponse(link);
+    }
+
+    /**
      * Method to manage the collections where the link is shared
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param payload The payload of the request
      *                 <pre>
      *                      {@code
      *                              {
-     *                                  "collections" : ["the current link collections"] -> List[String],
+     *                                  "collections" : ["the collections where share the link"] -> List[String],
      *                              }
      *                      }
      *                 </pre>
@@ -217,7 +245,7 @@ public class LinksController extends DefaultRefyController<RefyLink> {
             path = "/{" + LINK_IDENTIFIER_KEY + "}/" + COLLECTIONS_KEY
     )
     @RequestPath(path = "/api/v1/users/{user_id}/links/{link_id}/collections", method = PUT)
-    public String manageLinkCollections(
+    public String shareLinkWithCollections(
             @RequestHeader(TOKEN_KEY) String token,
             @PathVariable(USER_IDENTIFIER_KEY) String userId,
             @PathVariable(LINK_IDENTIFIER_KEY) String linkId,
@@ -225,30 +253,15 @@ public class LinksController extends DefaultRefyController<RefyLink> {
     ) {
         if(isUserNotAuthorized(userId, token, linkId))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        return editAttachmentsList(payload, COLLECTIONS_KEY, new AttachmentsManagement() {
-
-            @Override
-            public HashSet<String> getUserAttachments() {
-                return linksCollectionsService.getUserCollections(userId);
-            }
-
-            @Override
-            public List<String> getAttachmentsIds() {
-                return userItem.getCollectionsIds();
-            }
-
-            @Override
-            public void execute(List<String> collections) {
-                linksService.manageLinkCollections(linkId, collections);
-            }
-
-        });
+        loadJsonHelper(payload);
+        linksService.shareLinkWithCollections(userId, linkId, jsonHelper.fetchList(COLLECTIONS_KEY));
+        return successResponse();
     }
 
     /**
      * Method to manage the teams where the link is shared
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param payload The payload of the request
      *                 <pre>
@@ -267,7 +280,7 @@ public class LinksController extends DefaultRefyController<RefyLink> {
             path = "/{" + LINK_IDENTIFIER_KEY + "}/" + TEAMS_KEY
     )
     @RequestPath(path = "/api/v1/users/{user_id}/links/{link_id}/teams", method = PUT)
-    public String manageLinkTeams(
+    public String shareLinkWithTeams(
             @RequestHeader(TOKEN_KEY) String token,
             @PathVariable(USER_IDENTIFIER_KEY) String userId,
             @PathVariable(LINK_IDENTIFIER_KEY) String linkId,
@@ -289,7 +302,7 @@ public class LinksController extends DefaultRefyController<RefyLink> {
 
             @Override
             public void execute(List<String> teams) {
-                linksService.manageLinkTeams(linkId, teams);
+                //linksService.shareLinkWithTeams(linkId, teams);
             }
 
         });
@@ -298,7 +311,7 @@ public class LinksController extends DefaultRefyController<RefyLink> {
     /**
      * Method to delete a link
      * @param token The token of the user
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param linkId The identifier of the link to delete
      * @return the response message as {@link String}
      */
@@ -322,7 +335,7 @@ public class LinksController extends DefaultRefyController<RefyLink> {
     /**
      * Method to get whether the user is or not authorized to operate with the link requested
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param linkId The identifier of the link requested
      * @return whether the user is or not authorized to operate with the link requested

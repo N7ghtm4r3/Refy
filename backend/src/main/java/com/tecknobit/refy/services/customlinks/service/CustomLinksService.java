@@ -8,7 +8,6 @@ import com.tecknobit.refycore.enums.ExpiredTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +25,7 @@ import static com.tecknobit.refycore.helpers.RefyEndpointsSet.CUSTOM_LINKS_ENDPO
  * @see LinksService
  */
 @Service
-public class CustomLinksService extends LinksBaseService<CustomRefyLink> {
+public class CustomLinksService extends LinksBaseService {
 
     /**
      * {@code ATTACH_RESOURCES_TO_CUSTOM_LINK_QUERY} the query used to attach the resources to the link
@@ -120,14 +119,14 @@ public class CustomLinksService extends LinksBaseService<CustomRefyLink> {
      * @param map The map to attach to the link
      */
     private void attachMap(String linkId, String attachQuery, Map<String, Object> map) {
-        executeInsertBatch(attachQuery, TUPLE_VALUES_SLICE, map.values(), query -> {
+        /*executeInsertBatch(attachQuery, TUPLE_VALUES_SLICE, map.values(), query -> {
             int index = 1;
             for (String key : map.keySet()) {
                 query.setParameter(index++, linkId);
                 query.setParameter(index++, map.get(key));
                 query.setParameter(index++, key);
             }
-        });
+        });*/
     }
 
     /**
@@ -163,7 +162,7 @@ public class CustomLinksService extends LinksBaseService<CustomRefyLink> {
      */
     private void editMap(String linkId, String attachQuery, String detachQuery, Map<String, String> currentMap,
                          Map<String, Object> map) {
-        manageAttachments(
+        /*manageAttachments(
                 new AttachmentsManagementWorkflow() {
                     @Override
                     public List<String> getIds() {
@@ -191,7 +190,7 @@ public class CustomLinksService extends LinksBaseService<CustomRefyLink> {
                         query.setParameter(index++, key);
                     }
                 }
-        );
+        );*/
     }
 
     /**

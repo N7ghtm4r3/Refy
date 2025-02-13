@@ -1,17 +1,18 @@
 package com.tecknobit.refy.services.shared.links.service;
 
+import com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper;
 import com.tecknobit.refy.services.links.entity.RefyLink;
-import com.tecknobit.refy.services.shared.services.RefyItemsHelper;
+import com.tecknobit.refy.services.shared.services.RefyItemRetriever;
 import org.springframework.stereotype.Service;
 
 /**
  * The {@code LinksBaseHelper} class is useful to manage all the links database operations
  *
  * @author N7ghtm4r3 - Tecknobit
- * @see RefyItemsHelper
+ * @see EquinoxItemsHelper
  */
 @Service
-public abstract class LinksBaseService<T extends RefyLink> extends RefyItemsHelper<T> {
+public abstract class LinksBaseService<T extends RefyLink> extends EquinoxItemsHelper implements RefyItemRetriever<T> {
 
     /**
      * Method to delete a link

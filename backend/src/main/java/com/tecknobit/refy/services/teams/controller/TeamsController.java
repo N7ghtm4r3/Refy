@@ -46,7 +46,7 @@ public class TeamsController extends DefaultRefyController<Team> {
     /**
      * Method to get a list of teams
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param ownedOnly Whether to get only the teams where the user is the owner
      * @param page      The page requested
@@ -83,7 +83,7 @@ public class TeamsController extends DefaultRefyController<Team> {
     /**
      * Method to get the potential members to add in a team
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      *
      * @return the result of the request as [JSONObject]
@@ -120,7 +120,7 @@ public class TeamsController extends DefaultRefyController<Team> {
     /**
      * Method to create a new team
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param payload The payload of the request formatted by SpringBoot as {@link TeamPayload}
      *
@@ -159,7 +159,7 @@ public class TeamsController extends DefaultRefyController<Team> {
     /**
      * Method to edit a team
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param teamId The identifier of the team to edit
      * @param payload The payload of the request formatted by SpringBoot as {@link TeamPayload}
@@ -191,7 +191,7 @@ public class TeamsController extends DefaultRefyController<Team> {
     /**
      * Method to manage the links shared with the team
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param payload The payload of the request
      *                 <pre>
@@ -241,7 +241,7 @@ public class TeamsController extends DefaultRefyController<Team> {
     /**
      * Method to manage the collections shared with the team
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param payload The payload of the request
      *                 <pre>
@@ -291,7 +291,7 @@ public class TeamsController extends DefaultRefyController<Team> {
     /**
      * Method to get a team
      * @param token The token of the user
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param teamId The identifier of the team to get
      *
      * @return the team requested, if authorized, or the failed response message as {@link T}
@@ -314,7 +314,7 @@ public class TeamsController extends DefaultRefyController<Team> {
      * Method to change the role of a member
      *
      * @param token The token of the user
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param teamId The identifier of the team where change the member role
      * @param memberId The identifier of the member to change its role
      * @param payload The payload of the request
@@ -359,7 +359,7 @@ public class TeamsController extends DefaultRefyController<Team> {
      * Method to remove a member from a team
      *
      * @param token The token of the user
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param teamId The identifier of the team where remove the member
      * @param memberId The identifier of the member to remove
      *
@@ -388,7 +388,7 @@ public class TeamsController extends DefaultRefyController<Team> {
     /**
      * Method to check whether the hierarchy of the members is respected in the request
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param memberId The identifier of the member
      *
      * @return whether the hierarchy is respected as boolean
@@ -401,7 +401,7 @@ public class TeamsController extends DefaultRefyController<Team> {
      * Method to leave from a team
      *
      * @param token The token of the user
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param teamId The identifier of the team from leave
      *
      * @return the response of the request as {@link String}
@@ -440,7 +440,7 @@ public class TeamsController extends DefaultRefyController<Team> {
      * Method to delete a team
      *
      * @param token The token of the user
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param teamId The identifier of the team to delete
      *
      * @return the response of the request as {@link String}
@@ -467,7 +467,7 @@ public class TeamsController extends DefaultRefyController<Team> {
     /**
      * Method to get whether the user is or not authorized to operate with the team requested
      *
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      * @param token The token of the user
      * @param teamId The identifier of the team requested
      * @return whether the user is or not authorized to operate with the team requested

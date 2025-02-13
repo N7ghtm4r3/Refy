@@ -18,6 +18,7 @@ import jakarta.persistence.OneToMany;
 import java.util.List;
 
 import static com.tecknobit.refycore.ConstantsKt.*;
+import static com.tecknobit.refycore.helpers.RefyInputsValidator.MAX_TAG_NAME_LENGTH;
 
 /**
  * The {@code RefyUser} class is useful to represent a Refy's system user
@@ -35,7 +36,8 @@ public class RefyUser extends EquinoxUser {
      */
     @Column(
             name = TAG_NAME_KEY,
-            columnDefinition = "VARCHAR(15) UNIQUE NOT NULL"
+            length = MAX_TAG_NAME_LENGTH,
+            unique = true
     )
     private final String tagName;
 

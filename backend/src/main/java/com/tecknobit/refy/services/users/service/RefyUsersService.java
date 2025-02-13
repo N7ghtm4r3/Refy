@@ -69,7 +69,7 @@ public class RefyUsersService extends EquinoxUsersService<RefyUser, RefyUsersRep
      * Method to change the tag name of the {@link RefyUser}
      *
      * @param newTagName The new tag name of the user
-     * @param userId:    the identifier of the user
+     * @param userId The identifier of the user
      */
     public void changeTagName(String newTagName, String userId) {
         usersRepository.changeTagName(newTagName, userId);

@@ -199,3 +199,8 @@ const val MEMBER_IDENTIFIER_KEY = "member_id"
  * `TEAM_ROLE_KEY` the key for the `team_role` field
  */
 const val TEAM_ROLE_KEY = "team_role"
+
+/**
+ * `KEYWORDS_KEY` the key for the `keywords` field
+ */
+const val KEYWORDS_KEY = "keywords"

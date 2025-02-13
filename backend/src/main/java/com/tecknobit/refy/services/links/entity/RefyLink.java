@@ -111,19 +111,12 @@ public class RefyLink extends RefyItem implements ListScreenItem {
         this.collections = collections;
     }
 
-    // TODO: 03/02/2025 CHECK TO REMOVE
-    /*public RefyLink(JSONObject jRefyLink) {
-        super(jRefyLink);
-        referenceLink = hItem.getString(REFERENCE_LINK_KEY);
-        teams = returnTeams(hItem.getJSONArray(TEAMS_KEY));
-        collections = returnCollections(hItem.getJSONArray(COLLECTIONS_KEY));
-    }*/
-
     /**
      * Method to get {@link #linkThumbnailPreview} instance
      *
      * @return {@link #linkThumbnailPreview} instance as {@link String}
      */
+    @JsonGetter(THUMBNAIL_PREVIEW_KEY)
     public String getLinkThumbnailPreview() {
         return linkThumbnailPreview;
     }

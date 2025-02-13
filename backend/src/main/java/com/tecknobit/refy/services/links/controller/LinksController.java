@@ -2,6 +2,7 @@ package com.tecknobit.refy.services.links.controller;
 
 import com.tecknobit.apimanager.annotations.RequestPath;
 import com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController;
+import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
 import com.tecknobit.refy.services.links.entity.RefyLink;
 import com.tecknobit.refy.services.shared.controllers.DefaultRefyController;
 import kotlin.Pair;
@@ -13,11 +14,13 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.tecknobit.apimanager.apis.APIRequest.RequestMethod.*;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.TOKEN_KEY;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.USERS_KEY;
 import static com.tecknobit.equinoxcore.network.EquinoxBaseEndpointsSet.BASE_EQUINOX_ENDPOINT;
+import static com.tecknobit.equinoxcore.pagination.PaginatedResponse.*;
 import static com.tecknobit.refycore.ConstantsKt.*;
 import static com.tecknobit.refycore.helpers.RefyInputsValidator.INSTANCE;
 
@@ -48,7 +51,10 @@ public class LinksController extends DefaultRefyController<RefyLink> {
      *
      * @param userId:    the identifier of the user
      * @param token The token of the user
-     * @param ownedOnly: whether to get only the links where the user is the owner
+     * @param ownedOnly Whether to get only the links where the user is the owner
+     * @param page      The page requested
+     * @param pageSize  The size of the items to insert in the page
+     * @param keywords The keywords used to filter the query to retrieve the items
      *
      * @return the links list, if authorized, else failed message as {@link T}
      *
@@ -62,15 +68,18 @@ public class LinksController extends DefaultRefyController<RefyLink> {
     public <T> T list(
             @RequestHeader(TOKEN_KEY) String token,
             @PathVariable(USER_IDENTIFIER_KEY) String userId,
-            @RequestParam(name = OWNED_ONLY_KEY) boolean ownedOnly
+            @RequestParam(name = OWNED_ONLY_KEY, defaultValue = "false", required = false) boolean ownedOnly,
+            @RequestParam(name = PAGE_KEY, defaultValue = DEFAULT_PAGE_HEADER_VALUE, required = false) int page,
+            @RequestParam(name = PAGE_SIZE_KEY, defaultValue = DEFAULT_PAGE_SIZE_HEADER_VALUE, required = false) int pageSize,
+            @RequestParam(name = KEYWORDS_KEY, defaultValue = "", required = false) Set<String> keywords
     ) {
         if(!isMe(userId, token))
             return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        List<RefyLink> links;
+        PaginatedResponse<RefyLink> links;
         if(ownedOnly)
-            links = linksService.getUserOwnedLinks(userId);
+            links = linksService.getUserOwnedLinks(userId, page, pageSize);
         else
-            links = linksService.getAllUserLinks(userId);
+            links = linksService.getAllUserLinks(userId, page, pageSize, keywords);
         return (T) successResponse(links);
     }
 
@@ -79,7 +88,7 @@ public class LinksController extends DefaultRefyController<RefyLink> {
      *
      * @param userId:    the identifier of the user
      * @param token The token of the user
-     * @param payload: payload of the request
+     * @param payload The payload of the request
      *                 <pre>
      *                      {@code
      *                              {
@@ -124,7 +133,7 @@ public class LinksController extends DefaultRefyController<RefyLink> {
      *
      * @param userId:    the identifier of the user
      * @param token The token of the user
-     * @param payload: payload of the request
+     * @param payload The payload of the request
      *                 <pre>
      *                      {@code
      *                              {
@@ -191,7 +200,7 @@ public class LinksController extends DefaultRefyController<RefyLink> {
      *
      * @param userId:    the identifier of the user
      * @param token The token of the user
-     * @param payload: payload of the request
+     * @param payload The payload of the request
      *                 <pre>
      *                      {@code
      *                              {
@@ -241,7 +250,7 @@ public class LinksController extends DefaultRefyController<RefyLink> {
      *
      * @param userId:    the identifier of the user
      * @param token The token of the user
-     * @param payload: payload of the request
+     * @param payload The payload of the request
      *                 <pre>
      *                      {@code
      *                              {

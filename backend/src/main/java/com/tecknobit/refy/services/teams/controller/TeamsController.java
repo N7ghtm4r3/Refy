@@ -13,15 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.tecknobit.apimanager.apis.APIRequest.RequestMethod.*;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.TOKEN_KEY;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.USERS_KEY;
 import static com.tecknobit.equinoxcore.network.EquinoxBaseEndpointsSet.BASE_EQUINOX_ENDPOINT;
+import static com.tecknobit.equinoxcore.pagination.PaginatedResponse.*;
 import static com.tecknobit.refycore.ConstantsKt.*;
 import static com.tecknobit.refycore.enums.TeamRole.ADMIN;
 import static com.tecknobit.refycore.helpers.RefyEndpointsSet.LEAVE_ENDPOINT;
@@ -50,7 +48,10 @@ public class TeamsController extends DefaultRefyController<Team> {
      *
      * @param userId:    the identifier of the user
      * @param token The token of the user
-     * @param ownedOnly: whether to get only the teams where the user is the owner
+     * @param ownedOnly Whether to get only the teams where the user is the owner
+     * @param page      The page requested
+     * @param pageSize  The size of the items to insert in the page
+     * @param keywords The keywords used to filter the query to retrieve the items
      *
      * @return the teams list, if authorized, else failed message as {@link T}
      *
@@ -64,7 +65,10 @@ public class TeamsController extends DefaultRefyController<Team> {
     public <T> T list(
             @RequestHeader(TOKEN_KEY) String token,
             @PathVariable(USER_IDENTIFIER_KEY) String userId,
-            @RequestParam(name = OWNED_ONLY_KEY) boolean ownedOnly
+            @RequestParam(name = OWNED_ONLY_KEY) boolean ownedOnly,
+            @RequestParam(name = PAGE_KEY, defaultValue = DEFAULT_PAGE_HEADER_VALUE, required = false) int page,
+            @RequestParam(name = PAGE_SIZE_KEY, defaultValue = DEFAULT_PAGE_SIZE_HEADER_VALUE, required = false) int pageSize,
+            @RequestParam(name = KEYWORDS_KEY, defaultValue = "", required = false) Set<String> keywords
     ) {
         if(!isMe(userId, token))
             return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
@@ -118,7 +122,7 @@ public class TeamsController extends DefaultRefyController<Team> {
      *
      * @param userId:    the identifier of the user
      * @param token The token of the user
-     * @param payload: payload of the request formatted by SpringBoot as {@link TeamPayload}
+     * @param payload The payload of the request formatted by SpringBoot as {@link TeamPayload}
      *
      * @return the response of the request as {@link String}
      *
@@ -158,7 +162,7 @@ public class TeamsController extends DefaultRefyController<Team> {
      * @param userId:    the identifier of the user
      * @param token The token of the user
      * @param teamId The identifier of the team to edit
-     * @param payload: payload of the request formatted by SpringBoot as {@link TeamPayload}
+     * @param payload The payload of the request formatted by SpringBoot as {@link TeamPayload}
      *
      * @return the response of the request as {@link String}
      *
@@ -189,7 +193,7 @@ public class TeamsController extends DefaultRefyController<Team> {
      *
      * @param userId:    the identifier of the user
      * @param token The token of the user
-     * @param payload: payload of the request
+     * @param payload The payload of the request
      *                 <pre>
      *                      {@code
      *                              {
@@ -239,7 +243,7 @@ public class TeamsController extends DefaultRefyController<Team> {
      *
      * @param userId:    the identifier of the user
      * @param token The token of the user
-     * @param payload: payload of the request
+     * @param payload The payload of the request
      *                 <pre>
      *                      {@code
      *                              {
@@ -313,7 +317,7 @@ public class TeamsController extends DefaultRefyController<Team> {
      * @param userId:    the identifier of the user
      * @param teamId The identifier of the team where change the member role
      * @param memberId The identifier of the member to change its role
-     * @param payload: payload of the request
+     * @param payload The payload of the request
      *                 <pre>
      *                      {@code
      *                              {

@@ -1,14 +1,19 @@
 package com.tecknobit.refy.services.links.service;
 
+import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
 import com.tecknobit.refy.services.links.entity.RefyLink;
 import com.tecknobit.refy.services.links.repository.LinksRepository;
 import com.tecknobit.refy.services.shared.links.service.LinksBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import static com.tecknobit.refy.configuration.indexes.IndexesCreator.formatFullTextKeywords;
 import static com.tecknobit.refycore.ConstantsKt.*;
 
 /**
@@ -77,10 +82,13 @@ public class LinksService extends LinksBaseService<RefyLink> {
      *
      * @param userId The identifier of the user
      *
-     * @return the user links as {@link List} of {@link RefyLink}
+     * @return the user links as {@link PaginatedResponse} of {@link RefyLink}
      */
-    public List<RefyLink> getUserOwnedLinks(String userId) {
-        return linksRepository.getUserOwnedLinks(userId);
+    public PaginatedResponse<RefyLink> getUserOwnedLinks(String userId, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        long totalLinks = linksRepository.countUserOwnedLinks(userId);
+        List<RefyLink> links = linksRepository.getUserOwnedLinks(userId, pageable);
+        return new PaginatedResponse<>(links, page, pageSize, totalLinks);
     }
 
     /**
@@ -88,11 +96,18 @@ public class LinksService extends LinksBaseService<RefyLink> {
      * collections shared in the teams
      *
      * @param userId The identifier of the user
+     * @param page      The page requested
+     * @param pageSize  The size of the items to insert in the page
+     * @param keywords The keywords used to filter the query to retrieve the items
      *
-     * @return the user links as {@link List} of {@link RefyLink}
+     * @return the user links as {@link PaginatedResponse} of {@link RefyLink}
      */
-    public List<RefyLink> getAllUserLinks(String userId) {
-        return linksRepository.getAllUserLinks(userId);
+    public PaginatedResponse<RefyLink> getAllUserLinks(String userId, int page, int pageSize, Set<String> keywords) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        String fullTextMatcher = formatFullTextKeywords(keywords, "*", true);
+        long totalLinks = linksRepository.countAllUserLinks(userId, fullTextMatcher);
+        List<RefyLink> links = linksRepository.getAllUserLinks(userId, fullTextMatcher, pageable);
+        return new PaginatedResponse<>(links, page, pageSize, totalLinks);
     }
 
     /**

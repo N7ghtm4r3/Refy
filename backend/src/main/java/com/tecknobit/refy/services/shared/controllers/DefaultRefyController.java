@@ -16,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.USERS_KEY;
 import static com.tecknobit.equinoxcore.network.EquinoxBaseEndpointsSet.BASE_EQUINOX_ENDPOINT;
@@ -98,7 +95,10 @@ public abstract class DefaultRefyController<I extends RefyItem> extends EquinoxC
      *
      * @param userId:    the identifier of the user
      * @param token The token of the user
-     * @param ownedOnly: whether to get only the items where the user is the owner
+     * @param ownedOnly Whether to get only the items where the user is the owner
+     * @param page      The page requested
+     * @param pageSize  The size of the items to insert in the page
+     * @param keywords The keywords used to filter the query to retrieve the items
      *
      * @return the items list, if authorized, else failed message as {@link T}
      *
@@ -107,7 +107,10 @@ public abstract class DefaultRefyController<I extends RefyItem> extends EquinoxC
     public abstract <T> T list(
             String token,
             String userId,
-            boolean ownedOnly
+            boolean ownedOnly,
+            int page,
+            int pageSize,
+            Set<String> keywords
     );
 
     /**

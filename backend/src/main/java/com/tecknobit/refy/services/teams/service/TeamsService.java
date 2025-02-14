@@ -4,10 +4,11 @@ import com.tecknobit.equinoxbackend.environment.services.builtin.service.Equinox
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
 import com.tecknobit.refy.batchitems.TeamCollectionBatchItem;
 import com.tecknobit.refy.batchitems.TeamLinkBatchItem;
-import com.tecknobit.refy.configuration.indexes.IndexesCreator;
 import com.tecknobit.refy.helpers.RefyResourcesManager;
 import com.tecknobit.refy.services.collections.entity.LinksCollection;
+import com.tecknobit.refy.services.collections.repository.CollectionsRepository;
 import com.tecknobit.refy.services.links.entity.RefyLink;
+import com.tecknobit.refy.services.links.repository.LinksRepository;
 import com.tecknobit.refy.services.shared.services.RefyItemRetriever;
 import com.tecknobit.refy.services.teams.batchquery.TeamMemberBatchItem;
 import com.tecknobit.refy.services.teams.batchquery.TeamMembersBatchQuery;
@@ -46,76 +47,22 @@ import static com.tecknobit.refycore.helpers.RefyInputsValidator.INSTANCE;
 public class TeamsService extends EquinoxItemsHelper implements RefyResourcesManager, RefyItemRetriever<Team> {
 
     /**
-     * {@code ADD_MEMBERS_QUERY} the query used to add new members to a team
-     */
-    private static final String ADD_MEMBERS_QUERY =
-            "INSERT INTO " + MEMBERS_KEY +
-                    "(" +
-                        OWNER_KEY + "," +
-                        TEAM_IDENTIFIER_KEY + "," +
-                        TEAM_ROLE_KEY +
-                    ")" +
-            " VALUES ";
-
-    /**
-     * {@code REMOVE_MEMBERS_FROM_TEAM_QUERY} the query used to remove members from a team
-     */
-    private static final String REMOVE_MEMBERS_FROM_TEAM_QUERY =
-            "DELETE FROM " + MEMBERS_KEY + " WHERE "
-                    + TEAM_IDENTIFIER_KEY + "='%s' " + "AND " + OWNER_KEY + " IN (";
-
-    /**
-     * {@code REPLACE_MEMBERS_QUERY} the query used to replace member in a team
-     */
-    private static final String REPLACE_MEMBERS_QUERY =
-            "REPLACE INTO " + MEMBERS_KEY +
-                    "(" +
-                    OWNER_KEY + "," +
-                    TEAM_IDENTIFIER_KEY + "," +
-                    TEAM_ROLE_KEY +
-                    ")" +
-                    " VALUES ";
-
-    /**
-     * {@code ATTACH_TEAM_TO_LINKS_QUERY} the query used to attach links to the team
-     */
-    protected static final String ATTACH_TEAM_TO_LINKS_QUERY =
-            "REPLACE INTO " + TEAMS_LINKS_TABLE +
-                    "(" +
-                    LINK_IDENTIFIER_KEY + "," +
-                    TEAM_IDENTIFIER_KEY +
-                    ")" +
-                    " VALUES ";
-    /**
-     * {@code DETACH_TEAM_FROM_LINKS_QUERY} the query used to detach links from a team
-     */
-    private static final String DETACH_TEAM_FROM_LINKS_QUERY =
-            "DELETE FROM " + TEAMS_LINKS_TABLE + " WHERE "
-                    + TEAM_IDENTIFIER_KEY + "='%s' " + "AND " + LINK_IDENTIFIER_KEY + " IN (";
-
-    /**
-     * {@code ATTACH_TEAM_TO_COLLECTIONS_QUERY} the query used to attach collections to the team
-     */
-    protected static final String ATTACH_TEAM_TO_COLLECTIONS_QUERY =
-            "REPLACE INTO " + COLLECTIONS_TEAMS_TABLE +
-                    "(" +
-                    COLLECTION_IDENTIFIER_KEY + "," +
-                    TEAM_IDENTIFIER_KEY +
-                    ")" +
-                    " VALUES ";
-
-    /**
-     * {@code DETACH_TEAM_FROM_COLLECTIONS_QUERY} the query used to detach collections from a team
-     */
-    private static final String DETACH_TEAM_FROM_COLLECTIONS_QUERY =
-            "DELETE FROM " + COLLECTIONS_TEAMS_TABLE + " WHERE "
-                    + TEAM_IDENTIFIER_KEY + "='%s' " + "AND " + COLLECTION_IDENTIFIER_KEY + " IN (";
-
-    /**
      * {@code teamsRepository} instance for the teams repository
      */
     @Autowired
     private TeamsRepository teamsRepository;
+
+    /**
+     * {@code collectionsRepository} instance for the collections repository
+     */
+    @Autowired
+    private CollectionsRepository collectionsRepository;
+
+    /**
+     * {@code linksRepository} instance for the links repository
+     */
+    @Autowired
+    private LinksRepository linksRepository;
 
     /**
      * Method to get the user's owned teams identifiers
@@ -156,7 +103,7 @@ public class TeamsService extends EquinoxItemsHelper implements RefyResourcesMan
      */
     public PaginatedResponse<Team> getAllUserTeams(String userId, int page, int pageSize, Set<String> keywords) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        String fullTextFormatter = IndexesCreator.formatFullTextKeywords(keywords, "*", true);
+        String fullTextFormatter = formatFullTextKeywords(keywords, "*", true);
         long totalTeams = teamsRepository.countAllUserTeams(userId, fullTextFormatter);
         List<Team> teams = teamsRepository.getAllUserTeams(userId, fullTextFormatter, pageable);
         return new PaginatedResponse<>(teams, page, pageSize, totalTeams);
@@ -360,7 +307,6 @@ public class TeamsService extends EquinoxItemsHelper implements RefyResourcesMan
         syncBatch(model, COLLECTIONS_TEAMS_TABLE, batchQuery);
     }
 
-
     /**
      * Method to get the collections shared with the team
      *
@@ -371,9 +317,9 @@ public class TeamsService extends EquinoxItemsHelper implements RefyResourcesMan
      */
     public PaginatedResponse<LinksCollection> getTeamCollections(String teamId, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        /*long totalTeams = teamsRepository.countCollectionTeams(collectionId);
-        List<Team> teams = teamsRepository.getCollectionTeams(collectionId, pageable);*/
-        return new PaginatedResponse<>(teams, page, pageSize, totalTeams);
+        long totalCollections = collectionsRepository.countTeamCollections(teamId);
+        List<LinksCollection> collections = collectionsRepository.getTeamCollections(teamId, pageable);
+        return new PaginatedResponse<>(collections, page, pageSize, totalCollections);
     }
 
     /**
@@ -388,11 +334,10 @@ public class TeamsService extends EquinoxItemsHelper implements RefyResourcesMan
     public PaginatedResponse<RefyLink> getTeamLinks(String teamId, int page, int pageSize, Set<String> keywords) {
         Pageable pageable = PageRequest.of(page, pageSize);
         String fullTextMatcher = formatFullTextKeywords(keywords, "*", true);
-        long totalLinks = linksRepository.countCollectionLinks(collectionId, fullTextMatcher);
-        List<RefyLink> links = linksRepository.getCollectionLinks(collectionId, fullTextMatcher, pageable);
+        long totalLinks = linksRepository.countTeamLinks(teamId, fullTextMatcher);
+        List<RefyLink> links = linksRepository.getTeamLinks(teamId, fullTextMatcher, pageable);
         return new PaginatedResponse<>(links, page, pageSize, totalLinks);
     }
-
 
     // TODO: 14/02/2025 TO COMMENT
     public void removeCollectionFromTeam(String teamId, String collectionId) {

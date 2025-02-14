@@ -270,14 +270,12 @@ public interface LinksRepository extends LinksBaseRepository<RefyLink> {
             @Param(OWNER_KEY) String owner
     );
 
-
     /**
-     * Method to count all the user's links, included the links shared in the teams and in the
-     * collections shared in the teams
+     *  Method to count all the links shared in a collection
      *
      * @param collectionId The identifier of the collection from retrieve the links
      * @param keywords     The keywords used to filter the query to retrieve the items
-     * @return the count of the user links as {@code long}
+     * @return the count of the collection links as {@code long}
      */
     @Query(
             value = "SELECT COUNT(*) " +
@@ -298,13 +296,12 @@ public interface LinksRepository extends LinksBaseRepository<RefyLink> {
     );
 
     /**
-     * Method to execute the query to get all the user's links, included the links shared in the teams and in the
-     * collections shared in the teams
+     * Method to execute the query to get all the links shared in a collection
      *
      * @param collectionId The identifier of the collection from retrieve the links
      * @param keywords     The keywords used to filter the query to retrieve the items
      * @param pageable     The parameters to paginate the query
-     * @return the user links as {@link List} of {@link RefyLink}
+     * @return the collection links as {@link List} of {@link RefyLink}
      */
     @Query(
             value = "SELECT l.* " +
@@ -326,5 +323,57 @@ public interface LinksRepository extends LinksBaseRepository<RefyLink> {
             Pageable pageable
     );
 
+    /**
+     * Method to count all the links shared in a team
+     *
+     * @param teamId   The identifier of the team from retrieve the links
+     * @param keywords The keywords used to filter the query to retrieve the items
+     * @return the count of the team links as {@code long}
+     */
+    @Query(
+            value = "SELECT COUNT(*) " +
+                    "FROM " + LINKS_KEY + " AS l " +
+                    "INNER JOIN " + TEAMS_LINKS_TABLE + " ON " + TEAMS_LINKS_TABLE + "." + LINK_IDENTIFIER_KEY +
+                    " = l." + LINK_IDENTIFIER_KEY + _WHERE_ +
+                    TEAMS_LINKS_TABLE + "." + TEAM_IDENTIFIER_KEY + "=:" + TEAM_IDENTIFIER_KEY +
+                    " AND dtype = '" + LINK_KEY + "' " +
+                    "  AND ( " +
+                    "    MATCH(l." + TITLE_KEY + ", l." + DESCRIPTION_KEY + ") AGAINST (:" + KEYWORDS_KEY + _IN_BOOLEAN_MODE + ") " +
+                    "    OR :" + KEYWORDS_KEY + " = '' " +
+                    "  )",
+            nativeQuery = true
+    )
+    long countTeamLinks(
+            @Param(TEAM_IDENTIFIER_KEY) String teamId,
+            @Param(KEYWORDS_KEY) String keywords
+    );
+
+    /**
+     * Method to execute the query to get all the links shared in a team
+     *
+     * @param teamId   The identifier of the team from retrieve the links
+     * @param keywords The keywords used to filter the query to retrieve the items
+     * @param pageable The parameters to paginate the query
+     * @return the team links as {@link List} of {@link RefyLink}
+     */
+    @Query(
+            value = "SELECT l.* " +
+                    "FROM " + LINKS_KEY + " AS l " +
+                    "INNER JOIN " + TEAMS_LINKS_TABLE + " ON " + TEAMS_LINKS_TABLE + "." + LINK_IDENTIFIER_KEY +
+                    " = l." + LINK_IDENTIFIER_KEY + _WHERE_ +
+                    TEAMS_LINKS_TABLE + "." + TEAM_IDENTIFIER_KEY + "=:" + TEAM_IDENTIFIER_KEY +
+                    " AND dtype = '" + LINK_KEY + "' " +
+                    "  AND ( " +
+                    "    MATCH(l." + TITLE_KEY + ", l." + DESCRIPTION_KEY + ") AGAINST (:" + KEYWORDS_KEY + _IN_BOOLEAN_MODE + ") " +
+                    "    OR :" + KEYWORDS_KEY + " = '' " +
+                    "  )" +
+                    " ORDER BY " + DATE_KEY + " DESC",
+            nativeQuery = true
+    )
+    List<RefyLink> getTeamLinks(
+            @Param(TEAM_IDENTIFIER_KEY) String teamId,
+            @Param(KEYWORDS_KEY) String keywords,
+            Pageable pageable
+    );
 
 }

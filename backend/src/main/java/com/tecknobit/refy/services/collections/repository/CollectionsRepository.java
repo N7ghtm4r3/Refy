@@ -2,6 +2,7 @@ package com.tecknobit.refy.services.collections.repository;
 
 import com.tecknobit.refy.services.collections.entity.LinksCollection;
 import com.tecknobit.refy.services.shared.repositories.RefyItemsRepository;
+import com.tecknobit.refy.services.teams.entities.Team;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -283,6 +284,41 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
     )
     void deleteCollection(
             @Param(IDENTIFIER_KEY) String collectionId
+    );
+
+    /**
+     * Method to count the collections shared with the team
+     *
+     * @param teamId The identifier of the team from retrieve the collections
+     * @return the count of teams as {@code long}
+     */
+    @Query(
+            value = "SELECT COUNT(*) FROM " + COLLECTIONS_KEY + " AS c INNER JOIN " + COLLECTIONS_TEAMS_TABLE + " ON c." +
+                    IDENTIFIER_KEY + " = " + COLLECTIONS_TEAMS_TABLE + "." + COLLECTION_IDENTIFIER_KEY +
+                    _WHERE_ + COLLECTIONS_TEAMS_TABLE + "." + TEAM_IDENTIFIER_KEY + "=:" + TEAM_IDENTIFIER_KEY,
+            nativeQuery = true
+    )
+    long countTeamCollections(
+            @Param(TEAM_IDENTIFIER_KEY) String teamId
+    );
+
+    /**
+     * Method to execute the query to get the collections shared with the team
+     *
+     * @param teamId   The identifier of the team from retrieve the collections
+     * @param pageable The parameters to paginate the query
+     * @return the user teams as {@link List} of {@link Team}
+     */
+    @Query(
+            value = "SELECT c.* FROM " + COLLECTIONS_KEY + " AS c INNER JOIN " + COLLECTIONS_TEAMS_TABLE + " ON c." +
+                    IDENTIFIER_KEY + "=" + COLLECTIONS_TEAMS_TABLE + "." + COLLECTION_IDENTIFIER_KEY +
+                    _WHERE_ + COLLECTIONS_TEAMS_TABLE + "." + TEAM_IDENTIFIER_KEY + "=:" + TEAM_IDENTIFIER_KEY +
+                    " ORDER BY " + DATE_KEY + " DESC",
+            nativeQuery = true
+    )
+    List<LinksCollection> getTeamCollections(
+            @Param(TEAM_IDENTIFIER_KEY) String teamId,
+            Pageable pageable
     );
 
 }

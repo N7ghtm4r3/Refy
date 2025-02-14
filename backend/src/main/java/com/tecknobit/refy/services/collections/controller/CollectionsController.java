@@ -259,6 +259,24 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
     // TODO: 14/02/2025 TO COMMENT
     @GetMapping(
             headers = TOKEN_KEY,
+            path = "/{" + COLLECTION_IDENTIFIER_KEY + "}/" + TEAMS_KEY
+    )
+    @RequestPath(path = "/api/v1/users/{user_id}/collections/{collection_id}/teams", method = GET)
+    public <T> T getCollectionTeams(
+            @RequestHeader(TOKEN_KEY) String token,
+            @PathVariable(USER_IDENTIFIER_KEY) String userId,
+            @PathVariable(COLLECTION_IDENTIFIER_KEY) String collectionId,
+            @RequestParam(name = PAGE_KEY, defaultValue = DEFAULT_PAGE_HEADER_VALUE, required = false) int page,
+            @RequestParam(name = PAGE_SIZE_KEY, defaultValue = DEFAULT_PAGE_SIZE_HEADER_VALUE, required = false) int pageSize
+    ) {
+        if (isUserNotAuthorized(userId, token, collectionId))
+            return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        return (T) successResponse(linksCollectionsService.getCollectionTeams(collectionId, page, pageSize));
+    }
+
+    // TODO: 14/02/2025 TO COMMENT
+    @GetMapping(
+            headers = TOKEN_KEY,
             path = "/{" + COLLECTION_IDENTIFIER_KEY + "}/" + LINKS_KEY
     )
     @RequestPath(path = "/api/v1/users/{user_id}/collections/{collection_id}/links", method = GET)

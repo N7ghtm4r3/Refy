@@ -28,7 +28,7 @@ public class JoinTableSyncBatchItem<T> implements EquinoxItemsHelper.ComplexBatc
     }
 
     @Override
-    public final boolean equals(Object o) {
+    public boolean equals(Object o) {
         if (!(o instanceof JoinTableSyncBatchItem<?> that))
             return false;
         return owner.equals(that.owner) && owned.equals(that.owned);

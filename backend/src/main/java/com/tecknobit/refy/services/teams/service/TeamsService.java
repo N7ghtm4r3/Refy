@@ -1,34 +1,42 @@
 package com.tecknobit.refy.services.teams.service;
 
-import com.tecknobit.apimanager.formatters.JsonHelper;
+import com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper;
+import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
+import com.tecknobit.refy.configuration.indexes.IndexesCreator;
 import com.tecknobit.refy.helpers.RefyResourcesManager;
-import com.tecknobit.refy.services.shared.services.RefyItemsHelper;
+import com.tecknobit.refy.services.shared.services.RefyItemRetriever;
+import com.tecknobit.refy.services.teams.batchquery.TeamMemberBatchItem;
+import com.tecknobit.refy.services.teams.batchquery.TeamMembersBatchQuery;
 import com.tecknobit.refy.services.teams.entities.Team;
 import com.tecknobit.refy.services.teams.repository.TeamsRepository;
 import com.tecknobit.refycore.enums.TeamRole;
+import jakarta.persistence.Query;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
+import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.InsertCommand.INSERT_INTO;
+import static com.tecknobit.refy.services.teams.batchquery.TeamMembersBatchQuery.MEMBERS_TABLE_COLUMNS;
 import static com.tecknobit.refycore.ConstantsKt.*;
-import static com.tecknobit.refycore.enums.TeamRole.ADMIN;
-import static com.tecknobit.refycore.enums.TeamRole.VIEWER;
 import static com.tecknobit.refycore.helpers.RefyInputsValidator.INSTANCE;
 
 /**
  * The {@code TeamsHelper} class is useful to manage all the {@link Team} database operations
  *
  * @author N7ghtm4r3 - Tecknobit
- * @see RefyItemsHelper
+ * @see EquinoxItemsHelper
  * @see RefyResourcesManager
+ * @see RefyItemRetriever
  */
 @Service
-public class TeamsService extends RefyItemsHelper<Team> implements RefyResourcesManager {
+public class TeamsService extends EquinoxItemsHelper implements RefyResourcesManager, RefyItemRetriever<Team> {
 
     /**
      * {@code ADD_MEMBERS_QUERY} the query used to add new members to a team
@@ -117,22 +125,34 @@ public class TeamsService extends RefyItemsHelper<Team> implements RefyResources
      * Method to get the user's owned teams
      *
      * @param userId The identifier of the owner
+     * @param page      The page requested
+     * @param pageSize  The size of the items to insert in the page
      *
-     * @return the user teams as {@link List} of {@link Team}
+     * @return the user teams as {@link PaginatedResponse} of {@link Team}
      */
-    public List<Team> getUserOwnedTeams(String userId) {
-        return teamsRepository.getUserOwnedTeams(userId);
+    public PaginatedResponse<Team> getUserOwnedTeams(String userId, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        long totalTeams = teamsRepository.countUserOwnedTeams(userId);
+        List<Team> teams = teamsRepository.getUserOwnedTeams(userId, pageable);
+        return new PaginatedResponse<>(teams, page, pageSize, totalTeams);
     }
 
     /**
      * Method to get all the user's teams
      *
      * @param userId The identifier of the owner
+     * @param page      The page requested
+     * @param pageSize  The size of the items to insert in the page
+     * @param keywords The keywords used to filter the query to retrieve the teams
      *
      * @return the user teams as {@link List} of {@link Team}
      */
-    public List<Team> getAllUserTeams(String userId) {
-        return teamsRepository.getAllUserTeams(userId);
+    public PaginatedResponse<Team> getAllUserTeams(String userId, int page, int pageSize, Set<String> keywords) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        String fullTextFormatter = IndexesCreator.formatFullTextKeywords(keywords, "*", true);
+        long totalTeams = teamsRepository.countAllUserTeams(userId, fullTextFormatter);
+        List<Team> teams = teamsRepository.getAllUserTeams(userId, fullTextFormatter, pageable);
+        return new PaginatedResponse<>(teams, page, pageSize, totalTeams);
     }
 
     /**
@@ -154,18 +174,7 @@ public class TeamsService extends RefyItemsHelper<Team> implements RefyResources
         MultipartFile logo = payload.logo_pic;
         String logoUrl = createLogoResource(logo, teamId + System.currentTimeMillis());
         teamsRepository.saveTeam(teamId, payload.title, logoUrl, payload.description, System.currentTimeMillis(), userId);
-        List<String> members = JsonHelper.toList(payload.members.put(userId));
-        executeInsertBatch(ADD_MEMBERS_QUERY, TUPLE_VALUES_SLICE, members, query -> {
-            int index = 1;
-            TeamRole role = VIEWER;
-            for (String member : members) {
-                if(member.equals(userId))
-                    role = ADMIN;
-                query.setParameter(index++, member);
-                query.setParameter(index++, teamId);
-                query.setParameter(index++, role.name());
-            }
-        });
+        batchInsert(INSERT_INTO, MEMBERS_KEY, new TeamMembersBatchQuery(userId, teamId, payload));
         saveResource(logo, logoUrl);
     }
 
@@ -186,75 +195,64 @@ public class TeamsService extends RefyItemsHelper<Team> implements RefyResources
         else
             logoUrl = team.getLogoPic();
         teamsRepository.editTeam(teamId, payload.title, logoUrl, payload.description, userId);
-        List<String> members = JsonHelper.toList(payload.members.put(userId));
-        manageAttachments(getEditWorkflow(team), TUPLE_VALUES_SLICE, teamId, members, getBatchQuery(team, members));
-        if(logoChanged) {
-            deleteLogoResource(teamId);
-            saveResource(logo, logoUrl);
-        }
+        synchronizeMembers(userId, teamId, payload);
     }
 
-    /**
-     * Method to get the workflow to manage the team's attachments
-     * @param team The team where manage the attachments
-     * @return the attachments workflow as {@link AttachmentsManagementWorkflow}
-     */
-    private AttachmentsManagementWorkflow getEditWorkflow(Team team) {
-        return new AttachmentsManagementWorkflow() {
-
+    private void synchronizeMembers(String userId, String teamId, TeamPayload payload) {
+        SyncBatchModel model = new SyncBatchModel() {
             @Override
-            public List<String> getIds() {
-                return team.getMembersIds();
+            public Collection<TeamMemberBatchItem> getCurrentData() {
+                ArrayList<TeamMemberBatchItem> teamMemberBatchItems = new ArrayList<>();
+                Team team = getItemIfAllowed(userId, teamId);
+                for (Team.RefyTeamMember member : team.getMembers())
+                    teamMemberBatchItems.add(new TeamMemberBatchItem(member.getId(), teamId, member.getRole()));
+                return teamMemberBatchItems;
             }
 
             @Override
-            public String insertQuery() {
-                return REPLACE_MEMBERS_QUERY;
-            }
-
-            @Override
-            public String deleteQuery() {
-                return REMOVE_MEMBERS_FROM_TEAM_QUERY;
-            }
-
-        };
-    }
-
-    /**
-     * Method to get the batch query to manage the team members
-     * @param team The team where the batch query is to execute
-     * @param members The members list
-     * @return the batch query as {@link BatchQuery}
-     */
-    private BatchQuery getBatchQuery(Team team, List<String> members) {
-        String teamId = team.getId();
-        HashSet<String> payloadMembers = new HashSet<>(members);
-        return query -> {
-            int index = 1;
-            for (Team.RefyTeamMember member : team.getMembers()) {
-                String memberId = member.getId();
-                if(payloadMembers.contains(memberId)) {
-                    query.setParameter(index++, memberId);
-                    query.setParameter(index++, teamId);
-                    query.setParameter(index++, member.getRole().name());
-                }
-            }
-            for (String member : members) {
-                if(!team.hasMember(member)) {
-                    query.setParameter(index++, member);
-                    query.setParameter(index++, teamId);
-                    query.setParameter(index++, VIEWER.name());
-                }
+            public String[] getDeletingColumns() {
+                return new String[]{OWNER_KEY, TEAM_IDENTIFIER_KEY};
             }
         };
+        BatchQuery<TeamMemberBatchItem> batchQuery = new BatchQuery<>() {
+            @Override
+            public Collection<TeamMemberBatchItem> getData() {
+                ArrayList<TeamMemberBatchItem> teamMemberBatchItems = new ArrayList<>();
+                JSONArray rawMembers = payload.members;
+                for (int j = 0; j < rawMembers.length(); j++) {
+                    JSONObject rawMember = rawMembers.getJSONObject(j);
+                    teamMemberBatchItems.add(new TeamMemberBatchItem(
+                            rawMember.getString(MEMBER_IDENTIFIER_KEY),
+                            teamId,
+                            rawMember.getEnum(TeamRole.class, TEAM_ROLE_KEY)
+                    ));
+                }
+                return teamMemberBatchItems;
+            }
+
+            @Override
+            public void prepareQuery(Query query, int index, Collection<TeamMemberBatchItem> items) {
+                for (TeamMemberBatchItem teamMemberBatchItem : items) {
+                    query.setParameter(index++, teamMemberBatchItem.getOwner());
+                    query.setParameter(index++, teamId);
+                    query.setParameter(index++, teamMemberBatchItem.getRole().name());
+                }
+            }
+
+            @Override
+            public String[] getColumns() {
+                return MEMBERS_TABLE_COLUMNS;
+            }
+        };
+        syncBatch(model, MEMBERS_KEY, batchQuery);
     }
 
-    /**
+    /*
      * Method to manage the links attached to a team
      *
      * @param teamId The identifier of the team
      * @param links The links to attach or detach from a team
-     */
+     /
     public void manageTeamLinks(String teamId, List<String> links) {
         Team team = teamsRepository.findById(teamId).orElseThrow();
         manageAttachments(
@@ -279,14 +277,14 @@ public class TeamsService extends RefyItemsHelper<Team> implements RefyResources
                 teamId,
                 links
         );
-    }
+    }*
 
     /**
      * Method to manage the collections shared with a team
      *
      * @param teamId The identifier of the team
      * @param collections The collections to attach or detach from a team
-     */
+     *
     public void manageTeamCollections(String teamId, List<String> collections) {
         Team team = teamsRepository.findById(teamId).orElseThrow();
         manageAttachments(
@@ -311,7 +309,7 @@ public class TeamsService extends RefyItemsHelper<Team> implements RefyResources
                 teamId,
                 collections
         );
-    }
+    }*/
 
     /**
      * Method change the role of a team member
@@ -363,8 +361,7 @@ public class TeamsService extends RefyItemsHelper<Team> implements RefyResources
          * @return whether the team payload is valid as boolean
          */
         public boolean isValidTeamPayload(boolean validateLogoPic) {
-            boolean validPayload = INSTANCE.isTitleValid(title) && INSTANCE.isDescriptionValid(description) &&
-                    !members.isEmpty();
+            boolean validPayload = INSTANCE.isTitleValid(title) && INSTANCE.isDescriptionValid(description);
             if(validateLogoPic)
                 return validPayload && (logo_pic != null && !logo_pic.isEmpty());
             return validPayload;

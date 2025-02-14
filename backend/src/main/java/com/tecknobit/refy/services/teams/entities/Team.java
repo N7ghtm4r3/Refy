@@ -22,6 +22,7 @@ import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.IDENTIFIER_KEY;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.PROFILE_PIC_KEY;
 import static com.tecknobit.refycore.ConstantsKt.*;
 import static com.tecknobit.refycore.enums.TeamRole.ADMIN;
+import static com.tecknobit.refycore.enums.TeamRole.VIEWER;
 import static jakarta.persistence.EnumType.STRING;
 
 /**
@@ -144,20 +145,6 @@ public class Team extends RefyItem {
         this.links = links;
         this.collections = collections;
     }
-
-    /**
-     * Constructor to init the {@link Team} class
-     *
-     * @param jTeam Team details formatted as JSON
-     */
-    // TODO: 03/02/2025 CHECK TO REMOVE
-    /*public Team(JSONObject jTeam) {
-        super(jTeam);
-        logoPic = hItem.getString(LOGO_PIC_KEY);
-        members = returnMembers(hItem.getJSONArray(MEMBERS_KEY));
-        links = returnLinks(hItem.getJSONArray(LINKS_KEY));
-        collections = returnCollections(hItem.getJSONArray(COLLECTIONS_KEY));
-    }*/
 
     /**
      * Method to get {@link #logoPic} instance
@@ -315,24 +302,6 @@ public class Team extends RefyItem {
     }
 
     /**
-     * Method to assemble and return an {@link ArrayList} of teams
-     *
-     * @param jTeams Teams list details formatted as JSON
-     *
-     * @return the team list as {@link ArrayList} of {@link Team}
-     */
-    // TODO: 03/02/2025 CHECK TO REMOVE
-    /*@Returner
-    public static ArrayList<Team> returnTeams(JSONArray jTeams) {
-        ArrayList<Team> teams = new ArrayList<>();
-        if (jTeams == null)
-            return teams;
-        for (int j = 0; j < jTeams.length(); j++)
-            teams.add(new Team(jTeams.getJSONObject(j)));
-        return teams;
-    }*/
-
-    /**
      * The {@code RefyTeamMember} class is useful to represent a member of a team
      *
      * @author N7ghtm4r3 - Tecknobit
@@ -414,23 +383,6 @@ public class Team extends RefyItem {
         /**
          * Constructor to init the {@link RefyTeamMember} class
          *
-         * @param jRefyTeamMember: member details formatted as JSON
-         */
-        // TODO: 03/02/2025 CHECK TO REMOVE
-        /*public RefyTeamMember(JSONObject jRefyTeamMember) {
-            hItem = new JsonHelper(jRefyTeamMember);
-            owner = RefyUser.getInstance(hItem.getJSONObjectSource());
-            String sRole = hItem.getString(TEAM_ROLE_KEY);
-            if(sRole != null)
-                role = TeamRole.valueOf(sRole);
-            else
-                role = null;
-            sourceTeam = null;
-        }*/
-
-        /**
-         * Constructor to init the {@link RefyTeamMember} class
-         *
          * @param member: member details as list
          *
          */
@@ -440,11 +392,11 @@ public class Team extends RefyItem {
                     member.get(0),
                     member.get(2),
                     member.get(3),
-                    null,
+                    member.get(4),
                     member.get(1),
-                    member.get(4)
+                    member.get(5)
             );
-            role = null;
+            role = VIEWER;
             sourceTeam = null;
         }
 

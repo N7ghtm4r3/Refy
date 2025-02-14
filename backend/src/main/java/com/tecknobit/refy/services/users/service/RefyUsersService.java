@@ -2,12 +2,16 @@ package com.tecknobit.refy.services.users.service;
 
 import com.tecknobit.equinoxbackend.environment.services.users.service.EquinoxUsersService;
 import com.tecknobit.equinoxbackend.resourcesutils.ResourcesManager;
+import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
 import com.tecknobit.refy.services.collections.repository.CollectionsRepository;
+import com.tecknobit.refy.services.teams.entities.Team.RefyTeamMember;
 import com.tecknobit.refy.services.teams.repository.TeamsRepository;
 import com.tecknobit.refy.services.users.entity.RefyUser;
 import com.tecknobit.refy.services.users.repository.RefyUsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -79,11 +83,19 @@ public class RefyUsersService extends EquinoxUsersService<RefyUser, RefyUsersRep
      * Method to get the potential members for a team
      *
      * @param userId The identifier of the user to not fetch
+     * @param page      The page requested
+     * @param pageSize  The size of the items to insert in the page
      *
      * @return list of potential members as {@link List} of {@link List} of {@link String}
      */
-    public List<List<String>> getPotentialMembers(String userId) {
-        return refyUsersRepository.getPotentialMembers(userId);
+    public PaginatedResponse<RefyTeamMember> getPotentialMembers(String userId, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        long totalPotentialMembers = refyUsersRepository.count() - 1;
+        List<List<String>> rawPotentialsMembers = refyUsersRepository.getPotentialMembers(userId, pageable);
+        ArrayList<RefyTeamMember> potentialsMember = new ArrayList<>();
+        for (List<String> rawPotentialMember : rawPotentialsMembers)
+            potentialsMember.add(new RefyTeamMember(rawPotentialMember));
+        return new PaginatedResponse<>(potentialsMember, page, pageSize, totalPotentialMembers);
     }
 
     /**

@@ -2,9 +2,9 @@ package com.tecknobit.refy.services.teams.controller;
 
 import com.tecknobit.apimanager.annotations.RequestPath;
 import com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController;
+import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
 import com.tecknobit.refy.services.shared.controllers.DefaultRefyController;
 import com.tecknobit.refy.services.teams.entities.Team;
-import com.tecknobit.refy.services.teams.entities.Team.RefyTeamMember;
 import com.tecknobit.refy.services.teams.service.TeamsService.TeamPayload;
 import com.tecknobit.refy.services.users.entity.RefyUser;
 import com.tecknobit.refy.services.users.service.RefyUsersService;
@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static com.tecknobit.apimanager.apis.APIRequest.RequestMethod.*;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.TOKEN_KEY;
@@ -72,11 +75,11 @@ public class TeamsController extends DefaultRefyController<Team> {
     ) {
         if(!isMe(userId, token))
             return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        List<Team> teams;
+        PaginatedResponse<Team> teams;
         if(ownedOnly)
-            teams = teamsService.getUserOwnedTeams(userId);
+            teams = teamsService.getUserOwnedTeams(userId, page, pageSize);
         else
-            teams = teamsService.getAllUserTeams(userId);
+            teams = teamsService.getAllUserTeams(userId, page, pageSize, keywords);
         return (T) successResponse(teams);
     }
 
@@ -96,15 +99,13 @@ public class TeamsController extends DefaultRefyController<Team> {
     @RequestPath(path = "/api/v1/users/{user_id}/teams/members", method = GET)
     public <T> T listPotentialMembers(
             @RequestHeader(TOKEN_KEY) String token,
-            @PathVariable(USER_IDENTIFIER_KEY) String userId
+            @PathVariable(USER_IDENTIFIER_KEY) String userId,
+            @RequestParam(name = PAGE_KEY, defaultValue = DEFAULT_PAGE_HEADER_VALUE, required = false) int page,
+            @RequestParam(name = PAGE_SIZE_KEY, defaultValue = DEFAULT_PAGE_SIZE_HEADER_VALUE, required = false) int pageSize
     ) {
         if(!isMe(userId, token))
             return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        List<RefyTeamMember> members = new ArrayList<>();
-        List<List<String>> membersDetails = refyUsersService.getPotentialMembers(userId);
-        for (List<String> details : membersDetails)
-            members.add(new RefyTeamMember(details));
-        return (T) successResponse(members);
+        return (T) successResponse(refyUsersService.getPotentialMembers(userId, page, pageSize));
     }
 
     /**
@@ -178,8 +179,10 @@ public class TeamsController extends DefaultRefyController<Team> {
             @PathVariable(TEAM_IDENTIFIER_KEY) String teamId,
             @ModelAttribute TeamPayload payload
     ) {
-        if(isUserNotAuthorized(userId, token, teamId) || !userItem.isAdmin(userId) || !payload.isValidTeamPayload(false))
+        if (isUserNotAuthorized(userId, token, teamId) || !userItem.isAdmin(userId) ||
+                !payload.isValidTeamPayload(false)) {
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        }
         try {
             teamsService.editTeam(userId, userItem, payload);
         } catch (IOException e) {
@@ -232,7 +235,7 @@ public class TeamsController extends DefaultRefyController<Team> {
 
             @Override
             public void execute(List<String> links) {
-                teamsService.manageTeamLinks(teamId, links);
+                //teamsService.manageTeamLinks(teamId, links);
             }
 
         });
@@ -282,7 +285,7 @@ public class TeamsController extends DefaultRefyController<Team> {
 
             @Override
             public void execute(List<String> collections) {
-                teamsService.manageTeamCollections(teamId, collections);
+                //teamsService.manageTeamCollections(teamId, collections);
             }
 
         });

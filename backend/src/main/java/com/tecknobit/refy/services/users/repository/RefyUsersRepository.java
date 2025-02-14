@@ -4,6 +4,7 @@ import com.tecknobit.equinoxbackend.environment.services.users.repository.Equino
 import com.tecknobit.refy.services.users.entity.RefyUser;
 import jakarta.transaction.Transactional;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper._WHERE_;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.*;
 import static com.tecknobit.refycore.ConstantsKt.TAG_NAME_KEY;
 
@@ -38,11 +40,13 @@ public interface RefyUsersRepository extends EquinoxUsersRepository<RefyUser> {
      */
     @Query(
             value = "SELECT " + IDENTIFIER_KEY + "," + PROFILE_PIC_KEY + "," + NAME_KEY + "," + SURNAME_KEY + ","
-                    + TAG_NAME_KEY + " FROM " + USERS_KEY + " WHERE " + IDENTIFIER_KEY + "!=:" + IDENTIFIER_KEY,
+                    + EMAIL_KEY + "," + TAG_NAME_KEY + " FROM " + USERS_KEY +
+                    _WHERE_ + IDENTIFIER_KEY + "!=:" + IDENTIFIER_KEY,
             nativeQuery = true
     )
     List<List<String>> getPotentialMembers(
-            @Param(IDENTIFIER_KEY) String userId
+            @Param(IDENTIFIER_KEY) String userId,
+            Pageable pageable
     );
 
     /**
@@ -56,7 +60,7 @@ public interface RefyUsersRepository extends EquinoxUsersRepository<RefyUser> {
     @Query(
             value = "UPDATE " + USERS_KEY + " SET "
                     + TAG_NAME_KEY + "=:" + TAG_NAME_KEY +
-                    " WHERE " + IDENTIFIER_KEY + "=:" + IDENTIFIER_KEY,
+                    _WHERE_ + IDENTIFIER_KEY + "=:" + IDENTIFIER_KEY,
             nativeQuery = true
     )
     void changeTagName(

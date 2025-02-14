@@ -10,6 +10,8 @@ import com.tecknobit.refy.services.collections.repository.CollectionsRepository;
 import com.tecknobit.refy.services.links.entity.RefyLink;
 import com.tecknobit.refy.services.links.repository.LinksRepository;
 import com.tecknobit.refy.services.shared.services.RefyItemRetriever;
+import com.tecknobit.refy.services.teams.entities.Team;
+import com.tecknobit.refy.services.teams.repository.TeamsRepository;
 import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -46,6 +48,12 @@ public class LinksCollectionsService extends EquinoxItemsHelper implements RefyI
      */
     @Autowired
     private LinksRepository linksRepository;
+
+    /**
+     * {@code teamsRepository} instance for the teams repository
+     */
+    @Autowired
+    private TeamsRepository teamsRepository;
 
     /**
      * Method to get the user's owned collections identifiers
@@ -243,8 +251,24 @@ public class LinksCollectionsService extends EquinoxItemsHelper implements RefyI
     }
 
     /**
+     * Method to get the teams where the collection is shared
+     *
+     * @param collectionId The identifier of the collection
+     * @param page         The page requested
+     * @param pageSize     The size of the items to insert in the page
+     * @return the collection teams as {@link PaginatedResponse} of {@link RefyLink}
+     */
+    public PaginatedResponse<Team> getCollectionTeams(String collectionId, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        long totalTeams = teamsRepository.countCollectionTeams(collectionId);
+        List<Team> teams = teamsRepository.getCollectionTeams(collectionId, pageable);
+        return new PaginatedResponse<>(teams, page, pageSize, totalTeams);
+    }
+
+    /**
      * Method to get the links shared in a collection
      *
+     * @param collectionId The identifier of the collection
      * @param page     The page requested
      * @param pageSize The size of the items to insert in the page
      * @param keywords The keywords used to filter the query to retrieve the items

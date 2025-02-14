@@ -288,6 +288,46 @@ public class TeamsController extends DefaultRefyController<Team> {
         return super.getItem(token, userId, teamId);
     }
 
+    // TODO: 14/02/2025 TO COMMENT
+    @DeleteMapping(
+            headers = TOKEN_KEY,
+            path = "/{" + TEAM_IDENTIFIER_KEY + "}/" + COLLECTIONS_KEY + "/{" + COLLECTION_IDENTIFIER_KEY + "}"
+    )
+    @RequestPath(path = "/api/v1/users/{user_id}/teams/{team_id}/collections/{collection_id}", method = DELETE)
+    public String removeCollectionFromTeam(
+            @RequestHeader(TOKEN_KEY) String token,
+            @PathVariable(USER_IDENTIFIER_KEY) String userId,
+            @PathVariable(TEAM_IDENTIFIER_KEY) String teamId,
+            @PathVariable(COLLECTION_IDENTIFIER_KEY) String collectionId
+    ) {
+        if (isUserNotAuthorized(userId, token, teamId) || !userItem.isAdmin(userId) ||
+                !userItem.isTheCollectionOwner(userId, collectionId)) {
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        }
+        teamsService.removeCollectionFromTeam(teamId, collectionId);
+        return successResponse();
+    }
+
+    // TODO: 14/02/2025 TO COMMENT
+    @DeleteMapping(
+            headers = TOKEN_KEY,
+            path = "/{" + TEAM_IDENTIFIER_KEY + "}/" + LINKS_KEY + "/{" + LINK_IDENTIFIER_KEY + "}"
+    )
+    @RequestPath(path = "/api/v1/users/{user_id}/teams/{team_id}/links/{link_id}", method = DELETE)
+    public String removeLinkFromTeam(
+            @RequestHeader(TOKEN_KEY) String token,
+            @PathVariable(USER_IDENTIFIER_KEY) String userId,
+            @PathVariable(TEAM_IDENTIFIER_KEY) String teamId,
+            @PathVariable(LINK_IDENTIFIER_KEY) String linkId
+    ) {
+        if (isUserNotAuthorized(userId, token, teamId) || !userItem.isAdmin(userId) ||
+                !userItem.isTheLinkOwner(userId, linkId)) {
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        }
+        teamsService.removeLinkFromTeam(teamId, linkId);
+        return successResponse();
+    }
+
     /**
      * Method to change the role of a member
      *

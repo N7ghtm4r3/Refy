@@ -301,6 +301,22 @@ public class Team extends RefyItem {
         return memberId.equals(owner.getId());
     }
 
+    // TODO: 14/02/2025 TO COMMENT
+    public boolean isTheCollectionOwner(String memberId, String collectionId) {
+        for (LinksCollection collection : collections)
+            if (collection.getId().equals(collectionId) && collection.getOwner().getId().equals(memberId))
+                return true;
+        return false;
+    }
+
+    // TODO: 14/02/2025 TO COMMENT
+    public boolean isTheLinkOwner(String memberId, String linkId) {
+        for (RefyLink link : links)
+            if (link.getId().equals(linkId) && link.getOwner().getId().equals(memberId))
+                return true;
+        return false;
+    }
+
     /**
      * The {@code RefyTeamMember} class is useful to represent a member of a team
      *
@@ -483,24 +499,6 @@ public class Team extends RefyItem {
         public TeamRole getRole() {
             return role;
         }
-
-        /**
-         * Method to assemble and return an {@link ArrayList} of members
-         *
-         * @param jMembers: members list details formatted as JSON
-         *
-         * @return the members list as {@link ArrayList} of {@link RefyTeamMember}
-         */
-        // TODO: 03/02/2025 CHECK TO REMOVE
-        /*@Returner
-        public static ArrayList<RefyTeamMember> returnMembers(JSONArray jMembers) {
-            ArrayList<RefyTeamMember> members = new ArrayList<>();
-            if (jMembers == null)
-                return members;
-            for (int j = 0; j < jMembers.length(); j++)
-                members.add(new RefyTeamMember(jMembers.getJSONObject(j)));
-            return members;
-        }*/
 
     }
 

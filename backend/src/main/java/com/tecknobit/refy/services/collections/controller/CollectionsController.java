@@ -303,7 +303,8 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
             @RequestHeader(TOKEN_KEY) String token,
             @PathVariable(USER_IDENTIFIER_KEY) String userId,
             @PathVariable(COLLECTION_IDENTIFIER_KEY) String collectionId,
-            @PathVariable(LINK_IDENTIFIER_KEY) String linkId) {
+            @PathVariable(LINK_IDENTIFIER_KEY) String linkId
+    ) {
         if (isUserNotAuthorized(userId, token, collectionId))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         if (!userItem.getLinkIds().contains(linkId))
@@ -322,7 +323,8 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
             @RequestHeader(TOKEN_KEY) String token,
             @PathVariable(USER_IDENTIFIER_KEY) String userId,
             @PathVariable(COLLECTION_IDENTIFIER_KEY) String collectionId,
-            @PathVariable(TEAM_IDENTIFIER_KEY) String teamId) {
+            @PathVariable(TEAM_IDENTIFIER_KEY) String teamId
+    ) {
         if (isUserNotAuthorized(userId, token, collectionId))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         if (!userItem.isUserAllowedToRemoveTeam(userId, teamId))

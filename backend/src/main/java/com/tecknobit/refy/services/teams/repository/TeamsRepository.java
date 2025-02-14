@@ -254,6 +254,34 @@ public interface TeamsRepository extends RefyItemsRepository<Team> {
             @Param(OWNER_KEY) String owner
     );
 
+    // TODO: 14/02/2025 TO COMMENT
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query(
+            value = "DELETE FROM " + COLLECTIONS_TEAMS_TABLE + _WHERE_ +
+                    TEAM_IDENTIFIER_KEY + "=:" + TEAM_IDENTIFIER_KEY +
+                    " AND " + COLLECTION_IDENTIFIER_KEY + "=:" + COLLECTION_IDENTIFIER_KEY,
+            nativeQuery = true
+    )
+    void removeCollectionFromTeam(
+            @Param(TEAM_IDENTIFIER_KEY) String teamId,
+            @Param(COLLECTION_IDENTIFIER_KEY) String collectionId
+    );
+
+    // TODO: 14/02/2025 TO COMMENT
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query(
+            value = "DELETE FROM " + TEAMS_LINKS_TABLE + _WHERE_ +
+                    TEAM_IDENTIFIER_KEY + "=:" + TEAM_IDENTIFIER_KEY +
+                    " AND " + LINK_IDENTIFIER_KEY + "=:" + LINK_IDENTIFIER_KEY,
+            nativeQuery = true
+    )
+    void removeLinkFromTeam(
+            @Param(TEAM_IDENTIFIER_KEY) String teamId,
+            @Param(LINK_IDENTIFIER_KEY) String linkId
+    );
+
     /**
      * Method to execute the query to change a role of a member
      *

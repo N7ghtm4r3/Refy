@@ -6,6 +6,8 @@ import com.tecknobit.refy.batchitems.TeamCollectionBatchItem;
 import com.tecknobit.refy.batchitems.TeamLinkBatchItem;
 import com.tecknobit.refy.configuration.indexes.IndexesCreator;
 import com.tecknobit.refy.helpers.RefyResourcesManager;
+import com.tecknobit.refy.services.collections.entity.LinksCollection;
+import com.tecknobit.refy.services.links.entity.RefyLink;
 import com.tecknobit.refy.services.shared.services.RefyItemRetriever;
 import com.tecknobit.refy.services.teams.batchquery.TeamMemberBatchItem;
 import com.tecknobit.refy.services.teams.batchquery.TeamMembersBatchQuery;
@@ -27,6 +29,7 @@ import java.util.*;
 import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.InsertCommand.INSERT_INTO;
 import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.InsertCommand.REPLACE_INTO;
 import static com.tecknobit.refy.batchitems.TeamCollectionBatchItem.TEAM_COLLECTION_JOIN_TABLE_COLUMNS;
+import static com.tecknobit.refy.configuration.indexes.IndexesCreator.formatFullTextKeywords;
 import static com.tecknobit.refy.services.teams.batchquery.TeamMembersBatchQuery.MEMBERS_TABLE_COLUMNS;
 import static com.tecknobit.refycore.ConstantsKt.*;
 import static com.tecknobit.refycore.helpers.RefyInputsValidator.INSTANCE;
@@ -355,6 +358,50 @@ public class TeamsService extends EquinoxItemsHelper implements RefyResourcesMan
             }
         };
         syncBatch(model, COLLECTIONS_TEAMS_TABLE, batchQuery);
+    }
+
+
+    /**
+     * Method to get the collections shared with the team
+     *
+     * @param teamId   The identifier of the team
+     * @param page     The page requested
+     * @param pageSize The size of the items to insert in the page
+     * @return the collection teams as {@link PaginatedResponse} of {@link LinksCollection}
+     */
+    public PaginatedResponse<LinksCollection> getTeamCollections(String teamId, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        /*long totalTeams = teamsRepository.countCollectionTeams(collectionId);
+        List<Team> teams = teamsRepository.getCollectionTeams(collectionId, pageable);*/
+        return new PaginatedResponse<>(teams, page, pageSize, totalTeams);
+    }
+
+    /**
+     * Method to get the links shared in a team
+     *
+     * @param teamId   The identifier of the team
+     * @param page     The page requested
+     * @param pageSize The size of the items to insert in the page
+     * @param keywords The keywords used to filter the query to retrieve the items
+     * @return the collection links as {@link PaginatedResponse} of {@link RefyLink}
+     */
+    public PaginatedResponse<RefyLink> getTeamLinks(String teamId, int page, int pageSize, Set<String> keywords) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        String fullTextMatcher = formatFullTextKeywords(keywords, "*", true);
+        long totalLinks = linksRepository.countCollectionLinks(collectionId, fullTextMatcher);
+        List<RefyLink> links = linksRepository.getCollectionLinks(collectionId, fullTextMatcher, pageable);
+        return new PaginatedResponse<>(links, page, pageSize, totalLinks);
+    }
+
+
+    // TODO: 14/02/2025 TO COMMENT
+    public void removeCollectionFromTeam(String teamId, String collectionId) {
+        teamsRepository.removeCollectionFromTeam(teamId, collectionId);
+    }
+
+    // TODO: 14/02/2025 TO COMMENT
+    public void removeLinkFromTeam(String teamId, String linkId) {
+        teamsRepository.removeLinkFromTeam(teamId, linkId);
     }
 
     /**

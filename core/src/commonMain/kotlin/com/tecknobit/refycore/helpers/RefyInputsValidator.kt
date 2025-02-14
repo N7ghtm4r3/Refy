@@ -77,16 +77,15 @@ object RefyInputsValidator : InputsValidator() {
      * @param color: color of the collection
      * @param title Title of the collection
      * @param description: description to check the validity
-     * @param links: list of links shared in a collection
+     *
      * @return whether payload is valid or not as `boolean`
      */
     fun isCollectionPayloadValid(
         color: String,
         title: String,
         description: String?,
-        links: List<String?>,
     ): Boolean {
-        return isCollectionColorValid(color) && isTitleValid(title) && isDescriptionValid(description) && !links.isEmpty()
+        return isCollectionColorValid(color) && isTitleValid(title) && isDescriptionValid(description)
     }
 
     /**

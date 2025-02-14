@@ -2,6 +2,7 @@ package com.tecknobit.refy.services.collections.controller;
 
 import com.tecknobit.apimanager.annotations.RequestPath;
 import com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController;
+import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
 import com.tecknobit.refy.services.collections.entity.LinksCollection;
 import com.tecknobit.refy.services.shared.controllers.DefaultRefyController;
 import org.springframework.web.bind.annotation.*;
@@ -57,11 +58,11 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
     ) {
         if(!isMe(userId, token))
             return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        List<LinksCollection> collections;
+        PaginatedResponse<LinksCollection> collections;
         if(ownedOnly)
-            collections = linksCollectionsService.getUserOwnedCollections(userId);
+            collections = linksCollectionsService.getUserOwnedCollections(userId, page, pageSize);
         else
-            collections = linksCollectionsService.getAllUserCollections(userId);
+            collections = linksCollectionsService.getAllUserCollections(userId, page, pageSize, keywords);
         return (T) successResponse(collections);
     }
 
@@ -103,7 +104,7 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
         String description = jsonHelper.getString(DESCRIPTION_KEY);
         ArrayList<String> links = jsonHelper.fetchList(LINKS_KEY, new ArrayList<>());
         HashSet<String> userLinks = linksService.getUserLinks(userId);
-        if(!userLinks.containsAll(links) || !INSTANCE.isCollectionPayloadValid(color, title, description, links))
+        if (!userLinks.containsAll(links) || !INSTANCE.isCollectionPayloadValid(color, title, description))
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         linksCollectionsService.createCollection(userId, generateIdentifier(), color, title, description, links);
         return successResponse();
@@ -148,7 +149,7 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
         String title = jsonHelper.getString(TITLE_KEY);
         String description = jsonHelper.getString(DESCRIPTION_KEY);
         ArrayList<String> links = jsonHelper.fetchList(LINKS_KEY, new ArrayList<>());
-        if(!INSTANCE.isCollectionPayloadValid(color, title, description, links))
+        if (!INSTANCE.isCollectionPayloadValid(color, title, description))
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         return editAttachmentsList(payload, LINKS_KEY, new AttachmentsManagement() {
 

@@ -3,6 +3,7 @@ package com.tecknobit.refy.services.collections.repository;
 import com.tecknobit.refy.services.collections.entity.LinksCollection;
 import com.tecknobit.refy.services.shared.repositories.RefyItemsRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,7 +14,9 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 
+import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper._WHERE_;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.IDENTIFIER_KEY;
+import static com.tecknobit.refy.configuration.indexes.IndexesCreator._IN_BOOLEAN_MODE;
 import static com.tecknobit.refycore.ConstantsKt.*;
 
 /**
@@ -41,45 +44,114 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
                     " ORDER BY " + DATE_KEY + " DESC",
             nativeQuery = true
     )
+    // TODO: 13/02/2025 TO REMOVE
     HashSet<String> getUserCollections(
             @Param(OWNER_KEY) String owner
     );
 
     /**
-     * Method to execute the query to get the user's owned collections
+     * Method to count get the user owned collections
      *
      * @param userId The identifier of the user
+     *
+     * @return the user collections as {@code long}
+     */
+    @Query(
+            value = "SELECT COUNT(*) FROM " + COLLECTIONS_KEY + _WHERE_ +
+                    OWNER_KEY + "=:" + USER_IDENTIFIER_KEY,
+            nativeQuery = true
+    )
+    long countUserOwnedCollections(
+            @Param(USER_IDENTIFIER_KEY) String userId
+    );
+
+    /**
+     * Method to execute the query to get the user owned collections
+     *
+     * @param userId The identifier of the user
+     * @param pageable The parameters to paginate the query
      *
      * @return the user collections as {@link List} of {@link LinksCollection}
      */
     @Query(
-            value = "SELECT c.* FROM " + COLLECTIONS_KEY + " as c WHERE c." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
+            value = "SELECT * FROM " + COLLECTIONS_KEY + _WHERE_ +
+                    OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
                     " ORDER BY " + DATE_KEY + " DESC",
             nativeQuery = true
     )
     List<LinksCollection> getUserOwnedCollections(
-            @Param(USER_IDENTIFIER_KEY) String userId
+            @Param(USER_IDENTIFIER_KEY) String userId,
+            Pageable pageable
+    );
+
+    /**
+     * Method to count all the user's collections, included the collections shared in the teams
+     *
+     * @param userId   The identifier of the user
+     * @param keywords The keywords used to filter the query to retrieve the items
+     * @return the user collections as {@code long}
+     */
+    @Query(
+            value = "SELECT ( " +
+                    "    ( " +
+                    "        SELECT COUNT(*) " +
+                    "        FROM " + COLLECTIONS_KEY + " AS c " + _WHERE_ + " c." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
+                    "        AND ( " +
+                    "            MATCH(c." + TITLE_KEY + ", c." + DESCRIPTION_KEY + ") AGAINST (:" + KEYWORDS_KEY + _IN_BOOLEAN_MODE + ") " +
+                    "            OR :" + KEYWORDS_KEY + " =''" +
+                    "        ) " +
+                    "    ) + " +
+                    "    ( " +
+                    "        SELECT COUNT(*) " +
+                    "        FROM " + COLLECTIONS_KEY + " AS c " +
+                    "        INNER JOIN " + COLLECTIONS_TEAMS_TABLE + " ON c." + IDENTIFIER_KEY + " = " +
+                    COLLECTIONS_TEAMS_TABLE + "." + COLLECTION_IDENTIFIER_KEY + " " +
+                    "        INNER JOIN " + MEMBERS_KEY + " ON " + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY + " " +
+                    "        WHERE " + MEMBERS_KEY + "." + OWNER_KEY + " = :" + USER_IDENTIFIER_KEY +
+                    "        AND ( " +
+                    "            MATCH(c." + TITLE_KEY + ", c." + DESCRIPTION_KEY + ") AGAINST (:" + KEYWORDS_KEY + _IN_BOOLEAN_MODE + ") " +
+                    "            OR :" + KEYWORDS_KEY + "=''" +
+                    "        ) " +
+                    "    ) " +
+                    ")",
+            nativeQuery = true
+    )
+    long countAllUserCollections(
+            @Param(USER_IDENTIFIER_KEY) String userId,
+            @Param(KEYWORDS_KEY) String keywords
     );
 
     /**
      * Method to execute the query to get all the user's collections, included the collections shared in the teams
      *
      * @param userId The identifier of the user
+     * @param keywords The keywords used to filter the query to retrieve the items
+     * @param pageable The parameters to paginate the query
      *
      * @return the user collections as {@link List} of {@link LinksCollection}
      */
     @Query(
-            value = "SELECT c.* FROM " + COLLECTIONS_KEY + " as c WHERE c." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
-                    " UNION " +
-                    "SELECT c.* FROM " + COLLECTIONS_KEY + " as c INNER JOIN " + COLLECTIONS_TEAMS_TABLE + " ON c." +
+            value = "SELECT c.* FROM " + COLLECTIONS_KEY + " AS c " + _WHERE_ + " c."
+                    + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
+                    " AND ( " +
+                    "    MATCH(c." + TITLE_KEY + ", c." + DESCRIPTION_KEY + ") AGAINST (:" + KEYWORDS_KEY + _IN_BOOLEAN_MODE + ") " +
+                    "    OR :" + KEYWORDS_KEY + " = '' " +
+                    ") UNION " +
+                    "SELECT c.* FROM " + COLLECTIONS_KEY + " AS c INNER JOIN " + COLLECTIONS_TEAMS_TABLE + " ON c." +
                     IDENTIFIER_KEY + " = " + COLLECTIONS_TEAMS_TABLE + "." + COLLECTION_IDENTIFIER_KEY + " INNER JOIN " +
-                    MEMBERS_KEY + " ON " + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY + " WHERE " + MEMBERS_KEY + "." +
-                    OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
+                    MEMBERS_KEY + " ON " + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY +
+                    " WHERE " + MEMBERS_KEY + "." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
+                    " AND ( " +
+                    "    MATCH(c." + TITLE_KEY + ", c." + DESCRIPTION_KEY + ") AGAINST (:" + KEYWORDS_KEY + _IN_BOOLEAN_MODE + ") " +
+                    "    OR :" + KEYWORDS_KEY + " = '' " +
+                    ")" +
                     " ORDER BY " + DATE_KEY + " DESC",
             nativeQuery = true
     )
     List<LinksCollection> getAllUserCollections(
-            @Param(USER_IDENTIFIER_KEY) String userId
+            @Param(USER_IDENTIFIER_KEY) String userId,
+            @Param(KEYWORDS_KEY) String keywords,
+            Pageable pageable
     );
 
     /**

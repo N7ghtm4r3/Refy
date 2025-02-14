@@ -40,6 +40,7 @@ public abstract class DefaultRefyController<I extends RefyItem> extends EquinoxC
      *
      * @author N7ghtm4r3 - Tecknobit
      */
+    // TODO: 13/02/2025 TO REMOVE
     public interface AttachmentsManagement {
 
         /**
@@ -191,6 +192,7 @@ public abstract class DefaultRefyController<I extends RefyItem> extends EquinoxC
      * @param management The management to execute
      * @return the response message as {@link String}
      */
+    // TODO: 13/02/2025 TO REMOVE
     @Wrapper
     public String editAttachmentsList(Map<String, Object> payload, String attachmentsKey, AttachmentsManagement management) {
         return editAttachmentsList(payload, true, attachmentsKey, management);
@@ -205,6 +207,7 @@ public abstract class DefaultRefyController<I extends RefyItem> extends EquinoxC
      * @param management The management to execute
      * @return the response message as {@link String}
      */
+    // TODO: 13/02/2025 TO REMOVE
     public String editAttachmentsList(Map<String, Object> payload, boolean itemsListCanBeEmpty, String attachmentsKey,
                                       AttachmentsManagement management) {
         loadJsonHelper(payload);

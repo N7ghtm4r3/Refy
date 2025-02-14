@@ -1,14 +1,22 @@
 package com.tecknobit.refy.services.collections.service;
 
 import com.tecknobit.apimanager.annotations.Wrapper;
+import com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper;
+import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
+import com.tecknobit.refy.configuration.indexes.IndexesCreator;
 import com.tecknobit.refy.services.collections.entity.LinksCollection;
 import com.tecknobit.refy.services.collections.repository.CollectionsRepository;
-import com.tecknobit.refy.services.shared.services.RefyItemsHelper;
+import com.tecknobit.refy.services.shared.services.RefyItemRetriever;
+import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.tecknobit.refycore.ConstantsKt.*;
 
@@ -16,14 +24,17 @@ import static com.tecknobit.refycore.ConstantsKt.*;
  * The {@code LinksCollectionsHelper} class is useful to manage all the {@link LinksCollection} database operations
  *
  * @author N7ghtm4r3 - Tecknobit
- * @see RefyItemsHelper
+ *
+ * @see EquinoxItemsHelper
+ * @see LinksCollection
  */
 @Service
-public class LinksCollectionsService extends RefyItemsHelper<LinksCollection> {
+public class LinksCollectionsService extends EquinoxItemsHelper implements RefyItemRetriever<LinksCollection> {
 
     /**
      * {@code ATTACH_COLLECTION_TO_LINKS_QUERY} the query used to attach links to a collection
      */
+    // TODO: 13/02/2025 TO REMOVE
     protected static final String ATTACH_COLLECTION_TO_LINKS_QUERY =
             "REPLACE INTO " + COLLECTIONS_LINKS_TABLE +
                     "(" +
@@ -35,6 +46,7 @@ public class LinksCollectionsService extends RefyItemsHelper<LinksCollection> {
     /**
      * {@code DETACH_COLLECTION_FROM_LINKS_QUERY} the query used to detach links from a collection
      */
+    // TODO: 13/02/2025 TO REMOVE
     private static final String DETACH_COLLECTION_FROM_LINKS_QUERY =
             "DELETE FROM " + COLLECTIONS_LINKS_TABLE + " WHERE "
                     + COLLECTION_IDENTIFIER_KEY + "='%s' " + "AND " + LINK_IDENTIFIER_KEY + " IN (";
@@ -42,6 +54,7 @@ public class LinksCollectionsService extends RefyItemsHelper<LinksCollection> {
     /**
      * {@code ATTACH_COLLECTION_TO_TEAM_QUERY} the query used to share a collection with teams
      */
+    // TODO: 13/02/2025 TO REMOVE
     private static final String ATTACH_COLLECTION_TO_TEAM_QUERY =
             "REPLACE INTO " + COLLECTIONS_TEAMS_TABLE +
                     "(" +
@@ -53,6 +66,7 @@ public class LinksCollectionsService extends RefyItemsHelper<LinksCollection> {
     /**
      * {@code DETACH_COLLECTION_FROM_TEAMS_QUERY} the query used to remove a collection from teams
      */
+    // TODO: 13/02/2025 TO REMOVE
     private static final String DETACH_COLLECTION_FROM_TEAMS_QUERY =
             "DELETE FROM " + COLLECTIONS_TEAMS_TABLE + " WHERE "
                     + COLLECTION_IDENTIFIER_KEY + "='%s' " + "AND " + TEAM_IDENTIFIER_KEY + " IN (";
@@ -70,6 +84,7 @@ public class LinksCollectionsService extends RefyItemsHelper<LinksCollection> {
      *
      * @return the identifiers of the owned user collections as {@link HashSet} of {@link String}
      */
+    // TODO: 13/02/2025 TO REMOVE
     public HashSet<String> getUserCollections(String userId) {
         return collectionsRepository.getUserCollections(userId);
     }
@@ -78,22 +93,35 @@ public class LinksCollectionsService extends RefyItemsHelper<LinksCollection> {
      * Method to get the user's owned collections
      *
      * @param userId The identifier of the user
+     * @param page      The page requested
+     * @param pageSize  The size of the items to insert in the page
      *
-     * @return the user collections as {@link List} of {@link LinksCollection}
+     * @return the user collections as {@link PaginatedResponse} of {@link LinksCollection}
      */
-    public List<LinksCollection> getUserOwnedCollections(String userId) {
-        return collectionsRepository.getUserOwnedCollections(userId);
+    public PaginatedResponse<LinksCollection> getUserOwnedCollections(String userId, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        long totalCollections = collectionsRepository.countUserOwnedCollections(userId);
+        List<LinksCollection> collections = collectionsRepository.getUserOwnedCollections(userId, pageable);
+        return new PaginatedResponse<>(collections, page, pageSize, totalCollections);
     }
 
     /**
      * Method to get all the user's collections, included the collections shared in the teams
      *
      * @param userId The identifier of the user
+     * @param page      The page requested
+     * @param pageSize  The size of the items to insert in the page
+     * @param keywords The keywords used to filter the query to retrieve the items
      *
      * @return the user collections as {@link List} of {@link LinksCollection}
      */
-    public List<LinksCollection> getAllUserCollections(String userId) {
-        return collectionsRepository.getAllUserCollections(userId);
+    public PaginatedResponse<LinksCollection> getAllUserCollections(String userId, int page, int pageSize,
+                                                                    Set<String> keywords) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        String fullTextMatcher = IndexesCreator.formatFullTextKeywords(keywords, "*", true);
+        long totalCollections = collectionsRepository.countAllUserCollections(userId, fullTextMatcher);
+        List<LinksCollection> collections = collectionsRepository.getAllUserCollections(userId, fullTextMatcher, pageable);
+        return new PaginatedResponse<>(collections, page, pageSize, totalCollections);
     }
 
     /**
@@ -109,11 +137,23 @@ public class LinksCollectionsService extends RefyItemsHelper<LinksCollection> {
     public void createCollection(String userId, String collectionId, String color, String title, String description,
                                  List<String> links) {
         collectionsRepository.saveCollection(collectionId, color, title, description, System.currentTimeMillis(), userId);
-        executeInsertBatch(ATTACH_COLLECTION_TO_LINKS_QUERY, RELATIONSHIP_VALUES_SLICE, links, query -> {
-            int index = 1;
-            for (String link : links) {
-                query.setParameter(index++, link);
-                query.setParameter(index++, collectionId);
+        batchInsert(InsertCommand.INSERT_INTO, COLLECTIONS_LINKS_TABLE, new BatchQuery<String>() {
+            @Override
+            public Collection<String> getData() {
+                return links;
+            }
+
+            @Override
+            public void prepareQuery(Query query, int index, Collection<String> links) {
+                for (String link : links) {
+                    query.setParameter(index++, collectionId);
+                    query.setParameter(index++, link);
+                }
+            }
+
+            @Override
+            public String[] getColumns() {
+                return new String[]{COLLECTION_IDENTIFIER_KEY, LINK_IDENTIFIER_KEY};
             }
         });
     }
@@ -150,6 +190,7 @@ public class LinksCollectionsService extends RefyItemsHelper<LinksCollection> {
      * @param links The links attached to the collections
      */
     @Wrapper
+    // TODO: 13/02/2025 TO REMOVE
     public void manageCollectionLinks(String collectionId, List<String> links) {
         manageCollectionLinks(collectionsRepository.findById(collectionId).orElseThrow(), links);
     }
@@ -160,8 +201,9 @@ public class LinksCollectionsService extends RefyItemsHelper<LinksCollection> {
      * @param collection The collection where the link are attached
      * @param links The links attached to the collections
      */
+    // TODO: 13/02/2025 TO REMOVE
     private void manageCollectionLinks(LinksCollection collection, List<String> links) {
-        String collectionId = collection.getId();
+       /* String collectionId = collection.getId();
         manageAttachments(
                 new AttachmentsManagementWorkflow() {
 
@@ -182,7 +224,7 @@ public class LinksCollectionsService extends RefyItemsHelper<LinksCollection> {
                 },
                 collectionId,
                 links
-        );
+        );*/
     }
 
     /**
@@ -191,9 +233,11 @@ public class LinksCollectionsService extends RefyItemsHelper<LinksCollection> {
      * @param collectionId The identifier of the collection
      * @param teams The teams where the collection is shared
      */
+    // TODO: 13/02/2025 TO REMOVE
     public void manageCollectionTeams(String collectionId, List<String> teams) {
         LinksCollection collection = collectionsRepository.findById(collectionId).orElseThrow();
-        manageAttachments(
+        /*
+        return new String[]{COLLECTION_IDENTIFIER_KEY, LINK_IDENTIFIER_KEY}; manageAttachments(
                 new AttachmentsManagementWorkflow() {
 
                     @Override
@@ -213,7 +257,7 @@ public class LinksCollectionsService extends RefyItemsHelper<LinksCollection> {
                 },
                 collectionId,
                 teams
-        );
+        );*/
     }
 
     /**

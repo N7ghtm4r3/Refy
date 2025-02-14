@@ -27,41 +27,6 @@ import static com.tecknobit.refycore.ConstantsKt.*;
 public class LinksService extends LinksBaseService<RefyLink> {
 
     /**
-     * {@code ATTACH_LINK_TO_COLLECTIONS_QUERY} the query used to attach link to collections
-     */
-    protected static final String ATTACH_LINK_TO_COLLECTIONS_QUERY =
-            "REPLACE INTO " + COLLECTIONS_LINKS_TABLE +
-                    "(" +
-                    COLLECTION_IDENTIFIER_KEY + "," +
-                    LINK_IDENTIFIER_KEY +
-                    ")" +
-                    " VALUES ";
-    /**
-     * {@code DETACH_LINK_FROM_COLLECTIONS_QUERY} the query used to detach link from collections
-     */
-    private static final String DETACH_LINK_FROM_COLLECTIONS_QUERY =
-            "DELETE FROM " + COLLECTIONS_LINKS_TABLE + " WHERE "
-                    + LINK_IDENTIFIER_KEY + "='%s' " + "AND " + COLLECTION_IDENTIFIER_KEY + " IN (";
-
-    /**
-     * {@code ATTACH_LINK_TO_TEAMS_QUERY} the query used to attach link to teams
-     */
-    private static final String ATTACH_LINK_TO_TEAMS_QUERY =
-            "REPLACE INTO " + TEAMS_LINKS_TABLE +
-                    "(" +
-                    TEAM_IDENTIFIER_KEY + "," +
-                    LINK_IDENTIFIER_KEY +
-                    ")" +
-                    " VALUES ";
-
-    /**
-     * {@code DETACH_LINK_FROM_TEAMS_QUERY} the query used to detach link from teams
-     */
-    private static final String DETACH_LINK_FROM_TEAMS_QUERY =
-            "DELETE FROM " + TEAMS_LINKS_TABLE + " WHERE "
-                    + LINK_IDENTIFIER_KEY + "='%s' " + "AND " + TEAM_IDENTIFIER_KEY + " IN (";
-
-    /**
      * {@code linksRepository} instance for the links repository
      */
     @Autowired
@@ -74,6 +39,7 @@ public class LinksService extends LinksBaseService<RefyLink> {
      *
      * @return the identifiers of the owned user links as {@link HashSet} of {@link String}
      */
+    // TODO: 13/02/2025 TO REMOVE
     public HashSet<String> getUserLinks(String userId) {
         return linksRepository.getUserLinks(userId);
     }
@@ -82,6 +48,8 @@ public class LinksService extends LinksBaseService<RefyLink> {
      * Method to get the user's owned links
      *
      * @param userId The identifier of the user
+     * @param page      The page requested
+     * @param pageSize  The size of the items to insert in the page
      *
      * @return the user links as {@link PaginatedResponse} of {@link RefyLink}
      */
@@ -150,7 +118,13 @@ public class LinksService extends LinksBaseService<RefyLink> {
         linksRepository.updateLink(linkId, title, thumbnailPreview, description, referenceLink, userId);
     }
 
-    // TODO: 13/02/2025 TO COMMENT
+    /**
+     * Method share the link with collections
+     *
+     * @param userId      The identifier of the user
+     * @param linkId      The token of the user
+     * @param collections The collections where share the link
+     */
     public void shareLinkWithCollections(String userId, String linkId, List<String> collections) {
         SyncBatchModel model = new SyncBatchModel() {
             @Override
@@ -193,6 +167,14 @@ public class LinksService extends LinksBaseService<RefyLink> {
         syncBatch(model, COLLECTIONS_LINKS_TABLE, batchQuery);
     }
 
+    /**
+     * Method share the link with teams
+     *
+     * @param userId The identifier of the user
+     * @param linkId The token of the user
+     * @param teams The teams where share the link
+     *
+     */
     public void shareLinkWithTeams(String userId, String linkId, List<String> teams) {
         SyncBatchModel model = new SyncBatchModel() {
             @Override

@@ -46,6 +46,7 @@ public interface LinksRepository extends LinksBaseRepository<RefyLink> {
                     " ORDER BY " + DATE_KEY + " DESC",
             nativeQuery = true
     )
+    // TODO: 13/02/2025 TO REMOVE
     HashSet<String> getUserLinks(
             @Param(OWNER_KEY) String owner
     );
@@ -57,7 +58,8 @@ public interface LinksRepository extends LinksBaseRepository<RefyLink> {
      * @return the count of the user links as {@code long}
      */
     @Query(
-            value = "SELECT COUNT(*) FROM " + LINKS_KEY + _WHERE_ + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
+            value = "SELECT COUNT(*) FROM " + LINKS_KEY + _WHERE_
+                    + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
                     " AND dtype='" + LINK_KEY + "'",
             nativeQuery = true
     )
@@ -74,7 +76,7 @@ public interface LinksRepository extends LinksBaseRepository<RefyLink> {
      * @return the user links as {@link List} of {@link RefyLink}
      */
     @Query(
-            value = "SELECT l.* FROM " + LINKS_KEY + _WHERE_ + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
+            value = "SELECT * FROM " + LINKS_KEY + _WHERE_ + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
                     " AND dtype='" + LINK_KEY + "'" +
                     " ORDER BY " + DATE_KEY + " DESC",
             nativeQuery = true
@@ -128,6 +130,7 @@ public interface LinksRepository extends LinksBaseRepository<RefyLink> {
      * collections shared in the teams
      *
      * @param userId The identifier of the user
+     * @param keywords The keywords used to filter the query to retrieve the items
      * @param pageable  The parameters to paginate the query
      *
      * @return the user links as {@link List} of {@link RefyLink}

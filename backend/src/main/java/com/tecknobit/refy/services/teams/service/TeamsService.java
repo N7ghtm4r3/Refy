@@ -2,6 +2,8 @@ package com.tecknobit.refy.services.teams.service;
 
 import com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
+import com.tecknobit.refy.batchitems.TeamCollectionBatchItem;
+import com.tecknobit.refy.batchitems.TeamLinkBatchItem;
 import com.tecknobit.refy.configuration.indexes.IndexesCreator;
 import com.tecknobit.refy.helpers.RefyResourcesManager;
 import com.tecknobit.refy.services.shared.services.RefyItemRetriever;
@@ -23,6 +25,8 @@ import java.io.IOException;
 import java.util.*;
 
 import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.InsertCommand.INSERT_INTO;
+import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.InsertCommand.REPLACE_INTO;
+import static com.tecknobit.refy.batchitems.TeamCollectionBatchItem.TEAM_COLLECTION_JOIN_TABLE_COLUMNS;
 import static com.tecknobit.refy.services.teams.batchquery.TeamMembersBatchQuery.MEMBERS_TABLE_COLUMNS;
 import static com.tecknobit.refycore.ConstantsKt.*;
 import static com.tecknobit.refycore.helpers.RefyInputsValidator.INSTANCE;
@@ -247,69 +251,111 @@ public class TeamsService extends EquinoxItemsHelper implements RefyResourcesMan
         syncBatch(model, MEMBERS_KEY, batchQuery);
     }
 
-    /*
-     * Method to manage the links attached to a team
-     *
-     * @param teamId The identifier of the team
-     * @param links The links to attach or detach from a team
-     /
-    public void manageTeamLinks(String teamId, List<String> links) {
-        Team team = teamsRepository.findById(teamId).orElseThrow();
-        manageAttachments(
-                new AttachmentsManagementWorkflow() {
-
-                    @Override
-                    public List<String> getIds() {
-                        return team.getLinkIds();
-                    }
-
-                    @Override
-                    public String insertQuery() {
-                        return ATTACH_TEAM_TO_LINKS_QUERY;
-                    }
-
-                    @Override
-                    public String deleteQuery() {
-                        return DETACH_TEAM_FROM_LINKS_QUERY;
-                    }
-
-                },
-                teamId,
-                links
-        );
-    }*
-
     /**
-     * Method to manage the collections shared with a team
+     * Method to execute a batch synchronization of a list of data simultaneously
      *
-     * @param teamId The identifier of the team
-     * @param collections The collections to attach or detach from a team
-     *
-    public void manageTeamCollections(String teamId, List<String> collections) {
-        Team team = teamsRepository.findById(teamId).orElseThrow();
-        manageAttachments(
-                new AttachmentsManagementWorkflow() {
+     * @param model Contains the data about the synchronization such the columns affected and the current list of the data
+     * @param table The table where execute the synchronization of the data
+     * @param batchQuery The manager of the batch query to execute
+     */
+    @Override
+    @Deprecated(since = "USE THE EQUINOX BUILT-IN")
+    protected <V> void syncBatch(SyncBatchModel model, String table, BatchQuery<V> batchQuery) {
+        Collection<V> updatedData = batchQuery.getData();
+        Collection<V> currentData = model.getCurrentData();
+        batchInsert(REPLACE_INTO, table, batchQuery);
+        currentData.removeAll(updatedData);
+        batchDelete(table, currentData, model.getDeletingColumns());
+        model.afterSync();
+    }
 
-                    @Override
-                    public List<String> getIds() {
-                        return team.getCollectionsIds();
-                    }
+    // TODO: 14/02/2025 TO COMMENT
+    // FIXME: 14/02/2025 USE THE BatchSynchronizationProcedure WHEN IMPLEMENTED
+    public void shareLinksWithTeam(String userId, String teamId, List<String> links) {
+        SyncBatchModel model = new SyncBatchModel() {
+            @Override
+            public Collection<TeamLinkBatchItem> getCurrentData() {
+                Team team = getItemIfAllowed(userId, teamId);
+                List<String> linkIds = team.getLinkIds();
+                ArrayList<TeamLinkBatchItem> teamLinkBatchItems = new ArrayList<>();
+                for (String linkId : linkIds)
+                    teamLinkBatchItems.add(new TeamLinkBatchItem(teamId, linkId));
+                return teamLinkBatchItems;
+            }
 
-                    @Override
-                    public String insertQuery() {
-                        return ATTACH_TEAM_TO_COLLECTIONS_QUERY;
-                    }
+            @Override
+            public String[] getDeletingColumns() {
+                return new String[]{TEAM_IDENTIFIER_KEY, LINK_IDENTIFIER_KEY};
+            }
+        };
+        BatchQuery<TeamLinkBatchItem> batchQuery = new BatchQuery<>() {
+            @Override
+            public Collection<TeamLinkBatchItem> getData() {
+                ArrayList<TeamLinkBatchItem> teamLinkBatchItems = new ArrayList<>();
+                for (String linkId : links)
+                    teamLinkBatchItems.add(new TeamLinkBatchItem(teamId, linkId));
+                return teamLinkBatchItems;
+            }
 
-                    @Override
-                    public String deleteQuery() {
-                        return DETACH_TEAM_FROM_COLLECTIONS_QUERY;
-                    }
+            @Override
+            public void prepareQuery(Query query, int index, Collection<TeamLinkBatchItem> items) {
+                for (TeamLinkBatchItem element : items) {
+                    query.setParameter(index++, element.getOwner());
+                    query.setParameter(index++, element.getOwned());
+                }
+            }
 
-                },
-                teamId,
-                collections
-        );
-    }*/
+            @Override
+            public String[] getColumns() {
+                return new String[]{TEAM_IDENTIFIER_KEY, LINK_IDENTIFIER_KEY};
+            }
+        };
+        syncBatch(model, TEAMS_LINKS_TABLE, batchQuery);
+    }
+
+    // TODO: 14/02/2025 TO COMMENT
+    // FIXME: 14/02/2025 USE THE BatchSynchronizationProcedure WHEN IMPLEMENTED
+    public void shareCollectionsWithTeam(String userId, String teamId, List<String> collections) {
+        SyncBatchModel model = new SyncBatchModel() {
+            @Override
+            public Collection<TeamCollectionBatchItem> getCurrentData() {
+                Team team = getItemIfAllowed(userId, teamId);
+                ArrayList<TeamCollectionBatchItem> teamCollectionBatchItems = new ArrayList<>();
+                List<String> collectionIds = team.getCollectionsIds();
+                for (String collectionId : collectionIds)
+                    teamCollectionBatchItems.add(new TeamCollectionBatchItem(teamId, collectionId));
+                return teamCollectionBatchItems;
+            }
+
+            @Override
+            public String[] getDeletingColumns() {
+                return TEAM_COLLECTION_JOIN_TABLE_COLUMNS;
+            }
+        };
+        BatchQuery<TeamCollectionBatchItem> batchQuery = new BatchQuery<>() {
+            @Override
+            public Collection<TeamCollectionBatchItem> getData() {
+                ArrayList<TeamCollectionBatchItem> teamCollectionBatchItems = new ArrayList<>();
+                for (String collectionId : collections)
+                    teamCollectionBatchItems.add(new TeamCollectionBatchItem(teamId, collectionId));
+                return teamCollectionBatchItems;
+            }
+
+            @Override
+            public void prepareQuery(Query query, int index, Collection<TeamCollectionBatchItem> items) {
+                for (TeamCollectionBatchItem teamCollectionBatchItem : items) {
+                    query.setParameter(index++, teamCollectionBatchItem.getOwner());
+                    query.setParameter(index++, teamCollectionBatchItem.getOwned());
+                }
+            }
+
+            @Override
+            public String[] getColumns() {
+                return TEAM_COLLECTION_JOIN_TABLE_COLUMNS;
+            }
+        };
+        syncBatch(model, COLLECTIONS_TEAMS_TABLE, batchQuery);
+    }
 
     /**
      * Method change the role of a team member

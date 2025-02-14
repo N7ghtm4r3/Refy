@@ -125,6 +125,7 @@ public class LinksService extends LinksBaseService<RefyLink> {
      * @param linkId      The token of the user
      * @param collections The collections where share the link
      */
+    // FIXME: 14/02/2025 USE THE BatchSynchronizationProcedure WHEN IMPLEMENTED
     public void shareLinkWithCollections(String userId, String linkId, List<String> collections) {
         SyncBatchModel model = new SyncBatchModel() {
             @Override
@@ -175,6 +176,7 @@ public class LinksService extends LinksBaseService<RefyLink> {
      * @param teams The teams where share the link
      *
      */
+    // FIXME: 14/02/2025 USE THE BatchSynchronizationProcedure WHEN IMPLEMENTED
     public void shareLinkWithTeams(String userId, String linkId, List<String> teams) {
         SyncBatchModel model = new SyncBatchModel() {
             @Override

@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static com.tecknobit.apimanager.apis.APIRequest.RequestMethod.*;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.TOKEN_KEY;
@@ -25,8 +22,8 @@ import static com.tecknobit.equinoxcore.network.EquinoxBaseEndpointsSet.BASE_EQU
 import static com.tecknobit.equinoxcore.pagination.PaginatedResponse.*;
 import static com.tecknobit.refycore.ConstantsKt.*;
 import static com.tecknobit.refycore.enums.TeamRole.ADMIN;
+import static com.tecknobit.refycore.helpers.RefyEndpointsSet.CHANGE_MEMBER_ROLE_ENDPOINT;
 import static com.tecknobit.refycore.helpers.RefyEndpointsSet.LEAVE_ENDPOINT;
-import static com.tecknobit.refycore.helpers.RefyEndpointsSet.UPDATE_MEMBER_ROLE_ENDPOINT;
 
 /**
  * The {@code TeamsController} class is useful to manage all the {@link Team} operations
@@ -192,7 +189,7 @@ public class TeamsController extends DefaultRefyController<Team> {
     }
 
     /**
-     * Method to manage the links shared with the team
+     * Method to share the links with the team
      *
      * @param userId The identifier of the user
      * @param token The token of the user
@@ -200,7 +197,7 @@ public class TeamsController extends DefaultRefyController<Team> {
      *                 <pre>
      *                      {@code
      *                              {
-     *                                  "links" : ["the links shared with the team"] -> List[String],
+     *                                  "links" : ["the links to share with the team"] -> List[String],
      *                              }
      *                      }
      *                 </pre>
@@ -213,7 +210,7 @@ public class TeamsController extends DefaultRefyController<Team> {
             path = "/{" + TEAM_IDENTIFIER_KEY + "}/" + LINKS_KEY
     )
     @RequestPath(path = "/api/v1/users/{user_id}/teams/{team_id}/links", method = PUT)
-    public String manageLinkTeams(
+    public String shareLinksWithTeam(
             @RequestHeader(TOKEN_KEY) String token,
             @PathVariable(USER_IDENTIFIER_KEY) String userId,
             @PathVariable(TEAM_IDENTIFIER_KEY) String teamId,
@@ -221,28 +218,17 @@ public class TeamsController extends DefaultRefyController<Team> {
     ) {
         if(isUserNotAuthorized(userId, token, teamId) || !userItem.isAdmin(userId))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        return editAttachmentsList(payload, LINKS_KEY, new AttachmentsManagement() {
-
-            @Override
-            public HashSet<String> getUserAttachments() {
-                return linksService.getUserLinks(userId);
-            }
-
-            @Override
-            public List<String> getAttachmentsIds() {
-                return userItem.getLinkIds();
-            }
-
-            @Override
-            public void execute(List<String> links) {
-                //teamsService.manageTeamLinks(teamId, links);
-            }
-
-        });
+        loadJsonHelper(payload);
+        HashSet<String> userLinks = linksService.getUserLinks(userId);
+        List<String> links = jsonHelper.fetchList(LINKS_KEY, new ArrayList<>());
+        if (!userLinks.containsAll(links))
+            return failedResponse(WRONG_PROCEDURE_MESSAGE);
+        teamsService.shareLinksWithTeam(userId, teamId, links);
+        return successResponse();
     }
 
     /**
-     * Method to manage the collections shared with the team
+     * Method to share the collections with the team
      *
      * @param userId The identifier of the user
      * @param token The token of the user
@@ -250,7 +236,7 @@ public class TeamsController extends DefaultRefyController<Team> {
      *                 <pre>
      *                      {@code
      *                              {
-     *                                  "collections" : ["the collections shared with the team"] -> List[String],
+     *                                  "collections" : ["the collections to share with the team"] -> List[String],
      *                              }
      *                      }
      *                 </pre>
@@ -263,7 +249,7 @@ public class TeamsController extends DefaultRefyController<Team> {
             path = "/{" + TEAM_IDENTIFIER_KEY + "}/" + COLLECTIONS_KEY
     )
     @RequestPath(path = "/api/v1/users/{user_id}/teams/{team_id}/collections", method = PUT)
-    public String manageTeamCollections(
+    public String shareCollectionsWithTeam(
             @RequestHeader(TOKEN_KEY) String token,
             @PathVariable(USER_IDENTIFIER_KEY) String userId,
             @PathVariable(TEAM_IDENTIFIER_KEY) String teamId,
@@ -271,24 +257,13 @@ public class TeamsController extends DefaultRefyController<Team> {
     ) {
         if(isUserNotAuthorized(userId, token, teamId) || !userItem.isAdmin(userId))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        return editAttachmentsList(payload, COLLECTIONS_KEY, new AttachmentsManagement() {
-
-            @Override
-            public HashSet<String> getUserAttachments() {
-                return linksCollectionsService.getUserCollections(userId);
-            }
-
-            @Override
-            public List<String> getAttachmentsIds() {
-                return userItem.getCollectionsIds();
-            }
-
-            @Override
-            public void execute(List<String> collections) {
-                //teamsService.manageTeamCollections(teamId, collections);
-            }
-
-        });
+        loadJsonHelper(payload);
+        HashSet<String> userCollections = linksCollectionsService.getUserCollections(userId);
+        List<String> collections = jsonHelper.fetchList(COLLECTIONS_KEY, new ArrayList<>());
+        if (!userCollections.containsAll(collections))
+            return failedResponse(WRONG_PROCEDURE_MESSAGE);
+        teamsService.shareCollectionsWithTeam(userId, teamId, collections);
+        return successResponse();
     }
 
     /**
@@ -334,10 +309,10 @@ public class TeamsController extends DefaultRefyController<Team> {
      */
     @PatchMapping(
             headers = TOKEN_KEY,
-            path = "/{" + TEAM_IDENTIFIER_KEY + "}/" + MEMBERS_KEY + "/{" + MEMBER_IDENTIFIER_KEY + "}" + UPDATE_MEMBER_ROLE_ENDPOINT
+            path = "/{" + TEAM_IDENTIFIER_KEY + "}/" + MEMBERS_KEY + "/{" + MEMBER_IDENTIFIER_KEY + "}" + CHANGE_MEMBER_ROLE_ENDPOINT
     )
     @RequestPath(path = "/api/v1/users/{user_id}/teams/{team_id}/members/{member_id}/updateRole", method = PATCH)
-    public String updateMemberRole(
+    public String changeMemberRole(
             @RequestHeader(TOKEN_KEY) String token,
             @PathVariable(USER_IDENTIFIER_KEY) String userId,
             @PathVariable(TEAM_IDENTIFIER_KEY) String teamId,

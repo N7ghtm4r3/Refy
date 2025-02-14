@@ -15,9 +15,9 @@ object RefyEndpointsSet : EquinoxBaseEndpointsSet() {
     const val CHANGE_TAG_NAME_ENDPOINT: String = "/changeTagName"
 
     /**
-     * `UPDATE_MEMBER_ROLE_ENDPOINT` the endpoint to execute the update of a member role action
+     * `CHANGE_MEMBER_ROLE_ENDPOINT` the endpoint to change the role of a member
      */
-    const val UPDATE_MEMBER_ROLE_ENDPOINT: String = "/updateRole"
+    const val CHANGE_MEMBER_ROLE_ENDPOINT: String = "/changeRole"
 
     /**
      * `LEAVE_ENDPOINT` the endpoint to leave from a team

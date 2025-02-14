@@ -160,6 +160,7 @@ public class LinksCollectionsService extends EquinoxItemsHelper implements RefyI
     }
 
     // TODO: 14/02/2025 TO COMMENT
+    // FIXME: 14/02/2025 USE THE BatchSynchronizationProcedure WHEN IMPLEMENTED
     public void attachLinksToCollection(String collectionId, List<String> links) {
         SyncBatchModel model = new SyncBatchModel() {
             @Override
@@ -208,6 +209,7 @@ public class LinksCollectionsService extends EquinoxItemsHelper implements RefyI
      * @param collectionId The identifier of the collection
      * @param teams The teams where the collection is shared
      */
+    // FIXME: 14/02/2025 USE THE BatchSynchronizationProcedure WHEN IMPLEMENTED
     public void shareCollectionWithTeams(String collectionId, List<String> teams) {
         SyncBatchModel model = new SyncBatchModel() {
             @Override

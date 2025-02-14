@@ -188,21 +188,6 @@ public class RefyUser extends EquinoxUser {
     }
 
     /**
-     * Constructor to init the {@link RefyUser} class
-     *
-     * @param jRefyUser: user details formatted as JSON
-     */
-    // TODO: 03/02/2025 CHECK TO REMOVE
-    /*public RefyUser(JSONObject jRefyUser) {
-        super(jRefyUser);
-        tagName = hItem.getString(TAG_NAME_KEY);
-        links = returnLinks(hItem.getJSONArray(LINKS_KEY));
-        teams = returnTeams(hItem.getJSONArray(TEAMS_KEY));
-        collections = returnCollections(hItem.getJSONArray(COLLECTIONS_KEY));
-        customLinks = returnCustomLinks(hItem.getJSONArray(CUSTOM_LINKS_KEY));
-    }*/
-
-    /**
      * Method to get {@link #tagName} instance
      *
      * @return {@link #tagName} instance as {@link String}
@@ -288,19 +273,5 @@ public class RefyUser extends EquinoxUser {
     public void setCustomLinks(List<CustomRefyLink> customLinks) {
         this.customLinks = customLinks;
     }
-
-    /**
-     * Method to assemble and return a {@link EquinoxUser} instance
-     *
-     * @param jUser: user details formatted as JSON
-     * @return the user instance as {@link EquinoxUser}
-     */
-    // TODO: 03/02/2025 CHECK TO REMOVE
-    /*@Returner
-    public static RefyUser getInstance(JSONObject jUser) {
-        if (jUser != null)
-            return new RefyUser(jUser);
-        return null;
-    }*/
 
 }

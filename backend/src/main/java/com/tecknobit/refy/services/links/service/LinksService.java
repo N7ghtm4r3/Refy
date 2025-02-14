@@ -1,8 +1,8 @@
 package com.tecknobit.refy.services.links.service;
 
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
-import com.tecknobit.refy.services.links.batchitems.CollectionLinkBatchItem;
-import com.tecknobit.refy.services.links.batchitems.TeamLinkBatchItem;
+import com.tecknobit.refy.batchitems.CollectionLinkBatchItem;
+import com.tecknobit.refy.batchitems.TeamLinkBatchItem;
 import com.tecknobit.refy.services.links.entity.RefyLink;
 import com.tecknobit.refy.services.links.repository.LinksRepository;
 import com.tecknobit.refy.services.shared.links.service.LinksBaseService;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+import static com.tecknobit.refy.batchitems.CollectionLinkBatchItem.COLLECTION_LINK_JOIN_TABLE_COLUMNS;
 import static com.tecknobit.refy.configuration.indexes.IndexesCreator.formatFullTextKeywords;
 import static com.tecknobit.refycore.ConstantsKt.*;
 
@@ -39,7 +40,6 @@ public class LinksService extends LinksBaseService<RefyLink> {
      *
      * @return the identifiers of the owned user links as {@link HashSet} of {@link String}
      */
-    // TODO: 13/02/2025 TO REMOVE
     public HashSet<String> getUserLinks(String userId) {
         return linksRepository.getUserLinks(userId);
     }
@@ -139,7 +139,7 @@ public class LinksService extends LinksBaseService<RefyLink> {
 
             @Override
             public String[] getDeletingColumns() {
-                return new String[]{COLLECTION_IDENTIFIER_KEY, LINK_IDENTIFIER_KEY};
+                return COLLECTION_LINK_JOIN_TABLE_COLUMNS;
             }
         };
         BatchQuery<CollectionLinkBatchItem> batchQuery = new BatchQuery<>() {
@@ -161,7 +161,7 @@ public class LinksService extends LinksBaseService<RefyLink> {
 
             @Override
             public String[] getColumns() {
-                return new String[]{COLLECTION_IDENTIFIER_KEY, LINK_IDENTIFIER_KEY};
+                return COLLECTION_LINK_JOIN_TABLE_COLUMNS;
             }
         };
         syncBatch(model, COLLECTIONS_LINKS_TABLE, batchQuery);

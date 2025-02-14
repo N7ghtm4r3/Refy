@@ -149,26 +149,11 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
         String title = jsonHelper.getString(TITLE_KEY);
         String description = jsonHelper.getString(DESCRIPTION_KEY);
         ArrayList<String> links = jsonHelper.fetchList(LINKS_KEY, new ArrayList<>());
-        if (!INSTANCE.isCollectionPayloadValid(color, title, description))
+        HashSet<String> userLinks = linksService.getUserLinks(userId);
+        if (!userLinks.containsAll(links) || !INSTANCE.isCollectionPayloadValid(color, title, description))
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
-        return editAttachmentsList(payload, LINKS_KEY, new AttachmentsManagement() {
-
-            @Override
-            public HashSet<String> getUserAttachments() {
-                return linksService.getUserLinks(userId);
-            }
-
-            @Override
-            public List<String> getAttachmentsIds() {
-                return userItem.getLinkIds();
-            }
-
-            @Override
-            public void execute(List<String> links) {
-                linksCollectionsService.editCollection(userId, collectionId, color, title, description, links);
-            }
-
-        });
+        linksCollectionsService.editCollection(userId, collectionId, color, title, description, links);
+        return successResponse();
     }
 
     /**
@@ -193,7 +178,7 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
             path = "/{" + COLLECTION_IDENTIFIER_KEY + "}/" + LINKS_KEY
     )
     @RequestPath(path = "/api/v1/users/{user_id}/collections/{collection_id}/links", method = PUT)
-    public String manageCollectionLinks(
+    public String attachLinksToCollection(
             @RequestHeader(TOKEN_KEY) String token,
             @PathVariable(USER_IDENTIFIER_KEY) String userId,
             @PathVariable(COLLECTION_IDENTIFIER_KEY) String collectionId,
@@ -201,26 +186,13 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
     ) {
         if(isUserNotAuthorized(userId, token, collectionId))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        return editAttachmentsList(payload, false, LINKS_KEY,
-                new AttachmentsManagement() {
-
-                    @Override
-                    public HashSet<String> getUserAttachments() {
-                        return linksService.getUserLinks(userId);
-                    }
-
-                    @Override
-                    public List<String> getAttachmentsIds() {
-                        return userItem.getLinkIds();
-                    }
-
-                    @Override
-                    public void execute(List<String> links) {
-                        linksCollectionsService.manageCollectionLinks(collectionId, links);
-                    }
-
-                }
-        );
+        loadJsonHelper(payload);
+        ArrayList<String> links = jsonHelper.fetchList(LINKS_KEY, new ArrayList<>());
+        HashSet<String> userLinks = linksService.getUserLinks(userId);
+        if (!userLinks.containsAll(links))
+            return failedResponse(WRONG_PROCEDURE_MESSAGE);
+        linksCollectionsService.attachLinksToCollection(collectionId, links);
+        return successResponse();
     }
 
     /**
@@ -245,7 +217,7 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
             path = "/{" + COLLECTION_IDENTIFIER_KEY + "}/" + TEAMS_KEY
     )
     @RequestPath(path = "/api/v1/users/{user_id}/collections/{collection_id}/teams", method = PUT)
-    public String manageCollectionTeams(
+    public String shareCollectionWithTeams(
             @RequestHeader(TOKEN_KEY) String token,
             @PathVariable(USER_IDENTIFIER_KEY) String userId,
             @PathVariable(COLLECTION_IDENTIFIER_KEY) String collectionId,
@@ -253,24 +225,13 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
     ) {
         if(isUserNotAuthorized(userId, token, collectionId))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        return editAttachmentsList(payload, TEAMS_KEY, new AttachmentsManagement() {
-
-            @Override
-            public HashSet<String> getUserAttachments() {
-                return teamsService.getUserTeams(userId);
-            }
-
-            @Override
-            public List<String> getAttachmentsIds() {
-                return userItem.getTeamIds();
-            }
-
-            @Override
-            public void execute(List<String> teams) {
-                linksCollectionsService.manageCollectionTeams(collectionId, teams);
-            }
-
-        });
+        loadJsonHelper(payload);
+        HashSet<String> userTeams = teamsService.getUserTeams(userId);
+        List<String> teams = jsonHelper.fetchList(TEAMS_KEY, new ArrayList<>());
+        if (!userTeams.containsAll(teams))
+            return failedResponse(WRONG_PROCEDURE_MESSAGE);
+        linksCollectionsService.shareCollectionWithTeams(collectionId, teams);
+        return successResponse();
     }
 
     /**
@@ -293,6 +254,63 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
             @PathVariable(COLLECTION_IDENTIFIER_KEY) String collectionId
     ) {
         return super.getItem(token, userId, collectionId);
+    }
+
+    // TODO: 14/02/2025 TO COMMENT
+    @GetMapping(
+            headers = TOKEN_KEY,
+            path = "/{" + COLLECTION_IDENTIFIER_KEY + "}/" + LINKS_KEY
+    )
+    @RequestPath(path = "/api/v1/users/{user_id}/collections/{collection_id}/links", method = GET)
+    public <T> T getCollectionLinks(
+            @RequestHeader(TOKEN_KEY) String token,
+            @PathVariable(USER_IDENTIFIER_KEY) String userId,
+            @PathVariable(COLLECTION_IDENTIFIER_KEY) String collectionId,
+            @RequestParam(name = PAGE_KEY, defaultValue = DEFAULT_PAGE_HEADER_VALUE, required = false) int page,
+            @RequestParam(name = PAGE_SIZE_KEY, defaultValue = DEFAULT_PAGE_SIZE_HEADER_VALUE, required = false) int pageSize,
+            @RequestParam(name = KEYWORDS_KEY, defaultValue = "", required = false) Set<String> keywords
+    ) {
+        if (isUserNotAuthorized(userId, token, collectionId))
+            return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        return (T) successResponse(linksCollectionsService.getCollectionLinks(collectionId, page, pageSize, keywords));
+    }
+
+    // TODO: 14/02/2025 TO COMMENT
+    @DeleteMapping(
+            headers = TOKEN_KEY,
+            path = "/{" + COLLECTION_IDENTIFIER_KEY + "}/" + LINKS_KEY + "/{" + LINK_IDENTIFIER_KEY + "}"
+    )
+    @RequestPath(path = "/api/v1/users/{user_id}/collections/{collection_id}/links/{link_id}", method = DELETE)
+    public String removeLinkFromCollection(
+            @RequestHeader(TOKEN_KEY) String token,
+            @PathVariable(USER_IDENTIFIER_KEY) String userId,
+            @PathVariable(COLLECTION_IDENTIFIER_KEY) String collectionId,
+            @PathVariable(LINK_IDENTIFIER_KEY) String linkId) {
+        if (isUserNotAuthorized(userId, token, collectionId))
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        if (!userItem.getLinkIds().contains(linkId))
+            return failedResponse(WRONG_PROCEDURE_MESSAGE);
+        linksCollectionsService.removeLinkFromCollection(collectionId, linkId);
+        return successResponse();
+    }
+
+    // TODO: 14/02/2025 TO COMMENT
+    @DeleteMapping(
+            headers = TOKEN_KEY,
+            path = "/{" + COLLECTION_IDENTIFIER_KEY + "}/" + TEAMS_KEY + "/{" + TEAM_IDENTIFIER_KEY + "}"
+    )
+    @RequestPath(path = "/api/v1/users/{user_id}/collections/{collection_id}/teams/{team_id}", method = DELETE)
+    public String removeTeamFromCollection(
+            @RequestHeader(TOKEN_KEY) String token,
+            @PathVariable(USER_IDENTIFIER_KEY) String userId,
+            @PathVariable(COLLECTION_IDENTIFIER_KEY) String collectionId,
+            @PathVariable(TEAM_IDENTIFIER_KEY) String teamId) {
+        if (isUserNotAuthorized(userId, token, collectionId))
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        if (!userItem.isUserAllowedToRemoveTeam(userId, teamId))
+            return failedResponse(WRONG_PROCEDURE_MESSAGE);
+        linksCollectionsService.removeTeamFromCollection(collectionId, teamId);
+        return successResponse();
     }
 
     /**

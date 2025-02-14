@@ -11,9 +11,7 @@ import org.jsoup.nodes.Document;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static com.tecknobit.apimanager.apis.APIRequest.RequestMethod.*;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.TOKEN_KEY;
@@ -253,7 +251,11 @@ public class LinksController extends DefaultRefyController<RefyLink> {
         if(isUserNotAuthorized(userId, token, linkId))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         loadJsonHelper(payload);
-        linksService.shareLinkWithCollections(userId, linkId, jsonHelper.fetchList(COLLECTIONS_KEY, new ArrayList<>()));
+        HashSet<String> userCollections = linksCollectionsService.getUserCollections(userId);
+        List<String> collections = jsonHelper.fetchList(COLLECTIONS_KEY, new ArrayList<>());
+        if (!userCollections.containsAll(collections))
+            return failedResponse(WRONG_PROCEDURE_MESSAGE);
+        linksService.shareLinkWithCollections(userId, linkId, collections);
         return successResponse();
     }
 
@@ -288,7 +290,11 @@ public class LinksController extends DefaultRefyController<RefyLink> {
         if(isUserNotAuthorized(userId, token, linkId))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         loadJsonHelper(payload);
-        linksService.shareLinkWithTeams(userId, linkId, jsonHelper.fetchList(TEAMS_KEY, new ArrayList<>()));
+        HashSet<String> userTeams = teamsService.getUserTeams(userId);
+        List<String> teams = jsonHelper.fetchList(TEAMS_KEY, new ArrayList<>());
+        if (!userTeams.containsAll(teams))
+            return failedResponse(WRONG_PROCEDURE_MESSAGE);
+        linksService.shareLinkWithTeams(userId, linkId, teams);
         return successResponse();
     }
 

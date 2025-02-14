@@ -1,4 +1,4 @@
-package com.tecknobit.refy.services.links.batchitems;
+package com.tecknobit.refy.batchitems;
 
 import com.tecknobit.refy.helpers.JoinTableSyncBatchItem;
 

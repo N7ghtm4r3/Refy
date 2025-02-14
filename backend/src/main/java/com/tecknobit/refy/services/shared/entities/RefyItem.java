@@ -7,7 +7,6 @@ import com.tecknobit.refy.services.users.entity.RefyUser;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.json.JSONObject;
 
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.LANGUAGE_KEY;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.TOKEN_KEY;
@@ -85,20 +84,6 @@ public abstract class RefyItem extends EquinoxItem {
     }
 
     /**
-     * Constructor to init the {@link RefyItem} class
-     *
-     * @param jRefyItem The json details of the item as {@link JSONObject}
-     *
-     */
-    // TODO: 03/02/2025 CHECK TO REMOVE
-    /*public RefyItem(JSONObject jRefyItem) {
-        super(jRefyItem);
-        owner = getInstance(hItem.getJSONObject(OWNER_KEY));
-        title = hItem.getString(TITLE_KEY);
-        description = hItem.getString(DESCRIPTION_KEY);
-    }*/
-
-    /**
      * Method to get {@link #owner} instance
      *
      * @return {@link #owner} instance as {@link RefyUser}
@@ -132,24 +117,6 @@ public abstract class RefyItem extends EquinoxItem {
      */
     public long getDate() {
         return date;
-    }
-
-    /**
-     * The {@code ListScreenItem} interface useful to manage the item of the items displayed
-     *
-     * @author N7ghtm4r3 - Tecknobit
-     */
-    // TODO: 13/02/2025 CHECK TO REMOVE 
-    public interface ListScreenItem {
-
-        /**
-         * Method to check if the user can update the current item
-         *
-         * @param loggedUserId The current user logged user identifier
-         * @return whether use can update the item as boolean
-         */
-        boolean canBeUpdatedByUser(String loggedUserId);
-
     }
 
 }

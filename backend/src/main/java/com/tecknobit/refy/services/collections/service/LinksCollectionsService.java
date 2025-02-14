@@ -1,11 +1,14 @@
 package com.tecknobit.refy.services.collections.service;
 
-import com.tecknobit.apimanager.annotations.Wrapper;
 import com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
+import com.tecknobit.refy.batchitems.CollectionLinkBatchItem;
+import com.tecknobit.refy.batchitems.TeamCollectionBatchItem;
 import com.tecknobit.refy.configuration.indexes.IndexesCreator;
 import com.tecknobit.refy.services.collections.entity.LinksCollection;
 import com.tecknobit.refy.services.collections.repository.CollectionsRepository;
+import com.tecknobit.refy.services.links.entity.RefyLink;
+import com.tecknobit.refy.services.links.repository.LinksRepository;
 import com.tecknobit.refy.services.shared.services.RefyItemRetriever;
 import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +16,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-import static com.tecknobit.refycore.ConstantsKt.*;
+import static com.tecknobit.refy.batchitems.CollectionLinkBatchItem.COLLECTION_LINK_JOIN_TABLE_COLUMNS;
+import static com.tecknobit.refy.batchitems.TeamCollectionBatchItem.TEAM_COLLECTION_JOIN_TABLE_COLUMNS;
+import static com.tecknobit.refy.configuration.indexes.IndexesCreator.formatFullTextKeywords;
+import static com.tecknobit.refycore.ConstantsKt.COLLECTIONS_LINKS_TABLE;
+import static com.tecknobit.refycore.ConstantsKt.COLLECTIONS_TEAMS_TABLE;
 
 /**
  * The {@code LinksCollectionsHelper} class is useful to manage all the {@link LinksCollection} database operations
@@ -32,50 +36,16 @@ import static com.tecknobit.refycore.ConstantsKt.*;
 public class LinksCollectionsService extends EquinoxItemsHelper implements RefyItemRetriever<LinksCollection> {
 
     /**
-     * {@code ATTACH_COLLECTION_TO_LINKS_QUERY} the query used to attach links to a collection
-     */
-    // TODO: 13/02/2025 TO REMOVE
-    protected static final String ATTACH_COLLECTION_TO_LINKS_QUERY =
-            "REPLACE INTO " + COLLECTIONS_LINKS_TABLE +
-                    "(" +
-                    LINK_IDENTIFIER_KEY + "," +
-                    COLLECTION_IDENTIFIER_KEY +
-                    ")" +
-                    " VALUES ";
-
-    /**
-     * {@code DETACH_COLLECTION_FROM_LINKS_QUERY} the query used to detach links from a collection
-     */
-    // TODO: 13/02/2025 TO REMOVE
-    private static final String DETACH_COLLECTION_FROM_LINKS_QUERY =
-            "DELETE FROM " + COLLECTIONS_LINKS_TABLE + " WHERE "
-                    + COLLECTION_IDENTIFIER_KEY + "='%s' " + "AND " + LINK_IDENTIFIER_KEY + " IN (";
-
-    /**
-     * {@code ATTACH_COLLECTION_TO_TEAM_QUERY} the query used to share a collection with teams
-     */
-    // TODO: 13/02/2025 TO REMOVE
-    private static final String ATTACH_COLLECTION_TO_TEAM_QUERY =
-            "REPLACE INTO " + COLLECTIONS_TEAMS_TABLE +
-                    "(" +
-                    TEAM_IDENTIFIER_KEY + "," +
-                    COLLECTION_IDENTIFIER_KEY +
-                    ")" +
-                    " VALUES ";
-
-    /**
-     * {@code DETACH_COLLECTION_FROM_TEAMS_QUERY} the query used to remove a collection from teams
-     */
-    // TODO: 13/02/2025 TO REMOVE
-    private static final String DETACH_COLLECTION_FROM_TEAMS_QUERY =
-            "DELETE FROM " + COLLECTIONS_TEAMS_TABLE + " WHERE "
-                    + COLLECTION_IDENTIFIER_KEY + "='%s' " + "AND " + TEAM_IDENTIFIER_KEY + " IN (";
-
-    /**
      * {@code collectionsRepository} instance for the collections repository
      */
     @Autowired
     private CollectionsRepository collectionsRepository;
+
+    /**
+     * {@code linksRepository} instance for the links repository
+     */
+    @Autowired
+    private LinksRepository linksRepository;
 
     /**
      * Method to get the user's owned collections identifiers
@@ -84,7 +54,6 @@ public class LinksCollectionsService extends EquinoxItemsHelper implements RefyI
      *
      * @return the identifiers of the owned user collections as {@link HashSet} of {@link String}
      */
-    // TODO: 13/02/2025 TO REMOVE
     public HashSet<String> getUserCollections(String userId) {
         return collectionsRepository.getUserCollections(userId);
     }
@@ -153,7 +122,7 @@ public class LinksCollectionsService extends EquinoxItemsHelper implements RefyI
 
             @Override
             public String[] getColumns() {
-                return new String[]{COLLECTION_IDENTIFIER_KEY, LINK_IDENTIFIER_KEY};
+                return COLLECTION_LINK_JOIN_TABLE_COLUMNS;
             }
         });
     }
@@ -178,53 +147,51 @@ public class LinksCollectionsService extends EquinoxItemsHelper implements RefyI
      */
     public void editCollection(String userId, String collectionId, String color, String title, String description,
                                List<String> links) {
-        LinksCollection collection = collectionsRepository.findById(collectionId).orElseThrow();
         collectionsRepository.updateCollection(collectionId, color, title, description, userId);
-        manageCollectionLinks(collection, links);
+        attachLinksToCollection(collectionId, links);
     }
 
-    /**
-     * Method to manage the links attached to the collection
-     *
-     * @param collectionId The identifier of the collection
-     * @param links The links attached to the collections
-     */
-    @Wrapper
-    // TODO: 13/02/2025 TO REMOVE
-    public void manageCollectionLinks(String collectionId, List<String> links) {
-        manageCollectionLinks(collectionsRepository.findById(collectionId).orElseThrow(), links);
-    }
+    // TODO: 14/02/2025 TO COMMENT
+    public void attachLinksToCollection(String collectionId, List<String> links) {
+        SyncBatchModel model = new SyncBatchModel() {
+            @Override
+            public Collection<CollectionLinkBatchItem> getCurrentData() {
+                LinksCollection collection = collectionsRepository.findById(collectionId).orElseThrow();
+                ArrayList<CollectionLinkBatchItem> collectionLinkBatchItems = new ArrayList<>();
+                List<String> links = collection.getLinkIds();
+                for (String linkId : links)
+                    collectionLinkBatchItems.add(new CollectionLinkBatchItem(collectionId, linkId));
+                return collectionLinkBatchItems;
+            }
 
-    /**
-     * Method to manage the links attached to the collection
-     *
-     * @param collection The collection where the link are attached
-     * @param links The links attached to the collections
-     */
-    // TODO: 13/02/2025 TO REMOVE
-    private void manageCollectionLinks(LinksCollection collection, List<String> links) {
-       /* String collectionId = collection.getId();
-        manageAttachments(
-                new AttachmentsManagementWorkflow() {
+            @Override
+            public String[] getDeletingColumns() {
+                return COLLECTION_LINK_JOIN_TABLE_COLUMNS;
+            }
+        };
+        BatchQuery<CollectionLinkBatchItem> batchQuery = new BatchQuery<>() {
+            @Override
+            public Collection<CollectionLinkBatchItem> getData() {
+                ArrayList<CollectionLinkBatchItem> collectionLinkBatchItems = new ArrayList<>();
+                for (String linkId : links)
+                    collectionLinkBatchItems.add(new CollectionLinkBatchItem(collectionId, linkId));
+                return collectionLinkBatchItems;
+            }
 
-                    @Override
-                    public List<String> getIds() {
-                        return collection.getLinkIds();
-                    }
+            @Override
+            public void prepareQuery(Query query, int index, Collection<CollectionLinkBatchItem> items) {
+                for (CollectionLinkBatchItem collectionLinkBatchItem : items) {
+                    query.setParameter(index++, collectionLinkBatchItem.getOwner());
+                    query.setParameter(index++, collectionLinkBatchItem.getOwned());
+                }
+            }
 
-                    @Override
-                    public String insertQuery() {
-                        return ATTACH_COLLECTION_TO_LINKS_QUERY;
-                    }
-
-                    @Override
-                    public String deleteQuery() {
-                        return DETACH_COLLECTION_FROM_LINKS_QUERY;
-                    }
-                },
-                collectionId,
-                links
-        );*/
+            @Override
+            public String[] getColumns() {
+                return COLLECTION_LINK_JOIN_TABLE_COLUMNS;
+            }
+        };
+        syncBatch(model, COLLECTIONS_LINKS_TABLE, batchQuery);
     }
 
     /**
@@ -233,31 +200,72 @@ public class LinksCollectionsService extends EquinoxItemsHelper implements RefyI
      * @param collectionId The identifier of the collection
      * @param teams The teams where the collection is shared
      */
-    // TODO: 13/02/2025 TO REMOVE
-    public void manageCollectionTeams(String collectionId, List<String> teams) {
-        LinksCollection collection = collectionsRepository.findById(collectionId).orElseThrow();
-        /*
-        return new String[]{COLLECTION_IDENTIFIER_KEY, LINK_IDENTIFIER_KEY}; manageAttachments(
-                new AttachmentsManagementWorkflow() {
+    public void shareCollectionWithTeams(String collectionId, List<String> teams) {
+        SyncBatchModel model = new SyncBatchModel() {
+            @Override
+            public Collection<TeamCollectionBatchItem> getCurrentData() {
+                LinksCollection collection = collectionsRepository.findById(collectionId).orElseThrow();
+                ArrayList<TeamCollectionBatchItem> teamCollectionBatchItems = new ArrayList<>();
+                List<String> teamIds = collection.getTeamIds();
+                for (String teamId : teamIds)
+                    teamCollectionBatchItems.add(new TeamCollectionBatchItem(teamId, collectionId));
+                return teamCollectionBatchItems;
+            }
 
-                    @Override
-                    public List<String> getIds() {
-                        return collection.getTeamIds();
-                    }
+            @Override
+            public String[] getDeletingColumns() {
+                return TEAM_COLLECTION_JOIN_TABLE_COLUMNS;
+            }
+        };
+        BatchQuery<TeamCollectionBatchItem> batchQuery = new BatchQuery<>() {
+            @Override
+            public Collection<TeamCollectionBatchItem> getData() {
+                ArrayList<TeamCollectionBatchItem> teamCollectionBatchItems = new ArrayList<>();
+                for (String teamId : teams)
+                    teamCollectionBatchItems.add(new TeamCollectionBatchItem(teamId, collectionId));
+                return teamCollectionBatchItems;
+            }
 
-                    @Override
-                    public String insertQuery() {
-                        return ATTACH_COLLECTION_TO_TEAM_QUERY;
-                    }
+            @Override
+            public void prepareQuery(Query query, int index, Collection<TeamCollectionBatchItem> items) {
+                for (TeamCollectionBatchItem teamCollectionBatchItem : items) {
+                    query.setParameter(index++, teamCollectionBatchItem.getOwner());
+                    query.setParameter(index++, teamCollectionBatchItem.getOwned());
+                }
+            }
 
-                    @Override
-                    public String deleteQuery() {
-                        return DETACH_COLLECTION_FROM_TEAMS_QUERY;
-                    }
-                },
-                collectionId,
-                teams
-        );*/
+            @Override
+            public String[] getColumns() {
+                return TEAM_COLLECTION_JOIN_TABLE_COLUMNS;
+            }
+        };
+        syncBatch(model, COLLECTIONS_TEAMS_TABLE, batchQuery);
+    }
+
+    /**
+     * Method to get the links shared in a collection
+     *
+     * @param page     The page requested
+     * @param pageSize The size of the items to insert in the page
+     * @param keywords The keywords used to filter the query to retrieve the items
+     * @return the collection links as {@link PaginatedResponse} of {@link RefyLink}
+     */
+    public PaginatedResponse<RefyLink> getCollectionLinks(String collectionId, int page, int pageSize, Set<String> keywords) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        String fullTextMatcher = formatFullTextKeywords(keywords, "*", true);
+        long totalLinks = linksRepository.countCollectionLinks(collectionId, fullTextMatcher);
+        List<RefyLink> links = linksRepository.getCollectionLinks(collectionId, fullTextMatcher, pageable);
+        return new PaginatedResponse<>(links, page, pageSize, totalLinks);
+    }
+
+    // TODO: 14/02/2025 TO COMMENT
+    public void removeLinkFromCollection(String collectionId, String linkId) {
+        collectionsRepository.removeLinkFromCollection(collectionId, linkId);
+    }
+
+    // TODO: 14/02/2025 TO COMMENT
+    public void removeTeamFromCollection(String collectionId, String teamId) {
+        collectionsRepository.removeTeamFromCollection(collectionId, teamId);
     }
 
     /**

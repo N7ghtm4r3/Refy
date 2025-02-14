@@ -44,7 +44,6 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
                     " ORDER BY " + DATE_KEY + " DESC",
             nativeQuery = true
     )
-    // TODO: 13/02/2025 TO REMOVE
     HashSet<String> getUserCollections(
             @Param(OWNER_KEY) String owner
     );
@@ -241,6 +240,34 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
             @Param(TITLE_KEY) String title,
             @Param(DESCRIPTION_KEY) String description,
             @Param(OWNER_KEY) String owner
+    );
+
+    // TODO: 14/02/2025 TO COMMENT
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query(
+            value = "DELETE FROM " + COLLECTIONS_LINKS_TABLE + _WHERE_ +
+                    COLLECTION_IDENTIFIER_KEY + "=:" + COLLECTION_IDENTIFIER_KEY + " AND " +
+                    LINK_IDENTIFIER_KEY + "=:" + LINK_IDENTIFIER_KEY,
+            nativeQuery = true
+    )
+    void removeLinkFromCollection(
+            @Param(COLLECTION_IDENTIFIER_KEY) String collectionId,
+            @Param(LINK_IDENTIFIER_KEY) String linkId
+    );
+
+    // TODO: 14/02/2025 TO COMMENT
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query(
+            value = "DELETE FROM " + COLLECTIONS_TEAMS_TABLE + _WHERE_ +
+                    COLLECTION_IDENTIFIER_KEY + "=:" + COLLECTION_IDENTIFIER_KEY + " AND " +
+                    TEAM_IDENTIFIER_KEY + "=:" + TEAM_IDENTIFIER_KEY,
+            nativeQuery = true
+    )
+    void removeTeamFromCollection(
+            @Param(COLLECTION_IDENTIFIER_KEY) String collectionId,
+            @Param(TEAM_IDENTIFIER_KEY) String teamId
     );
 
     /**

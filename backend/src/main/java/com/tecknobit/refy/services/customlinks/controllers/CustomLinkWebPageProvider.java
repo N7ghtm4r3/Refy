@@ -103,10 +103,7 @@ public class CustomLinkWebPageProvider {
             Model model,
             HttpServletRequest request,
             @PathVariable(LINK_IDENTIFIER_KEY) String linkId,
-            @RequestParam(
-                    name = PREVIEW_TOKEN_KEY,
-                    required = false
-            ) String previewToken
+            @RequestParam(name = PREVIEW_TOKEN_KEY, required = false) String previewToken
     ) {
         mantis.changeCurrentLocale(request.getLocale());
         CustomRefyLink customLink = customLinksService.findById(linkId);

@@ -1,17 +1,24 @@
 package com.tecknobit.refy.services.customlinks.service;
 
+import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
+import com.tecknobit.refy.configuration.indexes.IndexesCreator;
+import com.tecknobit.refy.services.customlinks.batchitems.CustomLinkMapBatchItem;
 import com.tecknobit.refy.services.customlinks.entity.CustomRefyLink;
 import com.tecknobit.refy.services.customlinks.repository.CustomLinksRepository;
 import com.tecknobit.refy.services.links.service.LinksService;
 import com.tecknobit.refy.services.shared.links.service.LinksBaseService;
 import com.tecknobit.refycore.enums.ExpiredTime;
+import jakarta.persistence.Query;
+import kotlin.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController.generateIdentifier;
+import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.InsertCommand.INSERT_INTO;
 import static com.tecknobit.equinoxbackend.resourcesutils.ResourcesManager.RESOURCES_KEY;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.IDENTIFIER_KEY;
 import static com.tecknobit.refycore.ConstantsKt.*;
@@ -25,45 +32,7 @@ import static com.tecknobit.refycore.helpers.RefyEndpointsSet.CUSTOM_LINKS_ENDPO
  * @see LinksService
  */
 @Service
-public class CustomLinksService extends LinksBaseService {
-
-    /**
-     * {@code ATTACH_RESOURCES_TO_CUSTOM_LINK_QUERY} the query used to attach the resources to the link
-     */
-    private static final String ATTACH_RESOURCES_TO_CUSTOM_LINK_QUERY =
-            "REPLACE INTO " + RESOURCES_KEY +
-                    "(" +
-                    IDENTIFIER_KEY + "," +
-                    RESOURCE_VALUE_KEY + "," +
-                    RESOURCE_KEY +
-                    ")" +
-                    " VALUES ";
-
-    /**
-     * {@code DETACH_RESOURCES_FROM_CUSTOM_LINK_QUERY} the query used to detach the resources from the link
-     */
-    private static final String DETACH_RESOURCES_FROM_CUSTOM_LINK_QUERY =
-            "DELETE FROM " + RESOURCES_KEY + " WHERE "
-                    + IDENTIFIER_KEY + "='%s' " + "AND " + RESOURCE_KEY + " IN (";
-
-    /**
-     * {@code ATTACH_FIELDS_TO_CUSTOM_LINK_QUERY} the query used to attach the fields to the link
-     */
-    private static final String ATTACH_FIELDS_TO_CUSTOM_LINK_QUERY =
-            "REPLACE INTO " + FIELDS_KEY +
-                    "(" +
-                    IDENTIFIER_KEY + "," +
-                    FIELD_VALUE_KEY + "," +
-                    FIELD_KEY +
-                    ")" +
-                    " VALUES ";
-
-    /**
-     * {@code DETACH_FIELDS_FROM_CUSTOM_LINK_QUERY} the query used to detach the fields from the link
-     */
-    private static final String DETACH_FIELDS_FROM_CUSTOM_LINK_QUERY =
-            "DELETE FROM " + FIELDS_KEY + " WHERE "
-                    + IDENTIFIER_KEY + "='%s' " + "AND " + FIELD_KEY + " IN (";
+public class CustomLinksService extends LinksBaseService<CustomRefyLink> {
 
     /**
      * {@code customLinksRepository} instance for the custom links repository
@@ -85,11 +54,19 @@ public class CustomLinksService extends LinksBaseService {
      * Method to get all the user's custom links
      *
      * @param userId The identifier of the user
+     * @param page      The page requested
+     * @param pageSize  The size of the items to insert in the page
+     * @param keywords     The keywords used to filter the query to retrieve the items
      *
-     * @return the user custom links as {@link List} of {@link CustomRefyLink}
+     * @return the user custom links as {@link PaginatedResponse} of {@link CustomRefyLink}
      */
-    public List<CustomRefyLink> getUserCustomLinks(String userId) {
-        return customLinksRepository.getUserCustomLinks(userId);
+    public PaginatedResponse<CustomRefyLink> getUserCustomLinks(String userId, int page, int pageSize,
+                                                                Set<String> keywords) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        String fullTextMatcher = IndexesCreator.formatFullTextKeywords(keywords, "*", true);
+        long totalCustomLinks = customLinksRepository.countUserCustomLinks(userId, fullTextMatcher);
+        List<CustomRefyLink> customRefyLinks = customLinksRepository.getUserCustomLinks(userId, fullTextMatcher, pageable);
+        return new PaginatedResponse<>(customRefyLinks, page, pageSize, totalCustomLinks);
     }
 
     /**
@@ -104,29 +81,47 @@ public class CustomLinksService extends LinksBaseService {
      * @param fields The field used to protect the resources
      */
     public void createCustomLink(String userId, String linkId, String title, String description, boolean hasUniqueAccess,
-                                 ExpiredTime expiredTime, Map<String, Object> resources, Map<String, Object> fields) {
-        customLinksRepository.saveLink(CUSTOM_LINK_KEY, linkId, title, description, CUSTOM_LINKS_ENDPOINT + "/" + userId,
-                System.currentTimeMillis(), expiredTime, hasUniqueAccess, generateIdentifier(), userId);
-        attachMap(linkId, ATTACH_RESOURCES_TO_CUSTOM_LINK_QUERY, resources);
-        attachMap(linkId, ATTACH_FIELDS_TO_CUSTOM_LINK_QUERY, fields);
+                                 ExpiredTime expiredTime, Map<String, Object> fields, Map<String, Object> resources) {
+        customLinksRepository.saveLink(CUSTOM_LINK_KEY, linkId, title, description, CUSTOM_LINKS_ENDPOINT +
+                "/" + linkId, System.currentTimeMillis(), expiredTime, hasUniqueAccess, generateIdentifier(), userId);
+        attachMap(linkId, RESOURCES_KEY, resources, IDENTIFIER_KEY, RESOURCE_VALUE_KEY, RESOURCE_KEY);
+        attachMap(linkId, FIELDS_KEY, fields, IDENTIFIER_KEY, FIELD_VALUE_KEY, FIELD_KEY);
     }
 
     /**
      * Method to attach a map value to the link
      *
      * @param linkId The identifier of the link where attach the map
-     * @param attachQuery The query used to attach the map
+     * @param table The table where attach the map
      * @param map The map to attach to the link
+     * @param columns The columns used during the query
+     *
      */
-    private void attachMap(String linkId, String attachQuery, Map<String, Object> map) {
-        /*executeInsertBatch(attachQuery, TUPLE_VALUES_SLICE, map.values(), query -> {
-            int index = 1;
-            for (String key : map.keySet()) {
-                query.setParameter(index++, linkId);
-                query.setParameter(index++, map.get(key));
-                query.setParameter(index++, key);
-            }
-        });*/
+    private void attachMap(String linkId, String table, Map<String, Object> map, String... columns) {
+        batchInsert(INSERT_INTO, table, new BatchQuery<Pair<String, Object>>() {
+                    @Override
+                    public Collection<Pair<String, Object>> getData() {
+                        ArrayList<Pair<String, Object>> pairs = new ArrayList<>();
+                        for (String key : map.keySet())
+                            pairs.add(new Pair<>(key, map.get(key)));
+                        return pairs;
+                    }
+
+                    @Override
+                    public void prepareQuery(Query query, int index, Collection<Pair<String, Object>> pairs) {
+                        for (Pair<String, Object> pair : pairs) {
+                            query.setParameter(index++, linkId);
+                            query.setParameter(index++, pair.getSecond());
+                            query.setParameter(index++, pair.getFirst());
+                        }
+                    }
+
+                    @Override
+                    public String[] getColumns() {
+                        return columns;
+                    }
+                }
+        );
     }
 
     /**
@@ -138,59 +133,65 @@ public class CustomLinksService extends LinksBaseService {
      * @param description The description of the link
      * @param hasUniqueAccess: whether the link has the unique access
      * @param expiredTime The expiration time set for the link
-     * @param resources The resources attached to the link
      * @param fields The field used to protect the resources
+     * @param resources The resources attached to the link
      */
     public void editCustomLink(String userId, String linkId, String title, String description, boolean hasUniqueAccess,
-                               ExpiredTime expiredTime, Map<String, Object> resources, Map<String, Object> fields) {
+                               ExpiredTime expiredTime, Map<String, Object> fields, Map<String, Object> resources) {
         CustomRefyLink customRefyLink = getItemIfAllowed(userId, linkId);
         customLinksRepository.updateLink(linkId, title, description, expiredTime, hasUniqueAccess, userId);
-        editMap(linkId, ATTACH_RESOURCES_TO_CUSTOM_LINK_QUERY, DETACH_RESOURCES_FROM_CUSTOM_LINK_QUERY,
-                customRefyLink.getResources(), resources);
-        editMap(linkId, ATTACH_FIELDS_TO_CUSTOM_LINK_QUERY, DETACH_FIELDS_FROM_CUSTOM_LINK_QUERY,
-                customRefyLink.getFields(), fields);
+        editMap(linkId, FIELDS_KEY, customRefyLink.getFields(), fields);
+        editMap(linkId, RESOURCES_KEY, customRefyLink.getResources(), resources);
     }
 
     /**
      * Method to edit a map attached to the link
      *
      * @param linkId The identifier of the link where the map is attached
-     * @param attachQuery The query used to attach the map
-     * @param detachQuery The query used to detach the map
      * @param currentMap The current map attached to the link
      * @param map The new map to attach to the link
      */
-    private void editMap(String linkId, String attachQuery, String detachQuery, Map<String, String> currentMap,
-                         Map<String, Object> map) {
-        /*manageAttachments(
-                new AttachmentsManagementWorkflow() {
-                    @Override
-                    public List<String> getIds() {
-                        return new ArrayList<>(currentMap.keySet());
-                    }
+    private void editMap(String linkId, String table, Map<String, ?> currentMap, Map<String, Object> map,
+                         String... columns) {
+        SyncBatchModel model = new SyncBatchModel() {
+            @Override
+            public Collection<CustomLinkMapBatchItem> getCurrentData() {
+                ArrayList<CustomLinkMapBatchItem> pairs = new ArrayList<>();
+                for (String key : currentMap.keySet())
+                    pairs.add(new CustomLinkMapBatchItem(linkId, key, currentMap.get(key)));
+                return pairs;
+            }
 
-                    @Override
-                    public String insertQuery() {
-                        return attachQuery;
-                    }
+            @Override
+            public String[] getDeletingColumns() {
+                return columns;
+            }
+        };
+        BatchQuery<CustomLinkMapBatchItem> batchQuery = new BatchQuery<>() {
+            @Override
+            public Collection<CustomLinkMapBatchItem> getData() {
+                ArrayList<CustomLinkMapBatchItem> pairs = new ArrayList<>();
+                for (String key : map.keySet())
+                    pairs.add(new CustomLinkMapBatchItem(linkId, key, map.get(key)));
+                return pairs;
+            }
 
-                    @Override
-                    public String deleteQuery() {
-                        return detachQuery;
-                    }
-                },
-                TUPLE_VALUES_SLICE,
-                linkId,
-                map.keySet().stream().toList(),
-                query -> {
-                    int index = 1;
-                    for (String key : map.keySet()) {
-                        query.setParameter(index++, linkId);
-                        query.setParameter(index++, map.get(key));
-                        query.setParameter(index++, key);
-                    }
+            @Override
+            public void prepareQuery(Query query, int index, Collection<CustomLinkMapBatchItem> items) {
+                System.out.println(items.size());
+                for (CustomLinkMapBatchItem item : items) {
+                    query.setParameter(index++, item.getLinkId());
+                    query.setParameter(index++, item.getValue());
+                    query.setParameter(index++, item.getKey());
                 }
-        );*/
+            }
+
+            @Override
+            public String[] getColumns() {
+                return columns;
+            }
+        };
+        syncBatch(model, table, batchQuery);
     }
 
     /**

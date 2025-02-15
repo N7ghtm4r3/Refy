@@ -71,7 +71,7 @@ public class CustomLinksController extends DefaultRefyController<CustomRefyLink>
     ) {
         if(!isMe(userId, token))
             return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        return (T) successResponse(customLinksService.getUserCustomLinks(userId));
+        return (T) successResponse(customLinksService.getUserCustomLinks(userId, page, pageSize, keywords));
     }
 
     /**
@@ -127,7 +127,7 @@ public class CustomLinksController extends DefaultRefyController<CustomRefyLink>
         } else
             expiredTime = ExpiredTime.NO_EXPIRATION;
         customLinksService.createCustomLink(userId, generateIdentifier(), title, description, hasUniqueAccess, expiredTime,
-                resources, fields);
+                fields, resources);
         return successResponse();
     }
 
@@ -185,8 +185,8 @@ public class CustomLinksController extends DefaultRefyController<CustomRefyLink>
             }
         } else
             expiredTime = ExpiredTime.NO_EXPIRATION;
-        customLinksService.editCustomLink(userId, linkId, title, description, hasUniqueAccess, expiredTime, resources,
-                fields);
+        customLinksService.editCustomLink(userId, linkId, title, description, hasUniqueAccess, expiredTime, fields,
+                resources);
         return successResponse();
     }
 

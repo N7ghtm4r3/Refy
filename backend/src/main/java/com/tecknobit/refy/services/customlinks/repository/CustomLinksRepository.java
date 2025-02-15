@@ -5,6 +5,7 @@ import com.tecknobit.refy.services.shared.links.repository.LinksBaseRepository;
 import com.tecknobit.refy.services.shared.repositories.RefyItemsRepository;
 import com.tecknobit.refycore.enums.ExpiredTime;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static com.tecknobit.equinoxbackend.environment.services.builtin.entity.EquinoxItem.DISCRIMINATOR_VALUE_KEY;
+import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper._WHERE_;
+import static com.tecknobit.refy.configuration.indexes.IndexesCreator._IN_BOOLEAN_MODE;
 import static com.tecknobit.refycore.ConstantsKt.*;
 
 /**
@@ -31,19 +34,51 @@ import static com.tecknobit.refycore.ConstantsKt.*;
 public interface CustomLinksRepository extends LinksBaseRepository<CustomRefyLink> {
 
     /**
+     * Method to count the user's custom links
+     *
+     * @param userId   The identifier of the user
+     * @param keywords The keywords used to filter the query to retrieve the items
+     * @return the count of custom links as {@link long}
+     */
+    @Query(
+            value = "SELECT COUNT(*) FROM " + LINKS_KEY + _WHERE_ +
+                    OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
+                    " AND dtype='" + CUSTOM_LINK_KEY +
+                    "' AND ( " +
+                    "    MATCH(" + TITLE_KEY + "," + DESCRIPTION_KEY + ") AGAINST (:" + KEYWORDS_KEY + _IN_BOOLEAN_MODE + ") " +
+                    "    OR :" + KEYWORDS_KEY + "=''" +
+                    " )",
+            nativeQuery = true
+    )
+    long countUserCustomLinks(
+            @Param(USER_IDENTIFIER_KEY) String userId,
+            @Param(KEYWORDS_KEY) String keywords
+    );
+
+    /**
      * Method to execute the query to get all the user's custom links
      *
      * @param userId The identifier of the user
+     * @param keywords     The keywords used to filter the query to retrieve the items
+     * @param pageable     The parameters to paginate the query
      *
      * @return the user custom links as {@link List} of {@link CustomRefyLink}
      */
     @Query(
-            value = "SELECT l.* FROM " + LINKS_KEY + " AS l WHERE l." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY
-                    + " AND dtype='" + CUSTOM_LINK_KEY + "' ORDER BY " + DATE_KEY + " DESC",
+            value = "SELECT * FROM " + LINKS_KEY + _WHERE_ +
+                    OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
+                    " AND dtype='" + CUSTOM_LINK_KEY +
+                    "' AND ( " +
+                    "    MATCH(" + TITLE_KEY + "," + DESCRIPTION_KEY + ") AGAINST (:" + KEYWORDS_KEY + _IN_BOOLEAN_MODE + ") " +
+                    "    OR :" + KEYWORDS_KEY + "=''" +
+                    " ) " +
+                    "ORDER BY " + DATE_KEY + " DESC",
             nativeQuery = true
     )
     List<CustomRefyLink> getUserCustomLinks(
-            @Param(USER_IDENTIFIER_KEY) String userId
+            @Param(USER_IDENTIFIER_KEY) String userId,
+            @Param(KEYWORDS_KEY) String keywords,
+            Pageable pageable
     );
 
     /**
@@ -55,8 +90,9 @@ public interface CustomLinksRepository extends LinksBaseRepository<CustomRefyLin
      * @return the custom link if the user is authorized as {@link CustomRefyLink}
      */
     @Query(
-            value = "SELECT l.* FROM " + LINKS_KEY + " AS l WHERE l." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY
-                    + " AND " + LINK_IDENTIFIER_KEY + "=:" + LINK_IDENTIFIER_KEY,
+            value = "SELECT * FROM " + LINKS_KEY + _WHERE_ +
+                    OWNER_KEY + "=:" + USER_IDENTIFIER_KEY + " AND "
+                    + LINK_IDENTIFIER_KEY + "=:" + LINK_IDENTIFIER_KEY,
             nativeQuery = true
     )
     CustomRefyLink getLinkIfAllowed(

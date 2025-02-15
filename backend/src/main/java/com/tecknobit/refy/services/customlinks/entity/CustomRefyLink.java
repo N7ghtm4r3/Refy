@@ -9,16 +9,12 @@ import com.tecknobit.refy.services.shared.entities.RefyItem;
 import com.tecknobit.refy.services.users.entity.RefyUser;
 import com.tecknobit.refycore.enums.ExpiredTime;
 import jakarta.persistence.*;
-import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static com.tecknobit.equinoxbackend.resourcesutils.ResourcesManager.RESOURCES_KEY;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.IDENTIFIER_KEY;
-import static com.tecknobit.equinoxcore.network.EquinoxBaseEndpointsSet.BASE_EQUINOX_ENDPOINT;
 import static com.tecknobit.refycore.ConstantsKt.*;
 import static jakarta.persistence.EnumType.STRING;
 
@@ -29,7 +25,6 @@ import static jakarta.persistence.EnumType.STRING;
  * @author N7ghtm4r3 - Tecknobit
  * @see EquinoxItem
  * @see RefyItem
- * @see ListScreenItem
  * @see RefyLink
  *
  * @author N7ghtm4r3 - Tecknobit
@@ -37,8 +32,9 @@ import static jakarta.persistence.EnumType.STRING;
 @Entity
 @DiscriminatorValue(CUSTOM_LINK_KEY)
 @JsonIgnoreProperties({
-    COLLECTIONS_KEY,
-    TEAMS_KEY
+        COLLECTIONS_KEY,
+        TEAMS_KEY,
+        THUMBNAIL_PREVIEW_KEY
 })
 public class CustomRefyLink extends RefyLink {
 
@@ -138,37 +134,6 @@ public class CustomRefyLink extends RefyLink {
     }
 
     /**
-     * Constructor to init the {@link CustomRefyLink} class
-     *
-     * @param jCustomRefyLink The json details of the custom link as {@link JSONObject}
-     *
-     */
-    // TODO: 03/02/2025 CHECK TO REMOVE
-    /*public CustomRefyLink(JSONObject jCustomRefyLink) {
-        super(jCustomRefyLink);
-        creationDate = hItem.getLong(DATE_KEY, -1);
-        uniqueAccess = hItem.getBoolean(UNIQUE_ACCESS_KEY);
-        expiredTime = ExpiredTime.valueOf(hItem.getString(EXPIRED_TIME_KEY));
-        resources = loadMap(hItem.getJSONObject(RESOURCES_KEY));
-        fields = loadMap(hItem.getJSONObject(FIELDS_KEY));
-        previewToken = hItem.getString(PREVIEW_TOKEN_KEY);
-    }*/
-
-    /**
-     * Method to load a map instance
-     *
-     * @param jMap The json object from fetch the data to load the map
-     * @return map loaded as {@link Map} of {@link String} and {@link String}
-     */
-    private Map<String, String> loadMap(JSONObject jMap) {
-        HashMap<String, String> map = new HashMap<>();
-        if(jMap != null)
-            for (String key : jMap.keySet())
-                map.put(key, jMap.getString(key));
-        return map;
-    }
-
-    /**
      * Method to get {@link #uniqueAccess} instance
      *
      * @return {@link #uniqueAccess} instance as boolean
@@ -184,6 +149,7 @@ public class CustomRefyLink extends RefyLink {
      *
      * @return whether the link expires or not as boolean
      */
+    @JsonIgnore
     public boolean expires() {
         return expiredTime != null && expiredTime != ExpiredTime.NO_EXPIRATION;
     }
@@ -191,7 +157,7 @@ public class CustomRefyLink extends RefyLink {
     /**
      * Method to get the expiration timestamp value
      *
-     * @returne xpiration timestamp instance as long
+     * @return expiration timestamp instance as long
      */
     @JsonIgnore
     public long getExpirationTimestamp() {
@@ -201,23 +167,11 @@ public class CustomRefyLink extends RefyLink {
     }
 
     /**
-     * Method to get the expiration date
-     *
-     * @return the expiration date as {@link String}
-     */
-    @JsonIgnore
-    public String getExpirationDate() {
-        long expiration = getExpirationTimestamp();
-        if(expiration != -1)
-            return timeFormatter.formatAsString(expiration);
-        return null;
-    }
-
-    /**
      * Method to get whether the link has been expired
      *
      * @return whether the link has been expired as boolean
      */
+    @JsonIgnore
     public boolean isExpired() {
         return expires() && System.currentTimeMillis() >= getExpirationTimestamp();
     }
@@ -269,33 +223,5 @@ public class CustomRefyLink extends RefyLink {
     public String getPreviewToken() {
         return previewToken;
     }
-
-    /**
-     * Method to get the url to enter the preview mode
-     *
-     * @return the url to enter the preview mode as {@link String}
-     */
-    @JsonIgnore
-    public String getPreviewModeUrl(String hostAddress) {
-        return hostAddress + BASE_EQUINOX_ENDPOINT + CUSTOM_LINKS_PATH + "/" + id + "?" + PREVIEW_TOKEN_KEY + "="
-                + previewToken;
-    }
-
-    /**
-     * Method to assemble and return an {@link ArrayList} of links
-     *
-     * @param jLinks : links list details formatted as JSON
-     * @return the link list as {@link ArrayList} of {@link CustomRefyLink}
-     */
-    // TODO: 03/02/2025 CHECK TO REMOVE
-    /*@Returner
-    public static ArrayList<CustomRefyLink> returnCustomLinks(JSONArray jLinks) {
-        ArrayList<CustomRefyLink> links = new ArrayList<>();
-        if (jLinks == null)
-            return links;
-        for (int j = 0; j < jLinks.length(); j++)
-            links.add(new CustomRefyLink(jLinks.getJSONObject(j)));
-        return links;
-    }*/
 
 }

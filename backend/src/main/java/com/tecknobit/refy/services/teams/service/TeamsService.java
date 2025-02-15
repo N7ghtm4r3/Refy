@@ -142,13 +142,17 @@ public class TeamsService extends EquinoxItemsHelper implements RefyResourcesMan
     public void editTeam(String userId, Team team, TeamPayload payload) throws IOException {
         String teamId = team.getId();
         MultipartFile logo = payload.logo_pic;
-        boolean logoChanged = logo != null;
+        boolean logoChanged = logo != null && !logo.isEmpty();
         String logoUrl;
         if(logoChanged)
             logoUrl = createLogoResource(logo, teamId + System.currentTimeMillis());
         else
             logoUrl = team.getLogoPic();
         teamsRepository.editTeam(teamId, payload.title, logoUrl, payload.description, userId);
+        if (logoChanged) {
+            deleteLogoResource(teamId);
+            saveResource(logo, logoUrl);
+        }
         synchronizeMembers(userId, teamId, payload);
     }
 

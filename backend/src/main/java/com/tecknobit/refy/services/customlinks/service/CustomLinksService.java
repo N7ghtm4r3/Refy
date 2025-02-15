@@ -180,9 +180,7 @@ public class CustomLinksService extends LinksBaseService<CustomRefyLink> {
 
             @Override
             public void prepareQuery(Query query, int index, Collection<CustomLinkMapBatchItem> items) {
-                System.out.println(items.size());
                 for (CustomLinkMapBatchItem item : items) {
-                    System.out.println(item.getLinkId());
                     query.setParameter(index++, item.getLinkId());
                     query.setParameter(index++, item.getValue());
                     query.setParameter(index++, item.getKey());

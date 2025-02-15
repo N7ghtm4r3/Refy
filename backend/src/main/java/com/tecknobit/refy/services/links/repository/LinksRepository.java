@@ -103,12 +103,15 @@ public interface LinksRepository extends LinksBaseRepository<RefyLink> {
                     ") + ( " +
                     "SELECT COUNT(*) " +
                     "  FROM " + LINKS_KEY + " AS l " +
-                    "  INNER JOIN " + COLLECTIONS_LINKS_TABLE + " ON " + COLLECTIONS_LINKS_TABLE + "." + LINK_IDENTIFIER_KEY
+                    " LEFT JOIN " + COLLECTIONS_LINKS_TABLE + " ON " + COLLECTIONS_LINKS_TABLE + "." + LINK_IDENTIFIER_KEY
                     + " = l." + LINK_IDENTIFIER_KEY +
-                    "  INNER JOIN " + COLLECTIONS_TEAMS_TABLE + " ON " + COLLECTIONS_TEAMS_TABLE + "." + COLLECTION_IDENTIFIER_KEY
-                    + " = " + COLLECTIONS_LINKS_TABLE + "." + COLLECTION_IDENTIFIER_KEY +
-                    "  INNER JOIN " + MEMBERS_KEY + " ON " + COLLECTIONS_TEAMS_TABLE + "." + TEAM_IDENTIFIER_KEY + " = "
-                    + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY +
+                    " LEFT JOIN " + TEAMS_LINKS_TABLE + " ON " + TEAMS_LINKS_TABLE + "." + LINK_IDENTIFIER_KEY +
+                    " = l." + LINK_IDENTIFIER_KEY +
+                    " LEFT JOIN " + COLLECTIONS_TEAMS_TABLE + " ON " + COLLECTIONS_TEAMS_TABLE + "." + COLLECTION_IDENTIFIER_KEY +
+                    " = " + COLLECTIONS_LINKS_TABLE + "." + COLLECTION_IDENTIFIER_KEY +
+                    " LEFT JOIN " + MEMBERS_KEY + " ON " + COLLECTIONS_TEAMS_TABLE + "." + TEAM_IDENTIFIER_KEY + "=" +
+                    MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY +
+                    " OR " + TEAMS_LINKS_TABLE + "." + TEAM_IDENTIFIER_KEY + "=" + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY +
                     "  WHERE " + MEMBERS_KEY + "." + OWNER_KEY + " = :" + USER_IDENTIFIER_KEY +
                     "  AND l.dtype = '" + LINK_KEY + "' " +
                     "  AND ( " +
@@ -138,26 +141,29 @@ public interface LinksRepository extends LinksBaseRepository<RefyLink> {
                     "FROM " + LINKS_KEY + " AS l " +
                     "WHERE l." + OWNER_KEY + " = :" + USER_IDENTIFIER_KEY +
                     " AND dtype = '" + LINK_KEY + "' " +
-                    "  AND ( " +
-                    "    MATCH(l." + TITLE_KEY + ", l." + DESCRIPTION_KEY + ") AGAINST (:" + KEYWORDS_KEY + _IN_BOOLEAN_MODE + ") " +
-                    "    OR :" + KEYWORDS_KEY + " = '' " +
-                    "  )" +
+                    " AND ( " +
+                    "     MATCH(l." + TITLE_KEY + ", l." + DESCRIPTION_KEY + ") AGAINST (:" + KEYWORDS_KEY + _IN_BOOLEAN_MODE + ") " +
+                    "     OR :" + KEYWORDS_KEY + " = '' " +
+                    " ) " +
                     "UNION " +
                     "SELECT l.* " +
                     "FROM " + LINKS_KEY + " AS l " +
-                    "INNER JOIN " + COLLECTIONS_LINKS_TABLE + " ON " + COLLECTIONS_LINKS_TABLE + "." + LINK_IDENTIFIER_KEY +
+                    "LEFT  JOIN " + COLLECTIONS_LINKS_TABLE + " ON " + COLLECTIONS_LINKS_TABLE + "." + LINK_IDENTIFIER_KEY +
                     " = l." + LINK_IDENTIFIER_KEY +
-                    " INNER JOIN " + COLLECTIONS_TEAMS_TABLE + " ON " + COLLECTIONS_TEAMS_TABLE + "." +
-                    COLLECTION_IDENTIFIER_KEY + " = " + COLLECTIONS_LINKS_TABLE + "." + COLLECTION_IDENTIFIER_KEY +
-                    " INNER JOIN " + MEMBERS_KEY + " ON " + COLLECTIONS_TEAMS_TABLE + "." + TEAM_IDENTIFIER_KEY + "=" +
+                    " LEFT  JOIN " + TEAMS_LINKS_TABLE + " ON " + TEAMS_LINKS_TABLE + "." + LINK_IDENTIFIER_KEY +
+                    " = l." + LINK_IDENTIFIER_KEY +
+                    " LEFT  JOIN " + COLLECTIONS_TEAMS_TABLE + " ON " + COLLECTIONS_TEAMS_TABLE + "." + COLLECTION_IDENTIFIER_KEY +
+                    " = " + COLLECTIONS_LINKS_TABLE + "." + COLLECTION_IDENTIFIER_KEY +
+                    " LEFT  JOIN " + MEMBERS_KEY + " ON " + COLLECTIONS_TEAMS_TABLE + "." + TEAM_IDENTIFIER_KEY + "=" +
                     MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY +
+                    " OR " + TEAMS_LINKS_TABLE + "." + TEAM_IDENTIFIER_KEY + "=" + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY +
                     " WHERE " + MEMBERS_KEY + "." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
                     " AND l.dtype = '" + LINK_KEY + "' " +
-                    "  AND ( " +
-                    "    MATCH(l." + TITLE_KEY + ", l." + DESCRIPTION_KEY + ") AGAINST (:" + KEYWORDS_KEY + _IN_BOOLEAN_MODE + ") " +
-                    "    OR :" + KEYWORDS_KEY + " = '' " +
-                    "  )" +
-                    " ORDER BY " + DATE_KEY + " DESC",
+                    " AND ( " +
+                    "     MATCH(l." + TITLE_KEY + ", l." + DESCRIPTION_KEY + ") AGAINST (:" + KEYWORDS_KEY + _IN_BOOLEAN_MODE + ") " +
+                    "     OR :" + KEYWORDS_KEY + " = '' " +
+                    " ) " +
+                    "ORDER BY " + DATE_KEY + " DESC",
             nativeQuery = true
     )
     List<RefyLink> getAllUserLinks(

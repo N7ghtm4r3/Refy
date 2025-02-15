@@ -55,7 +55,7 @@ public interface TeamsRepository extends RefyItemsRepository<Team> {
      * @return the count of teams as {@code long}
      */
     @Query(
-            value = "SELECT COUNT(*) " + "FROM " + TEAMS_KEY + " as t INNER JOIN " + MEMBERS_KEY +
+            value = "SELECT DISTINCT COUNT(*) " + "FROM " + TEAMS_KEY + " as t INNER JOIN " + MEMBERS_KEY +
                     " ON t." + TEAM_IDENTIFIER_KEY + "=" + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY +
                     _WHERE_ + "t." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY,
             nativeQuery = true
@@ -73,7 +73,7 @@ public interface TeamsRepository extends RefyItemsRepository<Team> {
      * @return the user teams as {@link List} of {@link Team}
      */
     @Query(
-            value = "SELECT t.* " + "FROM " + TEAMS_KEY + " as t INNER JOIN " + MEMBERS_KEY +
+            value = "SELECT DISTINCT t.* " + "FROM " + TEAMS_KEY + " as t INNER JOIN " + MEMBERS_KEY +
                     " ON t." + TEAM_IDENTIFIER_KEY + "=" + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY +
                     _WHERE_ + "t." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
                     " ORDER BY " + DATE_KEY + " DESC",

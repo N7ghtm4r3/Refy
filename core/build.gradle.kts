@@ -6,6 +6,7 @@ plugins {
     id("maven-publish")
     id("com.android.library") version "8.2.2"
     kotlin("multiplatform")
+    kotlin("plugin.serialization") version "2.0.20"
 }
 
 group = "com.tecknobit.refycore"
@@ -57,6 +58,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation("io.github.n7ghtm4r3:equinox-core:1.0.7")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
             }
         }
 

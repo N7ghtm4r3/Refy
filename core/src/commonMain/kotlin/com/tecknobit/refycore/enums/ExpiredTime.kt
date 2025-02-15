@@ -1,5 +1,6 @@
 package com.tecknobit.refycore.enums
 
+import kotlinx.serialization.Serializable
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
@@ -10,6 +11,7 @@ import kotlin.time.Duration.Companion.minutes
  * @param timeValue Temporal value of the expiration
  * @param gap The temporal gap value used to calculated if the link has been expired
  */
+@Serializable
 enum class ExpiredTime(
     val timeValue: Int,
     val gap: Long

@@ -9,9 +9,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import java.util.List;
-
-import static com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController.*;
+import static com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController.initEquinoxEnvironment;
 import static com.tecknobit.equinoxbackend.resourcesutils.ResourcesProvider.CUSTOM_CONFIGURATION_FILE_PATH;
 import static com.tecknobit.equinoxbackend.resourcesutils.ResourcesProvider.DEFAULT_CONFIGURATION_FILE_PATH;
 import static com.tecknobit.refy.helpers.RefyResourcesManager.LOGOS_DIRECTORY;

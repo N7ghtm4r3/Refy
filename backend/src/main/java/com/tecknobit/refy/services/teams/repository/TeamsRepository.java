@@ -55,9 +55,9 @@ public interface TeamsRepository extends RefyItemsRepository<Team> {
      * @return the count of teams as {@code long}
      */
     @Query(
-            value = "SELECT COUNT(*) " + "FROM " + TEAMS_KEY + " as t INNER JOIN " + MEMBERS_KEY
-                    + " ON t." + TEAM_IDENTIFIER_KEY + "=" + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY
-                    + " WHERE " + MEMBERS_KEY + "." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY,
+            value = "SELECT COUNT(*) " + "FROM " + TEAMS_KEY + " as t INNER JOIN " + MEMBERS_KEY +
+                    " ON t." + TEAM_IDENTIFIER_KEY + "=" + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY +
+                    _WHERE_ + "t." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY,
             nativeQuery = true
     )
     long countUserOwnedTeams(
@@ -73,9 +73,9 @@ public interface TeamsRepository extends RefyItemsRepository<Team> {
      * @return the user teams as {@link List} of {@link Team}
      */
     @Query(
-            value = "SELECT t.* " + "FROM " + TEAMS_KEY + " as t INNER JOIN " + MEMBERS_KEY
-                    + " ON t." + TEAM_IDENTIFIER_KEY + "=" + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY
-                    + " WHERE " + MEMBERS_KEY + "." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
+            value = "SELECT t.* " + "FROM " + TEAMS_KEY + " as t INNER JOIN " + MEMBERS_KEY +
+                    " ON t." + TEAM_IDENTIFIER_KEY + "=" + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY +
+                    _WHERE_ + "t." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
                     " ORDER BY " + DATE_KEY + " DESC",
             nativeQuery = true
     )

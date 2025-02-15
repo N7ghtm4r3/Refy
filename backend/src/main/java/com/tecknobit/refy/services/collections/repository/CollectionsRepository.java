@@ -95,7 +95,7 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
             value = "SELECT ( " +
                     "    ( " +
                     "        SELECT COUNT(*) " +
-                    "        FROM " + COLLECTIONS_KEY + " AS c " + _WHERE_ + " c." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
+                    "        FROM " + COLLECTIONS_KEY + " AS c" + _WHERE_ + "c." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
                     "        AND ( " +
                     "            MATCH(c." + TITLE_KEY + ", c." + DESCRIPTION_KEY + ") AGAINST (:" + KEYWORDS_KEY + _IN_BOOLEAN_MODE + ") " +
                     "            OR :" + KEYWORDS_KEY + " =''" +
@@ -105,9 +105,9 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
                     "        SELECT COUNT(*) " +
                     "        FROM " + COLLECTIONS_KEY + " AS c " +
                     "        INNER JOIN " + COLLECTIONS_TEAMS_TABLE + " ON c." + IDENTIFIER_KEY + " = " +
-                    COLLECTIONS_TEAMS_TABLE + "." + COLLECTION_IDENTIFIER_KEY + " " +
-                    "        INNER JOIN " + MEMBERS_KEY + " ON " + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY + " " +
-                    "        WHERE " + MEMBERS_KEY + "." + OWNER_KEY + " = :" + USER_IDENTIFIER_KEY +
+                    COLLECTIONS_TEAMS_TABLE + "." + COLLECTION_IDENTIFIER_KEY + " INNER JOIN " +
+                    MEMBERS_KEY + " ON " + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY + "=" + COLLECTIONS_TEAMS_TABLE + "." +
+                    TEAM_IDENTIFIER_KEY + _WHERE_ + MEMBERS_KEY + "." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
                     "        AND ( " +
                     "            MATCH(c." + TITLE_KEY + ", c." + DESCRIPTION_KEY + ") AGAINST (:" + KEYWORDS_KEY + _IN_BOOLEAN_MODE + ") " +
                     "            OR :" + KEYWORDS_KEY + "=''" +
@@ -139,8 +139,8 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
                     ") UNION " +
                     "SELECT c.* FROM " + COLLECTIONS_KEY + " AS c INNER JOIN " + COLLECTIONS_TEAMS_TABLE + " ON c." +
                     IDENTIFIER_KEY + " = " + COLLECTIONS_TEAMS_TABLE + "." + COLLECTION_IDENTIFIER_KEY + " INNER JOIN " +
-                    MEMBERS_KEY + " ON " + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY +
-                    " WHERE " + MEMBERS_KEY + "." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
+                    MEMBERS_KEY + " ON " + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY + "=" + COLLECTIONS_TEAMS_TABLE + "." +
+                    TEAM_IDENTIFIER_KEY + _WHERE_ + MEMBERS_KEY + "." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
                     " AND ( " +
                     "    MATCH(c." + TITLE_KEY + ", c." + DESCRIPTION_KEY + ") AGAINST (:" + KEYWORDS_KEY + _IN_BOOLEAN_MODE + ") " +
                     "    OR :" + KEYWORDS_KEY + " = '' " +
@@ -207,8 +207,9 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
                     " UNION " +
                     "SELECT c.* FROM " + COLLECTIONS_KEY + " as c INNER JOIN " + COLLECTIONS_TEAMS_TABLE + " ON c." +
                     IDENTIFIER_KEY + " = " + COLLECTIONS_TEAMS_TABLE + "." + COLLECTION_IDENTIFIER_KEY + " INNER JOIN " +
-                    MEMBERS_KEY + " ON " + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY + " WHERE " + MEMBERS_KEY + "." +
-                    OWNER_KEY + "=:" + USER_IDENTIFIER_KEY + " AND c." + IDENTIFIER_KEY + "=:" + IDENTIFIER_KEY,
+                    MEMBERS_KEY + " ON " + MEMBERS_KEY + "." + TEAM_IDENTIFIER_KEY + "=" + COLLECTIONS_TEAMS_TABLE + "." +
+                    TEAM_IDENTIFIER_KEY + _WHERE_ + MEMBERS_KEY + "." + OWNER_KEY + "=:" + USER_IDENTIFIER_KEY +
+                    " AND c." + IDENTIFIER_KEY + "=:" + IDENTIFIER_KEY,
             nativeQuery = true
     )
     LinksCollection getCollectionIfAllowed(
@@ -232,7 +233,7 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
                     COLLECTION_COLOR_KEY + "=:" + COLLECTION_COLOR_KEY + "," +
                     TITLE_KEY + "=:" + TITLE_KEY + "," +
                     DESCRIPTION_KEY + "=:" + DESCRIPTION_KEY +
-                    " WHERE " + IDENTIFIER_KEY + "=:" + IDENTIFIER_KEY + " AND " + OWNER_KEY + "=:" + OWNER_KEY,
+                    _WHERE_ + IDENTIFIER_KEY + "=:" + IDENTIFIER_KEY + " AND " + OWNER_KEY + "=:" + OWNER_KEY,
             nativeQuery = true
     )
     void updateCollection(

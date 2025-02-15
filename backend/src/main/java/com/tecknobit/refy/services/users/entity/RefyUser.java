@@ -10,10 +10,7 @@ import com.tecknobit.refy.services.customlinks.entity.CustomRefyLink;
 import com.tecknobit.refy.services.links.entity.RefyLink;
 import com.tecknobit.refy.services.teams.entities.Team;
 import com.tecknobit.refy.services.teams.entities.Team.RefyTeamMember;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.util.List;
 
@@ -46,56 +43,60 @@ public class RefyUser extends EquinoxUser {
      */
     @OneToMany(
             fetch = FetchType.EAGER,
-            mappedBy = OWNER_KEY
+            mappedBy = OWNER_KEY,
+            cascade = CascadeType.ALL
     )
     @Column(name = LINKS_KEY)
     @JsonIgnoreProperties({
             "hibernateLazyInitializer",
             "handler"
     })
-    private List<RefyLink> links;
+    private final List<RefyLink> links;
 
     /**
      * {@code teams} the teams where the user is a member
      */
     @OneToMany(
             fetch = FetchType.EAGER,
-            mappedBy = OWNER_KEY
+            mappedBy = OWNER_KEY,
+            cascade = CascadeType.ALL
     )
     @Column(name = TEAMS_KEY)
     @JsonIgnoreProperties({
             "hibernateLazyInitializer",
             "handler"
     })
-    private List<Team> teams;
+    private final List<Team> teams;
 
     /**
      * {@code collections} the collections of the user
      */
     @OneToMany(
             fetch = FetchType.EAGER,
-            mappedBy = OWNER_KEY
+            mappedBy = OWNER_KEY,
+            cascade = CascadeType.ALL
     )
     @Column(name = COLLECTIONS_KEY)
     @JsonIgnoreProperties({
             "hibernateLazyInitializer",
             "handler"
     })
-    private List<LinksCollection> collections;
+    private final List<LinksCollection> collections;
 
     /**
      * {@code customLinks} the custom links of the user
      */
     @OneToMany(
             fetch = FetchType.EAGER,
-            mappedBy = OWNER_KEY
+            mappedBy = OWNER_KEY,
+            cascade = CascadeType.ALL
     )
     @Column(name = CUSTOM_LINKS_KEY)
     @JsonIgnoreProperties({
             "hibernateLazyInitializer",
             "handler"
     })
-    private List<CustomRefyLink> customLinks;
+    private final List<CustomRefyLink> customLinks;
 
     /**
      * {@code member} the member of teams relationship
@@ -103,7 +104,8 @@ public class RefyUser extends EquinoxUser {
     @JsonIgnore
     @OneToMany(
             fetch = FetchType.LAZY,
-            mappedBy = OWNER_KEY
+            mappedBy = OWNER_KEY,
+            cascade = CascadeType.ALL
     )
     private List<RefyTeamMember> member;
 
@@ -159,6 +161,7 @@ public class RefyUser extends EquinoxUser {
         this.links = null;
         this.teams = null;
         this.collections = null;
+        this.customLinks = null;
     }
 
     /**
@@ -198,16 +201,6 @@ public class RefyUser extends EquinoxUser {
     }
 
     /**
-     * Method to set {@link #links} instance <br>
-     *
-     * @param links The links of the user
-     *
-     */
-    public void setLinks(List<RefyLink> links) {
-        this.links = links;
-    }
-
-    /**
      * Method to get {@link #links} instance
      *
      * @return {@link #links} instance as {@link List} of {@link RefyLink}
@@ -217,32 +210,12 @@ public class RefyUser extends EquinoxUser {
     }
 
     /**
-     * Method to set {@link #teams} instance <br>
-     *
-     * @param teams The teams where the user is a member
-     *
-     */
-    public void setTeams(List<Team> teams) {
-        this.teams = teams;
-    }
-
-    /**
      * Method to get {@link #teams} instance
      *
      * @return {@link #teams} instance as {@link List} of {@link Team}
      */
     public List<Team> getTeams() {
         return teams;
-    }
-
-    /**
-     * Method to set {@link #collections} instance <br>
-     *
-     * @param collections The collections of the user
-     *
-     */
-    public void setCollections(List<LinksCollection> collections) {
-        this.collections = collections;
     }
 
     /**
@@ -262,16 +235,6 @@ public class RefyUser extends EquinoxUser {
     @JsonGetter(CUSTOM_LINKS_KEY)
     public List<CustomRefyLink> getCustomLinks() {
         return customLinks;
-    }
-
-    /**
-     * Method to set {@link #customLinks} instance <br>
-     *
-     * @param customLinks The custom links of the user
-     *
-     */
-    public void setCustomLinks(List<CustomRefyLink> customLinks) {
-        this.customLinks = customLinks;
     }
 
 }

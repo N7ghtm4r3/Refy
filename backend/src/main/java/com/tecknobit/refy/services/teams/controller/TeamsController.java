@@ -221,7 +221,9 @@ public class TeamsController extends DefaultRefyController<Team> {
         loadJsonHelper(payload);
         HashSet<String> userLinks = linksService.getUserLinks(userId);
         List<String> links = jsonHelper.fetchList(LINKS_KEY, new ArrayList<>());
-        if (!userLinks.containsAll(links))
+        ArrayList<String> linksSharedByTheUser = new ArrayList<>(links);
+        linksSharedByTheUser.removeAll(userItem.getLinkIds());
+        if (!userLinks.containsAll(linksSharedByTheUser))
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         teamsService.shareLinksWithTeam(userId, teamId, links);
         return successResponse();
@@ -260,7 +262,9 @@ public class TeamsController extends DefaultRefyController<Team> {
         loadJsonHelper(payload);
         HashSet<String> userCollections = linksCollectionsService.getUserCollections(userId);
         List<String> collections = jsonHelper.fetchList(COLLECTIONS_KEY, new ArrayList<>());
-        if (!userCollections.containsAll(collections))
+        ArrayList<String> collectionsSharedByTheUser = new ArrayList<>(collections);
+        collectionsSharedByTheUser.removeAll(userItem.getCollectionsIds());
+        if (!userCollections.containsAll(collectionsSharedByTheUser))
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         teamsService.shareCollectionsWithTeam(userId, teamId, collections);
         return successResponse();

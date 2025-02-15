@@ -19,6 +19,7 @@ import java.util.*;
 
 import static com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController.generateIdentifier;
 import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.InsertCommand.INSERT_INTO;
+import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.InsertCommand.REPLACE_INTO;
 import static com.tecknobit.equinoxbackend.resourcesutils.ResourcesManager.RESOURCES_KEY;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.IDENTIFIER_KEY;
 import static com.tecknobit.refycore.ConstantsKt.*;
@@ -84,8 +85,8 @@ public class CustomLinksService extends LinksBaseService<CustomRefyLink> {
                                  ExpiredTime expiredTime, Map<String, Object> fields, Map<String, Object> resources) {
         customLinksRepository.saveLink(CUSTOM_LINK_KEY, linkId, title, description, CUSTOM_LINKS_ENDPOINT +
                 "/" + linkId, System.currentTimeMillis(), expiredTime, hasUniqueAccess, generateIdentifier(), userId);
-        attachMap(linkId, RESOURCES_KEY, resources, IDENTIFIER_KEY, RESOURCE_VALUE_KEY, RESOURCE_KEY);
         attachMap(linkId, FIELDS_KEY, fields, IDENTIFIER_KEY, FIELD_VALUE_KEY, FIELD_KEY);
+        attachMap(linkId, RESOURCES_KEY, resources, IDENTIFIER_KEY, RESOURCE_VALUE_KEY, RESOURCE_KEY);
     }
 
     /**
@@ -140,8 +141,9 @@ public class CustomLinksService extends LinksBaseService<CustomRefyLink> {
                                ExpiredTime expiredTime, Map<String, Object> fields, Map<String, Object> resources) {
         CustomRefyLink customRefyLink = getItemIfAllowed(userId, linkId);
         customLinksRepository.updateLink(linkId, title, description, expiredTime, hasUniqueAccess, userId);
-        editMap(linkId, FIELDS_KEY, customRefyLink.getFields(), fields);
-        editMap(linkId, RESOURCES_KEY, customRefyLink.getResources(), resources);
+        editMap(linkId, FIELDS_KEY, customRefyLink.getFields(), fields, IDENTIFIER_KEY, FIELD_VALUE_KEY, FIELD_KEY);
+        editMap(linkId, RESOURCES_KEY, customRefyLink.getResources(), resources, IDENTIFIER_KEY, RESOURCE_VALUE_KEY,
+                RESOURCE_KEY);
     }
 
     /**
@@ -158,7 +160,7 @@ public class CustomLinksService extends LinksBaseService<CustomRefyLink> {
             public Collection<CustomLinkMapBatchItem> getCurrentData() {
                 ArrayList<CustomLinkMapBatchItem> pairs = new ArrayList<>();
                 for (String key : currentMap.keySet())
-                    pairs.add(new CustomLinkMapBatchItem(linkId, key, currentMap.get(key)));
+                    pairs.add(new CustomLinkMapBatchItem(linkId, currentMap.get(key), key));
                 return pairs;
             }
 
@@ -172,7 +174,7 @@ public class CustomLinksService extends LinksBaseService<CustomRefyLink> {
             public Collection<CustomLinkMapBatchItem> getData() {
                 ArrayList<CustomLinkMapBatchItem> pairs = new ArrayList<>();
                 for (String key : map.keySet())
-                    pairs.add(new CustomLinkMapBatchItem(linkId, key, map.get(key)));
+                    pairs.add(new CustomLinkMapBatchItem(linkId, map.get(key), key));
                 return pairs;
             }
 
@@ -180,6 +182,7 @@ public class CustomLinksService extends LinksBaseService<CustomRefyLink> {
             public void prepareQuery(Query query, int index, Collection<CustomLinkMapBatchItem> items) {
                 System.out.println(items.size());
                 for (CustomLinkMapBatchItem item : items) {
+                    System.out.println(item.getLinkId());
                     query.setParameter(index++, item.getLinkId());
                     query.setParameter(index++, item.getValue());
                     query.setParameter(index++, item.getKey());
@@ -192,6 +195,24 @@ public class CustomLinksService extends LinksBaseService<CustomRefyLink> {
             }
         };
         syncBatch(model, table, batchQuery);
+    }
+
+    /**
+     * Method to execute a batch synchronization of a list of data simultaneously
+     *
+     * @param model      Contains the data about the synchronization such the columns affected and the current list of the data
+     * @param table      The table where execute the synchronization of the data
+     * @param batchQuery The manager of the batch query to execute
+     */
+    @Override
+    @Deprecated(since = "USE THE EQUINOX BUILT-IN")
+    protected <V> void syncBatch(SyncBatchModel model, String table, BatchQuery<V> batchQuery) {
+        Collection<V> updatedData = batchQuery.getData();
+        Collection<V> currentData = model.getCurrentData();
+        batchInsert(REPLACE_INTO, table, batchQuery);
+        currentData.removeAll(updatedData);
+        batchDelete(table, currentData, model.getDeletingColumns());
+        model.afterSync();
     }
 
     /**

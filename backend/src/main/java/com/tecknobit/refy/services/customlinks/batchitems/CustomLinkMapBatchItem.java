@@ -1,7 +1,6 @@
 package com.tecknobit.refy.services.customlinks.batchitems;
 
 import com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper;
-import kotlin.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -13,42 +12,40 @@ public class CustomLinkMapBatchItem implements EquinoxItemsHelper.ComplexBatchIt
 
     private final String linkId;
 
-    private final Pair<String, Object> pair;
+    private final String key;
 
-    public CustomLinkMapBatchItem(String linkId, String key, Object value) {
+    private final Object value;
+
+    public CustomLinkMapBatchItem(String linkId, Object value, String key) {
         this.linkId = linkId;
-        pair = new Pair<>(key, value);
+        this.value = value;
+        this.key = key;
     }
 
     public String getLinkId() {
         return linkId;
     }
 
-    public String getKey() {
-        return pair.getFirst();
-    }
-
     public Object getValue() {
-        return pair.getSecond();
+        return value;
     }
 
-    public Pair<String, Object> getPair() {
-        return pair;
+    public String getKey() {
+        return key;
     }
 
     @Override
     public final boolean equals(Object o) {
-        if (!(o instanceof CustomLinkMapBatchItem item)) return false;
-
-        return Objects.equals(linkId, item.linkId) && pair.getFirst().equals(item.pair.getFirst()) &&
-                pair.getSecond().equals(item.pair.getSecond());
+        if (!(o instanceof CustomLinkMapBatchItem item))
+            return false;
+        return Objects.equals(linkId, item.linkId) && Objects.equals(key, item.key) && Objects.equals(value, item.value);
     }
 
     @Override
     public int hashCode() {
         int result = Objects.hashCode(linkId);
-        result = 31 * result + pair.getFirst().hashCode();
-        result = 31 * result + pair.getSecond().hashCode();
+        result = 31 * result + Objects.hashCode(key);
+        result = 31 * result + Objects.hashCode(value);
         return result;
     }
 
@@ -56,8 +53,8 @@ public class CustomLinkMapBatchItem implements EquinoxItemsHelper.ComplexBatchIt
     public @NotNull List<?> mappedValues() {
         ArrayList<Object> mappedValues = new ArrayList<>();
         mappedValues.add(linkId);
-        mappedValues.add(pair.getFirst());
-        mappedValues.add(pair.getSecond());
+        mappedValues.add(value);
+        mappedValues.add(key);
         return mappedValues;
     }
 

@@ -244,7 +244,12 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
             @Param(OWNER_KEY) String owner
     );
 
-    // TODO: 14/02/2025 TO COMMENT
+    /**
+     * Method to execute the query remove a link from a collection
+     *
+     * @param collectionId The identifier of the collection
+     * @param linkId       The identifier of the link
+     */
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(
@@ -258,7 +263,12 @@ public interface CollectionsRepository extends RefyItemsRepository<LinksCollecti
             @Param(LINK_IDENTIFIER_KEY) String linkId
     );
 
-    // TODO: 14/02/2025 TO COMMENT
+    /**
+     * Method to execute the query to remove a team from a collection
+     *
+     * @param collectionId The identifier of the collection
+     * @param teamId The identifier of the team
+     */
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(

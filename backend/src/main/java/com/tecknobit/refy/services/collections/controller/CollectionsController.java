@@ -256,7 +256,16 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
         return super.getItem(token, userId, collectionId);
     }
 
-    // TODO: 14/02/2025 TO COMMENT
+    /**
+     * Method to get the list of the teams where the collection is shared
+     *
+     * @param token        The token of the user
+     * @param userId       The identifier of the user
+     * @param collectionId The identifier of the collection
+     * @param page         The page requested
+     * @param pageSize     The size of the items to insert in the page
+     * @return the teams list, if authorized, else failed message as {@link T}
+     */
     @GetMapping(
             headers = TOKEN_KEY,
             path = "/{" + COLLECTION_IDENTIFIER_KEY + "}/" + TEAMS_KEY
@@ -274,7 +283,17 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
         return (T) successResponse(linksCollectionsService.getCollectionTeams(collectionId, page, pageSize));
     }
 
-    // TODO: 14/02/2025 TO COMMENT
+    /**
+     * Method to get the list of the links shared with the collection
+     *
+     * @param token The token of the user
+     * @param userId The identifier of the user
+     * @param collectionId The identifier of the collection
+     * @param page      The page requested
+     * @param pageSize  The size of the items to insert in the page
+     *
+     * @return the links list, if authorized, else failed message as {@link T}
+     */
     @GetMapping(
             headers = TOKEN_KEY,
             path = "/{" + COLLECTION_IDENTIFIER_KEY + "}/" + LINKS_KEY
@@ -293,7 +312,16 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
         return (T) successResponse(linksCollectionsService.getCollectionLinks(collectionId, page, pageSize, keywords));
     }
 
-    // TODO: 14/02/2025 TO COMMENT
+    /**
+     * Method to remove a link from a collection
+     *
+     * @param token The token of the user
+     * @param userId The identifier of the user
+     * @param collectionId The identifier of the collection
+     * @param linkId The identifier of the link
+     *
+     * @return the response of the request as {@link String}
+     */
     @DeleteMapping(
             headers = TOKEN_KEY,
             path = "/{" + COLLECTION_IDENTIFIER_KEY + "}/" + LINKS_KEY + "/{" + LINK_IDENTIFIER_KEY + "}"
@@ -313,7 +341,16 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
         return successResponse();
     }
 
-    // TODO: 14/02/2025 TO COMMENT
+    /**
+     * Method to remove a team from a collection
+     *
+     * @param token The token of the user
+     * @param userId The identifier of the user
+     * @param collectionId The identifier of the collection
+     * @param teamId The identifier of the team
+     *
+     * @return the response of the request as {@link String}
+     */
     @DeleteMapping(
             headers = TOKEN_KEY,
             path = "/{" + COLLECTION_IDENTIFIER_KEY + "}/" + TEAMS_KEY + "/{" + TEAM_IDENTIFIER_KEY + "}"

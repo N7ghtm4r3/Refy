@@ -301,7 +301,13 @@ public class Team extends RefyItem {
         return memberId.equals(owner.getId());
     }
 
-    // TODO: 14/02/2025 TO COMMENT
+    /**
+     * Method to check whether the member is the owner of the collection shared in the team
+     *
+     * @param memberId     The identifier of the member
+     * @param collectionId The identifier of the collection
+     * @return whether the member is the owner as {@code boolean}
+     */
     public boolean isTheCollectionOwner(String memberId, String collectionId) {
         for (LinksCollection collection : collections)
             if (collection.getId().equals(collectionId) && collection.getOwner().getId().equals(memberId))
@@ -309,7 +315,13 @@ public class Team extends RefyItem {
         return false;
     }
 
-    // TODO: 14/02/2025 TO COMMENT
+    /**
+     * Method to check whether the member is the owner of the link shared in the team
+     *
+     * @param memberId The identifier of the member
+     * @param linkId   The identifier of the link
+     * @return whether the member is the owner as {@code boolean}
+     */
     public boolean isTheLinkOwner(String memberId, String linkId) {
         for (RefyLink link : links)
             if (link.getId().equals(linkId) && link.getOwner().getId().equals(memberId))

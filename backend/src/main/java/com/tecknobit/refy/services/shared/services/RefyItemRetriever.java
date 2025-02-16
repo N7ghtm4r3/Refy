@@ -2,7 +2,12 @@ package com.tecknobit.refy.services.shared.services;
 
 import com.tecknobit.refy.services.shared.entities.RefyItem;
 
-// TODO: 13/02/2025 TO COMMENT
+/**
+ * The {@code RefyItemRetriever} interface is useful to retrieve the items from the database
+ *
+ * @param <T> The type of the item to retrieve
+ * @author N7ghtm4r3 - Tecknobit
+ */
 public interface RefyItemRetriever<T extends RefyItem> {
 
     /**

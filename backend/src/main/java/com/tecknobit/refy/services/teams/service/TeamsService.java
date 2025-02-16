@@ -223,7 +223,13 @@ public class TeamsService extends EquinoxItemsHelper implements RefyResourcesMan
         model.afterSync();
     }
 
-    // TODO: 14/02/2025 TO COMMENT
+    /**
+     * Method to share the links with the team
+     *
+     * @param userId The identifier of the user
+     * @param teamId The identifier of the team
+     * @param links  The links to share in the team
+     */
     // FIXME: 14/02/2025 USE THE BatchSynchronizationProcedure WHEN IMPLEMENTED
     public void shareLinksWithTeam(String userId, String teamId, List<String> links) {
         SyncBatchModel model = new SyncBatchModel() {
@@ -267,7 +273,14 @@ public class TeamsService extends EquinoxItemsHelper implements RefyResourcesMan
         syncBatch(model, TEAMS_LINKS_TABLE, batchQuery);
     }
 
-    // TODO: 14/02/2025 TO COMMENT
+    /**
+     * Method to share the collections with the team
+     *
+     * @param userId The identifier of the user
+     * @param teamId The identifier of the team
+     * @param collections The collections to share in the team
+     *
+     */
     // FIXME: 14/02/2025 USE THE BatchSynchronizationProcedure WHEN IMPLEMENTED
     public void shareCollectionsWithTeam(String userId, String teamId, List<String> collections) {
         SyncBatchModel model = new SyncBatchModel() {
@@ -343,12 +356,22 @@ public class TeamsService extends EquinoxItemsHelper implements RefyResourcesMan
         return new PaginatedResponse<>(links, page, pageSize, totalLinks);
     }
 
-    // TODO: 14/02/2025 TO COMMENT
+    /**
+     * Method to remove a collection from a team
+     *
+     * @param teamId The identifier of the team
+     * @param collectionId The identifier of the collection
+     */
     public void removeCollectionFromTeam(String teamId, String collectionId) {
         teamsRepository.removeCollectionFromTeam(teamId, collectionId);
     }
 
-    // TODO: 14/02/2025 TO COMMENT
+    /**
+     * Method to remove a link from a team
+     *
+     * @param teamId The identifier of the team
+     * @param linkId The identifier of the link
+     */
     public void removeLinkFromTeam(String teamId, String linkId) {
         teamsRepository.removeLinkFromTeam(teamId, linkId);
     }

@@ -254,7 +254,12 @@ public interface TeamsRepository extends RefyItemsRepository<Team> {
             @Param(OWNER_KEY) String owner
     );
 
-    // TODO: 14/02/2025 TO COMMENT
+    /**
+     * Method to execute the query to remove a collection from a team
+     *
+     * @param teamId       The identifier of the team
+     * @param collectionId The identifier of the collection
+     */
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(
@@ -268,7 +273,12 @@ public interface TeamsRepository extends RefyItemsRepository<Team> {
             @Param(COLLECTION_IDENTIFIER_KEY) String collectionId
     );
 
-    // TODO: 14/02/2025 TO COMMENT
+    /**
+     * Method to execute the query remove a link from a team
+     *
+     * @param teamId The identifier of the team
+     * @param linkId The identifier of the link
+     */
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(

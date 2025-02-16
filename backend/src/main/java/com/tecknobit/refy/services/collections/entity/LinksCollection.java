@@ -157,23 +157,18 @@ public class LinksCollection extends RefyItem {
         return ids;
     }
 
-    // TODO: 14/02/2025 TO COMMENT
+    /**
+     * Method to check whether a user can remove a team from a collection
+     *
+     * @param userId The identifier of the user
+     * @param teamId The identifier of the team
+     * @return whether the user can remove a team from a collection as {@code boolean}
+     */
     public boolean isUserAllowedToRemoveTeam(String userId, String teamId) {
-        for (Team team : teams) {
+        for (Team team : teams)
             if (team.getId().equals(teamId) && team.getOwner().getId().equals(userId))
                 return true;
-        }
         return false;
-    }
-
-    /**
-     * Method to get whether the collection is shared in any teams
-     *
-     * @return whether the collection is shared in any teams as boolean
-     */
-    // TODO: 14/02/2025 CHECK TO REMOVE
-    public boolean hasTeams() {
-        return !teams.isEmpty();
     }
 
 }

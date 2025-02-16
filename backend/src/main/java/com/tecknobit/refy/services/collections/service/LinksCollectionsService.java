@@ -159,7 +159,12 @@ public class LinksCollectionsService extends EquinoxItemsHelper implements RefyI
         attachLinksToCollection(collectionId, links);
     }
 
-    // TODO: 14/02/2025 TO COMMENT
+    /**
+     * Method to attach the links with a collection
+     *
+     * @param collectionId The identifier of the collection
+     * @param links        The links to attach to the collection
+     */
     // FIXME: 14/02/2025 USE THE BatchSynchronizationProcedure WHEN IMPLEMENTED
     public void attachLinksToCollection(String collectionId, List<String> links) {
         SyncBatchModel model = new SyncBatchModel() {
@@ -284,12 +289,22 @@ public class LinksCollectionsService extends EquinoxItemsHelper implements RefyI
         return new PaginatedResponse<>(links, page, pageSize, totalLinks);
     }
 
-    // TODO: 14/02/2025 TO COMMENT
+    /**
+     * Method to remove a link from a collection
+     *
+     * @param collectionId The identifier of the collection
+     * @param linkId       The identifier of the link
+     */
     public void removeLinkFromCollection(String collectionId, String linkId) {
         collectionsRepository.removeLinkFromCollection(collectionId, linkId);
     }
 
-    // TODO: 14/02/2025 TO COMMENT
+    /**
+     * Method to remove a team from a collection
+     *
+     * @param collectionId The identifier of the collection
+     * @param teamId The identifier of the team
+     */
     public void removeTeamFromCollection(String collectionId, String teamId) {
         collectionsRepository.removeTeamFromCollection(collectionId, teamId);
     }

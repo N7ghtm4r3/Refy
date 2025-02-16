@@ -1,6 +1,6 @@
 # Refy
 
-**v1.0.0**
+**v1.0.1**
 
 This project, based on Java and the Spring Boot framework, is an open source self-hosted references collector and custom 
 links generator
@@ -31,7 +31,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.tecknobit.refycore:refycore:1.0.0'
+  implementation 'com.tecknobit.refycore:refycore:1.0.1'
 }
 ```
 
@@ -44,27 +44,23 @@ repositories {
 }
 
 dependencies {
-  implementation("com.tecknobit.refycore:refycore:1.0.0")
+  implementation("com.tecknobit.refycore:refycore:1.0.1")
 }
 ```
 
-## 🛠 Skills
+## Architecture
 
-- Java
-- Kotlin
+### Clients
 
-## Roadmap
+- [Android](https://play.google.com/store/apps/details?id=com.tecknobit.refy)
+- [Refy desktop version](https://github.com/N7ghtm4r3/Refy-Clients/releases/tag/1.0.1)
+- iOS -> source code available, but cannot distribute due
+  missing [Apple Developer Program license](https://developer.apple.com/programs/)
+- [Refy webapp version](https://github.com/N7ghtm4r3/Refy-WebApp/releases/tag/1.0.1)
 
-This project will be constantly developed to reach different platforms to work on, following the platforms releases
-steps:
+### Backend
 
-- Mobile
-    - <a href="https://github.com/N7ghtm4r3/Refy-Android#readme">Android</a>
-    - iOS -> planned
-- <a href="https://github.com/N7ghtm4r3/Refy-Desktop#readme">Desktop version</a>
-- <a href="https://github.com/N7ghtm4r3/Refy/releases/tag/1.0.0">Backend service "out-of-the-box"</a>
-
-## Usages
+- <a href="https://github.com/N7ghtm4r3/Refy/releases/tag/1.0.1">Backend service "out-of-the-box"</a>
 
 ### Backend configuration
 
@@ -186,10 +182,6 @@ When you have to start the service you will have different scenarios:
   java -jar Refy.jar dssi // this will delete the current server secret and interrupts the server workflow right next
   ```
 
-## Authors
-
-- [@N7ghtm4r3](https://www.github.com/N7ghtm4r3)
-
 ## Support
 
 If you need help using the library or encounter any problems or bugs, please contact us via the following links:
@@ -213,12 +205,13 @@ Thank you for your help!
 
 If you want support project and developer
 
-| Crypto                                                                                              | Address                                        | Network  |
-|-----------------------------------------------------------------------------------------------------|------------------------------------------------|----------|
-| ![](https://img.shields.io/badge/Bitcoin-000000?style=for-the-badge&logo=bitcoin&logoColor=white)   | **3H3jyCzcRmnxroHthuXh22GXXSmizin2yp**         | Bitcoin  |
-| ![](https://img.shields.io/badge/Ethereum-3C3C3D?style=for-the-badge&logo=Ethereum&logoColor=white) | **0x1b45bc41efeb3ed655b078f95086f25fc83345c4** | Ethereum |
+| Crypto                                                                                              | Address                                          | Network  |
+|-----------------------------------------------------------------------------------------------------|--------------------------------------------------|----------|
+| ![](https://img.shields.io/badge/Bitcoin-000000?style=for-the-badge&logo=bitcoin&logoColor=white)   | **3H3jyCzcRmnxroHthuXh22GXXSmizin2yp**           | Bitcoin  |
+| ![](https://img.shields.io/badge/Ethereum-3C3C3D?style=for-the-badge&logo=Ethereum&logoColor=white) | **0x1b45bc41efeb3ed655b078f95086f25fc83345c4**   | Ethereum |
+| ![](https://img.shields.io/badge/Solana-000?style=for-the-badge&logo=Solana&logoColor=9945FF)       | **AtPjUnxYFHw3a6Si9HinQtyPTqsdbfdKX3dJ1xiDjbrL** | Solana   |
 
 If you want support project and developer
-with <a href="https://www.paypal.com/donate/?hosted_button_id=5QMN5UQH7LDT4">PayPal</a>
+with [PayPal](https://www.paypal.com/donate/?hosted_button_id=5QMN5UQH7LDT4)
 
-Copyright © 2024 Tecknobit
+Copyright © 2025 Tecknobit

@@ -1,6 +1,6 @@
 plugins {
     id("java")
-    id("org.springframework.boot") version "3.4.1"
+    id("org.springframework.boot") version "3.2.3"
     kotlin("jvm")
 }
 
@@ -17,10 +17,10 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web:3.4.1")
-    implementation("org.springframework.boot:spring-boot-maven-plugin:3.4.1")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.4.1")
-    implementation("org.springframework.boot:spring-boot-starter-thymeleaf:3.4.1")
+    implementation("org.springframework.boot:spring-boot-starter-web:3.2.3")
+    implementation("org.springframework.boot:spring-boot-maven-plugin:3.2.3")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.2.3")
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf:3.2.3")
     implementation("mysql:mysql-connector-java:8.0.33")
     implementation("com.github.N7ghtm4r3:APIManager:2.2.4")
     implementation("com.github.N7ghtm4r3:Mantis:1.0.0")

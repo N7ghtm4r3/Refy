@@ -21,8 +21,6 @@ subprojects {
     apply(plugin = "org.jetbrains.dokka")
     tasks.withType<DokkaTaskPartial>().configureEach {
         dokkaSourceSets.configureEach {
-            sourceRoots.from(file("src/main/kotlin"))
-            sourceRoots.from(file("src/main/java"))
             includeNonPublic.set(true)
             documentedVisibilities.set(setOf(PUBLIC, PROTECTED, PRIVATE))
         }
@@ -37,6 +35,6 @@ tasks.withType<DokkaMultiModuleTask> {
     outputDirectory.set(layout.projectDirectory.dir("docs"))
     pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
         customAssets = listOf(file("docs/logo-icon.svg"))
-        footerMessage = "(c) 2024 Tecknobit"
+        footerMessage = "(c) 2025 Tecknobit"
     }
 }

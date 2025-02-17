@@ -1,9 +1,16 @@
+rootProject.name = "Refy"
+
 pluginManagement {
     plugins {
-        id("org.jetbrains.kotlin.jvm").version("2.0.0")
+        kotlin("jvm") version "2.1.0"
+        kotlin("multiplatform") version "2.1.0"
+    }
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
     }
 }
 
-rootProject.name = "Refy"
 include("core")
 include("backend")

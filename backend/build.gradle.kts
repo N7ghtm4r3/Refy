@@ -7,7 +7,7 @@ plugins {
 apply(plugin = "io.spring.dependency-management")
 
 group = "com.tecknobit"
-version = "1.0.0"
+version = "1.0.1"
 
 repositories {
     mavenCentral()
@@ -17,20 +17,16 @@ repositories {
 }
 
 dependencies {
-    testImplementation("org.springframework.boot:spring-boot-starter-test:3.2.3")
     implementation("org.springframework.boot:spring-boot-starter-web:3.2.3")
-    implementation("org.springframework.boot:spring-boot-maven-plugin:3.2.0")
+    implementation("org.springframework.boot:spring-boot-maven-plugin:3.2.3")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.2.3")
-    implementation("org.springframework.boot:spring-boot-starter-thymeleaf:3.3.2")
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf:3.2.3")
     implementation("mysql:mysql-connector-java:8.0.33")
-    implementation("com.github.N7ghtm4r3:APIManager:2.2.3")
-    implementation("com.github.N7ghtm4r3:Equinox:1.0.2")
+    implementation("com.github.N7ghtm4r3:APIManager:2.2.4")
     implementation("com.github.N7ghtm4r3:Mantis:1.0.0")
-    implementation("org.json:json:20231013")
-    implementation("com.tecknobit.refycore:refycore:1.0.0")
+    implementation("io.github.n7ghtm4r3:equinox-core:1.0.7")
+    implementation("io.github.n7ghtm4r3:equinox-backend:1.0.7")
+    implementation("org.json:json:20240303")
     implementation("org.jsoup:jsoup:1.18.1")
-}
-
-configurations.all {
-    exclude("commons-logging", "commons-logging")
+    implementation(project(":core"))
 }

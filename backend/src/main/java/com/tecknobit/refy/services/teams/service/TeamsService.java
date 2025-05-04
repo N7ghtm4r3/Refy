@@ -2,16 +2,16 @@ package com.tecknobit.refy.services.teams.service;
 
 import com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
-import com.tecknobit.refy.batchitems.TeamCollectionBatchItem;
-import com.tecknobit.refy.batchitems.TeamLinkBatchItem;
+import com.tecknobit.refy.services.shared.batch.TeamCollectionBatchItem;
+import com.tecknobit.refy.services.shared.batch.TeamLinkBatchItem;
 import com.tecknobit.refy.helpers.RefyResourcesManager;
 import com.tecknobit.refy.services.collections.entity.LinksCollection;
 import com.tecknobit.refy.services.collections.repository.CollectionsRepository;
 import com.tecknobit.refy.services.links.entity.RefyLink;
 import com.tecknobit.refy.services.links.repository.LinksRepository;
 import com.tecknobit.refy.services.shared.services.RefyItemRetriever;
-import com.tecknobit.refy.services.teams.batchquery.TeamMemberBatchItem;
-import com.tecknobit.refy.services.teams.batchquery.TeamMembersBatchQuery;
+import com.tecknobit.refy.services.teams.batch.TeamMemberBatchItem;
+import com.tecknobit.refy.services.teams.batch.TeamMembersBatchQuery;
 import com.tecknobit.refy.services.teams.entities.Team;
 import com.tecknobit.refy.services.teams.repository.TeamsRepository;
 import com.tecknobit.refycore.enums.TeamRole;
@@ -27,11 +27,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.*;
 
+import static com.tecknobit.equinoxbackend.configuration.IndexesCreator.formatFullTextKeywords;
 import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.InsertCommand.INSERT_INTO;
 import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.InsertCommand.REPLACE_INTO;
-import static com.tecknobit.refy.batchitems.TeamCollectionBatchItem.TEAM_COLLECTION_JOIN_TABLE_COLUMNS;
-import static com.tecknobit.refy.configuration.indexes.IndexesCreator.formatFullTextKeywords;
-import static com.tecknobit.refy.services.teams.batchquery.TeamMembersBatchQuery.MEMBERS_TABLE_COLUMNS;
+import static com.tecknobit.refy.services.shared.batch.TeamCollectionBatchItem.TEAM_COLLECTION_JOIN_TABLE_COLUMNS;
+import static com.tecknobit.refy.services.teams.batch.TeamMembersBatchQuery.MEMBERS_TABLE_COLUMNS;
 import static com.tecknobit.refycore.ConstantsKt.*;
 import static com.tecknobit.refycore.helpers.RefyInputsValidator.INSTANCE;
 

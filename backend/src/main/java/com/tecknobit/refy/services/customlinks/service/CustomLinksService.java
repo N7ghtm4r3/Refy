@@ -1,8 +1,7 @@
 package com.tecknobit.refy.services.customlinks.service;
 
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
-import com.tecknobit.refy.configuration.indexes.IndexesCreator;
-import com.tecknobit.refy.services.customlinks.batchitems.CustomLinkMapBatchItem;
+import com.tecknobit.refy.services.customlinks.batch.CustomLinkMapBatchItem;
 import com.tecknobit.refy.services.customlinks.entity.CustomRefyLink;
 import com.tecknobit.refy.services.customlinks.repository.CustomLinksRepository;
 import com.tecknobit.refy.services.links.service.LinksService;

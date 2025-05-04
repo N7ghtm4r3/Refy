@@ -1,6 +1,7 @@
-package com.tecknobit.refy.batchitems;
+package com.tecknobit.refy.services.shared.batch;
 
-import com.tecknobit.refy.helpers.JoinTableSyncBatchItem;
+import com.tecknobit.equinoxbackend.annotations.BatchQueryItem;
+import com.tecknobit.equinoxbackend.batch.JoinTableSyncBatchItem;
 
 /**
  * The {@code TeamLinkBatchItem} is used during the batch synchronization to share a link with a team
@@ -8,8 +9,8 @@ import com.tecknobit.refy.helpers.JoinTableSyncBatchItem;
  * @author N7ghtm4r3 - Tecknobit
  * @see JoinTableSyncBatchItem
  */
-// TODO: 13/02/2025 ANNOTATE AS @BatchItem
-public class TeamLinkBatchItem extends JoinTableSyncBatchItem<String> {
+@BatchQueryItem
+public class TeamLinkBatchItem extends JoinTableSyncBatchItem<String, String> {
 
     /**
      * Constructor to instantiate the batch item

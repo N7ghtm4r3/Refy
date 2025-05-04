@@ -142,11 +142,7 @@ object RefyInputsValidator : InputsValidator() {
     fun isLinkResourceValid(
         linkResource: String?
     ): Boolean {
-        // TODO: USE THE urlValidator INSTEAD
-        val regex =
-            "^[a-zA-Z][a-zA-Z0-9+.-]*://(([a-zA-Z0-9\\-]+\\.)+[a-zA-Z]{2,6}|\\d{1,3}(?:\\.\\d{1,3}){3})(?::\\d{1,5})?(/\\S*)?(\\?(\\S*))?(#(\\S*))?$"
-        val validator = Regex(regex)
-        return isInputValid(linkResource) && validator.matches(linkResource!!)
+        return isInputValid(linkResource) && urlValidator.matches(linkResource!!)
     }
 
     /**

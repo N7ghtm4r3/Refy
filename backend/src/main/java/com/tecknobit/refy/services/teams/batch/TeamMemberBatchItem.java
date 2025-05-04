@@ -1,6 +1,7 @@
-package com.tecknobit.refy.services.teams.batchquery;
+package com.tecknobit.refy.services.teams.batch;
 
-import com.tecknobit.refy.helpers.JoinTableSyncBatchItem;
+import com.tecknobit.equinoxbackend.annotations.BatchQueryItem;
+import com.tecknobit.equinoxbackend.batch.JoinTableSyncBatchItem;
 import com.tecknobit.refycore.enums.TeamRole;
 
 /**
@@ -9,8 +10,8 @@ import com.tecknobit.refycore.enums.TeamRole;
  * @author N7ghtm4r3 - Tecknobit
  * @see JoinTableSyncBatchItem
  */
-// TODO: 13/02/2025 ANNOTATE AS @BatchItem
-public class TeamMemberBatchItem extends JoinTableSyncBatchItem<String> {
+@BatchQueryItem
+public class TeamMemberBatchItem extends JoinTableSyncBatchItem<String, String> {
 
     /**
      * {@code role} The role of the member

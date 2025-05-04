@@ -1,5 +1,6 @@
-package com.tecknobit.refy.configuration.indexes;
+package com.tecknobit.refy.configuration;
 
+import com.tecknobit.equinoxbackend.configuration.IndexesCreator;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
@@ -9,7 +10,7 @@ import java.util.List;
 import static com.tecknobit.refycore.ConstantsKt.*;
 
 /**
- * The {@code RefyItemFullTextIndexCreator} is a custom component used to create the {@code fulltext indexes} to filter
+ * The {@code RefyIndexesCreator} is a custom component used to create the {@code fulltext indexes} to filter
  * the items query such links, collections and tables using the FullText-Search (FTS) approach
  *
  * @author N7ghtm4r3 - Tecknobit
@@ -17,7 +18,7 @@ import static com.tecknobit.refycore.ConstantsKt.*;
  * @since 1.0.1
  */
 @Component
-public class RefyItemFullTextIndexCreator extends IndexesCreator {
+public class RefyIndexesCreator extends IndexesCreator {
 
     /**
      * {@code FULL_TEXT_INDEX_FIELDS} the fields used to create the fulltext index
@@ -25,10 +26,11 @@ public class RefyItemFullTextIndexCreator extends IndexesCreator {
     private final List<String> FULL_TEXT_INDEX_FIELDS = List.of(TITLE_KEY, DESCRIPTION_KEY);
 
     /**
-     * Method invoked automatically to create the different fulltext indexes required
+     * {@inheritDoc}
      */
+    @Override
     @PostConstruct
-    public void createFullTextIndexes() {
+    public void createIndexes() {
         createLinksTableFullTextIndex();
         createCollectionsTableFullTextIndex();
         createTeamsTableFullTextIndex();

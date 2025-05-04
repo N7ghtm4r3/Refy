@@ -2,9 +2,8 @@ package com.tecknobit.refy.services.collections.service;
 
 import com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
-import com.tecknobit.refy.batchitems.CollectionLinkBatchItem;
-import com.tecknobit.refy.batchitems.TeamCollectionBatchItem;
-import com.tecknobit.refy.configuration.indexes.IndexesCreator;
+import com.tecknobit.refy.services.shared.batch.CollectionLinkBatchItem;
+import com.tecknobit.refy.services.shared.batch.TeamCollectionBatchItem;
 import com.tecknobit.refy.services.collections.entity.LinksCollection;
 import com.tecknobit.refy.services.collections.repository.CollectionsRepository;
 import com.tecknobit.refy.services.links.entity.RefyLink;
@@ -20,9 +19,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-import static com.tecknobit.refy.batchitems.CollectionLinkBatchItem.COLLECTION_LINK_JOIN_TABLE_COLUMNS;
-import static com.tecknobit.refy.batchitems.TeamCollectionBatchItem.TEAM_COLLECTION_JOIN_TABLE_COLUMNS;
-import static com.tecknobit.refy.configuration.indexes.IndexesCreator.formatFullTextKeywords;
+import static com.tecknobit.equinoxbackend.configuration.IndexesCreator.formatFullTextKeywords;
+import static com.tecknobit.refy.services.shared.batch.CollectionLinkBatchItem.COLLECTION_LINK_JOIN_TABLE_COLUMNS;
+import static com.tecknobit.refy.services.shared.batch.TeamCollectionBatchItem.TEAM_COLLECTION_JOIN_TABLE_COLUMNS;
 import static com.tecknobit.refycore.ConstantsKt.COLLECTIONS_LINKS_TABLE;
 import static com.tecknobit.refycore.ConstantsKt.COLLECTIONS_TEAMS_TABLE;
 
@@ -95,7 +94,7 @@ public class LinksCollectionsService extends EquinoxItemsHelper implements RefyI
     public PaginatedResponse<LinksCollection> getAllUserCollections(String userId, int page, int pageSize,
                                                                     Set<String> keywords) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        String fullTextMatcher = IndexesCreator.formatFullTextKeywords(keywords, "*", true);
+        String fullTextMatcher = formatFullTextKeywords(keywords, "*", true);
         long totalCollections = collectionsRepository.countAllUserCollections(userId, fullTextMatcher);
         List<LinksCollection> collections = collectionsRepository.getAllUserCollections(userId, fullTextMatcher, pageable);
         return new PaginatedResponse<>(collections, page, pageSize, totalCollections);

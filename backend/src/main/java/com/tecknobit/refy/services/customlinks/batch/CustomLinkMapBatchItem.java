@@ -1,5 +1,6 @@
-package com.tecknobit.refy.services.customlinks.batchitems;
+package com.tecknobit.refy.services.customlinks.batch;
 
+import com.tecknobit.equinoxbackend.annotations.BatchQueryItem;
 import com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper;
 import org.jetbrains.annotations.NotNull;
 
@@ -7,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-// TODO: 15/02/2025 ANNOTATE AS @BatchItem
+@BatchQueryItem
 public class CustomLinkMapBatchItem implements EquinoxItemsHelper.ComplexBatchItem {
 
     private final String linkId;
@@ -34,6 +35,9 @@ public class CustomLinkMapBatchItem implements EquinoxItemsHelper.ComplexBatchIt
         return key;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean equals(Object o) {
         if (!(o instanceof CustomLinkMapBatchItem item))
@@ -41,6 +45,9 @@ public class CustomLinkMapBatchItem implements EquinoxItemsHelper.ComplexBatchIt
         return Objects.equals(linkId, item.linkId) && Objects.equals(key, item.key) && Objects.equals(value, item.value);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         int result = Objects.hashCode(linkId);
@@ -49,6 +56,9 @@ public class CustomLinkMapBatchItem implements EquinoxItemsHelper.ComplexBatchIt
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public @NotNull List<?> mappedValues() {
         ArrayList<Object> mappedValues = new ArrayList<>();

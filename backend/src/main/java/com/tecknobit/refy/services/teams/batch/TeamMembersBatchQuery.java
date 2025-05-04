@@ -1,5 +1,6 @@
-package com.tecknobit.refy.services.teams.batchquery;
+package com.tecknobit.refy.services.teams.batch;
 
+import com.tecknobit.equinoxbackend.annotations.BatchQueryImpl;
 import com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.BatchQuery;
 import com.tecknobit.refy.services.teams.service.TeamsService.TeamPayload;
 import com.tecknobit.refycore.dtos.AddedMember;
@@ -20,7 +21,7 @@ import static com.tecknobit.refycore.enums.TeamRole.ADMIN;
  * @author N7ghtm4r3 - Tecknobit
  * @see BatchQuery
  */
-// TODO: 14/02/2025 ANNOTATE AS @BatchQueryImpl
+@BatchQueryImpl
 public class TeamMembersBatchQuery implements BatchQuery<AddedMember> {
 
     /**

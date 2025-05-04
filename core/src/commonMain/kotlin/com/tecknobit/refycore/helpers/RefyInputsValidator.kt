@@ -38,11 +38,6 @@ object RefyInputsValidator : InputsValidator() {
     private val colorRegex: Regex = Regex(HEX_COLOR_PATTERN)
 
     /**
-     * `WRONG_TAG_NAME` message to use when the tag name of the user is not valid
-     */
-    const val WRONG_TAG_NAME_MESSAGE: String = "wrong_tag_name_key"
-
-    /**
      * Method to validate a tag name
      *
      * @param tagName Tag name to check the validity

@@ -20,9 +20,7 @@ public class TeamMemberCompositeKey {
     private String sourceTeam;
 
     /**
-     * Constructor to init the {@link Team} class <br>
-     *
-     * No-any params required
+     * Constructor to init the {@link Team} class 
      * @apiNote empty constructor required
      */
     public TeamMemberCompositeKey() {

@@ -3,8 +3,9 @@ package com.tecknobit.refy.services.links.service;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
 import com.tecknobit.refy.services.links.entity.RefyLink;
 import com.tecknobit.refy.services.links.repository.LinksRepository;
-import com.tecknobit.refy.services.shared.batch.CollectionLinkBatchItem;
-import com.tecknobit.refy.services.shared.batch.TeamLinkBatchItem;
+import com.tecknobit.refy.services.shared.batch.items.CollectionLinkBatchItem;
+import com.tecknobit.refy.services.shared.batch.items.TeamLinkBatchItem;
+import com.tecknobit.refy.services.shared.batch.procedures.LinkCollectionBatchSyncProcedure;
 import com.tecknobit.refy.services.shared.links.service.LinksBaseService;
 import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 import static com.tecknobit.equinoxbackend.configuration.IndexesCreator.formatFullTextKeywords;
-import static com.tecknobit.refy.services.shared.batch.CollectionLinkBatchItem.COLLECTION_LINK_JOIN_TABLE_COLUMNS;
 import static com.tecknobit.refycore.ConstantsKt.*;
 
 /**
@@ -125,47 +125,18 @@ public class LinksService extends LinksBaseService<RefyLink> {
      * @param linkId      The token of the user
      * @param collections The collections where share the link
      */
-    // FIXME: 14/02/2025 USE THE BatchSynchronizationProcedure WHEN IMPLEMENTED
     public void shareLinkWithCollections(String userId, String linkId, List<String> collections) {
-        SyncBatchModel model = new SyncBatchModel() {
-            @Override
-            public Collection<CollectionLinkBatchItem> getCurrentData() {
-                RefyLink link = getItemIfAllowed(userId, linkId);
-                List<String> collectionsIds = link.getCollectionsIds();
-                ArrayList<CollectionLinkBatchItem> collectionLinkBatchItems = new ArrayList<>();
-                for (String collectionId : collectionsIds)
-                    collectionLinkBatchItems.add(new CollectionLinkBatchItem(collectionId, linkId));
-                return collectionLinkBatchItems;
-            }
-
-            @Override
-            public String[] getDeletingColumns() {
-                return COLLECTION_LINK_JOIN_TABLE_COLUMNS;
-            }
-        };
-        BatchQuery<CollectionLinkBatchItem> batchQuery = new BatchQuery<>() {
-            @Override
-            public Collection<CollectionLinkBatchItem> getData() {
-                ArrayList<CollectionLinkBatchItem> collectionLinkBatchItems = new ArrayList<>();
-                for (String collectionId : collections)
-                    collectionLinkBatchItems.add(new CollectionLinkBatchItem(collectionId, linkId));
-                return collectionLinkBatchItems;
-            }
-
-            @Override
-            public void prepareQuery(Query query, int index, Collection<CollectionLinkBatchItem> items) {
-                for (CollectionLinkBatchItem element : items) {
-                    query.setParameter(index++, element.getOwner());
-                    query.setParameter(index++, element.getOwned());
-                }
-            }
-
-            @Override
-            public String[] getColumns() {
-                return COLLECTION_LINK_JOIN_TABLE_COLUMNS;
-            }
-        };
-        syncBatch(model, COLLECTIONS_LINKS_TABLE, batchQuery);
+        RefyLink link = getItemIfAllowed(userId, linkId);
+        LinkCollectionBatchSyncProcedure procedure = new LinkCollectionBatchSyncProcedure(linkId, collections,
+                entityManager);
+        procedure.setConverter(collectionsIds -> {
+            List<CollectionLinkBatchItem> collectionLinkBatchItems = new ArrayList<>();
+            for (String collectionId : collectionsIds)
+                collectionLinkBatchItems.add(new CollectionLinkBatchItem(collectionId, linkId));
+            return collectionLinkBatchItems;
+        });
+        procedure.setCurrentDataCallback(link::getCollectionsIds);
+        procedure.executeBatchSynchronization();
     }
 
     /**

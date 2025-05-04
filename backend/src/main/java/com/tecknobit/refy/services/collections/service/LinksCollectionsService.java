@@ -2,12 +2,13 @@ package com.tecknobit.refy.services.collections.service;
 
 import com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
-import com.tecknobit.refy.services.shared.batch.CollectionLinkBatchItem;
-import com.tecknobit.refy.services.shared.batch.TeamCollectionBatchItem;
 import com.tecknobit.refy.services.collections.entity.LinksCollection;
 import com.tecknobit.refy.services.collections.repository.CollectionsRepository;
 import com.tecknobit.refy.services.links.entity.RefyLink;
 import com.tecknobit.refy.services.links.repository.LinksRepository;
+import com.tecknobit.refy.services.shared.batch.items.CollectionLinkBatchItem;
+import com.tecknobit.refy.services.shared.batch.items.TeamCollectionBatchItem;
+import com.tecknobit.refy.services.shared.batch.procedures.LinkCollectionBatchSyncProcedure;
 import com.tecknobit.refy.services.shared.services.RefyItemRetriever;
 import com.tecknobit.refy.services.teams.entities.Team;
 import com.tecknobit.refy.services.teams.repository.TeamsRepository;
@@ -20,8 +21,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 import static com.tecknobit.equinoxbackend.configuration.IndexesCreator.formatFullTextKeywords;
-import static com.tecknobit.refy.services.shared.batch.CollectionLinkBatchItem.COLLECTION_LINK_JOIN_TABLE_COLUMNS;
-import static com.tecknobit.refy.services.shared.batch.TeamCollectionBatchItem.TEAM_COLLECTION_JOIN_TABLE_COLUMNS;
+import static com.tecknobit.refy.services.shared.batch.items.CollectionLinkBatchItem.COLLECTION_LINK_JOIN_TABLE_COLUMNS;
+import static com.tecknobit.refy.services.shared.batch.items.TeamCollectionBatchItem.TEAM_COLLECTION_JOIN_TABLE_COLUMNS;
 import static com.tecknobit.refycore.ConstantsKt.COLLECTIONS_LINKS_TABLE;
 import static com.tecknobit.refycore.ConstantsKt.COLLECTIONS_TEAMS_TABLE;
 
@@ -164,47 +165,18 @@ public class LinksCollectionsService extends EquinoxItemsHelper implements RefyI
      * @param collectionId The identifier of the collection
      * @param links        The links to attach to the collection
      */
-    // FIXME: 14/02/2025 USE THE BatchSynchronizationProcedure WHEN IMPLEMENTED
     public void attachLinksToCollection(String collectionId, List<String> links) {
-        SyncBatchModel model = new SyncBatchModel() {
-            @Override
-            public Collection<CollectionLinkBatchItem> getCurrentData() {
-                LinksCollection collection = collectionsRepository.findById(collectionId).orElseThrow();
-                ArrayList<CollectionLinkBatchItem> collectionLinkBatchItems = new ArrayList<>();
-                List<String> links = collection.getLinkIds();
-                for (String linkId : links)
-                    collectionLinkBatchItems.add(new CollectionLinkBatchItem(collectionId, linkId));
-                return collectionLinkBatchItems;
-            }
-
-            @Override
-            public String[] getDeletingColumns() {
-                return COLLECTION_LINK_JOIN_TABLE_COLUMNS;
-            }
-        };
-        BatchQuery<CollectionLinkBatchItem> batchQuery = new BatchQuery<>() {
-            @Override
-            public Collection<CollectionLinkBatchItem> getData() {
-                ArrayList<CollectionLinkBatchItem> collectionLinkBatchItems = new ArrayList<>();
-                for (String linkId : links)
-                    collectionLinkBatchItems.add(new CollectionLinkBatchItem(collectionId, linkId));
-                return collectionLinkBatchItems;
-            }
-
-            @Override
-            public void prepareQuery(Query query, int index, Collection<CollectionLinkBatchItem> items) {
-                for (CollectionLinkBatchItem collectionLinkBatchItem : items) {
-                    query.setParameter(index++, collectionLinkBatchItem.getOwner());
-                    query.setParameter(index++, collectionLinkBatchItem.getOwned());
-                }
-            }
-
-            @Override
-            public String[] getColumns() {
-                return COLLECTION_LINK_JOIN_TABLE_COLUMNS;
-            }
-        };
-        syncBatch(model, COLLECTIONS_LINKS_TABLE, batchQuery);
+        LinksCollection collection = collectionsRepository.findById(collectionId).orElseThrow();
+        LinkCollectionBatchSyncProcedure procedure = new LinkCollectionBatchSyncProcedure(collectionId, links,
+                entityManager);
+        procedure.setConverter(linksIds -> {
+            List<CollectionLinkBatchItem> collectionLinkBatchItems = new ArrayList<>();
+            for (String linkId : linksIds)
+                collectionLinkBatchItems.add(new CollectionLinkBatchItem(collectionId, linkId));
+            return collectionLinkBatchItems;
+        });
+        procedure.setCurrentDataCallback(collection::getLinkIds);
+        procedure.executeBatchSynchronization();
     }
 
     /**

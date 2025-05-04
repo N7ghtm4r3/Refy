@@ -1,4 +1,4 @@
-package com.tecknobit.refy.helpers;
+package com.tecknobit.refy.configuration;
 
 import com.tecknobit.apimanager.annotations.Wrapper;
 import com.tecknobit.equinoxbackend.resourcesutils.ResourcesManager;

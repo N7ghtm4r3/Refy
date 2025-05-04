@@ -1,4 +1,4 @@
-package com.tecknobit.refy.services.shared.batch;
+package com.tecknobit.refy.services.shared.batch.items;
 
 import com.tecknobit.equinoxbackend.annotations.BatchQueryItem;
 import com.tecknobit.equinoxbackend.batch.JoinTableSyncBatchItem;

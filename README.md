@@ -31,7 +31,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.tecknobit.refycore:refycore:1.0.1'
+  implementation 'com.tecknobit.refycore:refycore:1.0.2'
 }
 ```
 
@@ -44,7 +44,7 @@ repositories {
 }
 
 dependencies {
-  implementation("com.tecknobit.refycore:refycore:1.0.1")
+  implementation("com.tecknobit.refycore:refycore:1.0.2")
 }
 ```
 
@@ -53,14 +53,14 @@ dependencies {
 ### Clients
 
 - [Android](https://play.google.com/store/apps/details?id=com.tecknobit.refy)
-- [Refy desktop version](https://github.com/N7ghtm4r3/Refy-Clients/releases/tag/1.0.1)
+- [Refy desktop version](https://github.com/N7ghtm4r3/Refy-Clients/releases/tag/1.0.2)
 - iOS -> source code available, but cannot distribute due
   missing [Apple Developer Program license](https://developer.apple.com/programs/)
 - [Refy webapp version](https://github.com/N7ghtm4r3/Refy-WebApp)
 
 ### Backend
 
-- <a href="https://github.com/N7ghtm4r3/Refy/releases/tag/1.0.1">Backend service "out-of-the-box"</a>
+- <a href="https://github.com/N7ghtm4r3/Refy/releases/tag/1.0.2">Backend service "out-of-the-box"</a>
 
 ### Backend configuration
 

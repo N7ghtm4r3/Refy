@@ -9,6 +9,7 @@ import com.tecknobit.refy.services.links.repository.LinksRepository;
 import com.tecknobit.refy.services.shared.batch.items.CollectionLinkBatchItem;
 import com.tecknobit.refy.services.shared.batch.items.TeamCollectionBatchItem;
 import com.tecknobit.refy.services.shared.batch.procedures.LinkCollectionBatchSyncProcedure;
+import com.tecknobit.refy.services.shared.batch.procedures.TeamCollectionBatchSyncProcedure;
 import com.tecknobit.refy.services.shared.services.RefyItemRetriever;
 import com.tecknobit.refy.services.teams.entities.Team;
 import com.tecknobit.refy.services.teams.repository.TeamsRepository;
@@ -22,9 +23,7 @@ import java.util.*;
 
 import static com.tecknobit.equinoxbackend.configuration.IndexesCreator.formatFullTextKeywords;
 import static com.tecknobit.refy.services.shared.batch.items.CollectionLinkBatchItem.COLLECTION_LINK_JOIN_TABLE_COLUMNS;
-import static com.tecknobit.refy.services.shared.batch.items.TeamCollectionBatchItem.TEAM_COLLECTION_JOIN_TABLE_COLUMNS;
 import static com.tecknobit.refycore.ConstantsKt.COLLECTIONS_LINKS_TABLE;
-import static com.tecknobit.refycore.ConstantsKt.COLLECTIONS_TEAMS_TABLE;
 
 /**
  * The {@code LinksCollectionsHelper} class is useful to manage all the {@link LinksCollection} database operations
@@ -185,47 +184,18 @@ public class LinksCollectionsService extends EquinoxItemsHelper implements RefyI
      * @param collectionId The identifier of the collection
      * @param teams The teams where the collection is shared
      */
-    // FIXME: 14/02/2025 USE THE BatchSynchronizationProcedure WHEN IMPLEMENTED
     public void shareCollectionWithTeams(String collectionId, List<String> teams) {
-        SyncBatchModel model = new SyncBatchModel() {
-            @Override
-            public Collection<TeamCollectionBatchItem> getCurrentData() {
-                LinksCollection collection = collectionsRepository.findById(collectionId).orElseThrow();
-                ArrayList<TeamCollectionBatchItem> teamCollectionBatchItems = new ArrayList<>();
-                List<String> teamIds = collection.getTeamIds();
-                for (String teamId : teamIds)
-                    teamCollectionBatchItems.add(new TeamCollectionBatchItem(teamId, collectionId));
-                return teamCollectionBatchItems;
-            }
-
-            @Override
-            public String[] getDeletingColumns() {
-                return TEAM_COLLECTION_JOIN_TABLE_COLUMNS;
-            }
-        };
-        BatchQuery<TeamCollectionBatchItem> batchQuery = new BatchQuery<>() {
-            @Override
-            public Collection<TeamCollectionBatchItem> getData() {
-                ArrayList<TeamCollectionBatchItem> teamCollectionBatchItems = new ArrayList<>();
-                for (String teamId : teams)
-                    teamCollectionBatchItems.add(new TeamCollectionBatchItem(teamId, collectionId));
-                return teamCollectionBatchItems;
-            }
-
-            @Override
-            public void prepareQuery(Query query, int index, Collection<TeamCollectionBatchItem> items) {
-                for (TeamCollectionBatchItem teamCollectionBatchItem : items) {
-                    query.setParameter(index++, teamCollectionBatchItem.getOwner());
-                    query.setParameter(index++, teamCollectionBatchItem.getOwned());
-                }
-            }
-
-            @Override
-            public String[] getColumns() {
-                return TEAM_COLLECTION_JOIN_TABLE_COLUMNS;
-            }
-        };
-        syncBatch(model, COLLECTIONS_TEAMS_TABLE, batchQuery);
+        LinksCollection collection = collectionsRepository.findById(collectionId).orElseThrow();
+        TeamCollectionBatchSyncProcedure procedure = new TeamCollectionBatchSyncProcedure(collectionId, teams,
+                entityManager);
+        procedure.useConverter(teamsIds -> {
+            List<TeamCollectionBatchItem> teamCollectionBatchItems = new ArrayList<>();
+            for (String teamId : teamsIds)
+                teamCollectionBatchItems.add(new TeamCollectionBatchItem(teamId, collectionId));
+            return teamCollectionBatchItems;
+        });
+        procedure.setCurrentDataCallback(collection::getTeamIds);
+        procedure.executeBatchSynchronization();
     }
 
     /**

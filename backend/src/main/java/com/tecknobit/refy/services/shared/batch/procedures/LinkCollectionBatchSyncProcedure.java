@@ -48,7 +48,6 @@ public class LinkCollectionBatchSyncProcedure extends BatchSynchronizationProced
             }
 
             @Override
-            @TableColumns(columns = {COLLECTION_IDENTIFIER_KEY, LINK_IDENTIFIER_KEY})
             public String[] getDeletingColumns() {
                 return COLLECTION_LINK_JOIN_TABLE_COLUMNS;
             }
@@ -64,6 +63,7 @@ public class LinkCollectionBatchSyncProcedure extends BatchSynchronizationProced
             }
 
             @Override
+            @TableColumns(columns = {COLLECTION_IDENTIFIER_KEY, LINK_IDENTIFIER_KEY})
             public void prepareQuery(Query query, int index, Collection<CollectionLinkBatchItem> items) {
                 for (CollectionLinkBatchItem element : items) {
                     query.setParameter(index++, element.getOwner());
@@ -72,14 +72,13 @@ public class LinkCollectionBatchSyncProcedure extends BatchSynchronizationProced
             }
 
             @Override
-            @TableColumns(columns = {COLLECTION_IDENTIFIER_KEY, LINK_IDENTIFIER_KEY})
             public String[] getColumns() {
                 return COLLECTION_LINK_JOIN_TABLE_COLUMNS;
             }
         };
     }
 
-    public void setConverter(RawCollectionConverter<String, CollectionLinkBatchItem> converter) {
+    public void useConverter(RawCollectionConverter<String, CollectionLinkBatchItem> converter) {
         this.converter = converter;
     }
 

@@ -6,17 +6,20 @@ import com.tecknobit.refy.services.links.repository.LinksRepository;
 import com.tecknobit.refy.services.shared.batch.items.CollectionLinkBatchItem;
 import com.tecknobit.refy.services.shared.batch.items.TeamLinkBatchItem;
 import com.tecknobit.refy.services.shared.batch.procedures.LinkCollectionBatchSyncProcedure;
+import com.tecknobit.refy.services.shared.batch.procedures.TeamLinkBatchSyncProcedure;
 import com.tecknobit.refy.services.shared.links.service.LinksBaseService;
-import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static com.tecknobit.equinoxbackend.configuration.IndexesCreator.formatFullTextKeywords;
-import static com.tecknobit.refycore.ConstantsKt.*;
+import static com.tecknobit.refycore.ConstantsKt.LINK_KEY;
 
 /**
  * The {@code LinksHelper} class is useful to manage all the {@link RefyLink} database operations
@@ -129,7 +132,7 @@ public class LinksService extends LinksBaseService<RefyLink> {
         RefyLink link = getItemIfAllowed(userId, linkId);
         LinkCollectionBatchSyncProcedure procedure = new LinkCollectionBatchSyncProcedure(linkId, collections,
                 entityManager);
-        procedure.setConverter(collectionsIds -> {
+        procedure.useConverter(collectionsIds -> {
             List<CollectionLinkBatchItem> collectionLinkBatchItems = new ArrayList<>();
             for (String collectionId : collectionsIds)
                 collectionLinkBatchItems.add(new CollectionLinkBatchItem(collectionId, linkId));
@@ -147,47 +150,17 @@ public class LinksService extends LinksBaseService<RefyLink> {
      * @param teams The teams where share the link
      *
      */
-    // FIXME: 14/02/2025 USE THE BatchSynchronizationProcedure WHEN IMPLEMENTED
     public void shareLinkWithTeams(String userId, String linkId, List<String> teams) {
-        SyncBatchModel model = new SyncBatchModel() {
-            @Override
-            public Collection<TeamLinkBatchItem> getCurrentData() {
-                RefyLink link = getItemIfAllowed(userId, linkId);
-                List<String> teamsIds = link.getTeamIds();
-                ArrayList<TeamLinkBatchItem> teamLinkBatchItems = new ArrayList<>();
-                for (String teamId : teamsIds)
-                    teamLinkBatchItems.add(new TeamLinkBatchItem(teamId, linkId));
-                return teamLinkBatchItems;
-            }
-
-            @Override
-            public String[] getDeletingColumns() {
-                return new String[]{TEAM_IDENTIFIER_KEY, LINK_IDENTIFIER_KEY};
-            }
-        };
-        BatchQuery<TeamLinkBatchItem> batchQuery = new BatchQuery<>() {
-            @Override
-            public Collection<TeamLinkBatchItem> getData() {
-                ArrayList<TeamLinkBatchItem> teamLinkBatchItems = new ArrayList<>();
-                for (String teamId : teams)
-                    teamLinkBatchItems.add(new TeamLinkBatchItem(teamId, linkId));
-                return teamLinkBatchItems;
-            }
-
-            @Override
-            public void prepareQuery(Query query, int index, Collection<TeamLinkBatchItem> items) {
-                for (TeamLinkBatchItem element : items) {
-                    query.setParameter(index++, element.getOwner());
-                    query.setParameter(index++, element.getOwned());
-                }
-            }
-
-            @Override
-            public String[] getColumns() {
-                return new String[]{TEAM_IDENTIFIER_KEY, LINK_IDENTIFIER_KEY};
-            }
-        };
-        syncBatch(model, TEAMS_LINKS_TABLE, batchQuery);
+        RefyLink link = getItemIfAllowed(userId, linkId);
+        TeamLinkBatchSyncProcedure procedure = new TeamLinkBatchSyncProcedure(linkId, teams, entityManager);
+        procedure.useConverter(teamsIds -> {
+            List<TeamLinkBatchItem> teamLinkBatchItems = new ArrayList<>();
+            for (String teamId : teamsIds)
+                teamLinkBatchItems.add(new TeamLinkBatchItem(teamId, linkId));
+            return teamLinkBatchItems;
+        });
+        procedure.setCurrentDataCallback(link::getTeamIds);
+        procedure.executeBatchSynchronization();
     }
 
     /**

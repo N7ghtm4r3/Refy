@@ -169,7 +169,7 @@ public class LinksCollectionsService extends EquinoxItemsHelper implements RefyI
         LinksCollection collection = collectionsRepository.findById(collectionId).orElseThrow();
         LinkCollectionBatchSyncProcedure procedure = new LinkCollectionBatchSyncProcedure(collectionId, links,
                 entityManager);
-        procedure.setConverter(linksIds -> {
+        procedure.useConverter(linksIds -> {
             List<CollectionLinkBatchItem> collectionLinkBatchItems = new ArrayList<>();
             for (String linkId : linksIds)
                 collectionLinkBatchItems.add(new CollectionLinkBatchItem(collectionId, linkId));

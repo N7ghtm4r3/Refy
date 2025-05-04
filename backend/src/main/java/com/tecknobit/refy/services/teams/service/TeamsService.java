@@ -9,6 +9,7 @@ import com.tecknobit.refy.services.collections.entity.LinksCollection;
 import com.tecknobit.refy.services.collections.repository.CollectionsRepository;
 import com.tecknobit.refy.services.links.entity.RefyLink;
 import com.tecknobit.refy.services.links.repository.LinksRepository;
+import com.tecknobit.refy.services.shared.batch.procedures.TeamLinkBatchSyncProcedure;
 import com.tecknobit.refy.services.shared.services.RefyItemRetriever;
 import com.tecknobit.refy.services.teams.batch.TeamMemberBatchItem;
 import com.tecknobit.refy.services.teams.batch.TeamMembersBatchQuery;
@@ -219,47 +220,17 @@ public class TeamsService extends EquinoxItemsHelper implements RefyResourcesMan
      * @param teamId The identifier of the team
      * @param links  The links to share in the team
      */
-    // FIXME: 14/02/2025 USE THE BatchSynchronizationProcedure WHEN IMPLEMENTED
     public void shareLinksWithTeam(String userId, String teamId, List<String> links) {
-        SyncBatchModel model = new SyncBatchModel() {
-            @Override
-            public Collection<TeamLinkBatchItem> getCurrentData() {
-                Team team = getItemIfAllowed(userId, teamId);
-                List<String> linkIds = team.getLinkIds();
-                ArrayList<TeamLinkBatchItem> teamLinkBatchItems = new ArrayList<>();
-                for (String linkId : linkIds)
-                    teamLinkBatchItems.add(new TeamLinkBatchItem(teamId, linkId));
-                return teamLinkBatchItems;
-            }
-
-            @Override
-            public String[] getDeletingColumns() {
-                return new String[]{TEAM_IDENTIFIER_KEY, LINK_IDENTIFIER_KEY};
-            }
-        };
-        BatchQuery<TeamLinkBatchItem> batchQuery = new BatchQuery<>() {
-            @Override
-            public Collection<TeamLinkBatchItem> getData() {
-                ArrayList<TeamLinkBatchItem> teamLinkBatchItems = new ArrayList<>();
-                for (String linkId : links)
-                    teamLinkBatchItems.add(new TeamLinkBatchItem(teamId, linkId));
-                return teamLinkBatchItems;
-            }
-
-            @Override
-            public void prepareQuery(Query query, int index, Collection<TeamLinkBatchItem> items) {
-                for (TeamLinkBatchItem element : items) {
-                    query.setParameter(index++, element.getOwner());
-                    query.setParameter(index++, element.getOwned());
-                }
-            }
-
-            @Override
-            public String[] getColumns() {
-                return new String[]{TEAM_IDENTIFIER_KEY, LINK_IDENTIFIER_KEY};
-            }
-        };
-        syncBatch(model, TEAMS_LINKS_TABLE, batchQuery);
+        Team team = getItemIfAllowed(userId, teamId);
+        TeamLinkBatchSyncProcedure procedure = new TeamLinkBatchSyncProcedure(teamId, links, entityManager);
+        procedure.useConverter(linksIds -> {
+            List<TeamLinkBatchItem> teamLinkBatchItems = new ArrayList<>();
+            for (String linkId : linksIds)
+                teamLinkBatchItems.add(new TeamLinkBatchItem(teamId, linkId));
+            return teamLinkBatchItems;
+        });
+        procedure.setCurrentDataCallback(team::getLinkIds);
+        procedure.executeBatchSynchronization();
     }
 
     /**

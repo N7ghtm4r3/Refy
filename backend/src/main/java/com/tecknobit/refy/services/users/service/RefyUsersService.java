@@ -53,8 +53,8 @@ public class RefyUsersService extends EquinoxUsersService<RefyUser, RefyUsersRep
      * {@inheritDoc}
      */
     @Override
-    protected List<String> getQueryValuesKeys() {
-        ArrayList<String> keys = new ArrayList<>(super.getQueryValuesKeys());
+    protected List<String> getSignUpKeys() {
+        ArrayList<String> keys = new ArrayList<>(super.getSignUpKeys());
         keys.add(TAG_NAME_KEY);
         return keys;
     }

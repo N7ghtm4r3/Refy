@@ -1,5 +1,6 @@
 package com.tecknobit.refy;
 
+import com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController;
 import com.tecknobit.equinoxbackend.resourcesutils.ResourcesProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -9,10 +10,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import static com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController.initEquinoxEnvironment;
 import static com.tecknobit.equinoxbackend.resourcesutils.ResourcesProvider.CUSTOM_CONFIGURATION_FILE_PATH;
 import static com.tecknobit.equinoxbackend.resourcesutils.ResourcesProvider.DEFAULT_CONFIGURATION_FILE_PATH;
-import static com.tecknobit.refy.helpers.RefyResourcesManager.LOGOS_DIRECTORY;
 
 /**
  * The {@code Launcher} class is useful to launch <b>Refy's backend service</b>
@@ -64,12 +63,7 @@ public class Launcher {
      * </ul>
      */
     public static void main(String[] args) {
-        initEquinoxEnvironment(
-                "tecknobit/refy/backend",
-                " to correctly register a new user in the Refy system ",
-                Launcher.class,
-                args,
-                LOGOS_DIRECTORY);
+        EquinoxController.initEquinoxEnvironment(Launcher.class, args);
         SpringApplication.run(Launcher.class, args);
     }
 

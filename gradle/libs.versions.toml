@@ -6,6 +6,7 @@ apimanager = "2.2.4"
 json = "20250107"
 jsoup = "1.18.1"
 kotlinxSerializationJson = "1.8.1"
+mantis = "1.0.0"
 mysqlConnectorJava = "8.0.33"
 spring= "3.2.3"
 # core
@@ -18,6 +19,7 @@ apimanager = { module = "com.github.N7ghtm4r3:APIManager", version.ref = "apiman
 equinox-backend = { module = "io.github.n7ghtm4r3:equinox-backend", version.ref = "equinox" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 json = { module = "org.json:json", version.ref = "json" }
+mantis = { module = "com.github.N7ghtm4r3:Mantis", version.ref = "mantis" }
 mysql-connector-java = { module = "mysql:mysql-connector-java", version.ref = "mysqlConnectorJava" }
 spring-boot-maven-plugin = { module = "org.springframework.boot:spring-boot-maven-plugin", version.ref = "spring" }
 spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring" }

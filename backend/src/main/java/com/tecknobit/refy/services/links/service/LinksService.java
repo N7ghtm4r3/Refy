@@ -1,10 +1,10 @@
 package com.tecknobit.refy.services.links.service;
 
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
-import com.tecknobit.refy.services.shared.batch.CollectionLinkBatchItem;
-import com.tecknobit.refy.services.shared.batch.TeamLinkBatchItem;
 import com.tecknobit.refy.services.links.entity.RefyLink;
 import com.tecknobit.refy.services.links.repository.LinksRepository;
+import com.tecknobit.refy.services.shared.batch.CollectionLinkBatchItem;
+import com.tecknobit.refy.services.shared.batch.TeamLinkBatchItem;
 import com.tecknobit.refy.services.shared.links.service.LinksBaseService;
 import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+import static com.tecknobit.equinoxbackend.configuration.IndexesCreator.formatFullTextKeywords;
 import static com.tecknobit.refy.services.shared.batch.CollectionLinkBatchItem.COLLECTION_LINK_JOIN_TABLE_COLUMNS;
-import static com.tecknobit.refy.configuration.indexes.IndexesCreator.formatFullTextKeywords;
 import static com.tecknobit.refycore.ConstantsKt.*;
 
 /**

@@ -26,5 +26,6 @@ dependencies {
     implementation(libs.equinox.backend)
     implementation(libs.json)
     implementation(libs.jsoup)
+    implementation(libs.mantis)
     implementation(project(":core"))
 }

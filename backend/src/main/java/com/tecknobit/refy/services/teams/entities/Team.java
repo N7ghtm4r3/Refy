@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.apimanager.formatters.JsonHelper;
+import com.tecknobit.equinoxbackend.annotations.EmptyConstructor;
 import com.tecknobit.equinoxbackend.environment.services.builtin.entity.EquinoxItem;
 import com.tecknobit.refy.services.collections.entity.LinksCollection;
 import com.tecknobit.refy.services.links.entity.RefyLink;
@@ -114,11 +115,10 @@ public class Team extends RefyItem {
     private final List<LinksCollection> collections;
 
     /**
-     * Constructor to init the {@link Team} class <br>
-     *
-     * No-any params required
+     * Constructor to init the {@link Team} class 
      * @apiNote empty constructor required
      */
+    @EmptyConstructor
     public Team() {
         this(null, null, null, null, null, 0, List.of(), List.of(), List.of());
     }
@@ -389,6 +389,7 @@ public class Team extends RefyItem {
          * No-any params required
          * @apiNote empty constructor required
          */
+        @EmptyConstructor
         public RefyTeamMember() {
             this(new RefyUser(), null, null);
         }

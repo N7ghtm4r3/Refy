@@ -18,7 +18,6 @@ import static com.tecknobit.refycore.ConstantsKt.AT_SYMBOL;
 import static com.tecknobit.refycore.ConstantsKt.TAG_NAME_KEY;
 import static com.tecknobit.refycore.helpers.RefyEndpointsSet.CHANGE_TAG_NAME_ENDPOINT;
 import static com.tecknobit.refycore.helpers.RefyInputsValidator.INSTANCE;
-import static com.tecknobit.refycore.helpers.RefyInputsValidator.WRONG_TAG_NAME_MESSAGE;
 
 /**
  * The {@code RefyUsersController} class is useful to manage all the Refy users operations
@@ -30,6 +29,11 @@ import static com.tecknobit.refycore.helpers.RefyInputsValidator.WRONG_TAG_NAME_
  */
 @RestController
 public class RefyUsersController extends EquinoxUsersController<RefyUser, RefyUsersRepository, RefyUsersService> {
+
+    /**
+     * {@code WRONG_TAG_NAME_MESSAGE} message to use when the tag name of the user is not valid
+     */
+    private static final String WRONG_TAG_NAME_MESSAGE = "wrong_tag_name";
 
     /**
      * {@inheritDoc}

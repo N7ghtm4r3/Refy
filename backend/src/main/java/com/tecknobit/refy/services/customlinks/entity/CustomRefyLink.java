@@ -3,6 +3,7 @@ package com.tecknobit.refy.services.customlinks.entity;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.tecknobit.equinoxbackend.annotations.EmptyConstructor;
 import com.tecknobit.equinoxbackend.environment.services.builtin.entity.EquinoxItem;
 import com.tecknobit.refy.services.links.entity.RefyLink;
 import com.tecknobit.refy.services.shared.entities.RefyItem;
@@ -98,11 +99,10 @@ public class CustomRefyLink extends RefyLink {
     private final String previewToken;
 
     /**
-     * Constructor to init the {@link CustomRefyLink} class <br>
-     *
-     * No-any params required
+     * Constructor to init the {@link CustomRefyLink} class 
      * @apiNote empty constructor required
      */
+    @EmptyConstructor
     public CustomRefyLink() {
         this(null, null, null, null, null, -1, false, null, null, null, null);
     }

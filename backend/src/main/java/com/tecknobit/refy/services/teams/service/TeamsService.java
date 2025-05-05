@@ -2,16 +2,18 @@ package com.tecknobit.refy.services.teams.service;
 
 import com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
-import com.tecknobit.refy.batchitems.TeamCollectionBatchItem;
-import com.tecknobit.refy.batchitems.TeamLinkBatchItem;
-import com.tecknobit.refy.helpers.RefyResourcesManager;
+import com.tecknobit.refy.configuration.RefyResourcesManager;
 import com.tecknobit.refy.services.collections.entity.LinksCollection;
 import com.tecknobit.refy.services.collections.repository.CollectionsRepository;
 import com.tecknobit.refy.services.links.entity.RefyLink;
 import com.tecknobit.refy.services.links.repository.LinksRepository;
+import com.tecknobit.refy.services.shared.batch.items.TeamCollectionBatchItem;
+import com.tecknobit.refy.services.shared.batch.items.TeamLinkBatchItem;
+import com.tecknobit.refy.services.shared.batch.procedures.TeamCollectionBatchSyncProcedure;
+import com.tecknobit.refy.services.shared.batch.procedures.TeamLinkBatchSyncProcedure;
 import com.tecknobit.refy.services.shared.services.RefyItemRetriever;
-import com.tecknobit.refy.services.teams.batchquery.TeamMemberBatchItem;
-import com.tecknobit.refy.services.teams.batchquery.TeamMembersBatchQuery;
+import com.tecknobit.refy.services.teams.batch.TeamMemberBatchItem;
+import com.tecknobit.refy.services.teams.batch.TeamMembersBatchQuery;
 import com.tecknobit.refy.services.teams.entities.Team;
 import com.tecknobit.refy.services.teams.repository.TeamsRepository;
 import com.tecknobit.refycore.enums.TeamRole;
@@ -27,11 +29,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.*;
 
+import static com.tecknobit.equinoxbackend.configuration.IndexesCreator.formatFullTextKeywords;
 import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.InsertCommand.INSERT_INTO;
 import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.InsertCommand.REPLACE_INTO;
-import static com.tecknobit.refy.batchitems.TeamCollectionBatchItem.TEAM_COLLECTION_JOIN_TABLE_COLUMNS;
-import static com.tecknobit.refy.configuration.indexes.IndexesCreator.formatFullTextKeywords;
-import static com.tecknobit.refy.services.teams.batchquery.TeamMembersBatchQuery.MEMBERS_TABLE_COLUMNS;
+import static com.tecknobit.refy.services.teams.batch.TeamMembersBatchQuery.MEMBERS_TABLE_COLUMNS;
 import static com.tecknobit.refycore.ConstantsKt.*;
 import static com.tecknobit.refycore.helpers.RefyInputsValidator.INSTANCE;
 
@@ -156,6 +157,13 @@ public class TeamsService extends EquinoxItemsHelper implements RefyResourcesMan
         synchronizeMembers(userId, teamId, payload);
     }
 
+    /**
+     * Method to synchronize the members of a team
+     *
+     * @param userId The identifier of the user
+     * @param teamId The identifier of the team
+     * @param payload The payload with the details of the team
+     */
     private void synchronizeMembers(String userId, String teamId, TeamPayload payload) {
         SyncBatchModel model = new SyncBatchModel() {
             @Override
@@ -202,25 +210,7 @@ public class TeamsService extends EquinoxItemsHelper implements RefyResourcesMan
                 return MEMBERS_TABLE_COLUMNS;
             }
         };
-        syncBatch(model, MEMBERS_KEY, batchQuery);
-    }
-
-    /**
-     * Method to execute a batch synchronization of a list of data simultaneously
-     *
-     * @param model Contains the data about the synchronization such the columns affected and the current list of the data
-     * @param table The table where execute the synchronization of the data
-     * @param batchQuery The manager of the batch query to execute
-     */
-    @Override
-    @Deprecated(since = "USE THE EQUINOX BUILT-IN")
-    protected <V> void syncBatch(SyncBatchModel model, String table, BatchQuery<V> batchQuery) {
-        Collection<V> updatedData = batchQuery.getData();
-        Collection<V> currentData = model.getCurrentData();
-        batchInsert(REPLACE_INTO, table, batchQuery);
-        currentData.removeAll(updatedData);
-        batchDelete(table, currentData, model.getDeletingColumns());
-        model.afterSync();
+        syncBatch(model, REPLACE_INTO, MEMBERS_KEY, batchQuery);
     }
 
     /**
@@ -230,47 +220,17 @@ public class TeamsService extends EquinoxItemsHelper implements RefyResourcesMan
      * @param teamId The identifier of the team
      * @param links  The links to share in the team
      */
-    // FIXME: 14/02/2025 USE THE BatchSynchronizationProcedure WHEN IMPLEMENTED
     public void shareLinksWithTeam(String userId, String teamId, List<String> links) {
-        SyncBatchModel model = new SyncBatchModel() {
-            @Override
-            public Collection<TeamLinkBatchItem> getCurrentData() {
-                Team team = getItemIfAllowed(userId, teamId);
-                List<String> linkIds = team.getLinkIds();
-                ArrayList<TeamLinkBatchItem> teamLinkBatchItems = new ArrayList<>();
-                for (String linkId : linkIds)
-                    teamLinkBatchItems.add(new TeamLinkBatchItem(teamId, linkId));
-                return teamLinkBatchItems;
-            }
-
-            @Override
-            public String[] getDeletingColumns() {
-                return new String[]{TEAM_IDENTIFIER_KEY, LINK_IDENTIFIER_KEY};
-            }
-        };
-        BatchQuery<TeamLinkBatchItem> batchQuery = new BatchQuery<>() {
-            @Override
-            public Collection<TeamLinkBatchItem> getData() {
-                ArrayList<TeamLinkBatchItem> teamLinkBatchItems = new ArrayList<>();
-                for (String linkId : links)
-                    teamLinkBatchItems.add(new TeamLinkBatchItem(teamId, linkId));
-                return teamLinkBatchItems;
-            }
-
-            @Override
-            public void prepareQuery(Query query, int index, Collection<TeamLinkBatchItem> items) {
-                for (TeamLinkBatchItem element : items) {
-                    query.setParameter(index++, element.getOwner());
-                    query.setParameter(index++, element.getOwned());
-                }
-            }
-
-            @Override
-            public String[] getColumns() {
-                return new String[]{TEAM_IDENTIFIER_KEY, LINK_IDENTIFIER_KEY};
-            }
-        };
-        syncBatch(model, TEAMS_LINKS_TABLE, batchQuery);
+        Team team = getItemIfAllowed(userId, teamId);
+        TeamLinkBatchSyncProcedure procedure = new TeamLinkBatchSyncProcedure(teamId, links, entityManager);
+        procedure.useConverter(linksIds -> {
+            List<TeamLinkBatchItem> teamLinkBatchItems = new ArrayList<>();
+            for (String linkId : linksIds)
+                teamLinkBatchItems.add(new TeamLinkBatchItem(teamId, linkId));
+            return teamLinkBatchItems;
+        });
+        procedure.setCurrentDataCallback(team::getLinkIds);
+        procedure.executeBatchSynchronization();
     }
 
     /**
@@ -281,47 +241,18 @@ public class TeamsService extends EquinoxItemsHelper implements RefyResourcesMan
      * @param collections The collections to share in the team
      *
      */
-    // FIXME: 14/02/2025 USE THE BatchSynchronizationProcedure WHEN IMPLEMENTED
     public void shareCollectionsWithTeam(String userId, String teamId, List<String> collections) {
-        SyncBatchModel model = new SyncBatchModel() {
-            @Override
-            public Collection<TeamCollectionBatchItem> getCurrentData() {
-                Team team = getItemIfAllowed(userId, teamId);
-                ArrayList<TeamCollectionBatchItem> teamCollectionBatchItems = new ArrayList<>();
-                List<String> collectionIds = team.getCollectionsIds();
-                for (String collectionId : collectionIds)
-                    teamCollectionBatchItems.add(new TeamCollectionBatchItem(teamId, collectionId));
-                return teamCollectionBatchItems;
-            }
-
-            @Override
-            public String[] getDeletingColumns() {
-                return TEAM_COLLECTION_JOIN_TABLE_COLUMNS;
-            }
-        };
-        BatchQuery<TeamCollectionBatchItem> batchQuery = new BatchQuery<>() {
-            @Override
-            public Collection<TeamCollectionBatchItem> getData() {
-                ArrayList<TeamCollectionBatchItem> teamCollectionBatchItems = new ArrayList<>();
-                for (String collectionId : collections)
-                    teamCollectionBatchItems.add(new TeamCollectionBatchItem(teamId, collectionId));
-                return teamCollectionBatchItems;
-            }
-
-            @Override
-            public void prepareQuery(Query query, int index, Collection<TeamCollectionBatchItem> items) {
-                for (TeamCollectionBatchItem teamCollectionBatchItem : items) {
-                    query.setParameter(index++, teamCollectionBatchItem.getOwner());
-                    query.setParameter(index++, teamCollectionBatchItem.getOwned());
-                }
-            }
-
-            @Override
-            public String[] getColumns() {
-                return TEAM_COLLECTION_JOIN_TABLE_COLUMNS;
-            }
-        };
-        syncBatch(model, COLLECTIONS_TEAMS_TABLE, batchQuery);
+        Team team = getItemIfAllowed(userId, teamId);
+        TeamCollectionBatchSyncProcedure procedure = new TeamCollectionBatchSyncProcedure(teamId, collections,
+                entityManager);
+        procedure.useConverter(collectionsIds -> {
+            List<TeamCollectionBatchItem> teamCollectionBatchItems = new ArrayList<>();
+            for (String collectionId : collectionsIds)
+                teamCollectionBatchItems.add(new TeamCollectionBatchItem(teamId, collectionId));
+            return teamCollectionBatchItems;
+        });
+        procedure.setCurrentDataCallback(team::getCollectionsIds);
+        procedure.executeBatchSynchronization();
     }
 
     /**

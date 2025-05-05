@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 
+import static com.tecknobit.equinoxbackend.configuration.IndexesCreator._IN_BOOLEAN_MODE;
 import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper._WHERE_;
-import static com.tecknobit.refy.configuration.indexes.IndexesCreator._IN_BOOLEAN_MODE;
 import static com.tecknobit.refycore.ConstantsKt.*;
 
 /**

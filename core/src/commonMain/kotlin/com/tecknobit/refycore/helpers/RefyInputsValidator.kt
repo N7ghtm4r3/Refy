@@ -38,11 +38,6 @@ object RefyInputsValidator : InputsValidator() {
     private val colorRegex: Regex = Regex(HEX_COLOR_PATTERN)
 
     /**
-     * `WRONG_TAG_NAME` message to use when the tag name of the user is not valid
-     */
-    const val WRONG_TAG_NAME_MESSAGE: String = "wrong_tag_name_key"
-
-    /**
      * Method to validate a tag name
      *
      * @param tagName Tag name to check the validity
@@ -142,11 +137,7 @@ object RefyInputsValidator : InputsValidator() {
     fun isLinkResourceValid(
         linkResource: String?
     ): Boolean {
-        // TODO: USE THE urlValidator INSTEAD
-        val regex =
-            "^[a-zA-Z][a-zA-Z0-9+.-]*://(([a-zA-Z0-9\\-]+\\.)+[a-zA-Z]{2,6}|\\d{1,3}(?:\\.\\d{1,3}){3})(?::\\d{1,5})?(/\\S*)?(\\?(\\S*))?(#(\\S*))?$"
-        val validator = Regex(regex)
-        return isInputValid(linkResource) && validator.matches(linkResource!!)
+        return isInputValid(linkResource) && urlValidator.matches(linkResource!!)
     }
 
     /**

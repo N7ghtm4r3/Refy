@@ -3,6 +3,7 @@ package com.tecknobit.refy.services.users.entity;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.tecknobit.equinoxbackend.annotations.EmptyConstructor;
 import com.tecknobit.equinoxbackend.environment.services.builtin.entity.EquinoxItem;
 import com.tecknobit.equinoxbackend.environment.services.users.entity.EquinoxUser;
 import com.tecknobit.refy.services.collections.entity.LinksCollection;
@@ -110,11 +111,10 @@ public class RefyUser extends EquinoxUser {
     private List<RefyTeamMember> member;
 
     /**
-     * Constructor to init the {@link RefyUser} class <br>
-     *
-     * No-any params required
+     * Constructor to init the {@link RefyUser} class 
      * @apiNote empty constructor required
      */
+    @EmptyConstructor
     public RefyUser() {
         this(null, null, null, null, null, null, null, null, null,
                 List.of(), List.of(), List.of(), List.of());

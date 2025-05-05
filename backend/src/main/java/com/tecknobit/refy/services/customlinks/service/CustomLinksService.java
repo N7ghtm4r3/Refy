@@ -1,8 +1,7 @@
 package com.tecknobit.refy.services.customlinks.service;
 
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
-import com.tecknobit.refy.configuration.indexes.IndexesCreator;
-import com.tecknobit.refy.services.customlinks.batchitems.CustomLinkMapBatchItem;
+import com.tecknobit.refy.services.customlinks.batch.CustomLinkMapBatchItem;
 import com.tecknobit.refy.services.customlinks.entity.CustomRefyLink;
 import com.tecknobit.refy.services.customlinks.repository.CustomLinksRepository;
 import com.tecknobit.refy.services.links.service.LinksService;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+import static com.tecknobit.equinoxbackend.configuration.IndexesCreator.formatFullTextKeywords;
 import static com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController.generateIdentifier;
 import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.InsertCommand.INSERT_INTO;
 import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.InsertCommand.REPLACE_INTO;
@@ -64,7 +64,7 @@ public class CustomLinksService extends LinksBaseService<CustomRefyLink> {
     public PaginatedResponse<CustomRefyLink> getUserCustomLinks(String userId, int page, int pageSize,
                                                                 Set<String> keywords) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        String fullTextMatcher = IndexesCreator.formatFullTextKeywords(keywords, "*", true);
+        String fullTextMatcher = formatFullTextKeywords(keywords, "*", true);
         long totalCustomLinks = customLinksRepository.countUserCustomLinks(userId, fullTextMatcher);
         List<CustomRefyLink> customRefyLinks = customLinksRepository.getUserCustomLinks(userId, fullTextMatcher, pageable);
         return new PaginatedResponse<>(customRefyLinks, page, pageSize, totalCustomLinks);
@@ -160,7 +160,7 @@ public class CustomLinksService extends LinksBaseService<CustomRefyLink> {
             public Collection<CustomLinkMapBatchItem> getCurrentData() {
                 ArrayList<CustomLinkMapBatchItem> pairs = new ArrayList<>();
                 for (String key : currentMap.keySet())
-                    pairs.add(new CustomLinkMapBatchItem(linkId, currentMap.get(key), key));
+                    pairs.add(new CustomLinkMapBatchItem(linkId, key, currentMap.get(key)));
                 return pairs;
             }
 
@@ -174,7 +174,7 @@ public class CustomLinksService extends LinksBaseService<CustomRefyLink> {
             public Collection<CustomLinkMapBatchItem> getData() {
                 ArrayList<CustomLinkMapBatchItem> pairs = new ArrayList<>();
                 for (String key : map.keySet())
-                    pairs.add(new CustomLinkMapBatchItem(linkId, map.get(key), key));
+                    pairs.add(new CustomLinkMapBatchItem(linkId, key, map.get(key)));
                 return pairs;
             }
 
@@ -192,25 +192,7 @@ public class CustomLinksService extends LinksBaseService<CustomRefyLink> {
                 return columns;
             }
         };
-        syncBatch(model, table, batchQuery);
-    }
-
-    /**
-     * Method to execute a batch synchronization of a list of data simultaneously
-     *
-     * @param model      Contains the data about the synchronization such the columns affected and the current list of the data
-     * @param table      The table where execute the synchronization of the data
-     * @param batchQuery The manager of the batch query to execute
-     */
-    @Override
-    @Deprecated(since = "USE THE EQUINOX BUILT-IN")
-    protected <V> void syncBatch(SyncBatchModel model, String table, BatchQuery<V> batchQuery) {
-        Collection<V> updatedData = batchQuery.getData();
-        Collection<V> currentData = model.getCurrentData();
-        batchInsert(REPLACE_INTO, table, batchQuery);
-        currentData.removeAll(updatedData);
-        batchDelete(table, currentData, model.getDeletingColumns());
-        model.afterSync();
+        syncBatch(model, REPLACE_INTO, table, batchQuery);
     }
 
     /**

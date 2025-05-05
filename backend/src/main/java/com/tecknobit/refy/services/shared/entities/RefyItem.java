@@ -110,4 +110,13 @@ public abstract class RefyItem extends EquinoxItem {
         return description;
     }
 
+    /**
+     * Method to get {@link #date} instance
+     *
+     * @return {@link #date} instance as {@code long}
+     */
+    public long getDate() {
+        return date;
+    }
+
 }

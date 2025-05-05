@@ -1,6 +1,6 @@
 # Refy
 
-**v1.0.1**
+**v1.0.2**
 
 This project, based on Java and the Spring Boot framework, is an open source self-hosted references collector and custom 
 links generator

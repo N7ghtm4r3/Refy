@@ -3,7 +3,7 @@ agp = "8.6.1"
 dokka = "2.0.0"
 # backend
 apimanager = "2.2.4"
-json = "20250517R"
+json = "20250107"
 jsoup = "1.21.1"
 kotlinxSerializationJson = "1.9.0"
 mantis = "1.0.0"

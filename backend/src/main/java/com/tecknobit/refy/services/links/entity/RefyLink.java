@@ -78,7 +78,7 @@ public class RefyLink extends RefyItem {
     protected final List<LinksCollection> collections;
 
     /**
-     * Constructor to init the {@link RefyLink} class 
+     * Constructor used to init the {@link RefyLink} class 
      * @apiNote empty constructor required
      */
     @EmptyConstructor
@@ -87,7 +87,7 @@ public class RefyLink extends RefyItem {
     }
 
     /**
-     * Constructor to init the {@link RefyLink} class
+     * Constructor used to init the {@link RefyLink} class
      *
      * @param id The identifier of the link
      * @param owner The owner of the link

@@ -99,7 +99,7 @@ public class CustomRefyLink extends RefyLink {
     private final String previewToken;
 
     /**
-     * Constructor to init the {@link CustomRefyLink} class 
+     * Constructor used to init the {@link CustomRefyLink} class 
      * @apiNote empty constructor required
      */
     @EmptyConstructor
@@ -108,7 +108,7 @@ public class CustomRefyLink extends RefyLink {
     }
 
     /**
-     * Constructor to init the {@link CustomRefyLink} class
+     * Constructor used to init the {@link CustomRefyLink} class
      *
      * @param id The identifier of the link
      * @param owner The owner of the link

@@ -50,20 +50,32 @@ public class TeamsService extends EquinoxItemsHelper implements RefyResourcesMan
     /**
      * {@code teamsRepository} instance for the teams repository
      */
-    @Autowired
-    private TeamsRepository teamsRepository;
+    private final TeamsRepository teamsRepository;
 
     /**
      * {@code collectionsRepository} instance for the collections repository
      */
-    @Autowired
-    private CollectionsRepository collectionsRepository;
+    private final CollectionsRepository collectionsRepository;
 
     /**
      * {@code linksRepository} instance for the links repository
      */
+    private final LinksRepository linksRepository;
+
+    /**
+     * Constructor used to init the service
+     *
+     * @param teamsRepository The instance for the teams repository
+     * @param collectionsRepository The instance for the collections repository
+     * @param linksRepository The instance for the links repository
+     */
     @Autowired
-    private LinksRepository linksRepository;
+    public TeamsService(TeamsRepository teamsRepository, CollectionsRepository collectionsRepository,
+                        LinksRepository linksRepository) {
+        this.teamsRepository = teamsRepository;
+        this.collectionsRepository = collectionsRepository;
+        this.linksRepository = linksRepository;
+    }
 
     /**
      * Method to get the user's owned teams identifiers

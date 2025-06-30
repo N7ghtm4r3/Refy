@@ -27,7 +27,7 @@ import static com.tecknobit.refycore.ConstantsKt.*;
 public class TeamCollectionBatchSyncProcedure extends BatchSynchronizationProcedure<String, String, TeamCollectionBatchItem> {
 
     /**
-     * Constructor to init the sync procedure
+     * Constructor used to init the sync procedure
      *
      * @param owner         The owner entity in the relationship
      * @param ownedItems    The collection of the entities owned by the {@link #owner} entity

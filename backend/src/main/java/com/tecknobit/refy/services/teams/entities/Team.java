@@ -115,7 +115,7 @@ public class Team extends RefyItem {
     private final List<LinksCollection> collections;
 
     /**
-     * Constructor to init the {@link Team} class 
+     * Constructor used to init the {@link Team} class 
      * @apiNote empty constructor required
      */
     @EmptyConstructor
@@ -124,7 +124,7 @@ public class Team extends RefyItem {
     }
 
     /**
-     * Constructor to init the {@link RefyItem} class
+     * Constructor used to init the {@link RefyItem} class
      *
      * @param id The identifier of the team
      * @param title The title of the team
@@ -384,7 +384,7 @@ public class Team extends RefyItem {
         protected final Team sourceTeam;
 
         /**
-         * Constructor to init the {@link RefyTeamMember} class <br>
+         * Constructor used to init the {@link RefyTeamMember} class <br>
          *
          * No-any params required
          * @apiNote empty constructor required
@@ -395,7 +395,7 @@ public class Team extends RefyItem {
         }
 
         /**
-         * Constructor to init the {@link RefyTeamMember} class
+         * Constructor used to init the {@link RefyTeamMember} class
          *
          * @param owner The {@link RefyUser} who the member is linked
          * @param role The role of the member
@@ -410,7 +410,7 @@ public class Team extends RefyItem {
         }
 
         /**
-         * Constructor to init the {@link RefyTeamMember} class
+         * Constructor used to init the {@link RefyTeamMember} class
          *
          * @param member: member details as list
          *

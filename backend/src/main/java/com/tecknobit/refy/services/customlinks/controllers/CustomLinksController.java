@@ -2,10 +2,15 @@ package com.tecknobit.refy.services.customlinks.controllers;
 
 import com.tecknobit.apimanager.annotations.RequestPath;
 import com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController;
+import com.tecknobit.refy.services.collections.entity.LinksCollection;
+import com.tecknobit.refy.services.collections.service.LinksCollectionsService;
 import com.tecknobit.refy.services.customlinks.entity.CustomRefyLink;
 import com.tecknobit.refy.services.customlinks.service.CustomLinksService;
 import com.tecknobit.refy.services.links.entity.RefyLink;
+import com.tecknobit.refy.services.links.service.LinksService;
 import com.tecknobit.refy.services.shared.controllers.DefaultRefyController;
+import com.tecknobit.refy.services.teams.entities.Team;
+import com.tecknobit.refy.services.teams.service.TeamsService;
 import com.tecknobit.refycore.enums.ExpiredTime;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +44,22 @@ public class CustomLinksController extends DefaultRefyController<CustomRefyLink>
     /**
      * {@code customLinksService} helper to manage the {@link CustomRefyLink} database operations
      */
+    private final CustomLinksService customLinksService;
+
+    /**
+     * Constructor used to init the controller
+     *
+     * @param linksService The helper to manage the {@link RefyLink} database operations
+     * @param linksCollectionsService The helper to manage the {@link LinksCollection} database operations
+     * @param teamsService The helper to manage the {@link Team} database operations
+     * @param customLinksService The helper to manage the {@link CustomRefyLink} database operations
+     */
     @Autowired
-    private CustomLinksService customLinksService;
+    public CustomLinksController(LinksService linksService, LinksCollectionsService linksCollectionsService,
+                                 TeamsService teamsService, CustomLinksService customLinksService) {
+        super(linksService, linksCollectionsService, teamsService);
+        this.customLinksService = customLinksService;
+    }
 
     /**
      * Method to get a list of custom links
@@ -72,63 +91,6 @@ public class CustomLinksController extends DefaultRefyController<CustomRefyLink>
         if(!isMe(userId, token))
             return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         return (T) successResponse(customLinksService.getUserCustomLinks(userId, page, pageSize, keywords));
-    }
-
-    /**
-     * Method to create a new custom link
-     *
-     * @param userId The identifier of the user
-     * @param token The token of the user
-     * @param payload The payload of the request
-     *                 <pre>
-     *                      {@code
-     *                              {
-     *                                  "title" : "title of the link" -> [String],
-     *                                  "description" : "the description of the custom link" -> [String],
-     *                                  "resources" : "the resources to share with the link" -> Map[String, String],
-     *                                  "fields" : "the fields used to protect the resources with a validation form" -> Map[String, String],
-     *                                  "hasUniqueAccess" : "whether the link, when requested for the first time, must be deleted and no more accessible" -> [boolean],
-     *                                  "expiredTime" : "when the link expires and automatically deleted" -> [{@link ExpiredTime }],
-     *                              }
-     *                      }
-     *                 </pre>
-     *
-     * @return the response of the request as {@link String}
-     *
-     */
-    @PostMapping(
-            headers = TOKEN_KEY
-    )
-    @Override
-    @RequestPath(path = "/api/v1/users/{user_id}/customLinks", method = POST)
-    public String create(
-            @RequestHeader(TOKEN_KEY) String token,
-            @PathVariable(USER_IDENTIFIER_KEY) String userId,
-            @RequestBody Map<String, Object> payload
-    ) {
-        if(!isMe(userId, token))
-            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        loadJsonHelper(payload);
-        String title = jsonHelper.getString(TITLE_KEY);
-        String description = jsonHelper.getString(DESCRIPTION_KEY);
-        Map<String, Object> resources = jsonHelper.getJSONObject(RESOURCES_KEY, new JSONObject()).toMap();
-        Map<String, Object> fields = jsonHelper.getJSONObject(FIELDS_KEY, new JSONObject()).toMap();
-        if(!INSTANCE.isCustomLinkPayloadValid(title, description, resources, fields))
-            return failedResponse(WRONG_PROCEDURE_MESSAGE);
-        boolean hasUniqueAccess = jsonHelper.getBoolean(UNIQUE_ACCESS_KEY);
-        String sExpiredTime = jsonHelper.getString(EXPIRED_TIME_KEY);
-        ExpiredTime expiredTime;
-        if(sExpiredTime != null) {
-            try {
-                expiredTime = ExpiredTime.valueOf(sExpiredTime);
-            } catch (IllegalArgumentException e) {
-                return failedResponse(WRONG_PROCEDURE_MESSAGE);
-            }
-        } else
-            expiredTime = ExpiredTime.NO_EXPIRATION;
-        customLinksService.createCustomLink(userId, generateIdentifier(), title, description, hasUniqueAccess, expiredTime,
-                fields, resources);
-        return successResponse();
     }
 
     /**

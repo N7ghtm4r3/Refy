@@ -81,51 +81,6 @@ public class LinksController extends DefaultRefyController<RefyLink> {
     }
 
     /**
-     * Method to create a new link
-     *
-     * @param userId The identifier of the user
-     * @param token The token of the user
-     * @param payload The payload of the request
-     *                 <pre>
-     *                      {@code
-     *                              {
-     *                                  "reference_link" : "the url of the link" -> [String],
-     *                                  "description" : "the description of the link" -> [String]
-     *                              }
-     *                      }
-     *                 </pre>
-     *
-     * @return the response of the request as {@link String}
-     *
-     */
-    @PostMapping(
-            headers = TOKEN_KEY
-    )
-    @Override
-    @RequestPath(path = "/api/v1/users/{user_id}/links", method = POST)
-    public String create(
-            @RequestHeader(TOKEN_KEY) String token,
-            @PathVariable(USER_IDENTIFIER_KEY) String userId,
-            @RequestBody Map<String, Object> payload
-    ) {
-        if(!isMe(userId, token))
-            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        loadJsonHelper(payload);
-        String description = jsonHelper.getString(DESCRIPTION_KEY);
-        String referenceLink = jsonHelper.getString(REFERENCE_LINK_KEY);
-        if(!INSTANCE.isLinkPayloadValid(description, referenceLink))
-            return failedResponse(WRONG_PROCEDURE_MESSAGE);
-        try {
-            Pair<String, String> metadata = getMetadata(referenceLink);
-            linksService.createLink(userId, generateIdentifier(), metadata.getFirst(), metadata.getSecond(), description,
-                    referenceLink);
-            return successResponse();
-        } catch (IOException e) {
-            return failedResponse(WRONG_PROCEDURE_MESSAGE);
-        }
-    }
-
-    /**
      * Method to edit an existing link
      *
      * @param userId The identifier of the user

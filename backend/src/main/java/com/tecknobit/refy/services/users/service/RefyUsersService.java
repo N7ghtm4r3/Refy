@@ -32,22 +32,29 @@ import static com.tecknobit.refycore.ConstantsKt.TAG_NAME_KEY;
 public class RefyUsersService extends EquinoxUsersService<RefyUser, RefyUsersRepository> {
 
     /**
-     * {@code refyUsersRepository} instance for the Refy users repository
-     */
-    @Autowired
-    private RefyUsersRepository refyUsersRepository;
-
-    /**
      * {@code collectionsRepository} instance for the collections repository
      */
-    @Autowired
-    private CollectionsRepository collectionsRepository;
+    private final CollectionsRepository collectionsRepository;
 
     /**
      * {@code teamsRepository} instance for the teams repository
      */
+    private final TeamsRepository teamsRepository;
+
+    /**
+     * Constructor used to init the {@link EquinoxUsersService} service
+     *
+     * @param usersRepository The instance for the users repository
+     * @param collectionsRepository The instance for the collections repository
+     * @param teamsRepository The instance for the teams repository
+     */ 
     @Autowired
-    private TeamsRepository teamsRepository;
+    public RefyUsersService(RefyUsersRepository usersRepository, CollectionsRepository collectionsRepository, 
+                            TeamsRepository teamsRepository) {
+        super(usersRepository);
+        this.collectionsRepository = collectionsRepository;
+        this.teamsRepository = teamsRepository;
+    }
 
     /**
      * {@inheritDoc}
@@ -90,8 +97,8 @@ public class RefyUsersService extends EquinoxUsersService<RefyUser, RefyUsersRep
      */
     public PaginatedResponse<RefyTeamMember> getPotentialMembers(String userId, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        long totalPotentialMembers = refyUsersRepository.count() - 1;
-        List<List<String>> rawPotentialsMembers = refyUsersRepository.getPotentialMembers(userId, pageable);
+        long totalPotentialMembers = usersRepository.count() - 1;
+        List<List<String>> rawPotentialsMembers = usersRepository.getPotentialMembers(userId, pageable);
         ArrayList<RefyTeamMember> potentialsMember = new ArrayList<>();
         for (List<String> rawPotentialMember : rawPotentialsMembers)
             potentialsMember.add(new RefyTeamMember(rawPotentialMember));

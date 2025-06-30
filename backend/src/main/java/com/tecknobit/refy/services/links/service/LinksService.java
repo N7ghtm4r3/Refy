@@ -33,8 +33,17 @@ public class LinksService extends LinksBaseService<RefyLink> {
     /**
      * {@code linksRepository} instance for the links repository
      */
+    private final LinksRepository linksRepository;
+
+    /**
+     * Constructor used to ini the service
+     *
+     * @param linksRepository The instance for the links repository
+     */
     @Autowired
-    private LinksRepository linksRepository;
+    public LinksService(LinksRepository linksRepository) {
+        this.linksRepository = linksRepository;
+    }
 
     /**
      * Method to get the user's owned links identifiers

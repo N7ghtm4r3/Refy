@@ -39,20 +39,31 @@ public class LinksCollectionsService extends EquinoxItemsHelper implements RefyI
     /**
      * {@code collectionsRepository} instance for the collections repository
      */
-    @Autowired
-    private CollectionsRepository collectionsRepository;
+    private final CollectionsRepository collectionsRepository;
 
     /**
      * {@code linksRepository} instance for the links repository
      */
-    @Autowired
-    private LinksRepository linksRepository;
+    private final LinksRepository linksRepository;
 
     /**
      * {@code teamsRepository} instance for the teams repository
      */
+    private final TeamsRepository teamsRepository;
+
+    /**
+     * Constructor used to init the service
+     * @param collectionsRepository The instance for the collections repository
+     * @param linksRepository The instance for the links repository
+     * @param teamsRepository The instance for the teams repository
+     */
     @Autowired
-    private TeamsRepository teamsRepository;
+    public LinksCollectionsService(CollectionsRepository collectionsRepository, LinksRepository linksRepository,
+                                   TeamsRepository teamsRepository) {
+        this.collectionsRepository = collectionsRepository;
+        this.linksRepository = linksRepository;
+        this.teamsRepository = teamsRepository;
+    }
 
     /**
      * Method to get the user's owned collections identifiers

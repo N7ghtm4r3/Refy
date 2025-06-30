@@ -111,7 +111,7 @@ public class RefyUser extends EquinoxUser {
     private List<RefyTeamMember> member;
 
     /**
-     * Constructor to init the {@link RefyUser} class 
+     * Constructor used to init the {@link RefyUser} class 
      * @apiNote empty constructor required
      */
     @EmptyConstructor
@@ -121,7 +121,7 @@ public class RefyUser extends EquinoxUser {
     }
 
     /**
-     * Constructor to init the {@link RefyUser} class
+     * Constructor used to init the {@link RefyUser} class
      *
      * @param id:       identifier of the user
      * @param token:    the token which the user is allowed to operate on server
@@ -147,7 +147,7 @@ public class RefyUser extends EquinoxUser {
     }
 
     /**
-     * Constructor to init the {@link RefyUser} class
+     * Constructor used to init the {@link RefyUser} class
      *
      * @param id:       identifier of the user
      * @param name:     the name of the user
@@ -165,7 +165,7 @@ public class RefyUser extends EquinoxUser {
     }
 
     /**
-     * Constructor to init the {@link RefyUser} class
+     * Constructor used to init the {@link RefyUser} class
      *
      * @param id:       identifier of the user
      * @param token:    the token which the user is allowed to operate on server

@@ -93,6 +93,22 @@ public abstract class DefaultRefyController<I extends RefyItem> extends EquinoxC
     );
 
     /**
+     * Method to create a new item
+     *
+     * @param userId The identifier of the user
+     * @param token The token of the user
+     * @param payload The payload to create the item
+     *
+     * @return the response of the request as {@link String}
+     *
+     */
+    public abstract String create(
+            String token,
+            String userId,
+            Map<String, Object> payload
+    );
+
+    /**
      * Method to edit an existing item
      *
      * @param userId The identifier of the user

@@ -8,6 +8,7 @@ import com.tecknobit.refy.services.users.entity.RefyUser;
 import com.tecknobit.refy.services.users.repository.RefyUsersRepository;
 import com.tecknobit.refy.services.users.service.RefyUsersService;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -34,6 +35,16 @@ public class RefyUsersController extends EquinoxUsersController<RefyUser, RefyUs
      * {@code WRONG_TAG_NAME_MESSAGE} message to use when the tag name of the user is not valid
      */
     private static final String WRONG_TAG_NAME_MESSAGE = "wrong_tag_name";
+
+    /**
+     * Constructor to init the controller
+     *
+     * @param usersService The helper to manage the users database operations
+     */
+    @Autowired
+    public RefyUsersController(RefyUsersService usersService) {
+        super(usersService);
+    }
 
     /**
      * {@inheritDoc}

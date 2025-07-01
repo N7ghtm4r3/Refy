@@ -4,7 +4,13 @@ import com.tecknobit.apimanager.annotations.RequestPath;
 import com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
 import com.tecknobit.refy.services.collections.entity.LinksCollection;
+import com.tecknobit.refy.services.collections.service.LinksCollectionsService;
+import com.tecknobit.refy.services.links.entity.RefyLink;
+import com.tecknobit.refy.services.links.service.LinksService;
 import com.tecknobit.refy.services.shared.controllers.DefaultRefyController;
+import com.tecknobit.refy.services.teams.entities.Team;
+import com.tecknobit.refy.services.teams.service.TeamsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -28,6 +34,19 @@ import static com.tecknobit.refycore.helpers.RefyInputsValidator.INSTANCE;
 @RestController
 @RequestMapping(BASE_EQUINOX_ENDPOINT + USERS_KEY + "/{" + USER_IDENTIFIER_KEY + "}/" + COLLECTIONS_KEY)
 public class CollectionsController extends DefaultRefyController<LinksCollection> {
+
+    /**
+     * Constructor used to init the controller
+     *
+     * @param linksService            The helper to manage the {@link RefyLink} database operations
+     * @param linksCollectionsService The helper to manage the {@link LinksCollection} database operations
+     * @param teamsService            The helper to manage the {@link Team} database operations
+     */
+    @Autowired
+    protected CollectionsController(LinksService linksService, LinksCollectionsService linksCollectionsService,
+                                    TeamsService teamsService) {
+        super(linksService, linksCollectionsService, teamsService);
+    }
 
     /**
      * Method to get a list of collections
@@ -64,6 +83,50 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
         else
             collections = linksCollectionsService.getAllUserCollections(userId, page, pageSize, keywords);
         return (T) successResponse(collections);
+    }
+
+    /**
+     * Method to create a new collection
+     *
+     * @param userId The identifier of the user
+     * @param token The token of the user
+     * @param payload The payload of the request
+     *                 <pre>
+     *                      {@code
+     *                              {
+     *                                  "title" : "title of the collection" -> [String],
+     *                                  "description" : "the description of the collection" -> [String],
+     *                                  "color" : "the color of the collection" -> [String],
+     *                                  "links" : ["the links to attach"] -> List[String]
+     *                              }
+     *                      }
+     *                 </pre>
+     *
+     * @return the response of the request as {@link String}
+     *
+     */
+    @PostMapping(
+            headers = TOKEN_KEY
+    )
+    @Override
+    @RequestPath(path = "/api/v1/users/{user_id}/collections", method = POST)
+    public String create(
+            @RequestHeader(TOKEN_KEY) String token,
+            @PathVariable(USER_IDENTIFIER_KEY) String userId,
+            @RequestBody Map<String, Object> payload
+    ) {
+        if(!isMe(userId, token))
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        loadJsonHelper(payload);
+        String color = jsonHelper.getString(COLLECTION_COLOR_KEY);
+        String title = jsonHelper.getString(TITLE_KEY);
+        String description = jsonHelper.getString(DESCRIPTION_KEY);
+        ArrayList<String> links = jsonHelper.fetchList(LINKS_KEY, new ArrayList<>());
+        HashSet<String> userLinks = linksService.getUserLinks(userId);
+        if (!userLinks.containsAll(links) || !INSTANCE.isCollectionPayloadValid(color, title, description))
+            return failedResponse(WRONG_PROCEDURE_MESSAGE);
+        linksCollectionsService.createCollection(userId, generateIdentifier(), color, title, description, links);
+        return successResponse();
     }
 
     /**

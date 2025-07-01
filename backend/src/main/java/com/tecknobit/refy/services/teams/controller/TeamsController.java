@@ -125,6 +125,16 @@ public class TeamsController extends DefaultRefyController<Team> {
     }
 
     /**
+     * {@inheritDoc}
+     *
+     * @apiNote see the {@link #create(String, String, TeamPayload)} method instead
+     */
+    @Override
+    public String create(String token, String userId, Map<String, Object> payload) {
+        return null;
+    }
+
+    /**
      * Method to create a new team
      *
      * @param userId The identifier of the user

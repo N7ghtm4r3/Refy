@@ -3,11 +3,17 @@ package com.tecknobit.refy.services.links.controller;
 import com.tecknobit.apimanager.annotations.RequestPath;
 import com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
+import com.tecknobit.refy.services.collections.entity.LinksCollection;
+import com.tecknobit.refy.services.collections.service.LinksCollectionsService;
 import com.tecknobit.refy.services.links.entity.RefyLink;
+import com.tecknobit.refy.services.links.service.LinksService;
 import com.tecknobit.refy.services.shared.controllers.DefaultRefyController;
+import com.tecknobit.refy.services.teams.entities.Team;
+import com.tecknobit.refy.services.teams.service.TeamsService;
 import kotlin.Pair;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -44,6 +50,18 @@ public class LinksController extends DefaultRefyController<RefyLink> {
     private static final String CONTENT_KEY = "content";
 
     /**
+     * Constructor used to init the controller
+     *
+     * @param linksService            The helper to manage the {@link RefyLink} database operations
+     * @param linksCollectionsService The helper to manage the {@link LinksCollection} database operations
+     * @param teamsService            The helper to manage the {@link Team} database operations
+     */
+    @Autowired
+    protected LinksController(LinksService linksService, LinksCollectionsService linksCollectionsService, TeamsService teamsService) {
+        super(linksService, linksCollectionsService, teamsService);
+    }
+
+    /**
      * Method to get a list of links
      *
      * @param userId The identifier of the user
@@ -78,6 +96,51 @@ public class LinksController extends DefaultRefyController<RefyLink> {
         else
             links = linksService.getAllUserLinks(userId, page, pageSize, keywords);
         return (T) successResponse(links);
+    }
+
+    /**
+     * Method to create a new link
+     *
+     * @param userId The identifier of the user
+     * @param token The token of the user
+     * @param payload The payload of the request
+     *                 <pre>
+     *                      {@code
+     *                              {
+     *                                  "reference_link" : "the url of the link" -> [String],
+     *                                  "description" : "the description of the link" -> [String]
+     *                              }
+     *                      }
+     *                 </pre>
+     *
+     * @return the response of the request as {@link String}
+     *
+     */
+    @PostMapping(
+            headers = TOKEN_KEY
+    )
+    @Override
+    @RequestPath(path = "/api/v1/users/{user_id}/links", method = POST)
+    public String create(
+            @RequestHeader(TOKEN_KEY) String token,
+            @PathVariable(USER_IDENTIFIER_KEY) String userId,
+            @RequestBody Map<String, Object> payload
+    ) {
+        if(!isMe(userId, token))
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        loadJsonHelper(payload);
+        String description = jsonHelper.getString(DESCRIPTION_KEY);
+        String referenceLink = jsonHelper.getString(REFERENCE_LINK_KEY);
+        if(!INSTANCE.isLinkPayloadValid(description, referenceLink))
+            return failedResponse(WRONG_PROCEDURE_MESSAGE);
+        try {
+            Pair<String, String> metadata = getMetadata(referenceLink);
+            linksService.createLink(userId, generateIdentifier(), metadata.getFirst(), metadata.getSecond(), description,
+                    referenceLink);
+            return successResponse();
+        } catch (IOException e) {
+            return failedResponse(WRONG_PROCEDURE_MESSAGE);
+        }
     }
 
     /**

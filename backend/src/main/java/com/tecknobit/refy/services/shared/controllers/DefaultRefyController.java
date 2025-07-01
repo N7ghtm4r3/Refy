@@ -42,20 +42,32 @@ public abstract class DefaultRefyController<I extends RefyItem> extends EquinoxC
     /**
      * {@code linksService} helper to manage the {@link RefyLink} database operations
      */
-    @Autowired
-    protected LinksService linksService;
+    protected final LinksService linksService;
 
     /**
      * {@code linksCollectionsService} helper to manage the {@link LinksCollection} database operations
      */
-    @Autowired
-    protected LinksCollectionsService linksCollectionsService;
+    protected final LinksCollectionsService linksCollectionsService;
 
     /**
      * {@code teamsService} helper to manage the {@link Team} database operations
      */
+    protected final TeamsService teamsService;
+
+    /**
+     * Constructor used to init the controller
+     *
+     * @param linksService The helper to manage the {@link RefyLink} database operations
+     * @param linksCollectionsService The helper to manage the {@link LinksCollection} database operations
+     * @param teamsService The helper to manage the {@link Team} database operations
+     */
     @Autowired
-    protected TeamsService teamsService;
+    protected DefaultRefyController(LinksService linksService, LinksCollectionsService linksCollectionsService,
+                                    TeamsService teamsService) {
+        this.linksService = linksService;
+        this.linksCollectionsService = linksCollectionsService;
+        this.teamsService = teamsService;
+    }
 
     /**
      * Method to get a list of items

@@ -38,8 +38,17 @@ public class CustomLinksService extends LinksBaseService<CustomRefyLink> {
     /**
      * {@code customLinksRepository} instance for the custom links repository
      */
+    private final CustomLinksRepository customLinksRepository;
+
+    /**
+     * Constructor used to init the service
+     * 
+     * @param customLinksRepository The instance for the custom links repository
+     */
     @Autowired
-    private CustomLinksRepository customLinksRepository;
+    public CustomLinksService(CustomLinksRepository customLinksRepository) {
+        this.customLinksRepository = customLinksRepository;
+    }
 
     /**
      * Method to find a custom link by its identifier

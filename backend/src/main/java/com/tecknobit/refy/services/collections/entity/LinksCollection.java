@@ -74,7 +74,7 @@ public class LinksCollection extends RefyItem {
     private final List<Team> teams;
 
     /**
-     * Constructor to init the {@link LinksCollection} class 
+     * Constructor used to init the {@link LinksCollection} class 
      * @apiNote empty constructor required
      */
     @EmptyConstructor
@@ -83,7 +83,7 @@ public class LinksCollection extends RefyItem {
     }
 
     /**
-     * Constructor to init the {@link RefyItem} class
+     * Constructor used to init the {@link RefyItem} class
      *
      * @param id The identifier of the collection
      * @param owner The owner of the collection

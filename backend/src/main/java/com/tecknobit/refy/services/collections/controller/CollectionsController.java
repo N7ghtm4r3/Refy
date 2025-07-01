@@ -4,7 +4,13 @@ import com.tecknobit.apimanager.annotations.RequestPath;
 import com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
 import com.tecknobit.refy.services.collections.entity.LinksCollection;
+import com.tecknobit.refy.services.collections.service.LinksCollectionsService;
+import com.tecknobit.refy.services.links.entity.RefyLink;
+import com.tecknobit.refy.services.links.service.LinksService;
 import com.tecknobit.refy.services.shared.controllers.DefaultRefyController;
+import com.tecknobit.refy.services.teams.entities.Team;
+import com.tecknobit.refy.services.teams.service.TeamsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -28,6 +34,19 @@ import static com.tecknobit.refycore.helpers.RefyInputsValidator.INSTANCE;
 @RestController
 @RequestMapping(BASE_EQUINOX_ENDPOINT + USERS_KEY + "/{" + USER_IDENTIFIER_KEY + "}/" + COLLECTIONS_KEY)
 public class CollectionsController extends DefaultRefyController<LinksCollection> {
+
+    /**
+     * Constructor used to init the controller
+     *
+     * @param linksService            The helper to manage the {@link RefyLink} database operations
+     * @param linksCollectionsService The helper to manage the {@link LinksCollection} database operations
+     * @param teamsService            The helper to manage the {@link Team} database operations
+     */
+    @Autowired
+    protected CollectionsController(LinksService linksService, LinksCollectionsService linksCollectionsService,
+                                    TeamsService teamsService) {
+        super(linksService, linksCollectionsService, teamsService);
+    }
 
     /**
      * Method to get a list of collections

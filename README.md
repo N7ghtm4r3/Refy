@@ -1,6 +1,6 @@
 # Refy
 
-**v1.0.2**
+**v1.0.3**
 
 This project, based on Java and the Spring Boot framework, is an open source self-hosted references collector and custom 
 links generator
@@ -31,7 +31,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.tecknobit.refycore:refycore:1.0.2'
+  implementation 'com.tecknobit.refycore:refycore:1.0.3'
 }
 ```
 
@@ -44,7 +44,7 @@ repositories {
 }
 
 dependencies {
-  implementation("com.tecknobit.refycore:refycore:1.0.2")
+  implementation("com.tecknobit.refycore:refycore:1.0.3")
 }
 ```
 
@@ -53,14 +53,14 @@ dependencies {
 ### Clients
 
 - [Android](https://play.google.com/store/apps/details?id=com.tecknobit.refy)
-- [Refy desktop version](https://github.com/N7ghtm4r3/Refy-Clients/releases/tag/1.0.2)
+- [Refy desktop version](https://github.com/N7ghtm4r3/Refy-Clients/releases/tag/1.0.3)
 - iOS -> source code available, but cannot distribute due
   missing [Apple Developer Program license](https://developer.apple.com/programs/)
 - [Refy webapp version](https://github.com/N7ghtm4r3/Refy-WebApp)
 
 ### Backend
 
-- <a href="https://github.com/N7ghtm4r3/Refy/releases/tag/1.0.2">Backend service "out-of-the-box"</a>
+- <a href="https://github.com/N7ghtm4r3/Refy/releases/tag/1.0.3">Backend service "out-of-the-box"</a>
 
 ### Backend configuration
 
@@ -84,32 +84,17 @@ dependencies {
 
 The default properties to launch the backend service as designed are the following:
 
-``` properties
-# The properties considered critical could alter the flow of how the backend service was designed, so we do not recommend
-# to change them
-
-spring.datasource.url=jdbc:mysql://localhost:3306/refy?createDatabaseIfNotExist=true
-server.port=1989
-spring.datasource.username=root
-spring.jpa.generate-ddl=true 
-spring.jpa.hibernate.ddl.auto=update
-spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
-spring.mvc.dispatch-options-request=true
-spring.servlet.multipart.max-file-size=10MB
-spring.servlet.multipart.max-request-size=10MB
-```
-
-| Property                                  | Default value                                                  |    Not-Critical    | Recommended to change |
-|-------------------------------------------|----------------------------------------------------------------|:------------------:|:---------------------:|
-| spring.datasource.url                     | jdbc:mysql://localhost:3306/refy?createDatabaseIfNotExist=true | :white_check_mark: |          :x:          | 
-| server.port                               | 1989                                                           | :white_check_mark: |           /           |
-| spring.datasource.username                | root                                                           | :white_check_mark: |  :white_check_mark:   |
-| spring.jpa.generate-ddl                   | update                                                         |        :x:         |          :x:          |
-| spring.jpa.hibernate.ddl.auto             | auto                                                           |        :x:         |          :x:          |           
-| spring.jpa.properties.hibernate.dialect   | org.hibernate.dialect.MySQL8Dialect                            |        :x:         |          :x:          |           
-| spring.mvc.dispatch-options-request       | true                                                           |        :x:         |          :x:          |           
-| spring.servlet.multipart.max-file-size    | 10MB                                                           | :white_check_mark: |           /           |           
-| spring.servlet.multipart.max-request-size | 10MB                                                           | :white_check_mark: |           /           |
+| Property                                  | Default value                                                  |
+|-------------------------------------------|----------------------------------------------------------------|
+| spring.datasource.url                     | jdbc:mysql://localhost:3306/refy?createDatabaseIfNotExist=true | 
+| server.port                               | 1989                                                           |
+| spring.datasource.username                | root                                                           |
+| spring.jpa.generate-ddl                   | update                                                         |
+| spring.jpa.hibernate.ddl.auto             | auto                                                           |           
+| spring.jpa.properties.hibernate.dialect   | org.hibernate.dialect.MySQL8Dialect                            |           
+| spring.mvc.dispatch-options-request       | true                                                           |           
+| spring.servlet.multipart.max-file-size    | 10MB                                                           |           
+| spring.servlet.multipart.max-request-size | 10MB                                                           |
 
 The **spring.datasource.username** if is not set is used the default password of the MySQL environment
 
@@ -119,10 +104,10 @@ To customize the properties to launch the backend service you must create a file
 the server file (.jar)** and call it `custom.properties` as below:
 
 ``` bash
-  folderOfWhereYouPlacedTheServerFile
-   |-- custom.properties
-   |-- refy.jar
-  ```
+folderOfWhereYouPlacedTheServerFile
+├── custom.properties
+└── refy.jar
+```
 
 If your custom properties do not contain the properties of the default configuration will be used these default
 properties instead,
@@ -144,10 +129,10 @@ To start the **Refy** service on your own infrastructure you have to follow thes
   the server)** the default profile pic as below:
   ``` bash
   folderOfWhereYouPlacedTheServerFile
-   |-- resources
-   |   |-- profiles
-   |       |-- defProfilePic.png
-   |-- refy.jar
+  ├── resources
+  │   └── profiles
+  │       └── defProfilePic.png
+  └── refy.jar
   ```
   This action is required to provide the **defProfilePic** as logo or profile for the users.
   You can take a look directly <a href="https://github.com/N7ghtm4r3/Refy/tree/main/images">here</a>

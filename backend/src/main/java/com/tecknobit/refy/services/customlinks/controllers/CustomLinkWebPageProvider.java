@@ -82,8 +82,17 @@ public class CustomLinkWebPageProvider {
     /**
      * {@code customLinksService} helper to manage the {@link CustomRefyLink} database operations
      */
+    private final CustomLinksService customLinksService;
+
+    /**
+     * Constructor used to init the provider
+     *
+     * @param customLinksService The helper to manage the {@link CustomRefyLink} database operations
+     */
     @Autowired
-    private CustomLinksService customLinksService;
+    public CustomLinkWebPageProvider(CustomLinksService customLinksService) {
+        this.customLinksService = customLinksService;
+    }
 
     /**
      * Method to get a list of custom links

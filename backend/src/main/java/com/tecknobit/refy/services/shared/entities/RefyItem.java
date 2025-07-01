@@ -66,7 +66,7 @@ public abstract class RefyItem extends EquinoxItem {
     protected final long date;
 
     /**
-     * Constructor to init the {@link RefyItem} class
+     * Constructor used to init the {@link RefyItem} class
      *
      * @param id The identifier of the item
      * @param owner The owner of the item

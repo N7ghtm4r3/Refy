@@ -2,10 +2,15 @@ package com.tecknobit.refy.services.customlinks.controllers;
 
 import com.tecknobit.apimanager.annotations.RequestPath;
 import com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController;
+import com.tecknobit.refy.services.collections.entity.LinksCollection;
+import com.tecknobit.refy.services.collections.service.LinksCollectionsService;
 import com.tecknobit.refy.services.customlinks.entity.CustomRefyLink;
 import com.tecknobit.refy.services.customlinks.service.CustomLinksService;
 import com.tecknobit.refy.services.links.entity.RefyLink;
+import com.tecknobit.refy.services.links.service.LinksService;
 import com.tecknobit.refy.services.shared.controllers.DefaultRefyController;
+import com.tecknobit.refy.services.teams.entities.Team;
+import com.tecknobit.refy.services.teams.service.TeamsService;
 import com.tecknobit.refycore.enums.ExpiredTime;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +44,22 @@ public class CustomLinksController extends DefaultRefyController<CustomRefyLink>
     /**
      * {@code customLinksService} helper to manage the {@link CustomRefyLink} database operations
      */
+    private final CustomLinksService customLinksService;
+
+    /**
+     * Constructor used to init the controller
+     *
+     * @param linksService The helper to manage the {@link RefyLink} database operations
+     * @param linksCollectionsService The helper to manage the {@link LinksCollection} database operations
+     * @param teamsService The helper to manage the {@link Team} database operations
+     * @param customLinksService The helper to manage the {@link CustomRefyLink} database operations
+     */
     @Autowired
-    private CustomLinksService customLinksService;
+    public CustomLinksController(LinksService linksService, LinksCollectionsService linksCollectionsService,
+                                 TeamsService teamsService, CustomLinksService customLinksService) {
+        super(linksService, linksCollectionsService, teamsService);
+        this.customLinksService = customLinksService;
+    }
 
     /**
      * Method to get a list of custom links

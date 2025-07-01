@@ -3,11 +3,17 @@ package com.tecknobit.refy.services.links.controller;
 import com.tecknobit.apimanager.annotations.RequestPath;
 import com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
+import com.tecknobit.refy.services.collections.entity.LinksCollection;
+import com.tecknobit.refy.services.collections.service.LinksCollectionsService;
 import com.tecknobit.refy.services.links.entity.RefyLink;
+import com.tecknobit.refy.services.links.service.LinksService;
 import com.tecknobit.refy.services.shared.controllers.DefaultRefyController;
+import com.tecknobit.refy.services.teams.entities.Team;
+import com.tecknobit.refy.services.teams.service.TeamsService;
 import kotlin.Pair;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -42,6 +48,18 @@ public class LinksController extends DefaultRefyController<RefyLink> {
      * {@code CONTENT_KEY} constant value for the {@code content} value
      */
     private static final String CONTENT_KEY = "content";
+
+    /**
+     * Constructor used to init the controller
+     *
+     * @param linksService            The helper to manage the {@link RefyLink} database operations
+     * @param linksCollectionsService The helper to manage the {@link LinksCollection} database operations
+     * @param teamsService            The helper to manage the {@link Team} database operations
+     */
+    @Autowired
+    protected LinksController(LinksService linksService, LinksCollectionsService linksCollectionsService, TeamsService teamsService) {
+        super(linksService, linksCollectionsService, teamsService);
+    }
 
     /**
      * Method to get a list of links

@@ -6,7 +6,7 @@ import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 
 /**
- * Constructor to init the [ExpiredTime] class
+ * Constructor used to init the [ExpiredTime] class
  *
  * @param timeValue Temporal value of the expiration
  * @param gap The temporal gap value used to calculated if the link has been expired

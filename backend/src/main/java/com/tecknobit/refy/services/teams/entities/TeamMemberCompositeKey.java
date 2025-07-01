@@ -20,14 +20,14 @@ public class TeamMemberCompositeKey {
     private String sourceTeam;
 
     /**
-     * Constructor to init the {@link Team} class 
+     * Constructor used to init the {@link Team} class 
      * @apiNote empty constructor required
      */
     public TeamMemberCompositeKey() {
     }
 
     /**
-     * Constructor to init the {@link TeamMemberCompositeKey} class
+     * Constructor used to init the {@link TeamMemberCompositeKey} class
      *
      * @param owner The {@link RefyUser} who the member is linked
      * @param sourceTeam The team of the member

@@ -25,7 +25,7 @@ import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.USERS_KEY;
 import static com.tecknobit.equinoxcore.network.EquinoxBaseEndpointsSet.BASE_EQUINOX_ENDPOINT;
 import static com.tecknobit.equinoxcore.pagination.PaginatedResponse.*;
 import static com.tecknobit.refycore.ConstantsKt.*;
-import static com.tecknobit.refycore.helpers.RefyInputsValidator.INSTANCE;
+import static com.tecknobit.refycore.helpers.RefyInputsValidator.isLinkPayloadValid;
 
 /**
  * The {@code LinksController} class is useful to manage all the {@link RefyLink} operations
@@ -131,7 +131,7 @@ public class LinksController extends DefaultRefyController<RefyLink> {
         loadJsonHelper(payload);
         String description = jsonHelper.getString(DESCRIPTION_KEY);
         String referenceLink = jsonHelper.getString(REFERENCE_LINK_KEY);
-        if(!INSTANCE.isLinkPayloadValid(description, referenceLink))
+        if(!isLinkPayloadValid(description, referenceLink))
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         try {
             Pair<String, String> metadata = getMetadata(referenceLink);
@@ -178,7 +178,7 @@ public class LinksController extends DefaultRefyController<RefyLink> {
         loadJsonHelper(payload);
         String description = jsonHelper.getString(DESCRIPTION_KEY);
         String referenceLink = jsonHelper.getString(REFERENCE_LINK_KEY);
-        if(!INSTANCE.isLinkPayloadValid(description, referenceLink))
+        if(!isLinkPayloadValid(description, referenceLink))
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         try {
             String title = userItem.getTitle();

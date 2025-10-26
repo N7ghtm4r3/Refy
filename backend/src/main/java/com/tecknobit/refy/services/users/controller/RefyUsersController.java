@@ -19,6 +19,7 @@ import static com.tecknobit.refycore.ConstantsKt.AT_SYMBOL;
 import static com.tecknobit.refycore.ConstantsKt.TAG_NAME_KEY;
 import static com.tecknobit.refycore.helpers.RefyEndpointsSet.CHANGE_TAG_NAME_ENDPOINT;
 import static com.tecknobit.refycore.helpers.RefyInputsValidator.INSTANCE;
+import static com.tecknobit.refycore.helpers.RefyInputsValidator.isTagNameValid;
 
 /**
  * The {@code RefyUsersController} class is useful to manage all the Refy users operations
@@ -68,7 +69,7 @@ public class RefyUsersController extends EquinoxUsersController<RefyUser, RefyUs
         String validation = super.validateSignUp(name, surname, email, password, language, custom);
         if(validation != null)
             return validation;
-        if(!INSTANCE.isTagNameValid(custom[0].toString()))
+        if(!isTagNameValid(custom[0].toString()))
             return WRONG_TAG_NAME_MESSAGE;
         else return null;
     }
@@ -114,7 +115,7 @@ public class RefyUsersController extends EquinoxUsersController<RefyUser, RefyUs
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         loadJsonHelper(payload);
         String tagName = jsonHelper.getString(TAG_NAME_KEY);
-        if (!INSTANCE.isTagNameValid(tagName))
+        if (!isTagNameValid(tagName))
             return failedResponse(WRONG_TAG_NAME_MESSAGE);
         try {
             usersService.changeTagName(tagName, id);

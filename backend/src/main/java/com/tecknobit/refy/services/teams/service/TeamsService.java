@@ -34,7 +34,7 @@ import static com.tecknobit.equinoxbackend.environment.services.builtin.service.
 import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.InsertCommand.REPLACE_INTO;
 import static com.tecknobit.refy.services.teams.batch.TeamMembersBatchQuery.MEMBERS_TABLE_COLUMNS;
 import static com.tecknobit.refycore.ConstantsKt.*;
-import static com.tecknobit.refycore.helpers.RefyInputsValidator.INSTANCE;
+import static com.tecknobit.refycore.helpers.RefyInputsValidator.*;
 
 /**
  * The {@code TeamsHelper} class is useful to manage all the {@link Team} database operations
@@ -369,7 +369,7 @@ public class TeamsService extends EquinoxItemsHelper implements RefyResourcesMan
          * @return whether the team payload is valid as boolean
          */
         public boolean isValidTeamPayload(boolean validateLogoPic) {
-            boolean validPayload = INSTANCE.isTitleValid(title) && INSTANCE.isDescriptionValid(description);
+            boolean validPayload = isTitleValid(title) && isDescriptionValid(description);
             if(validateLogoPic)
                 return validPayload && (logo_pic != null && !logo_pic.isEmpty());
             return validPayload;

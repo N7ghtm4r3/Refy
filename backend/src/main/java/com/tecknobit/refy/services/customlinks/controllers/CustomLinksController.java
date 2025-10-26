@@ -20,14 +20,13 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.tecknobit.apimanager.apis.APIRequest.RequestMethod.*;
-import static com.tecknobit.equinoxbackend.resourcesutils.ResourcesManager.RESOURCES_KEY;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.TOKEN_KEY;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.USERS_KEY;
 import static com.tecknobit.equinoxcore.network.EquinoxBaseEndpointsSet.BASE_EQUINOX_ENDPOINT;
 import static com.tecknobit.equinoxcore.pagination.PaginatedResponse.*;
 import static com.tecknobit.refycore.ConstantsKt.*;
 import static com.tecknobit.refycore.helpers.RefyEndpointsSet.CUSTOM_LINKS_ENDPOINT;
-import static com.tecknobit.refycore.helpers.RefyInputsValidator.INSTANCE;
+import static com.tecknobit.refycore.helpers.RefyInputsValidator.isCustomLinkPayloadValid;
 
 /**
  * The {@code LinksController} class is useful to manage all the {@link RefyLink} operations
@@ -132,7 +131,7 @@ public class CustomLinksController extends DefaultRefyController<CustomRefyLink>
         String description = jsonHelper.getString(DESCRIPTION_KEY);
         Map<String, Object> resources = jsonHelper.getJSONObject(RESOURCES_KEY, new JSONObject()).toMap();
         Map<String, Object> fields = jsonHelper.getJSONObject(FIELDS_KEY, new JSONObject()).toMap();
-        if(!INSTANCE.isCustomLinkPayloadValid(title, description, resources, fields))
+        if(!isCustomLinkPayloadValid(title, description, resources, fields))
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         boolean hasUniqueAccess = jsonHelper.getBoolean(UNIQUE_ACCESS_KEY);
         String sExpiredTime = jsonHelper.getString(EXPIRED_TIME_KEY);
@@ -191,7 +190,7 @@ public class CustomLinksController extends DefaultRefyController<CustomRefyLink>
         String description = jsonHelper.getString(DESCRIPTION_KEY);
         Map<String, Object> resources = jsonHelper.getJSONObject(RESOURCES_KEY, new JSONObject()).toMap();
         Map<String, Object> fields = jsonHelper.getJSONObject(FIELDS_KEY, new JSONObject()).toMap();
-        if(!INSTANCE.isCustomLinkPayloadValid(title, description, resources, fields))
+        if(!isCustomLinkPayloadValid(title, description, resources, fields))
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         boolean hasUniqueAccess = jsonHelper.getBoolean(UNIQUE_ACCESS_KEY);
         String sExpiredTime = jsonHelper.getString(EXPIRED_TIME_KEY);

@@ -22,6 +22,7 @@ import static com.tecknobit.equinoxcore.network.EquinoxBaseEndpointsSet.BASE_EQU
 import static com.tecknobit.equinoxcore.pagination.PaginatedResponse.*;
 import static com.tecknobit.refycore.ConstantsKt.*;
 import static com.tecknobit.refycore.helpers.RefyInputsValidator.INSTANCE;
+import static com.tecknobit.refycore.helpers.RefyInputsValidator.isCollectionPayloadValid;
 
 /**
  * The {@code CollectionsController} class is useful to manage all the {@link LinksCollection} operations
@@ -123,7 +124,7 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
         String description = jsonHelper.getString(DESCRIPTION_KEY);
         ArrayList<String> links = jsonHelper.fetchList(LINKS_KEY, new ArrayList<>());
         HashSet<String> userLinks = linksService.getUserLinks(userId);
-        if (!userLinks.containsAll(links) || !INSTANCE.isCollectionPayloadValid(color, title, description))
+        if (!userLinks.containsAll(links) || !isCollectionPayloadValid(color, title, description))
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         linksCollectionsService.createCollection(userId, generateIdentifier(), color, title, description, links);
         return successResponse();
@@ -169,7 +170,7 @@ public class CollectionsController extends DefaultRefyController<LinksCollection
         String description = jsonHelper.getString(DESCRIPTION_KEY);
         ArrayList<String> links = jsonHelper.fetchList(LINKS_KEY, new ArrayList<>());
         HashSet<String> userLinks = linksService.getUserLinks(userId);
-        if (!userLinks.containsAll(links) || !INSTANCE.isCollectionPayloadValid(color, title, description))
+        if (!userLinks.containsAll(links) || !isCollectionPayloadValid(color, title, description))
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         linksCollectionsService.editCollection(userId, collectionId, color, title, description, links);
         return successResponse();

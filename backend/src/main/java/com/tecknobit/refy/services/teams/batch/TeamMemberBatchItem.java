@@ -1,7 +1,7 @@
 package com.tecknobit.refy.services.teams.batch;
 
 import com.tecknobit.equinoxbackend.annotations.BatchQueryItem;
-import com.tecknobit.equinoxbackend.batch.JoinTableSyncBatchItem;
+import com.tecknobit.equinoxbackend.apis.batch.JoinTableSyncBatchItem;
 import com.tecknobit.refycore.enums.TeamRole;
 
 /**

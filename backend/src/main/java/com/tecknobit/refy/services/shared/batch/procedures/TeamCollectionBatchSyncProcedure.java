@@ -2,7 +2,7 @@ package com.tecknobit.refy.services.shared.batch.procedures;
 
 import com.tecknobit.equinoxbackend.annotations.BatchSyncProcedureImpl;
 import com.tecknobit.equinoxbackend.annotations.TableColumns;
-import com.tecknobit.equinoxbackend.batch.BatchSynchronizationProcedure;
+import com.tecknobit.equinoxbackend.apis.batch.BatchSynchronizationProcedure;
 import com.tecknobit.refy.services.collections.entity.LinksCollection;
 import com.tecknobit.refy.services.shared.batch.items.TeamCollectionBatchItem;
 import com.tecknobit.refy.services.teams.entities.Team;

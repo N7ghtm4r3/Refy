@@ -1,7 +1,7 @@
 package com.tecknobit.refy.services.shared.batch.items;
 
 import com.tecknobit.equinoxbackend.annotations.BatchQueryItem;
-import com.tecknobit.equinoxbackend.batch.JoinTableSyncBatchItem;
+import com.tecknobit.equinoxbackend.apis.batch.JoinTableSyncBatchItem;
 
 import static com.tecknobit.refycore.ConstantsKt.COLLECTION_IDENTIFIER_KEY;
 import static com.tecknobit.refycore.ConstantsKt.LINK_IDENTIFIER_KEY;

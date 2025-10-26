@@ -14,7 +14,6 @@ import jakarta.persistence.*;
 import java.util.List;
 import java.util.Map;
 
-import static com.tecknobit.equinoxbackend.resourcesutils.ResourcesManager.RESOURCES_KEY;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.IDENTIFIER_KEY;
 import static com.tecknobit.refycore.ConstantsKt.*;
 import static jakarta.persistence.EnumType.STRING;

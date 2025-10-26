@@ -1,6 +1,6 @@
 package com.tecknobit.refy.services.shared.links.service;
 
-import com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper;
+import com.tecknobit.equinoxbackend.apis.batch.EquinoxItemsHelper;
 import com.tecknobit.refy.services.links.entity.RefyLink;
 import com.tecknobit.refy.services.shared.services.RefyItemRetriever;
 import org.springframework.stereotype.Service;

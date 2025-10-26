@@ -1,14 +1,13 @@
 package com.tecknobit.refy.services.customlinks.batch;
 
 import com.tecknobit.equinoxbackend.annotations.BatchQueryItem;
+import com.tecknobit.equinoxbackend.apis.batch.EquinoxItemsHelper.ComplexBatchItem;
 import com.tecknobit.refy.services.customlinks.entity.CustomRefyLink;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.ComplexBatchItem;
 
 /**
  * The {@code CustomLinkMapBatchItem} is used during the batch synchronization to sync a {@link java.util.Map}'s value

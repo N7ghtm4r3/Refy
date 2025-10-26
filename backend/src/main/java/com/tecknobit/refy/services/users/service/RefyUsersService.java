@@ -1,7 +1,7 @@
 package com.tecknobit.refy.services.users.service;
 
+import com.tecknobit.equinoxbackend.apis.resources.ResourcesManager;
 import com.tecknobit.equinoxbackend.environment.services.users.service.EquinoxUsersService;
-import com.tecknobit.equinoxbackend.resourcesutils.ResourcesManager;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
 import com.tecknobit.refy.services.collections.repository.CollectionsRepository;
 import com.tecknobit.refy.services.teams.entities.Team.RefyTeamMember;

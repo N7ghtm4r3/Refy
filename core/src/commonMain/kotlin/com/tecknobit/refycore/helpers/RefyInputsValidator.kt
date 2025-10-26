@@ -2,6 +2,7 @@ package com.tecknobit.refycore.helpers
 
 import com.tecknobit.equinoxcore.helpers.InputsValidator
 import com.tecknobit.refycore.AT_SYMBOL
+import kotlin.jvm.JvmStatic
 
 /**
  * The `RefyInputValidator` class is useful to validate the inputs
@@ -38,11 +39,25 @@ object RefyInputsValidator : InputsValidator() {
     private val colorRegex: Regex = Regex(HEX_COLOR_PATTERN)
 
     /**
+     * `URL_REGEX` regular expression to validate the urls value
+     */
+    // TODO: TO REMOVE WHEN FIXED INTO InputsValidator
+    const val URL_REGEX =
+        "^[a-zA-Z][a-zA-Z0-9+.-]*://(([a-zA-Z0-9\\-]+\\.)+[a-zA-Z]{2,6}|\\d{1,3}(?:\\.\\d{1,3}){3})(?::\\d{1,5})?(/\\S*)?(\\?(\\S*))?(#(\\S*))?$"
+
+    /**
+     * `urlValidator` helper to validate the urls values
+     */
+    // TODO: TO REMOVE WHEN FIXED INTO InputsValidator
+    val urlValidator = Regex(URL_REGEX)
+
+    /**
      * Method to validate a tag name
      *
      * @param tagName Tag name to check the validity
      * @return whether the tag name is valid or not as `boolean`
      */
+    @JvmStatic
     fun isTagNameValid(
         tagName: String?,
     ): Boolean {
@@ -59,6 +74,7 @@ object RefyInputsValidator : InputsValidator() {
      * @param referenceLink: link resource to check the validity
      * @return whether payload is valid or not as `boolean`
      */
+    @JvmStatic
     fun isLinkPayloadValid(
         description: String?,
         referenceLink: String?,
@@ -75,6 +91,7 @@ object RefyInputsValidator : InputsValidator() {
      *
      * @return whether payload is valid or not as `boolean`
      */
+    @JvmStatic
     fun isCollectionPayloadValid(
         color: String,
         title: String,
@@ -92,6 +109,7 @@ object RefyInputsValidator : InputsValidator() {
      * @param fields The fields to use for the validation form to access to the resources
      * @return whether payload is valid or not as `boolean`
      */
+    @JvmStatic
     fun isCustomLinkPayloadValid(
         title: String,
         description: String?,
@@ -122,6 +140,7 @@ object RefyInputsValidator : InputsValidator() {
      * @param title Title to check the validity
      * @return whether title is valid or not as `boolean`
      */
+    @JvmStatic
     fun isTitleValid(
         title: String
     ): Boolean {
@@ -134,6 +153,7 @@ object RefyInputsValidator : InputsValidator() {
      * @param linkResource: link resource to check the validity
      * @return whether link resource (url) is valid or not as `boolean`
      */
+    @JvmStatic
     fun isLinkResourceValid(
         linkResource: String?
     ): Boolean {
@@ -146,6 +166,7 @@ object RefyInputsValidator : InputsValidator() {
      * @param description: description to check the validity
      * @return whether description is valid or not as `boolean`
      */
+    @JvmStatic
     fun isDescriptionValid(
         description: String?
     ): Boolean {

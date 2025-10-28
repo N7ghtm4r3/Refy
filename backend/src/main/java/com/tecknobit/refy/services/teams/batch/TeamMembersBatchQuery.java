@@ -1,7 +1,7 @@
 package com.tecknobit.refy.services.teams.batch;
 
 import com.tecknobit.equinoxbackend.annotations.BatchQueryImpl;
-import com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.BatchQuery;
+import com.tecknobit.equinoxbackend.apis.batch.EquinoxItemsHelper.BatchQuery;
 import com.tecknobit.refy.services.teams.service.TeamsService.TeamPayload;
 import com.tecknobit.refycore.dtos.AddedMember;
 import com.tecknobit.refycore.enums.TeamRole;
@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.OWNER_KEY;
 import static com.tecknobit.refycore.ConstantsKt.*;
 import static com.tecknobit.refycore.enums.TeamRole.ADMIN;
 

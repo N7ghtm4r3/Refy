@@ -9,7 +9,7 @@ import com.tecknobit.equinoxbackend.environment.services.builtin.entity.EquinoxI
 import com.tecknobit.refy.services.collections.entity.LinksCollection;
 import com.tecknobit.refy.services.links.entity.RefyLink;
 import com.tecknobit.refy.services.shared.entities.RefyItem;
-import com.tecknobit.refy.services.users.entity.RefyUser;
+import com.tecknobit.refy.services.users.entities.RefyUser;
 import com.tecknobit.refycore.enums.TeamRole;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
@@ -19,8 +19,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.IDENTIFIER_KEY;
-import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.PROFILE_PIC_KEY;
+import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.*;
 import static com.tecknobit.refycore.ConstantsKt.*;
 import static com.tecknobit.refycore.enums.TeamRole.ADMIN;
 import static com.tecknobit.refycore.enums.TeamRole.VIEWER;

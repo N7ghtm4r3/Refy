@@ -7,14 +7,13 @@ import com.tecknobit.equinoxbackend.annotations.EmptyConstructor;
 import com.tecknobit.equinoxbackend.environment.services.builtin.entity.EquinoxItem;
 import com.tecknobit.refy.services.links.entity.RefyLink;
 import com.tecknobit.refy.services.shared.entities.RefyItem;
-import com.tecknobit.refy.services.users.entity.RefyUser;
+import com.tecknobit.refy.services.users.entities.RefyUser;
 import com.tecknobit.refycore.enums.ExpiredTime;
 import jakarta.persistence.*;
 
 import java.util.List;
 import java.util.Map;
 
-import static com.tecknobit.equinoxbackend.resourcesutils.ResourcesManager.RESOURCES_KEY;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.IDENTIFIER_KEY;
 import static com.tecknobit.refycore.ConstantsKt.*;
 import static jakarta.persistence.EnumType.STRING;

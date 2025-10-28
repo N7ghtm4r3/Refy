@@ -8,7 +8,7 @@ import com.tecknobit.equinoxbackend.environment.services.builtin.entity.EquinoxI
 import com.tecknobit.refy.services.collections.entity.LinksCollection;
 import com.tecknobit.refy.services.shared.entities.RefyItem;
 import com.tecknobit.refy.services.teams.entities.Team;
-import com.tecknobit.refy.services.users.entity.RefyUser;
+import com.tecknobit.refy.services.users.entities.RefyUser;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;

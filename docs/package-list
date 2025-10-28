@@ -31,9 +31,9 @@ com.tecknobit.refy.services.teams.entities
 com.tecknobit.refy.services.teams.repository
 com.tecknobit.refy.services.teams.service
 com.tecknobit.refy.services.users.controller
-com.tecknobit.refy.services.users.entity
-com.tecknobit.refy.services.users.repository
-com.tecknobit.refy.services.users.service
+com.tecknobit.refy.services.users.entities
+com.tecknobit.refy.services.users.repositories
+com.tecknobit.refy.services.users.services
 module:core
 com.tecknobit.refycore
 com.tecknobit.refycore.dtos

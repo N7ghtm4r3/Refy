@@ -1,9 +1,10 @@
 package com.tecknobit.refy.services.shared.batch.items;
 
 import com.tecknobit.equinoxbackend.annotations.BatchQueryItem;
-import com.tecknobit.equinoxbackend.batch.JoinTableSyncBatchItem;
+import com.tecknobit.equinoxbackend.apis.batch.JoinTableSyncBatchItem;
 
-import static com.tecknobit.refycore.ConstantsKt.*;
+import static com.tecknobit.refycore.ConstantsKt.LINK_IDENTIFIER_KEY;
+import static com.tecknobit.refycore.ConstantsKt.TEAM_IDENTIFIER_KEY;
 
 /**
  * The {@code TeamLinkBatchItem} is used during the batch synchronization to share a link with a team

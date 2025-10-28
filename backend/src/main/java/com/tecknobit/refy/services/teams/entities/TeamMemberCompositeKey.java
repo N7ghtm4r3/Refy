@@ -1,6 +1,6 @@
 package com.tecknobit.refy.services.teams.entities;
 
-import com.tecknobit.refy.services.users.entity.RefyUser;
+import com.tecknobit.refy.services.users.entities.RefyUser;
 
 /**
  * The {@code TeamMemberCompositeKey} is useful for the {@link Team.RefyTeamMember} class to specify its ids

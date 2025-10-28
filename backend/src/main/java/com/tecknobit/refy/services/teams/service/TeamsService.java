@@ -1,6 +1,6 @@
 package com.tecknobit.refy.services.teams.service;
 
-import com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper;
+import com.tecknobit.equinoxbackend.apis.batch.EquinoxItemsHelper;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
 import com.tecknobit.refy.configuration.RefyResourcesManager;
 import com.tecknobit.refy.services.collections.entity.LinksCollection;
@@ -29,12 +29,14 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.*;
 
+import static com.tecknobit.equinoxbackend.apis.batch.EquinoxItemsHelper.InsertCommand.INSERT_INTO;
+import static com.tecknobit.equinoxbackend.apis.batch.EquinoxItemsHelper.InsertCommand.REPLACE_INTO;
 import static com.tecknobit.equinoxbackend.configuration.IndexesCreator.formatFullTextKeywords;
-import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.InsertCommand.INSERT_INTO;
-import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.InsertCommand.REPLACE_INTO;
+import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.OWNER_KEY;
 import static com.tecknobit.refy.services.teams.batch.TeamMembersBatchQuery.MEMBERS_TABLE_COLUMNS;
 import static com.tecknobit.refycore.ConstantsKt.*;
-import static com.tecknobit.refycore.helpers.RefyInputsValidator.INSTANCE;
+import static com.tecknobit.refycore.helpers.RefyInputsValidator.isDescriptionValid;
+import static com.tecknobit.refycore.helpers.RefyInputsValidator.isTitleValid;
 
 /**
  * The {@code TeamsHelper} class is useful to manage all the {@link Team} database operations
@@ -369,7 +371,7 @@ public class TeamsService extends EquinoxItemsHelper implements RefyResourcesMan
          * @return whether the team payload is valid as boolean
          */
         public boolean isValidTeamPayload(boolean validateLogoPic) {
-            boolean validPayload = INSTANCE.isTitleValid(title) && INSTANCE.isDescriptionValid(description);
+            boolean validPayload = isTitleValid(title) && isDescriptionValid(description);
             if(validateLogoPic)
                 return validPayload && (logo_pic != null && !logo_pic.isEmpty());
             return validPayload;

@@ -8,9 +8,9 @@ import com.tecknobit.refy.services.links.service.LinksService;
 import com.tecknobit.refy.services.shared.entities.RefyItem;
 import com.tecknobit.refy.services.teams.entities.Team;
 import com.tecknobit.refy.services.teams.service.TeamsService;
-import com.tecknobit.refy.services.users.entity.RefyUser;
-import com.tecknobit.refy.services.users.repository.RefyUsersRepository;
-import com.tecknobit.refy.services.users.service.RefyUsersService;
+import com.tecknobit.refy.services.users.entities.RefyUser;
+import com.tecknobit.refy.services.users.repositories.RefyUsersRepository;
+import com.tecknobit.refy.services.users.services.RefyUsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,8 +19,8 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.USERS_KEY;
+import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.USER_IDENTIFIER_KEY;
 import static com.tecknobit.equinoxcore.network.EquinoxBaseEndpointsSet.BASE_EQUINOX_ENDPOINT;
-import static com.tecknobit.refycore.ConstantsKt.USER_IDENTIFIER_KEY;
 
 /**
  * The {@code DefaultRefyController} class is useful to give the base behavior of the <b>Refy's controllers</b>

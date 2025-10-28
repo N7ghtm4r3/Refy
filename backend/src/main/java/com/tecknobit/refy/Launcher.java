@@ -1,7 +1,7 @@
 package com.tecknobit.refy;
 
+import com.tecknobit.equinoxbackend.apis.resources.ResourcesProvider;
 import com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController;
-import com.tecknobit.equinoxbackend.resourcesutils.ResourcesProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,8 +11,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import static com.tecknobit.equinoxbackend.resourcesutils.ResourcesProvider.CUSTOM_CONFIGURATION_FILE_PATH;
-import static com.tecknobit.equinoxbackend.resourcesutils.ResourcesProvider.DEFAULT_CONFIGURATION_FILE_PATH;
+import static com.tecknobit.equinoxbackend.apis.resources.ResourcesProvider.CUSTOM_CONFIGURATION_FILE_PATH;
+import static com.tecknobit.equinoxbackend.apis.resources.ResourcesProvider.DEFAULT_CONFIGURATION_FILE_PATH;
 
 /**
  * The {@code Launcher} class is useful to launch <b>Refy's backend service</b>

@@ -4,9 +4,11 @@ import com.tecknobit.apimanager.annotations.RequestPath;
 import com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController;
 import com.tecknobit.equinoxbackend.environment.services.users.controller.EquinoxUsersController;
 import com.tecknobit.equinoxcore.annotations.CustomParametersOrder;
-import com.tecknobit.refy.services.users.entity.RefyUser;
-import com.tecknobit.refy.services.users.repository.RefyUsersRepository;
-import com.tecknobit.refy.services.users.service.RefyUsersService;
+import com.tecknobit.refy.services.users.entities.RefyUser;
+import com.tecknobit.refy.services.users.entities.UserSettings;
+import com.tecknobit.refy.services.users.repositories.RefyUsersRepository;
+import com.tecknobit.refy.services.users.services.RefyUserSettingsService;
+import com.tecknobit.refy.services.users.services.RefyUsersService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +17,9 @@ import java.util.Map;
 
 import static com.tecknobit.apimanager.apis.APIRequest.RequestMethod.PATCH;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.*;
-import static com.tecknobit.refycore.ConstantsKt.AT_SYMBOL;
-import static com.tecknobit.refycore.ConstantsKt.TAG_NAME_KEY;
+import static com.tecknobit.refycore.ConstantsKt.*;
 import static com.tecknobit.refycore.helpers.RefyEndpointsSet.CHANGE_TAG_NAME_ENDPOINT;
-import static com.tecknobit.refycore.helpers.RefyInputsValidator.INSTANCE;
+import static com.tecknobit.refycore.helpers.RefyInputsValidator.isTagNameValid;
 
 /**
  * The {@code RefyUsersController} class is useful to manage all the Refy users operations
@@ -37,13 +38,22 @@ public class RefyUsersController extends EquinoxUsersController<RefyUser, RefyUs
     private static final String WRONG_TAG_NAME_MESSAGE = "wrong_tag_name";
 
     /**
+     * {@code settingsService} The service used to manage the settings of the user
+     *
+     * @since 1.1.0
+     */
+    private final RefyUserSettingsService settingsService;
+
+    /**
      * Constructor to init the controller
      *
      * @param usersService The helper to manage the users database operations
+     * @param settingsService The service used to manage the settings of the user
      */
     @Autowired
-    public RefyUsersController(RefyUsersService usersService) {
+    public RefyUsersController(RefyUsersService usersService, RefyUserSettingsService settingsService) {
         super(usersService);
+        this.settingsService = settingsService;
     }
 
     /**
@@ -68,7 +78,7 @@ public class RefyUsersController extends EquinoxUsersController<RefyUser, RefyUs
         String validation = super.validateSignUp(name, surname, email, password, language, custom);
         if(validation != null)
             return validation;
-        if(!INSTANCE.isTagNameValid(custom[0].toString()))
+        if(!isTagNameValid(custom[0].toString()))
             return WRONG_TAG_NAME_MESSAGE;
         else return null;
     }
@@ -80,6 +90,10 @@ public class RefyUsersController extends EquinoxUsersController<RefyUser, RefyUs
     protected JSONObject assembleSignInSuccessResponse(RefyUser user) {
         JSONObject response = super.assembleSignInSuccessResponse(user);
         response.put(TAG_NAME_KEY, user.getTagName());
+        UserSettings settings = user.getSettings();
+        JSONObject jSettings = new JSONObject();
+        jSettings.put(CLOSE_APPLICATION_ON_LINK_OPEN_KEY, settings.closeApplicationOnLinkOpen());
+        response.put(SETTINGS_KEY, jSettings);
         return response;
     }
 
@@ -92,7 +106,7 @@ public class RefyUsersController extends EquinoxUsersController<RefyUser, RefyUs
      *                <pre>
      *                                     {@code
      *                                             {
-     *                                                 "tag_na,e": "the new tag name of the user" -> [String]
+     *                                                 "tag_name": "the new tag name of the user" -> [String]
      *                                             }
      *                                     }
      *                                </pre>
@@ -114,7 +128,7 @@ public class RefyUsersController extends EquinoxUsersController<RefyUser, RefyUs
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         loadJsonHelper(payload);
         String tagName = jsonHelper.getString(TAG_NAME_KEY);
-        if (!INSTANCE.isTagNameValid(tagName))
+        if (!isTagNameValid(tagName))
             return failedResponse(WRONG_TAG_NAME_MESSAGE);
         try {
             usersService.changeTagName(tagName, id);
@@ -122,6 +136,35 @@ public class RefyUsersController extends EquinoxUsersController<RefyUser, RefyUs
         } catch (Exception e) {
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         }
+    }
+
+    /**
+     * Method to change the settings of the yser
+     *
+     * @param id      The identifier of the user
+     * @param token   The token of the user
+     * @param payload Payload of the request, based on the content will be changed the related setting preference
+     * @return the result of the request as {@link String}
+     *
+     * @since 1.1.0
+     */
+    @PatchMapping(
+            path = USERS_KEY + "/{" + IDENTIFIER_KEY + "}/" + SETTINGS_KEY,
+            headers = {
+                    TOKEN_KEY
+            }
+    )
+    @RequestPath(path = "/api/v1/users/{id}/settings", method = PATCH)
+    public String changeUserSettings(
+            @PathVariable(IDENTIFIER_KEY) String id,
+            @RequestHeader(TOKEN_KEY) String token,
+            @RequestBody Map<String, Object> payload
+    ) {
+        if (!isMe(id, token))
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        loadJsonHelper(payload);
+        settingsService.changeUserSettings(me, jsonHelper);
+        return successResponse();
     }
 
 }

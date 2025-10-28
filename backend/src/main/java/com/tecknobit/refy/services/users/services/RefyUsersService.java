@@ -7,7 +7,9 @@ import com.tecknobit.refy.services.collections.repository.CollectionsRepository;
 import com.tecknobit.refy.services.teams.entities.Team.RefyTeamMember;
 import com.tecknobit.refy.services.teams.repository.TeamsRepository;
 import com.tecknobit.refy.services.users.entities.RefyUser;
+import com.tecknobit.refy.services.users.entities.UserSettings;
 import com.tecknobit.refy.services.users.repositories.RefyUsersRepository;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import static com.tecknobit.refycore.ConstantsKt.CLOSE_APPLICATION_ON_LINK_OPEN_KEY;
 import static com.tecknobit.refycore.ConstantsKt.TAG_NAME_KEY;
 
 /**
@@ -64,6 +67,21 @@ public class RefyUsersService extends EquinoxUsersService<RefyUser, RefyUsersRep
         ArrayList<String> keys = new ArrayList<>(super.getSignUpKeys());
         keys.add(TAG_NAME_KEY);
         return keys;
+    }
+
+    /**
+     * Method used to get the dynamic data of the user to correctly update in all the devices where the user is connected
+     *
+     * @param userId The identifier of the user
+     * @return the dynamic data as {@link JSONObject}
+     */
+    @Override
+    public JSONObject getDynamicAccountData(String userId) {
+        RefyUser user = usersRepository.findById(userId).orElseThrow();
+        JSONObject dynamicAccountData = super.getDynamicAccountData(userId);
+        UserSettings settings = user.getSettings();
+        dynamicAccountData.put(CLOSE_APPLICATION_ON_LINK_OPEN_KEY, settings.closeApplicationOnLinkOpen());
+        return dynamicAccountData;
     }
 
     /**

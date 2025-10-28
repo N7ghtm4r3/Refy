@@ -19,8 +19,8 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.USERS_KEY;
+import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.USER_IDENTIFIER_KEY;
 import static com.tecknobit.equinoxcore.network.EquinoxBaseEndpointsSet.BASE_EQUINOX_ENDPOINT;
-import static com.tecknobit.refycore.ConstantsKt.USER_IDENTIFIER_KEY;
 
 /**
  * The {@code DefaultRefyController} class is useful to give the base behavior of the <b>Refy's controllers</b>

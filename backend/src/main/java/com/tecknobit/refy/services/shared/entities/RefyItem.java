@@ -8,8 +8,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.LANGUAGE_KEY;
-import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.TOKEN_KEY;
+import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.*;
 import static com.tecknobit.refycore.ConstantsKt.*;
 
 /**

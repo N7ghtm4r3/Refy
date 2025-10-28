@@ -16,12 +16,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 import static com.tecknobit.apimanager.apis.APIRequest.RequestMethod.*;
-import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.TOKEN_KEY;
-import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.USERS_KEY;
+import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.*;
+import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.USER_IDENTIFIER_KEY;
 import static com.tecknobit.equinoxcore.network.EquinoxBaseEndpointsSet.BASE_EQUINOX_ENDPOINT;
 import static com.tecknobit.equinoxcore.pagination.PaginatedResponse.*;
 import static com.tecknobit.refycore.ConstantsKt.*;
-import static com.tecknobit.refycore.helpers.RefyInputsValidator.INSTANCE;
 import static com.tecknobit.refycore.helpers.RefyInputsValidator.isCollectionPayloadValid;
 
 /**

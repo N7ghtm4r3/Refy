@@ -11,11 +11,6 @@ const val AT_SYMBOL = "@"
 const val OWNED_ONLY_KEY = "owned_only"
 
 /**
- * `OWNER_KEY` the key for the `owner` field
- */
-const val OWNER_KEY = "owner"
-
-/**
  * `TITLE_KEY` the key for the `title` field
  */
 const val TITLE_KEY = "title"
@@ -49,11 +44,6 @@ const val LINK_KEY = "link"
  * `LINK_IDENTIFIER_KEY` the key for the `link_id` field
  */
 const val LINK_IDENTIFIER_KEY = "link_id"
-
-/**
- * `USER_IDENTIFIER_KEY` the key for the `user_id` field
- */
-const val USER_IDENTIFIER_KEY = "user_id"
 
 /**
  * `TAG_NAME_KEY` the key for the `tag_name` field
@@ -201,6 +191,15 @@ const val MEMBER_IDENTIFIER_KEY = "member_id"
 const val TEAM_ROLE_KEY = "team_role"
 
 /**
- * `KEYWORDS_KEY` the key for the `keywords` field
+ * `SETTINGS_KEY` the key for the `settings` field
+ *
+ * @since 1.1.0
  */
-const val KEYWORDS_KEY = "keywords"
+const val SETTINGS_KEY = "settings"
+
+/**
+ * `CLOSE_APPLICATION_ON_LINK_OPEN_KEY` the key for the `close_application_on_open_link` field
+ *
+ * @since 1.1.0
+ */
+const val CLOSE_APPLICATION_ON_LINK_OPEN_KEY = "close_application_on_open_link"

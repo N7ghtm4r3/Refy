@@ -21,7 +21,7 @@ import java.util.List;
 import static com.tecknobit.refycore.ConstantsKt.TAG_NAME_KEY;
 
 /**
- * The {@code RefyUsersHelper} class is useful to manage all the Refy's user database operations
+ * The {@code RefyUsersService} class is useful to manage all the Refy's user database operations
  *
  * @author N7ghtm4r3 - Tecknobit
  * @see EquinoxUsersService

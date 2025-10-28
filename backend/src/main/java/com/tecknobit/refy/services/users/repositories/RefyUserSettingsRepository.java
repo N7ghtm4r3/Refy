@@ -1,6 +1,5 @@
 package com.tecknobit.refy.services.users.repositories;
 
-import com.tecknobit.equinoxcore.annotations.RequiresDocumentation;
 import com.tecknobit.refy.services.users.entities.UserSettings;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,10 +14,23 @@ import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.IDENTIFIER_KEY;
 import static com.tecknobit.refycore.ConstantsKt.CLOSE_APPLICATION_ON_LINK_OPEN_KEY;
 import static com.tecknobit.refycore.ConstantsKt.SETTINGS_KEY;
 
-@RequiresDocumentation(additionalNotes = "TO INSERT SINCE")
+/**
+ * The {@code RefyUserSettingsRepository} interface is useful to manage the queries for the user settings operations
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ *
+ * @see JpaRepository
+ *
+ * @since 1.1.0
+ */
 @Repository
 public interface RefyUserSettingsRepository extends JpaRepository<UserSettings, String> {
 
+    /**
+     * Query used to create the record for the settings of the user
+     *
+     * @param userId The identifier of the user owner of the settings
+     */
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(
@@ -31,6 +43,12 @@ public interface RefyUserSettingsRepository extends JpaRepository<UserSettings, 
             @Param(IDENTIFIER_KEY) String userId
     );
 
+    /**
+     * Query used to change the {@code close application on open link} setting preference
+     *
+     * @param userId The identifier of the user owner of the settings
+     * @param closeApplicationOnOpenLink Whether the user requires to close the application when a link has been opened
+     */
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(

@@ -7,7 +7,6 @@ import com.tecknobit.equinoxbackend.annotations.EmptyConstructor;
 import com.tecknobit.equinoxbackend.annotations.MappingPurpose;
 import com.tecknobit.equinoxbackend.environment.services.builtin.entity.EquinoxItem;
 import com.tecknobit.equinoxbackend.environment.services.users.entity.EquinoxUser;
-import com.tecknobit.equinoxcore.annotations.RequiresDocumentation;
 import com.tecknobit.refy.services.collections.entity.LinksCollection;
 import com.tecknobit.refy.services.customlinks.entity.CustomRefyLink;
 import com.tecknobit.refy.services.links.entity.RefyLink;
@@ -28,12 +27,8 @@ import static com.tecknobit.refycore.helpers.RefyInputsValidator.MAX_TAG_NAME_LE
  * @author N7ghtm4r3 - Tecknobit
  * @see EquinoxItem
  * @see EquinoxUser
- *
  */
 @Entity
-@RequiresDocumentation(
-        additionalNotes = "INSERT SINCE"
-)
 public class RefyUser extends EquinoxUser {
 
     /**
@@ -118,6 +113,11 @@ public class RefyUser extends EquinoxUser {
     )
     private List<RefyTeamMember> member;
 
+    /**
+     * {@code settings} The settings of the user
+     *
+     * @since 1.1.0
+     */
     @OneToOne(
             mappedBy = OWNER_KEY
     )
@@ -135,11 +135,12 @@ public class RefyUser extends EquinoxUser {
     /**
      * Constructor used to init the {@link RefyUser} class
      *
-     * @param id:       identifier of the user
-     * @param name:     the name of the user
-     * @param surname:  the surname of the user
-     * @param email:    the email of the user
-     * @param tagName:     the name of the user
+     * @param id Identifier of the user
+     * @param name The name of the user
+     * @param surname The surname of the user
+     * @param email The email of the user
+     * @param profilePic The profile pic of the user
+     * @param tagName The name of the user
      */
     public RefyUser(String id, String name, String surname, String email, String profilePic, String tagName) {
         super(id, null, name, surname, email, null, profilePic, null);
@@ -154,17 +155,20 @@ public class RefyUser extends EquinoxUser {
     /**
      * Constructor used to init the {@link RefyUser} class
      *
-     * @param id:       identifier of the user
-     * @param token:    the token which the user is allowed to operate on server
-     * @param name:     the name of the user
-     * @param surname:  the surname of the user
-     * @param email:    the email of the user
+     * @param id The identifier of the user
+     * @param token The token which the user is allowed to operate on server
+     * @param name The name of the user
+     * @param surname The surname of the user
+     * @param email The email of the user
      * @param password The password of the user
+     * @param profilePic The profile pic of the user
      * @param language The language of the user
-     * @param tagName:     the name of the user
+     * @param tagName The name of the user
      * @param links The links of the user
      * @param teams The teams where the user is a member
+     * @param collections The collections of the user
      * @param customLinks The custom links of the user
+     * @param settings The settings of the user
      */
     public RefyUser(String id, String token, String name, String surname, String email, String password, String profilePic,
                     String language, String tagName, List<RefyLink> links, List<Team> teams,
@@ -225,6 +229,13 @@ public class RefyUser extends EquinoxUser {
         return customLinks;
     }
 
+    /**
+     * Method to get {@link #settings} instance
+     *
+     * @return {@link #settings} instance as {@link UserSettings}
+     *
+     * @since 1.1.0
+     */
     @JsonGetter(SETTINGS_KEY)
     public UserSettings getSettings() {
         if(settings == null)

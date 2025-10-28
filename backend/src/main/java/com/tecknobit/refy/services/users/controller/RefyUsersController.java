@@ -4,7 +4,6 @@ import com.tecknobit.apimanager.annotations.RequestPath;
 import com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController;
 import com.tecknobit.equinoxbackend.environment.services.users.controller.EquinoxUsersController;
 import com.tecknobit.equinoxcore.annotations.CustomParametersOrder;
-import com.tecknobit.equinoxcore.annotations.RequiresDocumentation;
 import com.tecknobit.refy.services.users.entities.RefyUser;
 import com.tecknobit.refy.services.users.entities.UserSettings;
 import com.tecknobit.refy.services.users.repositories.RefyUsersRepository;
@@ -38,16 +37,20 @@ public class RefyUsersController extends EquinoxUsersController<RefyUser, RefyUs
      */
     private static final String WRONG_TAG_NAME_MESSAGE = "wrong_tag_name";
 
-    @RequiresDocumentation(additionalNotes = "TO INSERT SINCE")
+    /**
+     * {@code settingsService} The service used to manage the settings of the user
+     *
+     * @since 1.1.0
+     */
     private final RefyUserSettingsService settingsService;
 
     /**
      * Constructor to init the controller
      *
      * @param usersService The helper to manage the users database operations
+     * @param settingsService The service used to manage the settings of the user
      */
     @Autowired
-    @RequiresDocumentation
     public RefyUsersController(RefyUsersService usersService, RefyUserSettingsService settingsService) {
         super(usersService);
         this.settingsService = settingsService;
@@ -103,7 +106,7 @@ public class RefyUsersController extends EquinoxUsersController<RefyUser, RefyUs
      *                <pre>
      *                                     {@code
      *                                             {
-     *                                                 "tag_na,e": "the new tag name of the user" -> [String]
+     *                                                 "tag_name": "the new tag name of the user" -> [String]
      *                                             }
      *                                     }
      *                                </pre>
@@ -135,7 +138,16 @@ public class RefyUsersController extends EquinoxUsersController<RefyUser, RefyUs
         }
     }
 
-    @RequiresDocumentation(additionalNotes = "TO INSERT SINCE")
+    /**
+     * Method to change the settings of the yser
+     *
+     * @param id      The identifier of the user
+     * @param token   The token of the user
+     * @param payload Payload of the request, based on the content will be changed the related setting preference
+     * @return the result of the request as {@link String}
+     *
+     * @since 1.1.0
+     */
     @PatchMapping(
             path = USERS_KEY + "/{" + IDENTIFIER_KEY + "}/" + SETTINGS_KEY,
             headers = {

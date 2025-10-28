@@ -34,7 +34,8 @@ public class UserSettings {
 
     @Column(
             name = CLOSE_APPLICATION_ON_LINK_OPEN_KEY,
-            columnDefinition = "BOOL DEFAULT false"
+            columnDefinition = "BOOL DEFAULT false",
+            insertable = false
     )
     private final boolean closeApplicationOnLinkOpen;
 
@@ -47,9 +48,15 @@ public class UserSettings {
         String ownerId = null;
         if(owner != null)
             ownerId = owner.getId();
+        System.out.println(ownerId);
         this.id = ownerId;
         this.owner = owner;
         this.closeApplicationOnLinkOpen = closeApplicationOnLinkOpen;
+    }
+
+    @JsonIgnore
+    public String getId() {
+        return id;
     }
 
     @JsonIgnore

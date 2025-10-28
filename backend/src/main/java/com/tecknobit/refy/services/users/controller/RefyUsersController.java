@@ -146,7 +146,7 @@ public class RefyUsersController extends EquinoxUsersController<RefyUser, RefyUs
     public String changeUserSettings(
             @PathVariable(IDENTIFIER_KEY) String id,
             @RequestHeader(TOKEN_KEY) String token,
-            @RequestBody Map<String, String> payload
+            @RequestBody Map<String, Object> payload
     ) {
         if (!isMe(id, token))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);

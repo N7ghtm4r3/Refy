@@ -3,7 +3,7 @@ package com.tecknobit.refy.services.shared.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.apimanager.annotations.Structure;
 import com.tecknobit.equinoxbackend.environment.services.builtin.entity.EquinoxItem;
-import com.tecknobit.refy.services.users.entity.RefyUser;
+import com.tecknobit.refy.services.users.entities.RefyUser;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;

@@ -1,4 +1,4 @@
-package com.tecknobit.refy.services.users.service;
+package com.tecknobit.refy.services.users.services;
 
 import com.tecknobit.equinoxbackend.apis.resources.ResourcesManager;
 import com.tecknobit.equinoxbackend.environment.services.users.service.EquinoxUsersService;
@@ -6,8 +6,8 @@ import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
 import com.tecknobit.refy.services.collections.repository.CollectionsRepository;
 import com.tecknobit.refy.services.teams.entities.Team.RefyTeamMember;
 import com.tecknobit.refy.services.teams.repository.TeamsRepository;
-import com.tecknobit.refy.services.users.entity.RefyUser;
-import com.tecknobit.refy.services.users.repository.RefyUsersRepository;
+import com.tecknobit.refy.services.users.entities.RefyUser;
+import com.tecknobit.refy.services.users.repositories.RefyUsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.PageRequest;

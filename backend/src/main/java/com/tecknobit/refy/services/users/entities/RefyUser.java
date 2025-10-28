@@ -1,11 +1,13 @@
-package com.tecknobit.refy.services.users.entity;
+package com.tecknobit.refy.services.users.entities;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.equinoxbackend.annotations.EmptyConstructor;
+import com.tecknobit.equinoxbackend.annotations.MappingPurpose;
 import com.tecknobit.equinoxbackend.environment.services.builtin.entity.EquinoxItem;
 import com.tecknobit.equinoxbackend.environment.services.users.entity.EquinoxUser;
+import com.tecknobit.equinoxcore.annotations.RequiresDocumentation;
 import com.tecknobit.refy.services.collections.entity.LinksCollection;
 import com.tecknobit.refy.services.customlinks.entity.CustomRefyLink;
 import com.tecknobit.refy.services.links.entity.RefyLink;
@@ -28,6 +30,9 @@ import static com.tecknobit.refycore.helpers.RefyInputsValidator.MAX_TAG_NAME_LE
  *
  */
 @Entity
+@RequiresDocumentation(
+        additionalNotes = "INSERT SINCE"
+)
 public class RefyUser extends EquinoxUser {
 
     /**
@@ -103,6 +108,7 @@ public class RefyUser extends EquinoxUser {
     /**
      * {@code member} the member of teams relationship
      */
+    @MappingPurpose
     @JsonIgnore
     @OneToMany(
             fetch = FetchType.LAZY,
@@ -111,40 +117,18 @@ public class RefyUser extends EquinoxUser {
     )
     private List<RefyTeamMember> member;
 
+    @OneToOne(
+            mappedBy = OWNER_KEY
+    )
+    private final UserSettings settings;
+
     /**
      * Constructor used to init the {@link RefyUser} class 
      * @apiNote empty constructor required
      */
     @EmptyConstructor
     public RefyUser() {
-        this(null, null, null, null, null, null, null, null, null,
-                List.of(), List.of(), List.of(), List.of());
-    }
-
-    /**
-     * Constructor used to init the {@link RefyUser} class
-     *
-     * @param id:       identifier of the user
-     * @param token:    the token which the user is allowed to operate on server
-     * @param name:     the name of the user
-     * @param surname:  the surname of the user
-     * @param email:    the email of the user
-     * @param password The password of the user
-     * @param language The language of the user
-     * @param tagName:     the name of the user
-     * @param links The links of the user
-     * @param teams The teams where the user is a member
-     * @param customLinks The custom links of the user
-     */
-    public RefyUser(String id, String token, String name, String surname, String email, String password, String language,
-                    String tagName, List<RefyLink> links, List<Team> teams, List<LinksCollection> collections,
-                    List<CustomRefyLink> customLinks) {
-        super(id, token, name, surname, email, password, language);
-        this.tagName = tagName;
-        this.links = links;
-        this.teams = teams;
-        this.collections = collections;
-        this.customLinks = customLinks;
+        this(null, null, null, null, null, null, null, null, null, List.of(), List.of(), List.of(), List.of(), null);
     }
 
     /**
@@ -163,6 +147,7 @@ public class RefyUser extends EquinoxUser {
         this.teams = null;
         this.collections = null;
         this.customLinks = null;
+        this.settings = null;
     }
 
     /**
@@ -182,13 +167,14 @@ public class RefyUser extends EquinoxUser {
      */
     public RefyUser(String id, String token, String name, String surname, String email, String password, String profilePic,
                     String language, String tagName, List<RefyLink> links, List<Team> teams,
-                    List<LinksCollection> collections, List<CustomRefyLink> customLinks) {
+                    List<LinksCollection> collections, List<CustomRefyLink> customLinks, UserSettings settings) {
         super(id, token, name, surname, email, password, profilePic, language);
         this.tagName = tagName;
         this.links = links;
         this.teams = teams;
         this.collections = collections;
         this.customLinks = customLinks;
+        this.settings = settings;
     }
 
     /**
@@ -236,6 +222,11 @@ public class RefyUser extends EquinoxUser {
     @JsonGetter(CUSTOM_LINKS_KEY)
     public List<CustomRefyLink> getCustomLinks() {
         return customLinks;
+    }
+
+    @JsonGetter(SETTINGS_KEY)
+    public UserSettings getSettings() {
+        return settings;
     }
 
 }

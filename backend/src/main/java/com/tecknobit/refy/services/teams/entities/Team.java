@@ -9,7 +9,7 @@ import com.tecknobit.equinoxbackend.environment.services.builtin.entity.EquinoxI
 import com.tecknobit.refy.services.collections.entity.LinksCollection;
 import com.tecknobit.refy.services.links.entity.RefyLink;
 import com.tecknobit.refy.services.shared.entities.RefyItem;
-import com.tecknobit.refy.services.users.entity.RefyUser;
+import com.tecknobit.refy.services.users.entities.RefyUser;
 import com.tecknobit.refycore.enums.TeamRole;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;

@@ -1,7 +1,7 @@
-package com.tecknobit.refy.services.users.repository;
+package com.tecknobit.refy.services.users.repositories;
 
 import com.tecknobit.equinoxbackend.environment.services.users.repository.EquinoxUsersRepository;
-import com.tecknobit.refy.services.users.entity.RefyUser;
+import com.tecknobit.refy.services.users.entities.RefyUser;
 import jakarta.transaction.Transactional;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;

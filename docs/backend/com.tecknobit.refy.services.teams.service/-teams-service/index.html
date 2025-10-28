@@ -1,0 +1,690 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>TeamsService</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+    <nav class="navigation theme-dark" id="navigation-wrapper">
+<a class="library-name--link" href="../../../index.html">
+                    Refy
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+        <div class="navigation-controls">
+        <div class="filter-section filter-section_loading" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":backend:dokkaHtmlPartial/main">jvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
+                    <div class="dropdown--header"><span>Platform filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":backend:dokkaHtmlPartial/main" data-filter=":backend:dokkaHtmlPartial/main">
+                                <span class="checkbox--icon"></span>
+                                jvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </div>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
+                        <div class="dropdown--header">
+                            <span>
+                                    Refy
+                            </span>
+                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                            </button>
+                        </div>
+                        <div class="sidebar--inner" id="sideMenu"></div>
+                    </ul>
+                    <div class="dropdown--overlay"></div>
+                </div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="backend::com.tecknobit.refy.services.teams.service/TeamsService///PointingToDeclaration//-612206970">
+  <div class="breadcrumbs"><a href="../../index.html">backend</a><span class="delimiter">/</span><a href="../index.html">com.tecknobit.refy.services.teams.service</a><span class="delimiter">/</span><span class="current">TeamsService</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Teams</span><wbr><span><span>Service</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.stereotype/Service///PointingToDeclaration/"><span class="token annotation builtin">Service</span></span></div></div><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">TeamsService</a> : <span data-unresolved-link="com.tecknobit.equinoxbackend.apis.batch/EquinoxItemsHelper///PointingToDeclaration/">EquinoxItemsHelper</span>, <a href="../../com.tecknobit.refy.configuration/-refy-resources-manager/index.html">RefyResourcesManager</a>, <a href="../../com.tecknobit.refy.services.shared.services/-refy-item-retriever/index.html">RefyItemRetriever</a><span class="token operator">&lt;</span><a href="../../com.tecknobit.refy.services.shared.services/-refy-item-retriever/index.html">T</a><span class="token operator">&gt; </span></div><p class="paragraph">The <code class="lang-kotlin">TeamsHelper</code> class is useful to manage all the <a href="../../com.tecknobit.refy.services.teams.entities/-team/index.html">Team</a> database operations</p><span class="kdoc-tag"><h4 class="">Author</h4><p class="paragraph">N7ghtm4r3 - Tecknobit</p></span><h4 class="">See also</h4><div class="table"><div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><span data-unresolved-link="com.tecknobit.equinoxbackend.apis.batch/EquinoxItemsHelper///PointingToDeclaration/"><span>Equinox</span><wbr><span>Items</span><wbr><span><span>Helper</span></span></span></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../com.tecknobit.refy.configuration/-refy-resources-manager/index.html"><span>Refy</span><wbr><span>Resources</span><wbr><span><span>Manager</span></span></a></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../com.tecknobit.refy.services.shared.services/-refy-item-retriever/index.html"><span>Refy</span><wbr><span>Item</span><wbr><span><span>Retriever</span></span></a></div></span></div><div></div></div></div></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="-1219028500%2FConstructors%2F-612206970" anchor-label="TeamsService" id="-1219028500%2FConstructors%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-teams-service.html"><span>Teams</span><wbr><span><span>Service</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1219028500%2FConstructors%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.beans.factory.annotation/Autowired///PointingToDeclaration/"><span class="token annotation builtin">Autowired</span></span></div></div><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">teamsRepository<span class="token operator">: </span><a href="../../com.tecknobit.refy.services.teams.repository/-teams-repository/index.html">TeamsRepository</a><span class="token punctuation">, </span></span><span class="parameter ">collectionsRepository<span class="token operator">: </span><a href="../../com.tecknobit.refy.services.collections.repository/-collections-repository/index.html">CollectionsRepository</a><span class="token punctuation">, </span></span><span class="parameter ">linksRepository<span class="token operator">: </span><a href="../../com.tecknobit.refy.services.links.repository/-links-repository/index.html">LinksRepository</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Constructor used to init the service</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="-24691219%2FClasslikes%2F-612206970" anchor-label="TeamPayload" id="-24691219%2FClasslikes%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-team-payload/index.html"><span>Team</span><wbr><span><span>Payload</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-24691219%2FClasslikes%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-team-payload/index.html">TeamPayload</a> : <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Record.html">Record</a></div><div class="brief ">Record class representing a team payload useful to create or edit a <a href="../../com.tecknobit.refy.services.teams.entities/-team/index.html">Team</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="2094787276%2FProperties%2F-612206970" anchor-label="collectionsRepository" id="2094787276%2FProperties%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="collections-repository.html"><span>collections</span><wbr><span><span>Repository</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2094787276%2FProperties%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="collections-repository.html">collectionsRepository</a><span class="token operator">: </span><a href="../../com.tecknobit.refy.services.collections.repository/-collections-repository/index.html">CollectionsRepository</a></div><div class="brief "><code class="lang-kotlin">collectionsRepository</code> instance for the collections repository</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="901615626%2FProperties%2F-612206970" anchor-label="entityManager" id="901615626%2FProperties%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#901615626%2FProperties%2F-612206970"><span>entity</span><wbr><span><span>Manager</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="901615626%2FProperties%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">protected </span><span class="token keyword">open </span><span class="token keyword">var </span><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#901615626%2FProperties%2F-612206970">entityManager</a><span class="token operator">: </span><span data-unresolved-link="jakarta.persistence/EntityManager///PointingToDeclaration/">EntityManager</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-91146072%2FProperties%2F-612206970" anchor-label="linksRepository" id="-91146072%2FProperties%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="links-repository.html"><span>links</span><wbr><span><span>Repository</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-91146072%2FProperties%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="links-repository.html">linksRepository</a><span class="token operator">: </span><a href="../../com.tecknobit.refy.services.links.repository/-links-repository/index.html">LinksRepository</a></div><div class="brief "><code class="lang-kotlin">linksRepository</code> instance for the links repository</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1753052241%2FProperties%2F-612206970" anchor-label="LOGOS_DIRECTORY" id="-1753052241%2FProperties%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.tecknobit.refy.configuration/-refy-resources-manager/-l-o-g-o-s_-d-i-r-e-c-t-o-r-y.html"><span>LOGOS_</span><wbr><span>DIRECTORY</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1753052241%2FProperties%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.tecknobit.refy.configuration/-refy-resources-manager/-l-o-g-o-s_-d-i-r-e-c-t-o-r-y.html">LOGOS_DIRECTORY</a><span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token operator"> = </span><span class="token string">"logos"</span></div><div class="brief "><code class="lang-kotlin">LOGOS_DIRECTORY</code> the key of the <strong>logos</strong> folder where the logos of the team will be saved</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1462009708%2FProperties%2F-612206970" anchor-label="PROFILES_DIRECTORY" id="-1462009708%2FProperties%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#-1462009708%2FProperties%2F-612206970"><span>PROFILES_</span><wbr><span>DIRECTORY</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1462009708%2FProperties%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#-1462009708%2FProperties%2F-612206970">PROFILES_DIRECTORY</a><span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token operator"> = </span><span class="token string">"profiles"</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2128308969%2FProperties%2F-612206970" anchor-label="RESOURCES_KEY" id="2128308969%2FProperties%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#2128308969%2FProperties%2F-612206970"><span>RESOURCES_</span><wbr><span>KEY</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2128308969%2FProperties%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#2128308969%2FProperties%2F-612206970">RESOURCES_KEY</a><span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token operator"> = </span><span class="token string">"resources"</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1461856269%2FProperties%2F-612206970" anchor-label="RESOURCES_PATH" id="1461856269%2FProperties%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#1461856269%2FProperties%2F-612206970"><span>RESOURCES_</span><wbr><span>PATH</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1461856269%2FProperties%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#1461856269%2FProperties%2F-612206970">RESOURCES_PATH</a><span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token operator"> = </span><span class="token string">"resources/"</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-979724917%2FProperties%2F-612206970" anchor-label="teamsRepository" id="-979724917%2FProperties%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="teams-repository.html"><span>teams</span><wbr><span><span>Repository</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-979724917%2FProperties%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="teams-repository.html">teamsRepository</a><span class="token operator">: </span><a href="../../com.tecknobit.refy.services.teams.repository/-teams-repository/index.html">TeamsRepository</a></div><div class="brief "><code class="lang-kotlin">teamsRepository</code> instance for the teams repository</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-1806270198%2FFunctions%2F-612206970" anchor-label="batchDelete" id="-1806270198%2FFunctions%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#-1806270198%2FFunctions%2F-612206970"><span>batch</span><wbr><span><span>Delete</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1806270198%2FFunctions%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">protected </span><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#-1806270198%2FFunctions%2F-612206970"><span class="token function">batchDelete</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">table<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">values<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html">Collection</a><span class="token operator">&lt;</span><span class="token keyword">out </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">columns<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-array/index.html">Array</a><span class="token operator">&lt;</span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jetbrains.annotations/NotNull///PointingToDeclaration/"><span class="token annotation builtin">NotNull</span></span>&nbsp;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1689303116%2FFunctions%2F-612206970" anchor-label="batchInsert" id="1689303116%2FFunctions%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#1689303116%2FFunctions%2F-612206970"><span>batch</span><wbr><span><span>Insert</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1689303116%2FFunctions%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">protected </span><span class="token keyword">open </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#1689303116%2FFunctions%2F-612206970">V</a><span class="token operator">&gt; </span><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#1689303116%2FFunctions%2F-612206970"><span class="token function">batchInsert</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">command<span class="token operator">: </span><span data-unresolved-link="com.tecknobit.equinoxbackend.apis.batch/EquinoxItemsHelper.InsertCommand///PointingToDeclaration/">EquinoxItemsHelper.InsertCommand</span><span class="token punctuation">, </span></span><span class="parameter ">table<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">batchQuery<span class="token operator">: </span><span data-unresolved-link="com.tecknobit.equinoxbackend.apis.batch/EquinoxItemsHelper.BatchQuery///PointingToDeclaration/">EquinoxItemsHelper.BatchQuery</span><span class="token operator">&lt;</span><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#1689303116%2FFunctions%2F-612206970">V</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-741940253%2FFunctions%2F-612206970" anchor-label="changeMemberRole" id="-741940253%2FFunctions%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="change-member-role.html"><span>change</span><wbr><span>Member</span><wbr><span><span>Role</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-741940253%2FFunctions%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="change-member-role.html"><span class="token function">changeMemberRole</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">teamId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">memberId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">role<span class="token operator">: </span><a href="../../../core/com.tecknobit.refycore.enums/-team-role/index.html">TeamRole</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Method change the role of a team member</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1658611133%2FFunctions%2F-612206970" anchor-label="createLogoResource" id="1658611133%2FFunctions%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.tecknobit.refy.configuration/-refy-resources-manager/create-logo-resource.html"><span>create</span><wbr><span>Logo</span><wbr><span><span>Resource</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1658611133%2FFunctions%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../com.tecknobit.refy.configuration/-refy-resources-manager/create-logo-resource.html"><span class="token function">createLogoResource</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">resource<span class="token operator">: </span><span data-unresolved-link="org.springframework.web.multipart/MultipartFile///PointingToDeclaration/">MultipartFile</span><span class="token punctuation">, </span></span><span class="parameter ">resourceId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a></div><div class="brief ">Method to create the pathname for a logo picture of a team</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="562116816%2FFunctions%2F-612206970" anchor-label="createProfileResource" id="562116816%2FFunctions%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#562116816%2FFunctions%2F-612206970"><span>create</span><wbr><span>Profile</span><wbr><span><span>Resource</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="562116816%2FFunctions%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#562116816%2FFunctions%2F-612206970"><span class="token function">createProfileResource</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">resource<span class="token operator">: </span><span data-unresolved-link="org.springframework.web.multipart/MultipartFile///PointingToDeclaration/">MultipartFile</span><span class="token punctuation">, </span></span><span class="parameter ">resourceId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1593854053%2FFunctions%2F-612206970" anchor-label="createResource" id="-1593854053%2FFunctions%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#-1593854053%2FFunctions%2F-612206970"><span>create</span><wbr><span><span>Resource</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1593854053%2FFunctions%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#-1593854053%2FFunctions%2F-612206970"><span class="token function">createResource</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">resource<span class="token operator">: </span><span data-unresolved-link="org.springframework.web.multipart/MultipartFile///PointingToDeclaration/">MultipartFile</span><span class="token punctuation">, </span></span><span class="parameter ">resourcesDirectory<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">resourceId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1436160723%2FFunctions%2F-612206970" anchor-label="createTeam" id="1436160723%2FFunctions%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="create-team.html"><span>create</span><wbr><span><span>Team</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1436160723%2FFunctions%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="create-team.html"><span class="token function">createTeam</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">userId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">teamId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">payload<span class="token operator">: </span><a href="-team-payload/index.html">TeamsService.TeamPayload</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Method to create a new team</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-854099700%2FFunctions%2F-612206970" anchor-label="deleteLogoResource" id="-854099700%2FFunctions%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.tecknobit.refy.configuration/-refy-resources-manager/delete-logo-resource.html"><span>delete</span><wbr><span>Logo</span><wbr><span><span>Resource</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-854099700%2FFunctions%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../com.tecknobit.refy.configuration/-refy-resources-manager/delete-logo-resource.html"><span class="token function">deleteLogoResource</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">teamId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Method to delete a logo picture of a team</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1734983453%2FFunctions%2F-612206970" anchor-label="deleteProfileResource" id="1734983453%2FFunctions%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#1734983453%2FFunctions%2F-612206970"><span>delete</span><wbr><span>Profile</span><wbr><span><span>Resource</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1734983453%2FFunctions%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#1734983453%2FFunctions%2F-612206970"><span class="token function">deleteProfileResource</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">userId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="23236524%2FFunctions%2F-612206970" anchor-label="deleteResource" id="23236524%2FFunctions%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#23236524%2FFunctions%2F-612206970"><span>delete</span><wbr><span><span>Resource</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="23236524%2FFunctions%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#23236524%2FFunctions%2F-612206970"><span class="token function">deleteResource</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">resourcesDirectory<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">resourceId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-162685470%2FFunctions%2F-612206970" anchor-label="deleteTeam" id="-162685470%2FFunctions%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="delete-team.html"><span>delete</span><wbr><span><span>Team</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-162685470%2FFunctions%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="delete-team.html"><span class="token function">deleteTeam</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">teamId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Method to delete a team</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1257790808%2FFunctions%2F-612206970" anchor-label="editTeam" id="1257790808%2FFunctions%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="edit-team.html"><span>edit</span><wbr><span><span>Team</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1257790808%2FFunctions%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="edit-team.html"><span class="token function">editTeam</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">userId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">team<span class="token operator">: </span><a href="../../com.tecknobit.refy.services.teams.entities/-team/index.html">Team</a><span class="token punctuation">, </span></span><span class="parameter ">payload<span class="token operator">: </span><a href="-team-payload/index.html">TeamsService.TeamPayload</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Method to edit a team</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1266737650%2FFunctions%2F-612206970" anchor-label="getAllUserTeams" id="1266737650%2FFunctions%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-all-user-teams.html"><span>get</span><wbr><span>All</span><wbr><span>User</span><wbr><span><span>Teams</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1266737650%2FFunctions%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-all-user-teams.html"><span class="token function">getAllUserTeams</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">userId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">page<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">pageSize<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">keywords<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html">Set</a><span class="token operator">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="com.tecknobit.equinoxcore.pagination/PaginatedResponse///PointingToDeclaration/">PaginatedResponse</span><span class="token operator">&lt;</span><a href="../../com.tecknobit.refy.services.teams.entities/-team/index.html">Team</a><span class="token operator">&gt;</span></div><div class="brief ">Method to get all the user's teams</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="322666354%2FFunctions%2F-612206970" anchor-label="getItemIfAllowed" id="322666354%2FFunctions%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-item-if-allowed.html"><span>get</span><wbr><span>Item</span><wbr><span>If</span><wbr><span><span>Allowed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="322666354%2FFunctions%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-item-if-allowed.html"><span class="token function">getItemIfAllowed</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">userId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">teamId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.tecknobit.refy.services.teams.entities/-team/index.html">Team</a></div><div class="brief ">Method used to get an item if the user is authorized</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1489200036%2FFunctions%2F-612206970" anchor-label="getSuffixResource" id="1489200036%2FFunctions%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#1489200036%2FFunctions%2F-612206970"><span>get</span><wbr><span>Suffix</span><wbr><span><span>Resource</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1489200036%2FFunctions%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#1489200036%2FFunctions%2F-612206970"><span class="token function">getSuffixResource</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">resource<span class="token operator">: </span><span data-unresolved-link="org.springframework.web.multipart/MultipartFile///PointingToDeclaration/">MultipartFile</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="796976%2FFunctions%2F-612206970" anchor-label="getTeamCollections" id="796976%2FFunctions%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-team-collections.html"><span>get</span><wbr><span>Team</span><wbr><span><span>Collections</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="796976%2FFunctions%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-team-collections.html"><span class="token function">getTeamCollections</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">teamId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">page<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">pageSize<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="com.tecknobit.equinoxcore.pagination/PaginatedResponse///PointingToDeclaration/">PaginatedResponse</span><span class="token operator">&lt;</span><a href="../../com.tecknobit.refy.services.collections.entity/-links-collection/index.html">LinksCollection</a><span class="token operator">&gt;</span></div><div class="brief ">Method to get the collections shared with the team</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="334936176%2FFunctions%2F-612206970" anchor-label="getTeamLinks" id="334936176%2FFunctions%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-team-links.html"><span>get</span><wbr><span>Team</span><wbr><span><span>Links</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="334936176%2FFunctions%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-team-links.html"><span class="token function">getTeamLinks</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">teamId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">page<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">pageSize<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">keywords<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html">Set</a><span class="token operator">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="com.tecknobit.equinoxcore.pagination/PaginatedResponse///PointingToDeclaration/">PaginatedResponse</span><span class="token operator">&lt;</span><a href="../../com.tecknobit.refy.services.links.entity/-refy-link/index.html">RefyLink</a><span class="token operator">&gt;</span></div><div class="brief ">Method to get the links shared in a team</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1582988508%2FFunctions%2F-612206970" anchor-label="getUserOwnedTeams" id="1582988508%2FFunctions%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-user-owned-teams.html"><span>get</span><wbr><span>User</span><wbr><span>Owned</span><wbr><span><span>Teams</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1582988508%2FFunctions%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-user-owned-teams.html"><span class="token function">getUserOwnedTeams</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">userId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">page<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">pageSize<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="com.tecknobit.equinoxcore.pagination/PaginatedResponse///PointingToDeclaration/">PaginatedResponse</span><span class="token operator">&lt;</span><a href="../../com.tecknobit.refy.services.teams.entities/-team/index.html">Team</a><span class="token operator">&gt;</span></div><div class="brief ">Method to get the user's owned teams</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1713245003%2FFunctions%2F-612206970" anchor-label="getUserTeams" id="-1713245003%2FFunctions%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-user-teams.html"><span>get</span><wbr><span>User</span><wbr><span><span>Teams</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1713245003%2FFunctions%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-user-teams.html"><span class="token function">getUserTeams</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">userId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/HashSet.html">HashSet</a><span class="token operator">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token operator">&gt;</span></div><div class="brief ">Method to get the user's owned teams identifiers</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1362383879%2FFunctions%2F-612206970" anchor-label="removeCollectionFromTeam" id="-1362383879%2FFunctions%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="remove-collection-from-team.html"><span>remove</span><wbr><span>Collection</span><wbr><span>From</span><wbr><span><span>Team</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1362383879%2FFunctions%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="remove-collection-from-team.html"><span class="token function">removeCollectionFromTeam</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">teamId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">collectionId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Method to remove a collection from a team</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1727085525%2FFunctions%2F-612206970" anchor-label="removeLinkFromTeam" id="1727085525%2FFunctions%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="remove-link-from-team.html"><span>remove</span><wbr><span>Link</span><wbr><span>From</span><wbr><span><span>Team</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1727085525%2FFunctions%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="remove-link-from-team.html"><span class="token function">removeLinkFromTeam</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">teamId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">linkId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Method to remove a link from a team</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1153874066%2FFunctions%2F-612206970" anchor-label="removeMember" id="-1153874066%2FFunctions%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="remove-member.html"><span>remove</span><wbr><span><span>Member</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1153874066%2FFunctions%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="remove-member.html"><span class="token function">removeMember</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">teamId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">memberId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Method to remove a member from a team</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="33199134%2FFunctions%2F-612206970" anchor-label="saveResource" id="33199134%2FFunctions%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#33199134%2FFunctions%2F-612206970"><span>save</span><wbr><span><span>Resource</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="33199134%2FFunctions%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#33199134%2FFunctions%2F-612206970"><span class="token function">saveResource</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">resource<span class="token operator">: </span><span data-unresolved-link="org.springframework.web.multipart/MultipartFile///PointingToDeclaration/">MultipartFile</span><span class="token punctuation">, </span></span><span class="parameter ">path<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1237664667%2FFunctions%2F-612206970" anchor-label="shareCollectionsWithTeam" id="1237664667%2FFunctions%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="share-collections-with-team.html"><span>share</span><wbr><span>Collections</span><wbr><span>With</span><wbr><span><span>Team</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1237664667%2FFunctions%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="share-collections-with-team.html"><span class="token function">shareCollectionsWithTeam</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">userId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">teamId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">collections<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="brief ">Method to share the collections with the team</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="512075703%2FFunctions%2F-612206970" anchor-label="shareLinksWithTeam" id="512075703%2FFunctions%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="share-links-with-team.html"><span>share</span><wbr><span>Links</span><wbr><span>With</span><wbr><span><span>Team</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="512075703%2FFunctions%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="share-links-with-team.html"><span class="token function">shareLinksWithTeam</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">userId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">teamId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">links<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="brief ">Method to share the links with the team</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1683616050%2FFunctions%2F-612206970" anchor-label="syncBatch" id="1683616050%2FFunctions%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#1683616050%2FFunctions%2F-612206970"><span>sync</span><wbr><span><span>Batch</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1683616050%2FFunctions%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">protected </span><span class="token keyword">open </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#1683616050%2FFunctions%2F-612206970">V</a><span class="token operator">&gt; </span><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#1683616050%2FFunctions%2F-612206970"><span class="token function">syncBatch</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">model<span class="token operator">: </span><span data-unresolved-link="com.tecknobit.equinoxbackend.apis.batch/EquinoxItemsHelper.SyncBatchModel///PointingToDeclaration/">EquinoxItemsHelper.SyncBatchModel</span><span class="token punctuation">, </span></span><span class="parameter ">table<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">batchQuery<span class="token operator">: </span><span data-unresolved-link="com.tecknobit.equinoxbackend.apis.batch/EquinoxItemsHelper.BatchQuery///PointingToDeclaration/">EquinoxItemsHelper.BatchQuery</span><span class="token operator">&lt;</span><a href="../../com.tecknobit.refy.services.users.services/-refy-users-service/index.html#1683616050%2FFunctions%2F-612206970">V</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1706531165%2FFunctions%2F-612206970" anchor-label="synchronizeMembers" id="-1706531165%2FFunctions%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+          <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main" data-filterable-set=":backend:dokkaHtmlPartial/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="synchronize-members.html"><span>synchronize</span><wbr><span><span>Members</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1706531165%2FFunctions%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":backend:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">open </span><span class="token keyword">fun </span><a href="synchronize-members.html"><span class="token function">synchronizeMembers</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">userId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">teamId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">payload<span class="token operator">: </span><a href="-team-payload/index.html">TeamsService.TeamPayload</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Method to synchronize the members of a team</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+        <span>© 2025 Copyright</span>
+        <span class="pull-right">
+            <span>Generated by </span>
+            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                <span>dokka</span>
+            </a>
+        </span>
+    </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

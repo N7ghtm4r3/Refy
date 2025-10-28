@@ -74,7 +74,6 @@ public class UserSettings {
         String ownerId = null;
         if(owner != null)
             ownerId = owner.getId();
-        System.out.println(ownerId);
         this.id = ownerId;
         this.owner = owner;
         this.closeApplicationOnLinkOpen = closeApplicationOnLinkOpen;

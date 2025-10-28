@@ -88,11 +88,9 @@ public class RefyUsersController extends EquinoxUsersController<RefyUser, RefyUs
         JSONObject response = super.assembleSignInSuccessResponse(user);
         response.put(TAG_NAME_KEY, user.getTagName());
         UserSettings settings = user.getSettings();
-        if(settings != null) {
-            JSONObject jSettings = new JSONObject();
-            jSettings.put(CLOSE_APPLICATION_ON_LINK_OPEN_KEY, settings.closeApplicationOnLinkOpen());
-            response.put(SETTINGS_KEY, jSettings);
-        }
+        JSONObject jSettings = new JSONObject();
+        jSettings.put(CLOSE_APPLICATION_ON_LINK_OPEN_KEY, settings.closeApplicationOnLinkOpen());
+        response.put(SETTINGS_KEY, jSettings);
         return response;
     }
 
@@ -139,13 +137,13 @@ public class RefyUsersController extends EquinoxUsersController<RefyUser, RefyUs
 
     @RequiresDocumentation(additionalNotes = "TO INSERT SINCE")
     @PatchMapping(
-            path = USERS_KEY + "/{" + IDENTIFIER_KEY + "}" + CHANGE_TAG_NAME_ENDPOINT,
+            path = USERS_KEY + "/{" + IDENTIFIER_KEY + "}/" + SETTINGS_KEY,
             headers = {
                     TOKEN_KEY
             }
     )
-    @RequestPath(path = "/api/v1/users/{id}/changeTagName", method = PATCH)
-    public String changeTagName(
+    @RequestPath(path = "/api/v1/users/{id}/settings", method = PATCH)
+    public String changeUserSettings(
             @PathVariable(IDENTIFIER_KEY) String id,
             @RequestHeader(TOKEN_KEY) String token,
             @RequestBody Map<String, String> payload
@@ -153,15 +151,8 @@ public class RefyUsersController extends EquinoxUsersController<RefyUser, RefyUs
         if (!isMe(id, token))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         loadJsonHelper(payload);
-        String tagName = jsonHelper.getString(TAG_NAME_KEY);
-        if (!isTagNameValid(tagName))
-            return failedResponse(WRONG_TAG_NAME_MESSAGE);
-        try {
-            usersService.changeTagName(tagName, id);
-            return successResponse();
-        } catch (Exception e) {
-            return failedResponse(WRONG_PROCEDURE_MESSAGE);
-        }
+        settingsService.changeUserSettings(me, jsonHelper);
+        return successResponse();
     }
 
 }

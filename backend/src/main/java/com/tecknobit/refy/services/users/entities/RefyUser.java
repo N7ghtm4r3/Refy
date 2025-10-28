@@ -18,6 +18,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.OWNER_KEY;
+import static com.tecknobit.refy.services.users.entities.UserSettings.DEFAULT_USER_SETTINGS;
 import static com.tecknobit.refycore.ConstantsKt.*;
 import static com.tecknobit.refycore.helpers.RefyInputsValidator.MAX_TAG_NAME_LENGTH;
 
@@ -226,6 +227,8 @@ public class RefyUser extends EquinoxUser {
 
     @JsonGetter(SETTINGS_KEY)
     public UserSettings getSettings() {
+        if(settings == null)
+            return DEFAULT_USER_SETTINGS;
         return settings;
     }
 
